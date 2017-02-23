@@ -1,0 +1,8 @@
+/bin
+/build
+/.classpath
+/.gradle
+/.project
+/.settings
+/rsyncdocs.sh
+

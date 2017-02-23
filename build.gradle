@@ -1,0 +1,44 @@
+version = '0.1'
+group = 'uk.co.nickthecoder'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = "uk.co.nickthecoder.wrkfoo.Example"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+dependencies {
+    compile 'junit:junit:4.12'
+    compile 'uk.co.nickthecoder:jguifier:0.1'
+    compile 'uk.co.nickthecoder:prioritydoc:0.1'
+}
+
+/*
+ * gradle javadoc, and then copy them to my website manually with :
+ * rsyncdocs.sh
+ */
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+    
+    options.doclet = "uk.co.nickthecoder.prioritydoc.PriorityDoc"
+    options.addStringOption( "mainpackage", "uk.co.nickthecoder.wrkfoo" )
+    options.addStringOption( "overwriteresources" )
+    options.addStringOption( "usecookies" )
+    options.addStringOption( "title", "WrkFoo" )
+    options.addStringOption( "link", "http://docs.oracle.com/javase/7/docs/api/")
+    options.addStringOption( "link", "http://nickthecoder.co.uk/public/jguifier/docs/javadoc/")
+    
+    options.docletpath = configurations.compile.files.asType(List)
+    verbose = false
+}
+
