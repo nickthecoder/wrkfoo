@@ -1,6 +1,11 @@
 Current Task
 ============
 
+Implement tables
+
+First cut have Results define the table and column models
+
+2nd cut, have WrkFoo subclass wrap these models, so that columns can be and the formatting altered.
 
 BUGS
 ====
