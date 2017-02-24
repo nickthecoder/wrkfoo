@@ -1,23 +1,36 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import javax.swing.table.TableCellRenderer;
+
 import uk.co.nickthecoder.jguifier.util.Util;
 
-public abstract class Column<T>
+public abstract class Column<R>
 {
+    public Class<?> klass;
+    
     public String key;
 
     public String label;
+    
+    public TableCellRenderer cellRenderer = null;
 
-    public abstract Object getValue(T row);
+    public abstract Object getValue(R row);
 
-    public Column(String key)
+    public Column(Class<?> klass, String key)
     {
-        this(key, Util.uncamel(key));
+        this(klass, key, Util.uncamel(key));
     }
 
-    public Column(String key, String label)
+    public Column(Class<?> klass, String key, String label)
     {
+        this.klass = klass;
         this.key = key;
         this.label = label;
+    }
+    
+    public Column<R> renderer( TableCellRenderer tcr )
+    {
+        this.cellRenderer = tcr;
+        return this;
     }
 }

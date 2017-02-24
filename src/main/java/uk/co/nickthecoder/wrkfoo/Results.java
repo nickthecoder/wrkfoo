@@ -1,11 +1,13 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.util.Iterator;
-import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 public interface Results<R>
 {    
-    public Iterator<R> rows();
+    public Columns<R> getColumns();
     
-    public Map<String,Column<R>> columnMap();
+    public TableModel getTableModel();
+        
+    public JTable createTable();
 }

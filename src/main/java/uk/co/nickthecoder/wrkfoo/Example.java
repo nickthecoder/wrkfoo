@@ -2,7 +2,8 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
 
-import uk.co.nickthecoder.wrkfoo.file.WrkF;
+import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.command.WrkF;
 
 public class Example
 {
@@ -11,13 +12,16 @@ public class Example
     {
         System.out.println( "WrkF Example" );
 
+        Util.defaultLookAndFeel();
+
         WrkF wrkF = new WrkF();
         wrkF.getTask().parseArgs( argv, false );
-        WrkF.wrkFTask.directory.setValue(new File("."));
+        wrkF.getTask().directory.setValue(new File("."));
         
-        MainWindow mainWindow = new MainWindow( wrkF );
+        CommandPanel panel = new CommandPanel( wrkF );
+        MainWindow mainWindow = new MainWindow( panel );
         mainWindow.setVisible(true);
-        mainWindow.go();
+        panel.go();
     }
 }
 

@@ -1,18 +1,32 @@
 Current Task
 ============
 
-Implement tables
-
-First cut have Results define the table and column models
-
-2nd cut, have WrkFoo subclass wrap these models, so that columns can be and the formatting altered.
-
 BUGS
 ====
 
+FileLister stops when it fails to list a directory. Should continue as best as it can (BooleanParameter?)
+
+ParametersPanel is not in a scrollpane
+
 New Features
 ============
+	
+	Add a folder button, clicking enters that directory
+		Ctrl+click to open in a new tab.
 
+	Create a notebook, with different commands in each
+	
+Later Features
+==============
+
+	tooltips for columns
+	Render dates using cleverness - Show TIME when it was changed in the last 24 hours.
+		Need a custom renderer
+
+	Filtering. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
+
+Thoughts
+========
 
 	Header contains task parameters
 	table shows the results
