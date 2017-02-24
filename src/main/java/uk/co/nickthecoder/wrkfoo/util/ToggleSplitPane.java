@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.util;
 
 import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
@@ -17,12 +18,16 @@ public class ToggleSplitPane extends JSplitPane
         super(or, con, left, right);
         this.hideLeft = hideLeft;
 
-        this.hidden = ! (hideLeft ? left.isVisible() : right.isVisible());
+        this.hidden = !(hideLeft ? left.isVisible() : right.isVisible());
     }
 
     public Component hider()
     {
         return this.hideLeft ? getLeftComponent() : getRightComponent();
+    }
+    public Component other()
+    {
+        return this.hideLeft ? getRightComponent() : getLeftComponent();
     }
 
     public void toggle()
@@ -33,8 +38,12 @@ public class ToggleSplitPane extends JSplitPane
             loc = getDividerLocation();
             setDividerSize(0);
             hider().setVisible(false);
+            other().requestFocusInWindow();
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
         } else {
             hider().setVisible(true);
+            hider().requestFocusInWindow();
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
             setDividerLocation(loc);
             setDividerSize((Integer) UIManager.get("SplitPane.dividerSize"));
         }

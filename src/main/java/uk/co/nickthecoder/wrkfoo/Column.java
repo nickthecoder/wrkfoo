@@ -7,11 +7,13 @@ import uk.co.nickthecoder.jguifier.util.Util;
 public abstract class Column<R>
 {
     public Class<?> klass;
-    
+
     public String key;
 
+    public int width = 150;
+
     public String label;
-    
+
     public TableCellRenderer cellRenderer = null;
 
     public abstract Object getValue(R row);
@@ -27,8 +29,14 @@ public abstract class Column<R>
         this.key = key;
         this.label = label;
     }
-    
-    public Column<R> renderer( TableCellRenderer tcr )
+
+    public Column<R> width(int width)
+    {
+        this.width = width;
+        return this;
+    }
+
+    public Column<R> renderer(TableCellRenderer tcr)
     {
         this.cellRenderer = tcr;
         return this;

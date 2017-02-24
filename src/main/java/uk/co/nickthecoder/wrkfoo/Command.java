@@ -14,9 +14,11 @@ public interface Command<R>
     public Results<R> getResults();
     
     public ParametersPanel createParametersPanel();
-    
-    public CommandPanel<R> getCommandPanel();
-    
+
+    public CommandPanel<R> createCommandPanel();
+        
     public void defaultAction( R row );
+    
+    public void postCreate( CommandPanel<R> cp );
         
 }

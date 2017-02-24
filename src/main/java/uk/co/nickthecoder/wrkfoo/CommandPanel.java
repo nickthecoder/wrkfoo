@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JButton;
@@ -35,7 +36,7 @@ public class CommandPanel<R> extends JPanel
 
     private JButton goButton;
 
-    private JTable table;
+    public JTable table;
 
     private JScrollPane scrollPane;
 
@@ -77,14 +78,34 @@ public class CommandPanel<R> extends JPanel
         this.setBackground(Color.blue);
     }
 
+    public void putAction(String keyStroke, String name, Action action)
+    {
+        putAction(keyStroke, name, this, action);
+    }
+
+    public void putAction(String keyStroke, String name, JComponent component, Action action)
+    {
+        putAction(keyStroke, name, component, JComponent.WHEN_IN_FOCUSED_WINDOW, action );
+    }
+    
+    public void putAction(String key, String name, JComponent component, int condition, Action action)
+    {
+        InputMap inputMap = component.getInputMap(condition);
+        ActionMap actionMap = component.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
+        inputMap.put( keyStroke, name);
+        actionMap.put(name, action);
+        
+        // Bodge! I don't want the table stealing any of MY keyboard shortcuts
+        table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, name);
+    }
+
     public void postCreate()
     {
-
-        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getRootPane().getActionMap();
-
-        inputMap.put(KeyStroke.getKeyStroke("F9"), "toggleSidebar");
-        actionMap.put("toggleSidebar", new AbstractAction()
+        command.postCreate(this);
+        
+        putAction("F9", "toggleSidebar", new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -92,8 +113,7 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        inputMap.put(KeyStroke.getKeyStroke("F5"), "refresh");
-        actionMap.put("refresh", new AbstractAction()
+        putAction("F5", "refresh", new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -101,6 +121,16 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
+        putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, new AbstractAction()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                int r = table.convertRowIndexToModel(table.getSelectedRow());
+                R row = command.getResults().getRow(r);
+                command.defaultAction(row);
+            }
+        });
+        
         table.addMouseListener(new MouseAdapter()
         {
 
@@ -120,11 +150,6 @@ public class CommandPanel<R> extends JPanel
     public void go()
     {
         command.go();
-    }
-    
-    public void refresh()
-    {
-        table.setModel(command.getResults().getTableModel());
     }
 
 }

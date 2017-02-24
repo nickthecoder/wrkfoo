@@ -39,11 +39,16 @@ public class ListTableModel<R> extends AbstractTableModel
     {
         return columns.getColumn(col).label;
     }
-    
+
     @Override
     public Class<?> getColumnClass(int col)
     {
         return columns.getColumn(col).klass;
     }
-    
+
+    public void update(List<R> results)
+    {
+        this.list = results;
+        this.fireTableDataChanged();        
+    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public class Columns<R>
@@ -37,7 +38,14 @@ public class Columns<R>
 
     public JTable createTable(TableModel tableModel)
     {
-        return new Table(tableModel);
+        JTable table = new Table(tableModel);
+
+        for( int i = 0; i < getColumnCount(); i ++ ) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth(getColumn(i).width);
+        }
+
+        return table;
     }
 
     public class Table extends JTable

@@ -11,6 +11,10 @@ ParametersPanel is not in a scrollpane
 New Features
 ============
 	
+	Size as a bar chart.
+		Proportion the width of 0..1000
+		Use colours to distinguish bytes(Grey), kb(green), mb(yellow), gb(orange), tb(red) 
+	
 	Add a folder button, clicking enters that directory
 		Ctrl+click to open in a new tab.
 
