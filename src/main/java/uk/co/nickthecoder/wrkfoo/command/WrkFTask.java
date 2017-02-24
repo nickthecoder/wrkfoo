@@ -82,11 +82,18 @@ public class WrkFTask extends FileListerTask implements Results<File>
     }
 
     @Override
+    public File getRow(int row)
+    {
+        return results.get(row);
+    }
+    
+    @Override
     public JTable createTable()
     {
         JTable result = getColumns().createTable(getTableModel());
         // result.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         return result;
     }
+
 
 }

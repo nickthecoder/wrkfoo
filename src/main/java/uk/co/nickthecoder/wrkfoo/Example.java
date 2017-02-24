@@ -18,7 +18,7 @@ public class Example
         wrkF.getTask().parseArgs( argv, false );
         wrkF.getTask().directory.setValue(new File("."));
         
-        CommandPanel panel = new CommandPanel( wrkF );
+        CommandPanel<File> panel = wrkF.getCommandPanel();
         MainWindow mainWindow = new MainWindow( panel );
         mainWindow.setVisible(true);
         panel.go();

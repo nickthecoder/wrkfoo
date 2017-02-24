@@ -3,9 +3,10 @@ package uk.co.nickthecoder.wrkfoo.command;
 import java.io.File;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
-import uk.co.nickthecoder.wrkfoo.AbstractCommand;
+import uk.co.nickthecoder.wrkfoo.CommandPanel;
+import uk.co.nickthecoder.wrkfoo.TaskCommand;
 
-public class WrkF extends AbstractCommand<WrkFTask, File>
+public class WrkF extends TaskCommand<WrkFTask, File>
 {
     public WrkF()
     {
@@ -13,12 +14,14 @@ public class WrkF extends AbstractCommand<WrkFTask, File>
     }
 
     @Override
-    public ParametersPanel createParametersPanel()
+    public void defaultAction(File file)
     {
-        ParametersPanel pp = new ParametersPanel();
-        pp.addParameters(getTask().getParameters());
-        return pp;
-
+        System.out.println("Default action on " + file);
+        if (file.isDirectory()) {
+            System.out.println("Entering directory");
+            getTask().directory.setValue(file);
+            go();
+            System.out.println("Ran");
+        }
     }
-
 }

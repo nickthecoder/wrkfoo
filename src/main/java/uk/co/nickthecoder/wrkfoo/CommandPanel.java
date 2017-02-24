@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -15,14 +17,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.table.TableModel;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
-public class CommandPanel extends JPanel
+public class CommandPanel<R> extends JPanel
 {
-    private Command<?> wrkFoo;
+    private Command<R> command;
 
     private ToggleSplitPane splitPane;
 
@@ -38,9 +39,9 @@ public class CommandPanel extends JPanel
 
     private JScrollPane scrollPane;
 
-    public CommandPanel(Command<?> foo)
+    public CommandPanel(Command<R> foo)
     {
-        this.wrkFoo = foo;
+        this.command = foo;
 
         sidePanel = new JPanel();
         body = new JPanel();
@@ -61,7 +62,7 @@ public class CommandPanel extends JPanel
         });
         sidePanel.add(goButton, BorderLayout.SOUTH);
 
-        table = wrkFoo.getResults().createTable();
+        table = command.getResults().createTable();
         table.setAutoCreateRowSorter(true);
 
         scrollPane = new JScrollPane(table);
@@ -69,9 +70,9 @@ public class CommandPanel extends JPanel
         body.add(scrollPane, BorderLayout.CENTER);
 
         splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
-        
+
         this.setLayout(new BorderLayout());
-        this.add(splitPane,BorderLayout.CENTER);
+        this.add(splitPane, BorderLayout.CENTER);
 
         this.setBackground(Color.blue);
     }
@@ -100,30 +101,30 @@ public class CommandPanel extends JPanel
             }
         });
 
+        table.addMouseListener(new MouseAdapter()
+        {
+
+            public void mouseClicked(MouseEvent me)
+            {
+                if (me.getClickCount() == 2) {
+                    int r = table.convertRowIndexToModel(table.getSelectedRow());
+                    R row = command.getResults().getRow(r);
+                    command.defaultAction(row);
+                }
+            }
+        });
+
         goButton.getRootPane().setDefaultButton(goButton);
     }
 
     public void go()
     {
-        System.out.println("CommandPanel.go");
-        wrkFoo.run();
-        System.out.println("Completed run");
-
-        Results<?> results = wrkFoo.getResults();
-
-        TableModel tableModel = results.getTableModel();
-        Columns<?> columns = results.getColumns();
-
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            for (int j = 0; j < columns.getColumnCount(); j++) {
-                System.out.print(tableModel.getValueAt(i, j));
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-        System.out.println("Mainwindow.go ended");
-
-        table.setModel(wrkFoo.getResults().getTableModel());
+        command.go();
+    }
+    
+    public void refresh()
+    {
+        table.setModel(command.getResults().getTableModel());
     }
 
 }

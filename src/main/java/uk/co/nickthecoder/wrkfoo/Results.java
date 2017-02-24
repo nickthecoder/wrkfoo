@@ -10,4 +10,6 @@ public interface Results<R>
     public TableModel getTableModel();
         
     public JTable createTable();
+    
+    public R getRow(int row);
 }

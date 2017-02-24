@@ -8,7 +8,7 @@ import uk.co.nickthecoder.jguifier.util.AutoExit;
 
 public class MainWindow extends JFrame
 {    
-    public MainWindow(CommandPanel panel)
+    public MainWindow(CommandPanel<?> panel)
     {
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panel, BorderLayout.CENTER);
