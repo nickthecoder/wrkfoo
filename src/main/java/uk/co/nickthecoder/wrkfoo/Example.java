@@ -14,14 +14,22 @@ public class Example
 
         Util.defaultLookAndFeel();
 
-        WrkF wrkF = new WrkF();
-        wrkF.getTask().parseArgs( argv, false );
-        wrkF.getTask().directory.setValue(new File(".").getAbsoluteFile());
+        WrkF wrkFHome = new WrkF();
+        wrkFHome.getTask().directory.setValue(new File(System.getProperty("user.home")));
+        wrkFHome.go();
         
-        CommandPanel<File> panel = wrkF.createCommandPanel();
-        MainWindow mainWindow = new MainWindow( panel );
+        WrkF wrkFImages = new WrkF();
+        wrkFImages.getTask().directory.setValue(new File("/gidea/images"));
+        wrkFImages.go();
+        
+        WrkF wrkFVideos= new WrkF();
+        wrkFVideos.getTask().directory.setValue(new File("/gidea/video/categories/TV Shows"));
+        wrkFVideos.go();
+        
+        
+        MainWindow mainWindow = new MainWindow( wrkFHome, wrkFImages, wrkFVideos );
         mainWindow.setVisible(true);
-        panel.go();
+        
     }
 }
 

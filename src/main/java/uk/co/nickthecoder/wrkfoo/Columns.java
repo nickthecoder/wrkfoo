@@ -2,10 +2,17 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -14,11 +21,23 @@ public class Columns<R>
 {
     private List<Column<R>> columns;
 
-    private Color evenRowColor = new Color(230, 230, 230);
+    private Color oddRowColor = new Color(230, 230, 230);
+
+    public Column<R> optionColunm;
 
     public Columns()
     {
         columns = new ArrayList<Column<R>>();
+
+        optionColunm = new Column<R>(String.class, "")
+        {
+            @Override
+            public String getValue(R row)
+            {
+                return "";
+            }
+        }.width(50).lock().editable();
+        columns.add(optionColunm);
     }
 
     public void add(Column<R> column)
@@ -40,9 +59,11 @@ public class Columns<R>
     {
         JTable table = new Table(tableModel);
 
-        for( int i = 0; i < getColumnCount(); i ++ ) {
+        for (int i = 0; i < getColumnCount(); i++) {
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(getColumn(i).width);
+            column.setMinWidth(getColumn(i).minWidth);
+            column.setMaxWidth(getColumn(i).maxWidth);
         }
 
         return table;
@@ -50,9 +71,41 @@ public class Columns<R>
 
     public class Table extends JTable
     {
+        private boolean isTabbing = false;
+
         public Table(TableModel model)
         {
             super(model);
+
+            InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            ActionMap am = this.getActionMap();
+
+            im.put(KeyStroke.getKeyStroke("TAB"), "Action.tab");
+            am.put("Action.tab", new AbstractAction()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    if (!isTabbing) {
+                        isTabbing = true;
+                        tab();
+                    } else {
+                        System.out.println("blocked from tabbing");
+                    }
+                }
+            });
+            im.put(KeyStroke.getKeyStroke("shift TAB"), "Action.untab");
+            am.put("Action.untab", new AbstractAction()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    if (!isTabbing) {
+                        isTabbing = true;
+                        untab();
+                    }
+                }
+            });
         }
 
         @Override
@@ -71,12 +124,113 @@ public class Columns<R>
 
             if (!isRowSelected(row)) {
                 if (row % 2 == 0) {
-                    comp.setBackground(evenRowColor);
-                } else {
                     comp.setBackground(this.getBackground());
+                } else {
+                    comp.setBackground(oddRowColor);
                 }
             }
             return comp;
+
+        }
+
+        public void tab()
+        {
+            int row = getSelectedRow();
+            int col = getSelectedColumn();
+
+            // Make sure we start with legal values.
+            if (col < 0) {
+                col = 0;
+            }
+            if (row < 0) {
+                row = 0;
+            }
+
+            int startRow = row;
+
+            // Find the next editable cell.
+            do {
+                col++;
+                if (col >= getColumnCount()) {
+                    col = 0;
+                    row++;
+                    if (row >= getRowCount()) {
+                        row = 0;
+                    }
+                    // Prevent an endless loop if no cells are editable
+                    if (row == startRow) {
+                        return;
+                    }
+                }
+
+            } while (!isCellEditable(row, col));
+
+            // Select the cell in the table.
+            tabToCell(row, col);
+        }
+
+        public void untab()
+        {
+            int row = getSelectedRow();
+            int col = getSelectedColumn();
+
+            // Make sure we start with legal values.
+            if (col < 0) {
+                col = 0;
+            }
+            if (row < 0) {
+                row = 0;
+            }
+
+            int startRow = row;
+
+            // Find the previous editable cell.
+            do {
+                col--;
+                if (col < 0) {
+                    col = getColumnCount() - 1;
+                    row--;
+                    if (row < 0) {
+                        row = getRowCount() - 1;
+                    }
+                    // Prevent an endless loop if no cells are editable
+                    if (row == startRow) {
+                        return;
+                    }
+                }
+
+            } while (!isCellEditable(row, col));
+
+            // Select the cell in the table.
+            tabToCell(row, col);
+        }
+
+        private void tabToCell(final int row, final int col)
+        {
+            EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    changeSelection(row, col, false, false);
+                    isTabbing = false;
+                }
+            });
+            if (isEditing()) {
+                if (isEditing() && !getCellEditor().stopCellEditing()) {
+                    getCellEditor().cancelCellEditing();
+                }
+            }
+            /*
+            if (isCellEditable(row, col)) {
+                editCellAt(row, col);
+                try {
+                    ((JTextField) editorComp).selectAll();
+                } catch (Exception e) {
+                    // May not be a JTextField, in which case, do nothing.
+                }
+                editorComp.requestFocusInWindow();
+            }
+            */
 
         }
     }

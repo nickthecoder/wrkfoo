@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.Icon;
 import javax.swing.JTable;
 
 import uk.co.nickthecoder.jguifier.util.FileListerTask;
@@ -23,6 +24,7 @@ public class WrkFTask extends FileListerTask implements Results<File>
     public WrkFTask()
     {
         super();
+        setName( "WrkF" );
     }
 
     @Override
@@ -31,10 +33,19 @@ public class WrkFTask extends FileListerTask implements Results<File>
         if (columns == null) {
             columns = new Columns<File>();
 
-            columns.add(new Column<File>(File.class, "name")
+            columns.add(new Column<File>(Icon.class, "")
             {
                 @Override
-                public Object getValue(File row)
+                public Icon getValue(File row)
+                {
+                    return row.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                }
+            }.width(25).lock());
+            
+            columns.add(new Column<File>(String.class, "name")
+            {
+                @Override
+                public String getValue(File row)
                 {
                     return row.getName();
                 }
@@ -43,20 +54,20 @@ public class WrkFTask extends FileListerTask implements Results<File>
             columns.add(new Column<File>(Date.class, "lastModified")
             {
                 @Override
-                public Object getValue(File row)
+                public Date getValue(File row)
                 {
                     return new Date(row.lastModified());
                 }
-            }.renderer(DateRenderer.instance));
+            }.width(120).lock().renderer(DateRenderer.instance));
 
-            columns.add(new Column<File>(Integer.class, "size")
+            columns.add(new Column<File>(Long.class, "size")
             {
                 @Override
-                public Object getValue(File row)
+                public Long getValue(File row)
                 {
                     return row.length();
                 }
-            }.width(100).renderer(SizeRenderer.getInstance()));
+            }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 
         }
         return columns;

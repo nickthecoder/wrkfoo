@@ -29,9 +29,30 @@ public class ListTableModel<R> extends AbstractTableModel
     }
 
     @Override
+    public boolean isCellEditable(int row, int col)
+    {
+        return columns.getColumn(col).editable;
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
-        return columns.getColumn(columnIndex).getValue(list.get(rowIndex));
+        if (columnIndex == 0) {
+            return options[rowIndex];
+        } else {
+            R row = list.get(rowIndex);
+            Column<R> column = columns.getColumn(columnIndex);  
+            return column.getValue(row);
+        }
+    }
+
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex)
+    {
+        if (columnIndex == 0) {
+            options[rowIndex] = (String) value;
+        }
+        fireTableCellUpdated(rowIndex, columnIndex);
     }
 
     @Override
@@ -46,9 +67,12 @@ public class ListTableModel<R> extends AbstractTableModel
         return columns.getColumn(col).klass;
     }
 
+    private String[] options = new String[] {};
+
     public void update(List<R> results)
     {
         this.list = results;
-        this.fireTableDataChanged();        
+        this.options = new String[results.size()];
+        this.fireTableDataChanged();
     }
 }

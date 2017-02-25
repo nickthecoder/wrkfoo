@@ -8,7 +8,7 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
 {
     public T task;
 
-    public TaskCommand(T task, String... columnNames)
+    public TaskCommand(T task)
     {
         this.task = task;
     }

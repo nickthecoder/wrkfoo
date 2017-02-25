@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import javax.swing.Icon;
+
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 
@@ -21,4 +23,5 @@ public interface Command<R>
     
     public void postCreate( CommandPanel<R> cp );
         
+    public Icon getIcon();
 }

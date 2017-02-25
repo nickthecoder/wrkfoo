@@ -4,17 +4,27 @@ Current Task
 BUGS
 ====
 
-ParametersPanel is not in a scrollpane
 
 New Features
 ============
 
+	Add the option column
+	
+	glob filter of filenames
+	regex filter of filenames
+	
+	Hide canonical
+	
 	Sort keeps the folders at the top regardless of anything else.
 
-	Add a folder button, clicking enters that directory
-		Ctrl+click to open in a new tab.
+	Ctrl+click to open a folder in a new tab.
 
 	Create a notebook, with different commands in each
+	
+	Find Files command, which does recursive list files. Path placed instead of name
+		Use relative names from the start directory
+	
+	Rename WrkF to Directory? Dir?
 	
 Later Features
 ==============
