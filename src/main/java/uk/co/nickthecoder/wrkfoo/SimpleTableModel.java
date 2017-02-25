@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.awt.Color;
+
 import javax.swing.table.AbstractTableModel;
 
 public abstract class SimpleTableModel<R> extends AbstractTableModel
@@ -56,6 +58,11 @@ public abstract class SimpleTableModel<R> extends AbstractTableModel
         return columns.getColumn(col).klass;
     }
 
+    public Color getRowBackground( int row )
+    {
+        return null;
+    }
+    
     public void update( int rowCount )
     {
         this.options = new String[rowCount];

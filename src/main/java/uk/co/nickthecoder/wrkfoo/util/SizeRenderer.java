@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.text.DecimalFormat;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +18,8 @@ import javax.swing.table.TableCellRenderer;
 public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutManager
 {
     private static SizeRenderer instance;
+
+    public static final DecimalFormat format = new DecimalFormat("#.#");
 
     public static SizeRenderer getInstance()
     {
@@ -79,7 +82,7 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         boolean isSelected, boolean hasFocus, int row, int column)
     {
         if (value instanceof Long) {
-            long size = (Long) value;
+            float size = (Long) value;
             int index = 0;
             while (size > 1000) {
                 size /= 1000;
@@ -107,10 +110,8 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
                 label.setForeground(foregrounds[index]);
             }
 
-            label.setText(size + units[index]);
+            label.setText(format.format(size) + units[index]);
         }
-
-
 
         label.setBorder(dtcr.getBorder());
 

@@ -27,7 +27,12 @@ public abstract class Column<R>
 
     public TableCellRenderer cellRenderer = null;
 
+    public boolean visible = true;
+    
+    
     public abstract Object getValue(R row);
+    
+    
 
     public Column(Class<?> klass, String key)
     {
@@ -69,6 +74,12 @@ public abstract class Column<R>
     public Column<R> editable()
     {
         this.editable = true;
+        return this;
+    }
+    
+    public Column<R> hide()
+    {
+        this.visible = false;
         return this;
     }
     

@@ -4,12 +4,24 @@ Current Task
 BUGS
 ====
 
+Remove "absolute" from FileLister - it makes no sense. Just pass in an absolute file to directory parameter.
 
 New Features
 ============
 
-	Add the option column
+	Rename Parameter.hide to visible, swapping all the logic
+		
+	WrkFTree
+		Display paths relative to the start directory
 	
+	When WrkFTree is written,
+		allow a panel to change from one command to another, keeping the same history.
+		Create a CommandProxy, which can change its Command.
+		The proxy has the history.
+		The history will have to include the Command, and its parameters, not the Task.
+
+	Use the options to run other commands
+
 	glob filter of filenames
 	regex filter of filenames
 	
@@ -18,13 +30,9 @@ New Features
 	Sort keeps the folders at the top regardless of anything else.
 
 	Ctrl+click to open a folder in a new tab.
+	
+			
 
-	Create a notebook, with different commands in each
-	
-	Find Files command, which does recursive list files. Path placed instead of name
-		Use relative names from the start directory
-	
-	Rename WrkF to Directory? Dir?
 	
 Later Features
 ==============

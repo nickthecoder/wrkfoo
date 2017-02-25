@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,14 +18,19 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class WrkFTask extends FileListerTask implements Results<File>
 {
-    private static Columns<File> columns;
+    private Columns<File> columns;
 
     private ListTableModel<File> tableModel;
+
+    /**
+     * Amount of characters to chop off of the path column.
+     */
+    private int chopPath = 0;
 
     public WrkFTask()
     {
         super();
-        setName( "WrkFCommand" );
+        setName("WrkFCommand");
     }
 
     @Override
@@ -41,7 +47,16 @@ public class WrkFTask extends FileListerTask implements Results<File>
                     return row.isDirectory() ? WrkFCommand.directoryIcon : WrkFCommand.fileIcon;
                 }
             }.width(25).lock());
-            
+
+            columns.add(new Column<File>(String.class, "path")
+            {
+                @Override
+                public String getValue(File row)
+                {
+                    return row.getPath().substring(chopPath);
+                }
+            }.hide().width(500));
+
             columns.add(new Column<File>(String.class, "name")
             {
                 @Override
@@ -77,14 +92,22 @@ public class WrkFTask extends FileListerTask implements Results<File>
     public void post()
     {
         super.post();
+        chopPath = directory.getValue().getPath().length() + 1;
         getTableModel().update(results);
     }
 
     @Override
     public ListTableModel<File> getTableModel()
     {
-        if ( tableModel == null) {
-            tableModel = new ListTableModel<File>( new ArrayList<File>(), getColumns());
+        if (tableModel == null) {
+            tableModel = new ListTableModel<File>(new ArrayList<File>(), getColumns()) {
+                @Override
+                public Color getRowBackground( int row )
+                {
+                    File file = list.get(row);
+                    return file.isFile() ? null : WrkFBaseCommand.directoryColor;
+                }
+            };
         }
         return tableModel;
     }
@@ -94,13 +117,12 @@ public class WrkFTask extends FileListerTask implements Results<File>
     {
         return results.get(row);
     }
-    
+
     @Override
     public JTable createTable()
     {
         JTable result = getColumns().createTable(getTableModel());
         return result;
     }
-
 
 }

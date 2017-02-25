@@ -1,26 +1,15 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
+import javax.swing.table.TableColumnModel;
 
 public class Columns<R>
 {
     private List<Column<R>> columns;
-
-    private Color oddRowColor = new Color(230, 230, 230);
 
     public Column<R> optionColunm;
 
@@ -54,165 +43,40 @@ public class Columns<R>
         return columns.get(i);
     }
 
-    public JTable createTable(TableModel tableModel)
+    public Column<R> find(String name)
     {
-        JTable table = new Table(tableModel);
+        for (Column<R> column : columns) {
+            if (column.key == name) {
+                return column;
+            }
+        }
+        return null;
+    }
+
+    public JTable createTable(SimpleTableModel<R> tableModel)
+    {
+        JTable table = new SimpleTable<R>(tableModel);
+        TableColumnModel tcm = table.getColumnModel();
 
         for (int i = 0; i < getColumnCount(); i++) {
-            TableColumn column = table.getColumnModel().getColumn(i);
-            column.setPreferredWidth(getColumn(i).width);
-            column.setMinWidth(getColumn(i).minWidth);
-            column.setMaxWidth(getColumn(i).maxWidth);
+            TableColumn tableColumn = tcm.getColumn(i);
+            Column<?> column = getColumn(i);
+
+            tableColumn.setPreferredWidth(column.width);
+            tableColumn.setMinWidth(column.minWidth);
+            tableColumn.setMaxWidth(column.maxWidth);
+
+        }
+
+        for (int i = getColumnCount() - 1; i >= 0; i--) {
+            TableColumn tableColumn = tcm.getColumn(i);
+            Column<?> column = getColumn(i);
+            if (!column.visible) {
+                tcm.removeColumn(tableColumn);
+            }
         }
 
         return table;
     }
 
-    public class Table extends JTable
-    {
-        public Table(TableModel model)
-        {
-            super(model);
-
-            InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-            ActionMap am = this.getActionMap();
-
-            im.put(KeyStroke.getKeyStroke("TAB"), "Action.tab");
-            am.put("Action.tab", new AbstractAction()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    tab();
-                }
-            });
-            im.put(KeyStroke.getKeyStroke("shift TAB"), "Action.untab");
-            am.put("Action.untab", new AbstractAction()
-            {
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    untab();
-                }
-            });
-        }
-
-        @Override
-        public TableCellRenderer getCellRenderer(int row, int column)
-        {
-            int modelColumn = convertColumnIndexToModel(column);
-
-            TableCellRenderer result = Columns.this.getColumn(modelColumn).cellRenderer;
-            return result == null ? super.getCellRenderer(row, column) : result;
-        }
-
-        @Override
-        public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
-        {
-            Component comp = super.prepareRenderer(renderer, row, column);
-
-            if (!isRowSelected(row)) {
-                if (row % 2 == 0) {
-                    comp.setBackground(this.getBackground());
-                } else {
-                    comp.setBackground(oddRowColor);
-                }
-            }
-            return comp;
-
-        }
-
-        public void tab()
-        {
-            int row = getSelectedRow();
-            int col = getSelectedColumn();
-
-            // Make sure we start with legal values.
-            if (col < 0) {
-                col = 0;
-            }
-            if (row < 0) {
-                row = 0;
-            }
-
-            int startRow = row;
-
-            // Find the next editable cell.
-            do {
-                col++;
-                if (col >= getColumnCount()) {
-                    col = 0;
-                    row++;
-                    if (row >= getRowCount()) {
-                        row = 0;
-                    }
-                    // Prevent an endless loop if no cells are editable
-                    if (row == startRow) {
-                        return;
-                    }
-                }
-
-            } while (!isCellEditable(row, col));
-
-            // Select the cell in the table.
-            tabToCell(row, col);
-        }
-
-        public void untab()
-        {
-            int row = getSelectedRow();
-            int col = getSelectedColumn();
-
-            // Make sure we start with legal values.
-            if (col < 0) {
-                col = 0;
-            }
-            if (row < 0) {
-                row = 0;
-            }
-
-            int startRow = row;
-
-            // Find the previous editable cell.
-            do {
-                col--;
-                if (col < 0) {
-                    col = getColumnCount() - 1;
-                    row--;
-                    if (row < 0) {
-                        row = getRowCount() - 1;
-                    }
-                    // Prevent an endless loop if no cells are editable
-                    if (row == startRow) {
-                        return;
-                    }
-                }
-
-            } while (!isCellEditable(row, col));
-
-            // Select the cell in the table.
-            tabToCell(row, col);
-        }
-
-        private void tabToCell(final int row, final int col)
-        {
-            EventQueue.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    changeSelection(row, col, false, false);
-                }
-            });
-            stopEditing();
-        }
-        
-        public void stopEditing()
-        {
-            if (isEditing()) {
-                if (isEditing() && !getCellEditor().stopCellEditing()) {
-                    getCellEditor().cancelCellEditing();
-                }
-            }            
-        }
-    }
 }

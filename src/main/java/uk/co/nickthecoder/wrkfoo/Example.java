@@ -4,6 +4,7 @@ import java.io.File;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.command.WrkFCommand;
+import uk.co.nickthecoder.wrkfoo.command.WrkFTreeCommand;
 
 public class Example
 {
@@ -14,10 +15,14 @@ public class Example
 
         Util.defaultLookAndFeel();
 
+        WrkFTreeCommand wrkFTreeSrc = new WrkFTreeCommand();
+        wrkFTreeSrc.getTask().directory.setValue(new File("/home/nick/projects/wrkfoo/src"));
+        wrkFTreeSrc.go();
+
         WrkFCommand wrkFHome = new WrkFCommand();
         wrkFHome.getTask().directory.setValue(new File(System.getProperty("user.home")));
         wrkFHome.go();
-        
+
         WrkFCommand wrkFImages = new WrkFCommand();
         wrkFImages.getTask().directory.setValue(new File("/gidea/images"));
         wrkFImages.go();
@@ -27,7 +32,7 @@ public class Example
         wrkFVideos.go();
         
         
-        MainWindow mainWindow = new MainWindow( wrkFHome, wrkFImages, wrkFVideos );
+        MainWindow mainWindow = new MainWindow( wrkFTreeSrc, wrkFHome, wrkFImages, wrkFVideos );
         mainWindow.setVisible(true);
         
     }
