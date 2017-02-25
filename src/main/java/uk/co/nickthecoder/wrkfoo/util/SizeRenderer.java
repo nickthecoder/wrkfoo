@@ -35,8 +35,18 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         new Color(252, 100, 0),
         new Color(234, 11, 11)
     };
+    public static final Color foregrounds[] = {
+        Color.darkGray,
+        Color.darkGray,
+        Color.darkGray,
+        Color.darkGray,
+        Color.white
+    };
 
+    
     private JLabel label;
+
+    private JPanel back;
 
     private JPanel progress;
 
@@ -49,13 +59,19 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         dtcr = new DefaultTableCellRenderer();
 
         label = new JLabel();
+        back = new JPanel();
         label.setHorizontalAlignment(SwingConstants.RIGHT);
         label.setOpaque(false);
-        
+
         this.setLayout(this);
 
         add(label);
         add(progress);
+        add(back);
+
+        // Ignore the background color give to us by any "prepareRenderer" code, such as in 
+        // Columns.Table.prepareRenderer
+        this.setOpaque(true);
     }
 
     @Override
@@ -70,20 +86,34 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
                 index++;
             }
 
-            int width = ((label.getWidth() - 10) * (int) size) / 1000 + (index > 0 ? 10 : 0);
+            int width = (label.getWidth() * (int) size) / 1000;
 
-            progress.setBackground(colors[index]);
-            progress.setBounds(0, 0, width, this.getHeight());
+            dtcr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            if (isSelected) {
+                // Ignore the bar chart effect
+                back.setBackground(dtcr.getBackground());
+                progress.setBackground(dtcr.getBackground());
+                label.setForeground(dtcr.getForeground());
+            } else {
+                
+                progress.setBackground(colors[index]);
+                if (index > 0) {
+                    back.setBackground(colors[index -1]);
+                } else {
+                    back.setBackground(colors[index]);
+                }
+                progress.setBounds(0, 0, width, this.getHeight());
+                label.setForeground(foregrounds[index]);
+            }
+
             label.setText(size + units[index]);
         }
 
-        dtcr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-        setBackground(dtcr.getBackground());
-        
-        label.setForeground(dtcr.getForeground());
+
         label.setBorder(dtcr.getBorder());
-        
+
         return this;
     }
 
@@ -117,6 +147,7 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         int width = getWidth() - insets.left + insets.right;
 
         label.setBounds(insets.left, insets.top, width, height);
+        back.setBounds(insets.left, insets.top, width, height);
         progress.setBounds(insets.left, insets.top, progress.getWidth(), height);
     }
 }
