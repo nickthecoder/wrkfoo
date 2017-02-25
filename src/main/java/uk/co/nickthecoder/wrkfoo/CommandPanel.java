@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -10,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -20,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
+import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
 public class CommandPanel<R> extends JPanel
@@ -38,7 +41,9 @@ public class CommandPanel<R> extends JPanel
 
     public JTable table;
 
-    private JScrollPane scrollPane;
+    private JScrollPane tableScrollPane;
+
+    private JScrollPane parametersScrollPane;
 
     public CommandPanel(Command<R> foo)
     {
@@ -50,7 +55,25 @@ public class CommandPanel<R> extends JPanel
 
         sidePanel.setLayout(new BorderLayout());
         parametersPanel = foo.createParametersPanel();
-        sidePanel.add(parametersPanel, BorderLayout.CENTER);
+
+        ScrollablePanel scrollablePanel = new ScrollablePanel();
+        scrollablePanel.setScrollableTracksViewportWidth(true);
+        scrollablePanel.setLayout(new BoxLayout(scrollablePanel, BoxLayout.Y_AXIS));
+        scrollablePanel.add(parametersPanel);
+
+        parametersScrollPane = new JScrollPane(scrollablePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        // parametersScrollPane = new
+        // JScrollPane(parametersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        parametersScrollPane.setMinimumSize(new Dimension(0, 0));
+
+        // For some reason sharing the same color instance doesn't work. (And there is no copy, clone or copy
+        // constructor), so lets copy the long way...
+        Color srcColor = parametersPanel.getBackground();
+        Color background = new Color(srcColor.getRed(), srcColor.getGreen(), srcColor.getBlue());
+        parametersScrollPane.getViewport().setBackground(background);
+
+        sidePanel.add(parametersScrollPane, BorderLayout.CENTER);
 
         goButton = new JButton("Go");
         goButton.addActionListener(new ActionListener()
@@ -66,12 +89,13 @@ public class CommandPanel<R> extends JPanel
         table = command.getResults().createTable();
         table.setAutoCreateRowSorter(true);
 
-        scrollPane = new JScrollPane(table);
+        tableScrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
-        body.add(scrollPane, BorderLayout.CENTER);
+        body.add(tableScrollPane, BorderLayout.CENTER);
 
         splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
-
+        splitPane.setResizeWeight(1);
+        
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
@@ -85,18 +109,18 @@ public class CommandPanel<R> extends JPanel
 
     public void putAction(String keyStroke, String name, JComponent component, Action action)
     {
-        putAction(keyStroke, name, component, JComponent.WHEN_IN_FOCUSED_WINDOW, action );
+        putAction(keyStroke, name, component, JComponent.WHEN_IN_FOCUSED_WINDOW, action);
     }
-    
+
     public void putAction(String key, String name, JComponent component, int condition, Action action)
     {
         InputMap inputMap = component.getInputMap(condition);
         ActionMap actionMap = component.getActionMap();
 
         KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
-        inputMap.put( keyStroke, name);
+        inputMap.put(keyStroke, name);
         actionMap.put(name, action);
-        
+
         // Bodge! I don't want the table stealing any of MY keyboard shortcuts
         table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, name);
     }
@@ -104,7 +128,7 @@ public class CommandPanel<R> extends JPanel
     public void postCreate()
     {
         command.postCreate(this);
-        
+
         putAction("F9", "toggleSidebar", new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -130,7 +154,7 @@ public class CommandPanel<R> extends JPanel
                 command.defaultAction(row);
             }
         });
-        
+
         table.addMouseListener(new MouseAdapter()
         {
 

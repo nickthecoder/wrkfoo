@@ -4,17 +4,13 @@ Current Task
 BUGS
 ====
 
-FileLister stops when it fails to list a directory. Should continue as best as it can (BooleanParameter?)
-
 ParametersPanel is not in a scrollpane
 
 New Features
 ============
-	
-	Size as a bar chart.
-		Proportion the width of 0..1000
-		Use colours to distinguish bytes(Grey), kb(green), mb(yellow), gb(orange), tb(red) 
-	
+
+	Sort keeps the folders at the top regardless of anything else.
+
 	Add a folder button, clicking enters that directory
 		Ctrl+click to open in a new tab.
 
