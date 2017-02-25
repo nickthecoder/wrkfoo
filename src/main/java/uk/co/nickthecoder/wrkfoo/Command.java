@@ -7,13 +7,15 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
 
 public interface Command<R>
 {
+    public void postCreate( CommandPanel<R> cp );
+
+    
     public String getTitle();
+
+    public Icon getIcon();
 
     public GroupParameter getParameters();
 
-    public void go();
-    
-    public Results<R> getResults();
     
     public ParametersPanel createParametersPanel();
     
@@ -21,7 +23,10 @@ public interface Command<R>
         
     public void defaultAction( R row );
     
-    public void postCreate( CommandPanel<R> cp );
-        
-    public Icon getIcon();
+    
+    
+    public void go();
+    
+    public Results<R> getResults();
+    
 }
