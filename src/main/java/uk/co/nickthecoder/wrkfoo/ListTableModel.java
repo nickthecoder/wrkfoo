@@ -2,18 +2,15 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
-
-public class ListTableModel<R> extends AbstractTableModel
+public class ListTableModel<R> extends SimpleTableModel<R>
 {
     public List<R> list;
 
-    public Columns<R> columns;
 
     public ListTableModel(List<R> list, Columns<R> columns)
     {
+        super(columns);
         this.list = list;
-        this.columns = columns;
     }
 
     @Override
@@ -23,22 +20,10 @@ public class ListTableModel<R> extends AbstractTableModel
     }
 
     @Override
-    public int getColumnCount()
-    {
-        return columns.getColumnCount();
-    }
-
-    @Override
-    public boolean isCellEditable(int row, int col)
-    {
-        return columns.getColumn(col).editable;
-    }
-
-    @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {
-            return options[rowIndex];
+            return super.getValueAt(rowIndex, columnIndex);
         } else {
             R row = list.get(rowIndex);
             Column<R> column = columns.getColumn(columnIndex);  
@@ -46,33 +31,9 @@ public class ListTableModel<R> extends AbstractTableModel
         }
     }
 
-    @Override
-    public void setValueAt(Object value, int rowIndex, int columnIndex)
-    {
-        if (columnIndex == 0) {
-            options[rowIndex] = (String) value;
-        }
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }
-
-    @Override
-    public String getColumnName(int col)
-    {
-        return columns.getColumn(col).label;
-    }
-
-    @Override
-    public Class<?> getColumnClass(int col)
-    {
-        return columns.getColumn(col).klass;
-    }
-
-    private String[] options = new String[] {};
-
     public void update(List<R> results)
     {
         this.list = results;
-        this.options = new String[results.size()];
-        this.fireTableDataChanged();
+        update(results.size());
     }
 }

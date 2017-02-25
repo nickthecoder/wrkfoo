@@ -11,7 +11,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -71,8 +70,6 @@ public class Columns<R>
 
     public class Table extends JTable
     {
-        private boolean isTabbing = false;
-
         public Table(TableModel model)
         {
             super(model);
@@ -86,12 +83,7 @@ public class Columns<R>
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    if (!isTabbing) {
-                        isTabbing = true;
-                        tab();
-                    } else {
-                        System.out.println("blocked from tabbing");
-                    }
+                    tab();
                 }
             });
             im.put(KeyStroke.getKeyStroke("shift TAB"), "Action.untab");
@@ -100,10 +92,7 @@ public class Columns<R>
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    if (!isTabbing) {
-                        isTabbing = true;
-                        untab();
-                    }
+                    untab();
                 }
             });
         }
@@ -212,26 +201,18 @@ public class Columns<R>
                 public void run()
                 {
                     changeSelection(row, col, false, false);
-                    isTabbing = false;
                 }
             });
+            stopEditing();
+        }
+        
+        public void stopEditing()
+        {
             if (isEditing()) {
                 if (isEditing() && !getCellEditor().stopCellEditing()) {
                     getCellEditor().cancelCellEditing();
                 }
-            }
-            /*
-            if (isCellEditable(row, col)) {
-                editCellAt(row, col);
-                try {
-                    ((JTextField) editorComp).selectAll();
-                } catch (Exception e) {
-                    // May not be a JTextField, in which case, do nothing.
-                }
-                editorComp.requestFocusInWindow();
-            }
-            */
-
+            }            
         }
     }
 }

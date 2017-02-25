@@ -41,22 +41,19 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
         return pp;
 
     }
-
-    @Override
-    public CommandPanel<R> createCommandPanel()
-    {
-        commandPanel = new CommandPanel<R>(this);
-        return commandPanel;
-    }
     
     public CommandPanel<R> getCommandPanel()
     {
+        if ( commandPanel == null ) {
+            commandPanel = new CommandPanel<R>(this);
+        }
         return commandPanel;
     }
     
     @Override
     public void go()
     {
+        getCommandPanel().stopEditing();
         task.run();
     }
 

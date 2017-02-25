@@ -10,7 +10,7 @@ import javax.swing.UIManager;
 import uk.co.nickthecoder.wrkfoo.CommandPanel;
 import uk.co.nickthecoder.wrkfoo.TaskCommand;
 
-public class WrkF extends TaskCommand<WrkFTask, File>
+public class WrkFCommand extends TaskCommand<WrkFTask, File>
 {
     public static final Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
     public static final Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
@@ -29,7 +29,7 @@ public class WrkF extends TaskCommand<WrkFTask, File>
         return task;
     }
 
-    public WrkF()
+    public WrkFCommand()
     {
         super(createWrkFTask());
     }
@@ -56,13 +56,6 @@ public class WrkF extends TaskCommand<WrkFTask, File>
             getTask().directory.setValue(file);
             go();
         }
-    }
-
-    @Override
-    public CommandPanel<File> createCommandPanel()
-    {
-        CommandPanel<File> cp = super.createCommandPanel();
-        return cp;
     }
 
     @Override

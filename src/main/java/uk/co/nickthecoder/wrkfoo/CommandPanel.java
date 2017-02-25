@@ -95,7 +95,7 @@ public class CommandPanel<R> extends JPanel
 
         splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
         splitPane.setResizeWeight(1);
-        
+
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
@@ -169,6 +169,15 @@ public class CommandPanel<R> extends JPanel
         });
 
         goButton.getRootPane().setDefaultButton(goButton);
+    }
+
+    public void stopEditing()
+    {
+        if (table.isEditing()) {
+            if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+                table.getCellEditor().cancelCellEditing();
+            }
+        }
     }
 
     public void go()

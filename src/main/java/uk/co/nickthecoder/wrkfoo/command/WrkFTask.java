@@ -24,7 +24,7 @@ public class WrkFTask extends FileListerTask implements Results<File>
     public WrkFTask()
     {
         super();
-        setName( "WrkF" );
+        setName( "WrkFCommand" );
     }
 
     @Override
@@ -38,7 +38,7 @@ public class WrkFTask extends FileListerTask implements Results<File>
                 @Override
                 public Icon getValue(File row)
                 {
-                    return row.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                    return row.isDirectory() ? WrkFCommand.directoryIcon : WrkFCommand.fileIcon;
                 }
             }.width(25).lock());
             

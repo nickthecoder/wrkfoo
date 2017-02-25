@@ -27,7 +27,7 @@ public class MainWindow extends JFrame
             if (first) {
                 this.setTitle(command.getTitle());
             }
-            CommandPanel<?> commandPanel = command.createCommandPanel();
+            CommandPanel<?> commandPanel = command.getCommandPanel();
 
             JLabel label = new JLabel(command.getTitle());
             label.setIcon(command.getIcon());
