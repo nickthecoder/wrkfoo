@@ -21,6 +21,20 @@ public interface Command<R>
     
     public void attachTo( CommandTab tab );
     
+    public void detach();
+    
+    public CommandTab getCommandTab();
+    
+    public Results<R> getResults();
+    
+    public void updateResults();
+
+    public CommandTableModel<R> getTableModel();
+    
+    public SimpleTable<R> createTable();
+    
+    
+    
     public ParametersPanel createParametersPanel();
     
     public CommandPanel<R> getCommandPanel();
@@ -31,7 +45,6 @@ public interface Command<R>
     
     public void go();
     
-    public Results<R> getResults();
     
     public Options getOptions();
     

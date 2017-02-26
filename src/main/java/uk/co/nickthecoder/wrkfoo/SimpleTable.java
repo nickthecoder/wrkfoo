@@ -18,13 +18,7 @@ public class SimpleTable<R> extends JTable
 
     private Color oddRowColor = new Color(247, 247, 247);
 
-    @SuppressWarnings("unchecked")
-    public SimpleTableModel<R> getModel()
-    {
-        return (SimpleTableModel<R>) super.getModel();
-    }
-    
-    public SimpleTable(SimpleTableModel<R> model)
+    public SimpleTable(CommandTableModel<R> model)
     {
         super(model);
         
@@ -51,6 +45,12 @@ public class SimpleTable<R> extends JTable
         });
     }
 
+    @SuppressWarnings("unchecked")
+    public CommandTableModel<R> getModel()
+    {
+        return (CommandTableModel<R>) super.getModel();
+    }
+    
     @Override
     public TableCellRenderer getCellRenderer(int row, int column)
     {

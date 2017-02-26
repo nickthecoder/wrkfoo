@@ -10,25 +10,25 @@ import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
 
-public class TaskHistory
+public class History
 {
     public List<Moment> history;
 
     public int currentIndex;
 
-    public TaskHistory()
+    public History()
     {
         history = new ArrayList<Moment>();
         currentIndex = -1; // We don't have any Moment yet.
     }
 
-    public void add(Task task)
+    public void add(Command<?> command)
     {
         while (currentIndex < history.size() - 1) {
             history.remove(history.size() - 1);
         }
 
-        Moment moment = new Moment(task);
+        Moment moment = new Moment(command);
         history.add(moment);
         currentIndex ++;
     }
@@ -38,14 +38,14 @@ public class TaskHistory
         return currentIndex > 0;
     }
 
-    public Task undo()
+    public Command<?> undo()
     {
         if (currentIndex == 0) {
             throw new RuntimeException("Cannot undo");
         }
 
         currentIndex--;
-        return history.get(currentIndex).restoreTask();
+        return history.get(currentIndex).restore();
     }
 
     public boolean canRedo()
@@ -53,14 +53,14 @@ public class TaskHistory
         return currentIndex < history.size() - 1;
     }
 
-    public Task redo()
+    public Command<?> redo()
     {
         if (currentIndex > history.size() - 1) {
             throw new RuntimeException("Cannot redo");
         }
 
         currentIndex++;
-        return history.get(currentIndex).restoreTask();
+        return history.get(currentIndex).restore();
     }
 
     /**
@@ -68,15 +68,15 @@ public class TaskHistory
      */
     private final class Moment
     {
-        Task task;
+        Command<?> command;
         Map<String, Object> parameterValues;
 
-        Moment(Task task)
+        Moment(Command<?> command)
         {
-            this.task = task;
+            this.command = command;
             parameterValues = new HashMap<String, Object>();
 
-            saveParameters(task.getParameters());
+            saveParameters(command.getTask().getParameters());
         }
 
         void saveParameters(GroupParameter group)
@@ -90,8 +90,10 @@ public class TaskHistory
         }
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        public Task restoreTask()
+        public Command<?> restore()
         {
+            Task task = command.getTask();
+            
             for (String key : parameterValues.keySet()) {
                 try {
                     Parameter parameter = task.getParameters().findParameter(key);
@@ -101,7 +103,7 @@ public class TaskHistory
                     e.printStackTrace();
                 }
             }
-            return task;
+            return command;
         }
 
     }

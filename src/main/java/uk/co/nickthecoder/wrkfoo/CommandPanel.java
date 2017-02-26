@@ -81,7 +81,7 @@ public class CommandPanel<R> extends JPanel
         });
         sidePanel.add(goButton, BorderLayout.SOUTH);
 
-        table = command.getResults().createTable();
+        table = command.createTable();
         table.setAutoCreateRowSorter(true);
 
         tableScrollPane = new JScrollPane(table);

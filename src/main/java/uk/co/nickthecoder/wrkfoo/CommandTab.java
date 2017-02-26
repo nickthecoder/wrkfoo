@@ -12,7 +12,7 @@ public class CommandTab
 {
     private Command<?> command;
 
-    private TaskHistory history;
+    private History history;
 
     private JPanel panel;
 
@@ -23,7 +23,7 @@ public class CommandTab
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         attach(command);
-        history = new TaskHistory();
+        history = new History();
     }
 
     public JPanel getPanel()
@@ -33,8 +33,6 @@ public class CommandTab
 
     public void postCreate()
     {
-        System.out.println("Setting up alt LEFT");
-
         MainWindow.putAction("alt LEFT", "Action.undo", panel, new AbstractAction()
         {
             @Override
@@ -74,26 +72,35 @@ public class CommandTab
     public void go()
     {
         command.getCommandPanel().stopEditing();
-        history.add(getTask());
+        history.add(command);
         getTask().run();
     }
 
     public void undo()
     {
         if (history.canUndo()) {
-            history.undo();
-            command.getCommandPanel().stopEditing();
-            getTask().run();
+            update( history.undo() );
         }
     }
 
     public void redo()
     {
         if (history.canRedo()) {
-            history.redo();
-            command.getCommandPanel().stopEditing();
-            getTask().run();
+            update( history.redo() );
         }
     }
 
+    public void update( Command<?> command )
+    {
+        command.getCommandPanel().stopEditing();
+
+        if ( command != this.command ) {
+            this.command.detach();
+            command.attachTo(this);
+        }
+
+        command.getTask().run();
+        command.updateResults();
+
+    }
 }

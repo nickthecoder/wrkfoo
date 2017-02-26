@@ -4,17 +4,25 @@ import java.awt.Color;
 
 import javax.swing.table.AbstractTableModel;
 
-public abstract class SimpleTableModel<R> extends AbstractTableModel
+public abstract class CommandTableModel<R> extends AbstractTableModel
 {
-    private String[] options = new String[] {};
+    private Command<?> command;
+    
+    private String[] optionValues = new String[] {};
 
     public Columns<R> columns;
 
-    public SimpleTableModel(Columns<R> columns)
+    public CommandTableModel(Command<?> command, Columns<R> columns)
     {
+        this.command = command;
         this.columns = columns;
     }
 
+    public Command<?> getCommand()
+    {
+        return command;
+    }
+    
     @Override
     public int getColumnCount()
     {
@@ -31,7 +39,7 @@ public abstract class SimpleTableModel<R> extends AbstractTableModel
     public void setValueAt(Object value, int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {
-            options[rowIndex] = (String) value;
+            optionValues[rowIndex] = (String) value;
         }
         fireTableCellUpdated(rowIndex, columnIndex);
     }
@@ -40,7 +48,7 @@ public abstract class SimpleTableModel<R> extends AbstractTableModel
     public Object getValueAt(int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {
-            return options[rowIndex];
+            return optionValues[rowIndex];
         } else {
             return null;
         }
@@ -65,7 +73,7 @@ public abstract class SimpleTableModel<R> extends AbstractTableModel
     
     public void update( int rowCount )
     {
-        this.options = new String[rowCount];
+        this.optionValues = new String[rowCount];
         this.fireTableDataChanged();
     }
 }

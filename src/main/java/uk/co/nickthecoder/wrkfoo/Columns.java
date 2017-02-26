@@ -3,7 +3,6 @@ package uk.co.nickthecoder.wrkfoo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -53,9 +52,9 @@ public class Columns<R>
         return null;
     }
 
-    public JTable createTable(SimpleTableModel<R> tableModel)
+    public SimpleTable<R> createTable(CommandTableModel<R> tableModel)
     {
-        JTable table = new SimpleTable<R>(tableModel);
+        SimpleTable<R> table = new SimpleTable<R>(tableModel);
         TableColumnModel tcm = table.getColumnModel();
 
         for (int i = 0; i < getColumnCount(); i++) {

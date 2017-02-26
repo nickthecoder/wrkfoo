@@ -1,17 +1,13 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-import java.awt.Color;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.Icon;
-import javax.swing.JTable;
 
 import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Results;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
@@ -19,8 +15,6 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 public class WrkFTask extends FileListerTask implements Results<File>
 {
     private Columns<File> columns;
-
-    private ListTableModel<File> tableModel;
 
     /**
      * Amount of characters to chop off of the path column.
@@ -93,23 +87,6 @@ public class WrkFTask extends FileListerTask implements Results<File>
     {
         super.post();
         chopPath = directory.getValue().getPath().length() + 1;
-        getTableModel().update(results);
-    }
-
-    @Override
-    public ListTableModel<File> getTableModel()
-    {
-        if (tableModel == null) {
-            tableModel = new ListTableModel<File>(new ArrayList<File>(), getColumns()) {
-                @Override
-                public Color getRowBackground( int row )
-                {
-                    File file = list.get(row);
-                    return file.isFile() ? null : WrkFBaseCommand.directoryColor;
-                }
-            };
-        }
-        return tableModel;
     }
 
     @Override
@@ -119,10 +96,8 @@ public class WrkFTask extends FileListerTask implements Results<File>
     }
 
     @Override
-    public JTable createTable()
+    public void clearResults()
     {
-        JTable result = getColumns().createTable(getTableModel());
-        return result;
+        results.clear();
     }
-
 }

@@ -10,9 +10,12 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
 
     private CommandTab commandTab;
 
+    private Options options;
+    
     public TaskCommand(T task)
     {
         this.task = task;
+        this.options = new SimpleOptions();
     }
 
     @Override
@@ -41,6 +44,14 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
         this.commandTab = tab;
     }
 
+    @Override
+    public void detach()
+    {
+        this.commandTab = null;
+        this.getResults().clearResults();
+    }
+    
+    @Override
     public CommandTab getCommandTab()
     {
         return commandTab;
@@ -51,8 +62,7 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
     @Override
     public Options getOptions()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return options;
     }
 
     @Override
@@ -83,8 +93,12 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
         } else {
             task.run();
         }
+        updateResults();
     }
 
+
+    public abstract void updateResults();
+    
     public Results<R> getResults()
     {
         return task;
