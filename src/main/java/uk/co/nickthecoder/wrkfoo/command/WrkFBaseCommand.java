@@ -6,7 +6,6 @@ import java.io.File;
 import javax.swing.Icon;
 import javax.swing.UIManager;
 
-import uk.co.nickthecoder.wrkfoo.CommandPanel;
 import uk.co.nickthecoder.wrkfoo.TaskCommand;
 
 public class WrkFBaseCommand extends TaskCommand<WrkFTask, File>
@@ -46,7 +45,7 @@ public class WrkFBaseCommand extends TaskCommand<WrkFTask, File>
     }
     
     @Override
-    public void postCreate(CommandPanel<File> cp)
+    public void postCreate()
     {
     }
 

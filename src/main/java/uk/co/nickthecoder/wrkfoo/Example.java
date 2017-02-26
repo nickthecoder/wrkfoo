@@ -17,19 +17,15 @@ public class Example
 
         WrkFTreeCommand wrkFTreeSrc = new WrkFTreeCommand();
         wrkFTreeSrc.getTask().directory.setValue(new File("/home/nick/projects/wrkfoo/src"));
-        wrkFTreeSrc.go();
 
         WrkFCommand wrkFHome = new WrkFCommand();
         wrkFHome.getTask().directory.setValue(new File(System.getProperty("user.home")));
-        wrkFHome.go();
 
         WrkFCommand wrkFImages = new WrkFCommand();
         wrkFImages.getTask().directory.setValue(new File("/gidea/images"));
-        wrkFImages.go();
         
         WrkFCommand wrkFVideos= new WrkFCommand();
         wrkFVideos.getTask().directory.setValue(new File("/gidea/video/categories/TV Shows"));
-        wrkFVideos.go();
         
         
         MainWindow mainWindow = new MainWindow( wrkFTreeSrc, wrkFHome, wrkFImages, wrkFVideos );

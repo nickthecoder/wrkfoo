@@ -4,15 +4,8 @@ Current Task
 BUGS
 ====
 
-Remove "absolute" from FileLister - it makes no sense. Just pass in an absolute file to directory parameter.
-
 New Features
 ============
-
-	Rename Parameter.hide to visible, swapping all the logic
-		
-	WrkFTree
-		Display paths relative to the start directory
 	
 	When WrkFTree is written,
 		allow a panel to change from one command to another, keeping the same history.
@@ -45,12 +38,6 @@ Later Features
 
 Thoughts
 ========
-
-	Header contains task parameters
-	table shows the results
-	footer contains other data (totals etc)
-	
-	Table data can be sorted by clicking a heading - not part of the Task parameters, but done AFTERWARDS
 	
 	Each WrkFoo has a set of WrkMores, which can operate on a row of the results.
 		The WrkMore has a 2 character shortcut code, which can be typed into a text field on the left of each row

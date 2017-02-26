@@ -32,6 +32,7 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
     public static final String units[] = { "", " KB", " MB", " GB", " TB" };
 
     public static final Color colors[] = {
+        Color.white,
         new Color(255, 255, 204),
         new Color(255, 255, 136),
         new Color(255, 178, 0),
@@ -100,12 +101,9 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
                 label.setForeground(dtcr.getForeground());
             } else {
                 
-                progress.setBackground(colors[index]);
-                if (index > 0) {
-                    back.setBackground(colors[index -1]);
-                } else {
-                    back.setBackground(colors[index]);
-                }
+                progress.setBackground(colors[index+1]);
+                back.setBackground(colors[index]);
+                
                 progress.setBounds(0, 0, width, this.getHeight());
                 label.setForeground(foregrounds[index]);
             }

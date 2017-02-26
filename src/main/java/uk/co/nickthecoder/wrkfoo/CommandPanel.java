@@ -9,17 +9,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.BoxLayout;
-import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
@@ -102,34 +97,12 @@ public class CommandPanel<R> extends JPanel
         this.setBackground(Color.blue);
     }
 
-    public void putAction(String keyStroke, String name, Action action)
-    {
-        putAction(keyStroke, name, this, action);
-    }
-
-    public void putAction(String keyStroke, String name, JComponent component, Action action)
-    {
-        putAction(keyStroke, name, component, JComponent.WHEN_IN_FOCUSED_WINDOW, action);
-    }
-
-    public void putAction(String key, String name, JComponent component, int condition, Action action)
-    {
-        InputMap inputMap = component.getInputMap(condition);
-        ActionMap actionMap = component.getActionMap();
-
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
-        inputMap.put(keyStroke, name);
-        actionMap.put(name, action);
-
-        // Bodge! I don't want the table stealing any of MY keyboard shortcuts
-        table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, name);
-    }
 
     public void postCreate()
     {
-        command.postCreate(this);
+        command.postCreate();
 
-        putAction("F9", "toggleSidebar", new AbstractAction()
+        MainWindow.putAction("F9", "toggleSidebar", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -137,7 +110,7 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        putAction("F5", "refresh", new AbstractAction()
+        MainWindow.putAction("F5", "refresh", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -145,7 +118,7 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, new AbstractAction()
+        MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {

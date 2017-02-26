@@ -5,7 +5,7 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 
-import uk.co.nickthecoder.wrkfoo.CommandPanel;
+import uk.co.nickthecoder.wrkfoo.MainWindow;
 
 
 public class WrkFCommand extends WrkFBaseCommand
@@ -14,12 +14,12 @@ public class WrkFCommand extends WrkFBaseCommand
     {
         WrkFTask task = new WrkFTask();
 
-        task.sort.hide = true;
-        task.reverse.hide = true;
-        task.order.hide = true;
-        task.canonical.hide = true;
-        task.depth.hide = true;
-        task.enterHidden.hide = true;
+        task.sort.visible = false;
+        task.reverse.visible = false;
+        task.order.visible = false;
+        task.canonical.visible = false;
+        task.depth.visible = false;
+        task.enterHidden.visible = false;
 
         task.includeDirectories.setValue(true);
 
@@ -32,9 +32,9 @@ public class WrkFCommand extends WrkFBaseCommand
     }
     
     @Override
-    public void postCreate(CommandPanel<File> cp)
+    public void postCreate()
     {
-        cp.putAction("alt UP", "upDirectory", new AbstractAction()
+        MainWindow.putAction("alt UP", "upDirectory", getCommandPanel(), new AbstractAction()
         {
             @Override
             public void actionPerformed(ActionEvent e)
