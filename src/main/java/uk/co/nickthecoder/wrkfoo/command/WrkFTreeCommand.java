@@ -1,20 +1,23 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
+import uk.co.nickthecoder.jguifier.util.FileListerTask;
+
 public class WrkFTreeCommand extends WrkFBaseCommand
 {
-    public static WrkFTask createWrkFTask()
+    public static FileListerTask createTask()
     {
-        WrkFTask task = new WrkFTask();
+        FileListerTask task = new FileListerTask();
 
         task.depth.setValue(20);
 
-        task.getColumns().find("path").visible = true;
-        task.getColumns().find("name").visible = false;
         return task;
     }
 
     public WrkFTreeCommand()
     {
-        super(createWrkFTask());
+        super(createTask());
+        
+        getColumns().find("path").visible = true;
+        getColumns().find("name").visible = false;
     }
 }

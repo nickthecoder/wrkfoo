@@ -34,7 +34,7 @@ public class CommandPanel<R> extends JPanel
 
     private JButton goButton;
 
-    public JTable table;
+    public SimpleTable<R> table;
 
     private JScrollPane tableScrollPane;
 
@@ -97,7 +97,6 @@ public class CommandPanel<R> extends JPanel
         this.setBackground(Color.blue);
     }
 
-
     public void postCreate()
     {
         command.postCreate();
@@ -118,15 +117,16 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, new AbstractAction()
-        {
-            public void actionPerformed(ActionEvent e)
+        MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+            new AbstractAction()
             {
-                int r = table.convertRowIndexToModel(table.getSelectedRow());
-                R row = command.getResults().getRow(r);
-                command.defaultAction(row);
-            }
-        });
+                public void actionPerformed(ActionEvent e)
+                {
+                    int r = table.convertRowIndexToModel(table.getSelectedRow());
+                    R row = table.getModel().getRow(r);
+                    command.defaultAction(row);
+                }
+            });
 
         table.addMouseListener(new MouseAdapter()
         {
@@ -135,7 +135,7 @@ public class CommandPanel<R> extends JPanel
             {
                 if (me.getClickCount() == 2) {
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
-                    R row = command.getResults().getRow(r);
+                    R row = table.getModel().getRow(r);
                     command.defaultAction(row);
                 }
             }

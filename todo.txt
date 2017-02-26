@@ -4,6 +4,8 @@ Current Task
 BUGS
 ====
 
+Window title not updating when changing tabs.
+
 New Features
 ============
 	

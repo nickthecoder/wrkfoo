@@ -4,7 +4,7 @@ import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class TaskCommand<T extends Task & Results<R>, R> implements Command<R>
+public abstract class TaskCommand<T extends Task, R> implements Command<R>
 {
     public T task;
 
@@ -48,7 +48,7 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
     public void detach()
     {
         this.commandTab = null;
-        this.getResults().clearResults();
+        this.clearResults();
     }
     
     @Override
@@ -99,8 +99,4 @@ public abstract class TaskCommand<T extends Task & Results<R>, R> implements Com
 
     public abstract void updateResults();
     
-    public Results<R> getResults()
-    {
-        return task;
-    }
 }

@@ -20,6 +20,12 @@ public class ListTableModel<R> extends CommandTableModel<R>
     }
 
     @Override
+    public R getRow(int row)
+    {
+        return list.get(row);
+    }
+    
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {

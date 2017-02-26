@@ -18,6 +18,8 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
         this.columns = columns;
     }
 
+    public abstract R getRow(int row);
+    
     public Command<?> getCommand()
     {
         return command;
