@@ -37,12 +37,18 @@ public class ToggleSplitPane extends JSplitPane
         if (hidden) {
             loc = getDividerLocation();
             setDividerSize(0);
-            hider().setVisible(false);
-            other().requestFocusInWindow();
+            if (hider() != null) {
+                hider().setVisible(false);
+            }
+            if (other() != null) {
+                other().requestFocusInWindow();
+            }
             KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
         } else {
-            hider().setVisible(true);
-            hider().requestFocusInWindow();
+            if (hider() != null) {
+                hider().setVisible(true);
+                hider().requestFocusInWindow();
+            }
             KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
             setDividerLocation(loc);
             setDividerSize((Integer) UIManager.get("SplitPane.dividerSize"));

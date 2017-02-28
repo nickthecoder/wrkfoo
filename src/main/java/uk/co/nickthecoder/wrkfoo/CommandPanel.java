@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -94,9 +95,9 @@ public class CommandPanel<R> extends JPanel
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
-        System.out.println( "Params = " + this.command.getTask().getParameters().getChildren().size() );
         if (this.command.getTask().getParameters().getChildren().size() == 0) {
             splitPane.toggle(false);
+            sidePanel.add( new JLabel( "No Parameters" ), BorderLayout.NORTH );
         }
         
         this.setBackground(Color.blue);        

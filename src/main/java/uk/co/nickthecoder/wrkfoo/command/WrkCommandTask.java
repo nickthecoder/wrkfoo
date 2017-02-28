@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,14 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
     {
         results = new ArrayList<Command<?>>();
         
-        results.add( new WrkF() );
-        results.add( new WrkFTree() );
+        WrkF wrkFHome = new WrkF();
+        wrkFHome.getTask().directory.setValue( new File( System.getProperty("user.home") ) );
+        results.add( wrkFHome );
+        
+        WrkFTree wrkFTreeHome = new WrkFTree();
+        wrkFTreeHome.getTask().directory.setValue( new File( System.getProperty("user.home") ) );
+        wrkFTreeHome.getTask().depth.setValue( 2 );
+        results.add( wrkFTreeHome );
     }
 
     @Override

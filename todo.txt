@@ -10,7 +10,6 @@ PatternParameters default to regex - should it be regex? Especially for FileList
 Slow creating new tab and then wrkf
 
 Commands without parameters
-	hide the side panel
 	if it is shown, add a "No parameters" label.
 
 New Features
