@@ -28,7 +28,7 @@ public class CommandTab
     
     public String getTitle()
     {
-        return command.getTitle();
+        return command.getShortTitle();
     }
 
     public JPanel getPanel()
@@ -122,7 +122,7 @@ public class CommandTab
         }
 
         if ( tabbedPane != null ) {
-            tabbedPane.setTabInfo( this, getCommand().getTitle(), getCommand().getIcon() );
+            tabbedPane.updateTabInfo( this );
         }
         
         this.panel.repaint();

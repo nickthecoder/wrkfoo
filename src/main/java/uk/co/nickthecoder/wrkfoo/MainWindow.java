@@ -47,7 +47,7 @@ public class MainWindow extends JFrame
         for (Command<?> command : commands) {
 
             if (first) {
-                this.setTitle(command.getTitle());
+                this.setTitle(command.getShortTitle());
             }
 
             addTab(command);

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.wrkfoo.command.NullCommand;
 
@@ -32,7 +34,7 @@ public class CommandTabbedPane extends JTabbedPane
     {
         commandTabs.add( tab );
         tab.tabbedPane = this;
-        JLabel label = new JLabel(tab.getCommand().getTitle());
+        JLabel label = new JLabel(tab.getCommand().getShortTitle());
         label.setIcon(tab.getCommand().getIcon());
         label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
 
@@ -41,11 +43,19 @@ public class CommandTabbedPane extends JTabbedPane
 
     }
 
-    public void setTabInfo(CommandTab tab, String title, Icon icon)
+    public void updateTabInfo(CommandTab tab)
     {
-        JLabel label = (JLabel) getTabComponentAt(commandTabs.indexOf(tab));
+        String title = tab.getCommand().getShortTitle();
+        Icon icon = tab.getCommand().getIcon();
+        String longTitle = tab.getCommand().getLongTitle();
+        
+        int index = commandTabs.indexOf(tab);
+        JLabel label = (JLabel) getTabComponentAt(index);
         label.setText(title);
         label.setIcon(icon);
+        if ( getSelectedIndex() == index ) {
+            ((JFrame) SwingUtilities.getRoot( this )).setTitle( longTitle );
+        }
     }
 
     public CommandTab getSelectedCommandTab()

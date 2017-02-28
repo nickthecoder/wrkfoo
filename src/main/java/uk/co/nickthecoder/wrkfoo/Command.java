@@ -26,7 +26,11 @@ public interface Command<R>
 
     public String getName();
 
+    public String getShortTitle();
+
     public String getTitle();
+    
+    public String getLongTitle();
 
     public Icon getIcon();
 

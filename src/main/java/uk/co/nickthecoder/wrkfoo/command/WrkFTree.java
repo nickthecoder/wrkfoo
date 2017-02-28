@@ -18,4 +18,11 @@ public class WrkFTree extends WrkFBaseCommand
         getColumns().find("path").visible = true;
         getColumns().find("name").visible = false;
     }
+    
+
+    @Override
+    public String getLongTitle()
+    {
+        return "WrkFTree " + getTitle();
+    }
 }

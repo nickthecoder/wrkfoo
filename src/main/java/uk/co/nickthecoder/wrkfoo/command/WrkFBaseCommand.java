@@ -52,6 +52,8 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         return directoryIcon;
     }
 
+    
+    @Override
     public String getTitle()
     {
         try {
@@ -59,6 +61,24 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         } catch (Exception e) {
             return super.getTitle();
         }
+    }
+    
+    @Override
+    public String getShortTitle()
+    {
+        String longTitle = getTitle();
+
+        String shortTitle = longTitle;
+        while ( shortTitle.length() > 20 ) {
+            int slash = shortTitle.indexOf( File.separator );
+            if (slash >= 0) {
+                shortTitle = shortTitle.substring(slash + 1);
+            } else {
+                break;
+            }
+        }
+
+        return shortTitle;
     }
 
     @Override

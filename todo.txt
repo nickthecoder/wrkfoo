@@ -7,11 +7,6 @@ BUGS
 
 PatternParameters default to regex - should it be regex? Especially for FileListerTask?
 
-Slow creating new tab and then wrkf
-
-Commands without parameters
-	if it is shown, add a "No parameters" label.
-
 New Features
 ============
 

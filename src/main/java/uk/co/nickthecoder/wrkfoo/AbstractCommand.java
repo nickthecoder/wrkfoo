@@ -35,16 +35,29 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     }
 
     @Override
+    public String getTitle()
+    {
+        return task.getName();
+    }
+    
+    @Override
+    public String getShortTitle()
+    {
+        return getTitle();
+    }
+    
+    @Override
+    public String getLongTitle()
+    {
+        return getTitle();
+    }
+    
+    @Override
     public String getName()
     {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public String getTitle()
-    {
-        return task.getName();
-    }
 
     @Override
     public Icon getIcon()

@@ -31,6 +31,12 @@ public class WrkF extends WrkFBaseCommand
     {
         super(createTask());
     }
+
+    @Override
+    public String getLongTitle()
+    {
+        return "WrkF " + getTitle();
+    }
     
     @Override
     public void postCreate()
