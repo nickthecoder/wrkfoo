@@ -6,7 +6,7 @@ import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class TaskCommand<T extends Task, R> implements Command<R>
+public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 {
     protected Columns<R> columns;
     
@@ -16,7 +16,7 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
 
     private Options options;
     
-    public TaskCommand(T task)
+    public AbstractCommand(T task)
     {
         this.task = task;
         this.options = new SimpleOptions();
@@ -89,6 +89,8 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
     {
         this.commandTab = null;
         this.clearResults();
+        this.commandPanel = null;
+        this.columns = null;
     }
     
     @Override
@@ -133,7 +135,7 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
         if ( commandTab != null) {
             commandTab.go( this );
         } else {
-            System.out.println( "Not attached to a TaskCommand" );
+            System.out.println( "Not attached to a AbstractCommand" );
             task.run();
         }
         updateResults();

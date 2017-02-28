@@ -9,8 +9,6 @@ PatternParameters default to regex - should it be regex? Especially for FileList
 
 Slow creating new tab and then wrkf
 
-History of commands keep their gui components. should they?
-
 Commands without parameters
 	hide the side panel
 	if it is shown, add a "No parameters" label.
@@ -19,9 +17,17 @@ New Features
 ============
 
 	Use the options to run other commands
+
+		Reference data from the table using ${row.columnName}.
+		Reference task parameters using ${parameter.parameterName}.
+
+		Can tell which are options for a row by ( ${row.xxx} ).
+
+		Format of the  options file :
+			opt label commandName parameters
 	
-	Save options in a file
-		opt label commandName parameters
+		WrkCommandOptions - shows a list of the options files used by the given command
+		WrkOptions - shows the options in the options file
 
 	reorder tabs http://www.jroller.com/pago/entry/make_tabs_in_jtabbedpane_reorderable
 

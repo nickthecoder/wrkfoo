@@ -51,7 +51,7 @@ public class ToggleSplitPane extends JSplitPane
 
     public void toggle(boolean show)
     {
-        if (show != hidden) {
+        if (show == hidden) {
             toggle();
         }
     }

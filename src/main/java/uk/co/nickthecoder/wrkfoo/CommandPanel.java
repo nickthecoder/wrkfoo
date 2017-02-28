@@ -94,6 +94,11 @@ public class CommandPanel<R> extends JPanel
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
+        System.out.println( "Params = " + this.command.getTask().getParameters().getChildren().size() );
+        if (this.command.getTask().getParameters().getChildren().size() == 0) {
+            splitPane.toggle(false);
+        }
+        
         this.setBackground(Color.blue);        
     }
 
