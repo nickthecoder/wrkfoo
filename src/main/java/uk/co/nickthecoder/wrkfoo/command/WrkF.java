@@ -5,15 +5,15 @@ import java.io.File;
 
 import javax.swing.AbstractAction;
 
-import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 
 
-public class WrkFCommand extends WrkFBaseCommand
+
+public class WrkF extends WrkFBaseCommand
 {
-    public static FileListerTask createTask()
+    public static WrkFTask createTask()
     {
-        FileListerTask task = new FileListerTask();
+        WrkFTask task = new WrkFTask();
 
         task.sort.visible = false;
         task.reverse.visible = false;
@@ -27,7 +27,7 @@ public class WrkFCommand extends WrkFBaseCommand
         return task;
     }
 
-    public WrkFCommand()
+    public WrkF()
     {
         super(createTask());
     }
@@ -35,6 +35,8 @@ public class WrkFCommand extends WrkFBaseCommand
     @Override
     public void postCreate()
     {
+        super.postCreate();
+        
         MainWindow.putAction("alt UP", "upDirectory", getCommandPanel(), new AbstractAction()
         {
             @Override

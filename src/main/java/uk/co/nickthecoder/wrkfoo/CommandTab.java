@@ -18,12 +18,15 @@ public class CommandTab
 
     public CommandTab(Command<?> command)
     {
-        this.command = command;
-
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        attach(command);
         history = new History();
+        attach(command);
+    }
+
+    public String getTitle()
+    {
+        return command.getTitle();
     }
 
     public JPanel getPanel()
@@ -52,8 +55,13 @@ public class CommandTab
         });
     }
 
-    public final void attach(Command<?> command)
+    private final void attach(Command<?> command)
     {
+        if ( this.command != null ) {
+            this.command.detach();
+        }
+        
+        this.command = command;
         command.attachTo(this);
         panel.removeAll();
         panel.add(command.getCommandPanel());
@@ -69,38 +77,50 @@ public class CommandTab
         return command.getTask();
     }
 
-    public void go()
-    {
-        command.getCommandPanel().stopEditing();
-        history.add(command);
-        getTask().run();
-    }
-
     public void undo()
     {
         if (history.canUndo()) {
-            update( history.undo() );
+            go( history.undo(), false );
         }
     }
 
     public void redo()
     {
         if (history.canRedo()) {
-            update( history.redo() );
+            go( history.redo(), false );
         }
     }
 
-    public void update( Command<?> command )
+    
+    public void go( Command<?> newCommand )
     {
-        command.getCommandPanel().stopEditing();
-
-        if ( command != this.command ) {
-            this.command.detach();
-            command.attachTo(this);
+        go( newCommand, true );
+    }
+    
+    private void go( Command<?> newCommand, boolean updateHistory )
+    {
+        if (this.command != null) {
+            this.command.getCommandPanel().stopEditing();
         }
 
-        command.getTask().run();
-        command.updateResults();
+        if ( newCommand != this.command ) {
+            attach(newCommand);
+        }
 
+        command.getCommandPanel().stopEditing();
+        if (getTask().checkParameters()) {
+            
+            if (updateHistory) {
+                history.add(command);
+            }
+            
+            getTask().run();
+            newCommand.updateResults();
+        } else {
+            // TODO rmeove print
+            System.out.println( "Check failed" );
+        }
+
+        this.panel.repaint();
     }
 }

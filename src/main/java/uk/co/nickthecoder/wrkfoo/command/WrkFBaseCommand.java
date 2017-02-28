@@ -8,35 +8,28 @@ import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.UIManager;
 
-import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Option;
 import uk.co.nickthecoder.wrkfoo.Options;
-import uk.co.nickthecoder.wrkfoo.SimpleTable;
-import uk.co.nickthecoder.wrkfoo.TaskCommand;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBaseCommand extends TaskCommand<FileListerTask, File>
+public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
     public static final Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
     public static final Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
 
-    private Columns<File> columns;
-
-    private ListTableModel<File> tableModel;
-
     /**
      * Amount of characters to chop off of the path column.
      */
     private int chopPath = 0;
 
-    public WrkFBaseCommand(FileListerTask task)
+    public WrkFBaseCommand(WrkFTask task)
     {
         super(task);
     }
@@ -86,104 +79,90 @@ public class WrkFBaseCommand extends TaskCommand<FileListerTask, File>
             @Override
             public void runOption(Command<?> command, Object row)
             {
-                WrkFCommand wrkF = new WrkFCommand();
+                WrkF wrkF = new WrkF();
                 wrkF.getTask().directory.setValue((File) row);
-                getCommandTab().update( wrkF );
-           }
+                getCommandTab().go(wrkF);
+            }
 
         });
 
     }
 
-
-    @Override
-    public ListTableModel<File> getTableModel()
+    
+    protected ListTableModel<File> createTableModel()
     {
-        if (tableModel == null) {
-            tableModel = new ListTableModel<File>(this, new ArrayList<File>(), getColumns()) {
-                @Override
-                public Color getRowBackground( int row )
-                {
-                    File file = list.get(row);
-                    return file.isFile() ? null : WrkFBaseCommand.directoryColor;
-                }
-            };
-        }
+        ListTableModel<File> tableModel = new ListTableModel<File>(this, new ArrayList<File>(), getColumns())
+        {
+            @Override
+            public Color getRowBackground(int row)
+            {
+                File file = list.get(row);
+                return file.isFile() ? null : WrkFBaseCommand.directoryColor;
+            }
+        };
+
         return tableModel;
     }
 
     @Override
-    public SimpleTable<File> createTable()
+    public Columns<File> createColumns()
     {
-        SimpleTable<File> result = getColumns().createTable(getTableModel());
-        return result;
-    }
+        Columns<File> columns = new Columns<File>();
 
+        columns = new Columns<File>();
 
-    @Override
-    public Columns<File> getColumns()
-    {
-        if (columns == null) {
-            columns = new Columns<File>();
-
-            columns.add(new Column<File>(Icon.class, "")
+        columns.add(new Column<File>(Icon.class, "")
+        {
+            @Override
+            public Icon getValue(File row)
             {
-                @Override
-                public Icon getValue(File row)
-                {
-                    return row.isDirectory() ? WrkFCommand.directoryIcon : WrkFCommand.fileIcon;
-                }
-            }.width(25).lock());
+                return row.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+            }
+        }.width(25).lock());
 
-            columns.add(new Column<File>(String.class, "path")
+        columns.add(new Column<File>(String.class, "path")
+        {
+            @Override
+            public String getValue(File row)
             {
-                @Override
-                public String getValue(File row)
-                {
-                    return row.getPath().substring(chopPath);
-                }
-            }.hide().width(500));
+                return row.getPath().substring(chopPath);
+            }
+        }.hide().width(500));
 
-            columns.add(new Column<File>(String.class, "name")
+        columns.add(new Column<File>(String.class, "name")
+        {
+            @Override
+            public String getValue(File row)
             {
-                @Override
-                public String getValue(File row)
-                {
-                    return row.getName();
-                }
-            }.width(300));
+                return row.getName();
+            }
+        }.width(300));
 
-            columns.add(new Column<File>(Date.class, "lastModified")
+        columns.add(new Column<File>(Date.class, "lastModified")
+        {
+            @Override
+            public Date getValue(File row)
             {
-                @Override
-                public Date getValue(File row)
-                {
-                    return new Date(row.lastModified());
-                }
-            }.width(120).lock().renderer(DateRenderer.instance));
+                return new Date(row.lastModified());
+            }
+        }.width(120).lock().renderer(DateRenderer.instance));
 
-            columns.add(new Column<File>(Long.class, "size")
+        columns.add(new Column<File>(Long.class, "size")
+        {
+            @Override
+            public Long getValue(File row)
             {
-                @Override
-                public Long getValue(File row)
-                {
-                    return row.length();
-                }
-            }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
+                return row.length();
+            }
+        }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 
-        }
         return columns;
     }
 
     public void updateResults()
     {
         chopPath = getTask().directory.getValue().getPath().length() + 1;
-        getTableModel().update(getTask().results);
-    }
-
-    public void clearResults()
-    {
-        getTask().results.clear();
+        super.updateResults();
     }
 
 }

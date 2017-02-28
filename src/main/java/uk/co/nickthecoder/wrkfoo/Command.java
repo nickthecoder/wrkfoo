@@ -21,8 +21,10 @@ import uk.co.nickthecoder.jguifier.Task;
 public interface Command<R>
 {
     public void postCreate();
-
+    
     public Task getTask();
+
+    public String getName();
 
     public String getTitle();
 

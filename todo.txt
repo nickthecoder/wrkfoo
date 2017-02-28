@@ -1,103 +1,74 @@
 Current Task
 ============
 
+Use the options to run other commands
+
 BUGS
 ====
 
-Window title not updating when changing tabs.
+History doesn't work for new tabs, because history only works if the command is run??
+	Doesn't go back to WrkCommand
+
+
+PatternParameters default to regex - should it be regex? Especially for FileListerTask?
+
 
 New Features
 ============
-	
-	When WrkFTree is written,
-		allow a panel to change from one command to another, keeping the same history.
-		Create a CommandProxy, which can change its Command.
-		The proxy has the history.
-		The history will have to include the Command, and its parameters, not the Task.
 
-	Use the options to run other commands
+	Save options in a file
+		opt label commandName parameters
 
-	glob filter of filenames
-	regex filter of filenames
-	
-	Hide canonical
-	
+	reorder tabs http://www.jroller.com/pago/entry/make_tabs_in_jtabbedpane_reorderable
+
+	Buttons in a toolbar :
+		Save tab set : 
+		Duplicate : Copies the current command to a new tab.
+		Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
+			Option to place the command parameters in the first line?
+			Option for column names in the first row.
+			Copy to clipboard for pasting into a spreadsheet.
+		Filter : Filters table results, without help from the Command.
+
+
+	Shortcuts for parameters. e.g. ctrl+d to change directory, ctrl+g to filter files.
+
 	Sort keeps the folders at the top regardless of anything else.
 
 	Ctrl+click to open a folder in a new tab.
-	
-			
+	Ctrl+enter to open command in a new tab
 
-	
+
 Later Features
 ==============
 
-	tooltips for columns
-	Render dates using cleverness - Show TIME when it was changed in the last 24 hours.
-		Need a custom renderer
+	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
-	Filtering. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
+	Tree structures as well as tables
+		A tree structure in the left pane, and the table in the middle
+		e.g. a Tree with Databases as the top level, then tables.
+			Inside tables, there's an item called "data", which calls WrkTable
 
-Thoughts
-========
-	
-	Each WrkFoo has a set of WrkMores, which can operate on a row of the results.
-		The WrkMore has a 2 character shortcut code, which can be typed into a text field on the left of each row
-		Or double click to run the default WrkMore
-		Or right click a row for a menu of each WrkMore, with a nice label (and shortcut reminder)
-		
-		Shortcut "o" opens the file in the default application (which will be the default WrkMore)
-		Shortcut "e" on a file opens it in a text editor
+New Commands
+============
 
-		Also have a list of WrkMores which apply to the current WrkFoo, rather than one of its results
-			Maybe have a TextField in the header to type these (but can also be typed into any row for the same effect)?
-		Also have a list of top-level WrkMores, which do not relate to the current WrkFoo
-			
-	
-	Object oriented - a bit like Windows power shell?
-	Common result objects :
-		File (wrkf)
-		Database table (wrkdb)
-		Database row (wrktable)
-		crontab entry (wrkcron)
-		Myth recording (wrkmyth)
-		TV Series (wrktv)
-		TV Episode (wrktve)
-		git status (wrkgits)
-		other git stuff (branches, commits etc)
-		Pinkwino (will need a REST API)
-			Pinkwino instance (so I can list all of my wikis) (wrkpw)
-			namespace (wrkpwn)
-			wiki Page (List Namespace, List Links, List Related Pages etc) (wrkpwp)
-			Version (wrkpwv)
-		To-do (from FDroid) - forgotten the name of the utility
-			groups
-			tasks
-		To-do text files (one file for each project, using symlinks in a single directory, or just a List of files) (wrktodo)
+	Database table (wrkdb)
+	Database row (wrktable)
+	crontab entry (wrkcron)
+	Myth recording (wrkmyth)
+	TV Series (wrktv)
+	TV Episode (wrktve)
+	git status (wrkgits)
+	other git stuff (branches, commits etc)
+	Pinkwino (will need a REST API)
+		Pinkwino instance (so I can list all of my wikis) (wrkpw)
+		namespace (wrkpwn)
+		wiki Page (List Namespace, List Links, List Related Pages etc) (wrkpwp)
+		Version (wrkpwv)
+	To-do (from FDroid) - forgotten the name of the utility
+		groups
+		tasks
+	To-do text files (one file for each project, using symlinks in a single directory, or just a List of files) (wrktodo)
 
-	Persist meta-data such as
-		"next episode to watch"
-		current git branch?
-
-
-	Advanced features (coded later)
-        Multiple selections WrkMores
-            e.g. select a set of files, and then :
-                choose the "zip" tool to put them in a zip file.
-                choose delete to delete them all
-                concatenate all files into a single file
-                etc
-
-		One window, with multiple tabs, each containing a different result set
-			Peal off tabs to make a new top-level window.
-			Middle click to create a new tab, left click to replace the current tab with a new GUITask
-			Back/Forward button to return to the previous GUITask 
-			Each tab gets it name from the WrkFoo command name (such as WrkF), but can be overridden with arbitrary text
-
-		Results are a TREE structure, rather than just a list, e.g. allowing for TV Episodes grouped into series
-
-		An ncurses version, (good for ssh into remote servers)
-			https://github.com/mabe02/lanterna
-			https://sourceforge.net/projects/javacurses/
 
 

@@ -1,11 +1,15 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import javax.swing.Icon;
+
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 
 public abstract class TaskCommand<T extends Task, R> implements Command<R>
 {
+    protected Columns<R> columns;
+    
     public T task;
 
     private CommandTab commandTab;
@@ -19,9 +23,21 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
     }
 
     @Override
+    public void postCreate()
+    {
+        // Do nothing
+    }
+    
+    @Override
     public T getTask()
     {
         return task;
+    }
+
+    @Override
+    public String getName()
+    {
+        return this.getClass().getSimpleName();
     }
 
     @Override
@@ -31,11 +47,35 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
     }
 
     @Override
+    public Icon getIcon()
+    {
+        return null;
+    }
+
+    @Override
     public GroupParameter getParameters()
     {
         return task.getParameters();
     }
+    
+    public Columns<R> getColumns()
+    {
+        if (columns == null) {
+            columns = createColumns();
+        }
+        return columns;
+    }
+    
+    protected abstract Columns<R> createColumns();
 
+
+    @Override
+    public SimpleTable<R> createTable()
+    {
+        SimpleTable<R> result = getColumns().createTable(getTableModel());
+        return result;
+    }
+    
     @Override
     public void attachTo(CommandTab tab)
     {
@@ -78,7 +118,9 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
     {
         if (commandPanel == null) {
             commandPanel = new CommandPanel<R>(this);
+            commandPanel.postCreate();
         }
+        
         return commandPanel;
     }
 
@@ -89,14 +131,19 @@ public abstract class TaskCommand<T extends Task, R> implements Command<R>
     public void go()
     {
         if ( commandTab != null) {
-            commandTab.go();
+            commandTab.go( this );
         } else {
+            System.out.println( "Not attached to a TaskCommand" );
             task.run();
         }
         updateResults();
     }
-
-
+    
     public abstract void updateResults();
     
+    @Override
+    public void defaultAction(R row)
+    {
+        // Do nothing
+    }
 }

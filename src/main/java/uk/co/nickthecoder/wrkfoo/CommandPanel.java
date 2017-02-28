@@ -94,13 +94,23 @@ public class CommandPanel<R> extends JPanel
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
-        this.setBackground(Color.blue);
+        this.setBackground(Color.blue);        
     }
 
+    public ParametersPanel getParametersPanel()
+    {
+        return parametersPanel;
+    }
+    
+    public JButton getGoButton()
+    {
+        return goButton;
+    }
+    
     public void postCreate()
     {
         command.postCreate();
-
+        
         MainWindow.putAction("F9", "toggleSidebar", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -130,10 +140,10 @@ public class CommandPanel<R> extends JPanel
 
         table.addMouseListener(new MouseAdapter()
         {
-
             public void mouseClicked(MouseEvent me)
             {
                 if (me.getClickCount() == 2) {
+                    me.consume();
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
                     R row = table.getModel().getRow(r);
                     command.defaultAction(row);
@@ -141,7 +151,6 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        goButton.getRootPane().setDefaultButton(goButton);
     }
 
     public void stopEditing()

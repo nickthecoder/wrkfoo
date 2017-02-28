@@ -1,19 +1,17 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-import uk.co.nickthecoder.jguifier.util.FileListerTask;
-
-public class WrkFTreeCommand extends WrkFBaseCommand
+public class WrkFTree extends WrkFBaseCommand
 {
-    public static FileListerTask createTask()
+    public static WrkFTask createTask()
     {
-        FileListerTask task = new FileListerTask();
+        WrkFTask task = new WrkFTask();
 
         task.depth.setValue(20);
 
         return task;
     }
 
-    public WrkFTreeCommand()
+    public WrkFTree()
     {
         super(createTask());
         

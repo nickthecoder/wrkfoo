@@ -3,28 +3,28 @@ package uk.co.nickthecoder.wrkfoo;
 import java.io.File;
 
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.command.WrkFCommand;
-import uk.co.nickthecoder.wrkfoo.command.WrkFTreeCommand;
+import uk.co.nickthecoder.wrkfoo.command.WrkF;
+import uk.co.nickthecoder.wrkfoo.command.WrkFTree;
 
 public class Example
 {
 
     public static void main( String[] argv )
     {
-        System.out.println( "WrkFCommand Example" );
+        System.out.println( "WrkF Example" );
 
         Util.defaultLookAndFeel();
 
-        WrkFTreeCommand wrkFTreeSrc = new WrkFTreeCommand();
+        WrkFTree wrkFTreeSrc = new WrkFTree();
         wrkFTreeSrc.getTask().directory.setValue(new File("/home/nick/projects/wrkfoo/src"));
 
-        WrkFCommand wrkFHome = new WrkFCommand();
+        WrkF wrkFHome = new WrkF();
         wrkFHome.getTask().directory.setValue(new File(System.getProperty("user.home")));
 
-        WrkFCommand wrkFImages = new WrkFCommand();
+        WrkF wrkFImages = new WrkF();
         wrkFImages.getTask().directory.setValue(new File("/gidea/images"));
         
-        WrkFCommand wrkFVideos= new WrkFCommand();
+        WrkF wrkFVideos= new WrkF();
         wrkFVideos.getTask().directory.setValue(new File("/gidea/video/categories/TV Shows"));
         
         
