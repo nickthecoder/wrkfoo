@@ -1,41 +1,30 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
-import uk.co.nickthecoder.wrkfoo.command.NullCommand;
 import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
 import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
 public class MainWindow extends JFrame
 {
-    private static final CommandTab DUMMY_COMMAND_TAB = new CommandTab(new NullCommand());
-
-    private List<CommandTab> commandTabs;
-
-    private JTabbedPane tabbedPane;
+    private CommandTabbedPane tabbedPane;
 
     private JToolBar toolbar;
 
     public MainWindow(Command<?>... commands)
     {
-        commandTabs = new ArrayList<CommandTab>();
-
-        tabbedPane = new JTabbedPane();
+        tabbedPane = new CommandTabbedPane();
         tabbedPane.addChangeListener(new ChangeListener()
         {
             @Override
@@ -70,35 +59,27 @@ public class MainWindow extends JFrame
 
     public CommandTab getCurrentTab()
     {
-        if (commandTabs.size() == 0) {
-            return DUMMY_COMMAND_TAB;
-        }
-        return commandTabs.get(tabbedPane.getSelectedIndex());
+        return tabbedPane.getCurrentTab();
     }
 
     private void fillToolbar()
     {
-        ButtonBuilder builder = new ButtonBuilder(this);
+        ButtonBuilder builder = new ButtonBuilder(this).component(this.rootPane);
 
-        toolbar.add(builder.name("home").tooltip("Show all commands").build());
-        toolbar.add(builder.name("newTab").tooltip("Open a new Ta").build());
-        toolbar.add(builder.name("newWindow").tooltip("Open a new Window").build());
-        toolbar.add(builder.name("back").tooltip("Go back to the previous command").build());
-        toolbar.add(builder.name("forward").tooltip("Go forward to the next command").build());
+        toolbar.add(builder.name("home").tooltip("Home : Show all commands").shortcut("ctrl HOME").build());
+        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").build());
+        toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").build());
+        toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
+        toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
+            .build());
     }
 
     private void addTab(Command<?> command)
     {
         CommandTab tab = new CommandTab(command);
-        commandTabs.add(tab);
 
-        JLabel label = new JLabel(command.getTitle());
-        label.setIcon(command.getIcon());
-        label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
-
-        tabbedPane.addTab(null, tab.getPanel());
-        tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
-
+        tabbedPane.add( tab );
+        
         tab.postCreate();
         tab.go(command);
     }
@@ -134,11 +115,12 @@ public class MainWindow extends JFrame
 
     private void tabChanged()
     {
-        int i = tabbedPane.getSelectedIndex();
-        if (i < 0) {
+        CommandTab tab = tabbedPane.getSelectedCommandTab();
+        
+        if ( tab == null) {
             setTitle("WrkFoo");
+            
         } else {
-            CommandTab tab = commandTabs.get(i);
 
             setTitle(tab.getTitle());
 

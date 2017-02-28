@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import uk.co.nickthecoder.jguifier.Task;
 
 public class CommandTab
-{
+{    
+    CommandTabbedPane tabbedPane;
+    
     private Command<?> command;
 
     private History history;
@@ -23,7 +25,7 @@ public class CommandTab
         history = new History();
         attach(command);
     }
-
+    
     public String getTitle()
     {
         return command.getTitle();
@@ -105,6 +107,7 @@ public class CommandTab
 
         if ( newCommand != this.command ) {
             attach(newCommand);
+            // setIcon( newCommand.getIcon() );
         }
 
         command.getCommandPanel().stopEditing();
@@ -116,11 +119,12 @@ public class CommandTab
             
             getTask().run();
             newCommand.updateResults();
-        } else {
-            // TODO rmeove print
-            System.out.println( "Check failed" );
         }
 
+        if ( tabbedPane != null ) {
+            tabbedPane.setTabInfo( this, getCommand().getTitle(), getCommand().getIcon() );
+        }
+        
         this.panel.repaint();
     }
 }

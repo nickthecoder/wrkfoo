@@ -5,13 +5,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
+import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Option;
 import uk.co.nickthecoder.wrkfoo.Options;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -21,9 +24,18 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
-    public static final Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
-    public static final Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
+    public static Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
+    public static Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
 
+    {
+        try {
+            directoryIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("folder.png")) );
+            fileIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("file.png")) );
+        } catch (Exception e) {
+            // Do nothing - stick with the default icons
+        }
+    }
+    
     /**
      * Amount of characters to chop off of the path column.
      */

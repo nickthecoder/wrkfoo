@@ -2,13 +2,19 @@ package uk.co.nickthecoder.wrkfoo.util;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 public class ButtonBuilder
 {
@@ -16,11 +22,15 @@ public class ButtonBuilder
 
     private Class<?> resourceClass;
 
+    private JComponent component;
+
     private String label;
 
     private Icon icon;
 
     private String tooltip;
+
+    private String shortcut;
 
     private Method method;
 
@@ -28,6 +38,24 @@ public class ButtonBuilder
     {
         this.receiver = receiver;
         this.resourceClass = receiver.getClass();
+
+        if (receiver instanceof JFrame) {
+            component((JFrame) receiver);
+        } else if (receiver instanceof JComponent) {
+            component((JComponent) receiver);
+        }
+    }
+
+    public ButtonBuilder component(JFrame frame)
+    {
+        this.component = frame.getRootPane();
+        return this;
+    }
+
+    public ButtonBuilder component(JComponent component)
+    {
+        this.component = component;
+        return this;
     }
 
     public ButtonBuilder label(String label)
@@ -61,6 +89,12 @@ public class ButtonBuilder
         return this;
     }
 
+    public ButtonBuilder shortcut(String shortcut)
+    {
+        this.shortcut = shortcut;
+        return this;
+    }
+
     private static final Class<?>[] EMPTY_SIGNATURE = {};
     private static final Object[] EMPTY_VALUES = {};
 
@@ -84,9 +118,9 @@ public class ButtonBuilder
      */
     public ButtonBuilder name(String name)
     {
-        icon( name + ".png" );
-        action( "on" + name.substring(0, 1).toUpperCase() + name.substring(1));
-        
+        icon(name + ".png");
+        action("on" + name.substring(0, 1).toUpperCase() + name.substring(1));
+
         return this;
     }
 
@@ -98,12 +132,17 @@ public class ButtonBuilder
             result.setText(label);
         if (icon != null)
             result.setIcon(icon);
-        if (tooltip != null)
-            result.setToolTipText(tooltip);
+        if (tooltip != null) {
+            if (shortcut == null) {
+                result.setToolTipText(tooltip);
+            } else {
+                result.setToolTipText(tooltip + "(" + shortcut + ")");
+            }
+        }
 
         if (method != null) {
             final Method theMethod = this.method;
-            result.addActionListener(new ActionListener()
+            Action action = new AbstractAction()
             {
                 @Override
                 public void actionPerformed(ActionEvent event)
@@ -116,12 +155,23 @@ public class ButtonBuilder
                         throw new RuntimeException(e);
                     }
                 }
-            });
+            };
+            result.addActionListener(action);
+
+            if (shortcut != null) {
+                InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                ActionMap actionMap = component.getActionMap();
+
+                KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
+                inputMap.put(keyStroke, label);
+                actionMap.put(label, action);
+            }
         }
 
         // Reset the builder, so that it can be used again.
         this.label = null;
         this.icon = null;
+        this.shortcut = null;
         this.tooltip = null;
         this.method = null;
 

@@ -1,21 +1,25 @@
 Current Task
 ============
 
-Use the options to run other commands
 
 BUGS
 ====
 
-History doesn't work for new tabs, because history only works if the command is run??
-	Doesn't go back to WrkCommand
-
-
 PatternParameters default to regex - should it be regex? Especially for FileListerTask?
 
+Slow creating new tab and then wrkf
+
+History of commands keep their gui components. should they?
+
+Commands without parameters
+	hide the side panel
+	if it is shown, add a "No parameters" label.
 
 New Features
 ============
 
+	Use the options to run other commands
+	
 	Save options in a file
 		opt label commandName parameters
 
