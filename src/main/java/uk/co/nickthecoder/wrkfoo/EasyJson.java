@@ -92,6 +92,24 @@ public class EasyJson
             }
         }
 
+        public boolean getBoolean(String name)
+        {
+            try {
+                return get(name).getAsBoolean();
+            } catch (Exception e) {
+                throw error("Missing boolean attribute '" + name + "' in '" + this.name + "'");
+            }
+        }
+
+        public boolean getBoolean(String name, Boolean defaultValue)
+        {
+            try {
+                return get(name).getAsBoolean();
+            } catch (Exception e) {
+                return defaultValue;
+            }
+        }
+
         public Node getArray(String name)
         {
             try {

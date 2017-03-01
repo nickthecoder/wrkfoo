@@ -20,7 +20,9 @@ public class FileOptions extends SimpleOptions
                 String code = jopt.getString("code");
                 String label = jopt.getString("label");
                 String groovyScript = jopt.getString("groovy");
-                Option option = new GroovyOption(code, label, groovyScript);
+                boolean isRow = jopt.getBoolean("row", true);
+                
+                Option option = new GroovyOption(code, label, groovyScript, isRow);
 
                 add(option);
             }

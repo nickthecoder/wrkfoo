@@ -154,7 +154,8 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         if (options == null) {
 
             OptionsGroup og = new OptionsGroup();
-            for (String name : additionalOptionsNames()) {
+            String name = optionsName();
+            if (name != null) {
                 og.add(Resources.instance.readOptions(name));
             }
             og.add(Resources.instance.globalOptions());
@@ -163,9 +164,9 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         return options;
     }
 
-    protected String[] additionalOptionsNames()
+    protected String optionsName()
     {
-        return new String[0];
+        return null;
     }
 
     /**

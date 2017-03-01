@@ -6,7 +6,9 @@ public class WrkFTree extends WrkFBaseCommand
     {
         WrkFTask task = new WrkFTask();
 
-        task.depth.setValue(20);
+        task.depth.setValue(1);
+
+        task.includeDirectories.setValue(true);
 
         return task;
     }
@@ -15,8 +17,8 @@ public class WrkFTree extends WrkFBaseCommand
     {
         super(createTask());
         
-        getColumns().find("path").visible = true;
-        getColumns().find("name").visible = false;
+        //getColumns().find("path").visible = true;
+        //getColumns().find("name").visible = false;
     }
     
 

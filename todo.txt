@@ -7,23 +7,22 @@ BUGS
 
 PatternParameters default to regex - should it be regex? Especially for FileListerTask?
 
+alt+F4 doesn't work
+	Option "na" or "n2" on wrkf directory to start nautilus. Close nautilus, F4 fails
+	However, do the same WITHOUT closing nautilus, and it F4 works fine.
+	Does this when using Exec and using Runtime.exec directly.
+	Not related to nautilus. (I tried gnome-calculator and gedit).
+	Does this when running from Eclipse and from gradle run.
+	If add a break point in Enter action, continue from the break point, switch to nautilus and close it, then F4 works!!!
+	This may be an OS bug, so I'll leave it for now, and try it out on other systems.
+
+Table takes up too much width when there's scroll bars, causing the parameters panel to be squashed.
+
 New Features
 ============
 
-	Use the options to run other commands
-
-		Reference data from the table using ${row.columnName}.
-		Also ${rowobj.fieldName} to access the OBJECT, rather than one of the predefined columns??? Using reflection.
-		Reference task parameters using ${parameter.parameterName}.
-		${$} is replaced by just $
-
-		Can tell which are options for a row by ( ${row.xxx} ).
-
-		Format of the  options file :
-			opt label commandName parameters
-	
-		WrkCommandOptions - shows a list of the options files used by the given command
-		WrkOptions - shows the options in the options file
+	WrkCommandOptions - shows a list of the options files used by the given command
+	WrkOptions - shows the options in the options file
 
 	reorder tabs http://www.jroller.com/pago/entry/make_tabs_in_jtabbedpane_reorderable
 
@@ -37,13 +36,17 @@ New Features
 		Filter : Filters table results, without help from the Command.
 
 
-	Shortcuts for parameters. e.g. ctrl+d to change directory, ctrl+g to filter files.
+	Shortcuts for task parameters? e.g. ctrl+d to change directory, ctrl+g to filter files.
 
 	Sort keeps the folders at the top regardless of anything else.
 
 	Ctrl+click to open a folder in a new tab.
 	Ctrl+enter to open command in a new tab
 
+	Multi-row commands e.g.
+		delete a bunch of files with one command (which prompt "Are you sure")
+		tar/zip a bunch of files
+		MultiRowOption interface? which has a "run(List<Object> row)" method. The list is built by CommandPanel.
 
 Later Features
 ==============

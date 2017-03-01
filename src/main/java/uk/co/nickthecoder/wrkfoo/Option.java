@@ -8,4 +8,7 @@ public interface Option
 
     public void runOption( Command<?> command, Object row );
     
+    public boolean isRow();
+    
+    public boolean isMultiRow();
 }

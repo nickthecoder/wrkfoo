@@ -1,17 +1,20 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -116,7 +119,7 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
             {
                 return row.getPath().substring(chopPath);
             }
-        }.hide().width(500));
+        }.hide().width(300));
 
         columns.add(new Column<File>(String.class, "name")
         {
@@ -147,6 +150,25 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
 
         return columns;
     }
+    
+    @Override
+    public void postCreate()
+    {
+        super.postCreate();
+        
+        MainWindow.putAction("alt UP", "upDirectory", getCommandPanel(), new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                File parent = getTask().directory.getValue().getParentFile();
+                if (parent != null) {
+                    getTask().directory.setValue(parent);
+                }
+                go();
+            }
+        });
+    }
 
     public void updateResults()
     {
@@ -154,8 +176,8 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         super.updateResults();
     }
 
-    protected String[] additionalOptionsNames()
+    protected String optionsName()
     {
-        return new String[] { "wrkf" };
+        return "wrkf";
     }
 }

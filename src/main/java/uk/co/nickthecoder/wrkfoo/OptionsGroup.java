@@ -21,42 +21,33 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public void add(Option option)
+    public Option getDefaultRowOption()
     {
-        optionsList.get(0).add(option);
+        return getRowOption("");
     }
 
     @Override
-    public Option getDefault()
-    {
-        return get("");
-    }
-
-    @Override
-    public Option getUnsafe(String shortcut)
+    public Option getRowOption(String code)
     {
         for (Options options : optionsList) {
-            Option option = options.get(shortcut);
+            Option option = options.getRowOption(code);
             if (option != null) {
                 return option;
             }
         }
         return null;
     }
-
-    public Option get(String code)
-    {
-        Option result = getUnsafe(code);
-        if (result == null) {
-            return NullOption.instance;
-        }
-        return result;
-    }
-
+    
     @Override
-    public boolean contains(String code)
+    public Option getNonRowOption(String code)
     {
-        return get(code) != null;
+        for (Options options : optionsList) {
+            Option option = options.getNonRowOption(code);
+            if (option != null) {
+                return option;
+            }
+        }
+        return null;
     }
 
 }

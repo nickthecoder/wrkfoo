@@ -1,12 +1,11 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-
-import uk.co.nickthecoder.jguifier.util.Exec;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 public class GroovyOption extends AbstractOption
 {
@@ -25,14 +24,14 @@ public class GroovyOption extends AbstractOption
 
         return new GroovyShell( configuration);
     }
-
+    
     private String groovySource;
     
     private Script groovyScript;
 
-    public GroovyOption(String code, String label, String script)
+    public GroovyOption(String code, String label, String script, boolean isRow)
     {
-        super(code, label);
+        super(code, label, isRow);
         this.groovySource = script;
     }
 
@@ -58,18 +57,16 @@ public class GroovyOption extends AbstractOption
             Command<?> newCommand = (Command<?>) result;
             tab.go(newCommand);
             
-        } else if (result instanceof Exec) {
-            ((Exec) result).run();
-            
         } else if (result instanceof Runnable) {
-            ((Runnable) result).run();
+            Thread thread = new Thread( (Runnable) result );
+            thread.start();
             
         } else if (result == null) {
             // Do nothing
             
         } else {
             // TODO Do something with groovy output
-            System.out.println(result);
+            //System.out.println(result);
         }
 
     }

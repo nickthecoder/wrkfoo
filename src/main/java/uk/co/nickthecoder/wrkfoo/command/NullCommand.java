@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.ListCommand;
 
 /**
  * A command which does nothing!

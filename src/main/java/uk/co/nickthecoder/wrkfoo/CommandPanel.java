@@ -17,10 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
-import com.sun.xml.internal.fastinfoset.stax.events.Util;
-
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
 public class CommandPanel<R> extends JPanel
@@ -144,10 +143,10 @@ public class CommandPanel<R> extends JPanel
                     CommandTableModel<?> model = table.getModel();
                     for (int i = 0; i < model.getRowCount(); i++) {
                         String code = model.getCode(i);
-                        if (!Util.isEmptyString(code)) {
-                            Option option = command.getOptions().getUnsafe(code);
+                        model.setCode(i, "");
+                        if (!Util.empty(code)) {
+                            Option option = command.getOptions().getRowOption(code);
                             if (option != null) {
-                                model.setCode( i, "" );
                                 option.runOption(command, model.getRow(i));
                             }
                         }
@@ -163,7 +162,7 @@ public class CommandPanel<R> extends JPanel
                     me.consume();
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
                     R row = table.getModel().getRow(r);
-                    Option option = command.getOptions().getDefault();
+                    Option option = command.getOptions().getDefaultRowOption();
                     option.runOption(command, row);
                 }
             }

@@ -25,4 +25,16 @@ public class NullOption implements Option
     {        
     }
 
+    @Override
+    public boolean isRow()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isMultiRow()
+    {
+        return false;
+    }
+
 }

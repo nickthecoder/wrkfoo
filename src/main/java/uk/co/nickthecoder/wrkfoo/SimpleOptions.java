@@ -5,46 +5,42 @@ import java.util.Map;
 
 public class SimpleOptions implements Options
 {
-    private Map<String, Option> map;
+    private Map<String, Option> rowMap;
+
+    private Map<String, Option> nonRowMap;
     
     public SimpleOptions()
     {
-        map = new HashMap<String,Option>();
+        rowMap = new HashMap<String,Option>();
+        nonRowMap = new HashMap<String,Option>();
     }
 
     @Override
-    public Option getDefault()
+    public Option getDefaultRowOption()
     {
-        return map.get("");
-    }
-
-
-    @Override
-    public Option get(String code)
-    {
-        Option result = getUnsafe( code );
-        if (result == null) {
-            return NullOption.instance;
-        }
-        return result;
+        return rowMap.get("");
     }
 
     @Override
-    public Option getUnsafe(String shortcut)
+    public Option getRowOption(String code)
     {
-        return map.get(shortcut);
-    }
-
-    @Override
-    public void add(Option option)
-    {
-        map.put(option.getCode(), option);
+        return rowMap.get(code);
     }
     
     @Override
-    public boolean contains( String code )
+    public Option getNonRowOption(String code)
     {
-        return get(code) != null;
+        return nonRowMap.get(code);
     }
+    
+    public void add(Option option)
+    {
+        if (option.isRow()) {
+            rowMap.put(option.getCode(), option);
+        } else {
+            nonRowMap.put(option.getCode(), option);
+        }
+    }
+
 
 }

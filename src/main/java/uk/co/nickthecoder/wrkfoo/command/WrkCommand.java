@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Command;
+import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 
 public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
@@ -49,8 +50,9 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
         return columns;
     }
 
-    protected String[] additionalOptionsNames()
+    @Override
+    protected String optionsName()
     {
-        return new String[] { "wrkcommand" };
+        return "wrkcommand";
     }
 }

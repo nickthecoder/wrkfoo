@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.wrkfoo.ListResults;
 
 public class NullTask extends Task implements ListResults<Object>
 {

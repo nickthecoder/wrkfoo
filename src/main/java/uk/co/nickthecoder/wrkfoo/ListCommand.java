@@ -1,10 +1,8 @@
-package uk.co.nickthecoder.wrkfoo.command;
+package uk.co.nickthecoder.wrkfoo;
 
 import java.util.ArrayList;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.wrkfoo.ListTableModel;
-import uk.co.nickthecoder.wrkfoo.AbstractCommand;
 
 public abstract class ListCommand<T extends Task & ListResults<R>,R> extends AbstractCommand<T,R>
 {

@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.wrkfoo.command;
+package uk.co.nickthecoder.wrkfoo;
 
 import java.util.List;
 
