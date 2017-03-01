@@ -56,8 +56,6 @@ public interface Command<R>
 
     public CommandPanel<R> getCommandPanel();
 
-    public void defaultAction(R row);
-
     public void go();
 
     public Options getOptions();

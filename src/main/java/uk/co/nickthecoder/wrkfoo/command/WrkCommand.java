@@ -12,15 +12,15 @@ import uk.co.nickthecoder.wrkfoo.MainWindow;
 public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
 {
     public static Icon icon;
-    
+
     {
         try {
-            icon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("home.png")) );
+            icon = new ImageIcon(ImageIO.read(MainWindow.class.getResource("home.png")));
         } catch (Exception e) {
             // Do nothing
         }
     }
-    
+
     public WrkCommand()
     {
         super(new WrkCommandTask());
@@ -31,7 +31,7 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
     {
         return icon;
     }
-    
+
     @Override
     public Columns<Command<?>> createColumns()
     {
@@ -48,11 +48,9 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
 
         return columns;
     }
-    
-    @Override
-    public void defaultAction(Command<?> command)
-    {
-        getCommandTab().go(command);
-    }
 
+    protected String[] additionalOptionsNames()
+    {
+        return new String[] { "wrkcommand" };
+    }
 }

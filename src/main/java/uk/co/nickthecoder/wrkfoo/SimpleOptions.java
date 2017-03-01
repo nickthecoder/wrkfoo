@@ -18,16 +18,33 @@ public class SimpleOptions implements Options
         return map.get("");
     }
 
+
     @Override
-    public Option get(String shortcut)
+    public Option get(String code)
+    {
+        Option result = getUnsafe( code );
+        if (result == null) {
+            return NullOption.instance;
+        }
+        return result;
+    }
+
+    @Override
+    public Option getUnsafe(String shortcut)
     {
         return map.get(shortcut);
     }
 
     @Override
-    public void add(String shortcut, Option option)
+    public void add(Option option)
     {
-        map.put(shortcut, option);
+        map.put(option.getCode(), option);
+    }
+    
+    @Override
+    public boolean contains( String code )
+    {
+        return get(code) != null;
     }
 
 }

@@ -12,11 +12,8 @@ import javax.swing.UIManager;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
-import uk.co.nickthecoder.wrkfoo.Option;
-import uk.co.nickthecoder.wrkfoo.Options;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
@@ -81,46 +78,6 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         return shortTitle;
     }
 
-    @Override
-    public void defaultAction(File file)
-    {
-        if (file.isDirectory()) {
-            getTask().directory.setValue(file);
-            go();
-        }
-    }
-
-    @Override
-    public void postCreate()
-    {
-        Options options = getOptions();
-
-        options.add("", new Option() // The default
-            {
-                @Override
-                public void runOption(Command<?> command, Object row)
-                {
-                    getTask().directory.setValue(((File) row));
-                    go();
-                }
-
-            });
-
-        options.add("ls", new Option()
-        {
-            @Override
-            public void runOption(Command<?> command, Object row)
-            {
-                WrkF wrkF = new WrkF();
-                wrkF.getTask().directory.setValue((File) row);
-                getCommandTab().go(wrkF);
-            }
-
-        });
-
-    }
-
-    
     protected ListTableModel<File> createTableModel()
     {
         ListTableModel<File> tableModel = new ListTableModel<File>(this, new ArrayList<File>(), getColumns())
@@ -197,4 +154,8 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         super.updateResults();
     }
 
+    protected String[] additionalOptionsNames()
+    {
+        return new String[] { "wrkf" };
+    }
 }

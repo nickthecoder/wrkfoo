@@ -3,23 +3,22 @@ package uk.co.nickthecoder.wrkfoo;
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
+import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.ValueParameter;
 
 public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 {
     protected Columns<R> columns;
-    
+
     public T task;
 
     private CommandTab commandTab;
 
-    private Options options;
-    
     public AbstractCommand(T task)
     {
         this.task = task;
-        this.options = new SimpleOptions();
     }
 
     @Override
@@ -27,7 +26,7 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     {
         // Do nothing
     }
-    
+
     @Override
     public T getTask()
     {
@@ -39,25 +38,24 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     {
         return task.getName();
     }
-    
+
     @Override
     public String getShortTitle()
     {
         return getTitle();
     }
-    
+
     @Override
     public String getLongTitle()
     {
         return getTitle();
     }
-    
+
     @Override
     public String getName()
     {
         return this.getClass().getSimpleName();
     }
-
 
     @Override
     public Icon getIcon()
@@ -70,7 +68,7 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     {
         return task.getParameters();
     }
-    
+
     public Columns<R> getColumns()
     {
         if (columns == null) {
@@ -78,9 +76,8 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         }
         return columns;
     }
-    
-    protected abstract Columns<R> createColumns();
 
+    protected abstract Columns<R> createColumns();
 
     @Override
     public SimpleTable<R> createTable()
@@ -88,7 +85,7 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         SimpleTable<R> result = getColumns().createTable(getTableModel());
         return result;
     }
-    
+
     @Override
     public void attachTo(CommandTab tab)
     {
@@ -105,7 +102,7 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         this.commandPanel = null;
         this.columns = null;
     }
-    
+
     @Override
     public CommandTab getCommandTab()
     {
@@ -113,12 +110,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     }
 
     private CommandPanel<R> commandPanel;
-
-    @Override
-    public Options getOptions()
-    {
-        return options;
-    }
 
     @Override
     public ParametersPanel createParametersPanel()
@@ -135,7 +126,7 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
             commandPanel = new CommandPanel<R>(this);
             commandPanel.postCreate();
         }
-        
+
         return commandPanel;
     }
 
@@ -145,20 +136,54 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     @Override
     public void go()
     {
-        if ( commandTab != null) {
-            commandTab.go( this );
+        if (commandTab != null) {
+            commandTab.go(this);
         } else {
-            System.out.println( "Not attached to a AbstractCommand" );
+            System.out.println("Not attached to a AbstractCommand");
             task.run();
         }
         updateResults();
     }
-    
+
     public abstract void updateResults();
-    
-    @Override
-    public void defaultAction(R row)
+
+    private Options options;
+
+    public Options getOptions()
     {
-        // Do nothing
+        if (options == null) {
+
+            OptionsGroup og = new OptionsGroup();
+            for (String name : additionalOptionsNames()) {
+                og.add(Resources.instance.readOptions(name));
+            }
+            og.add(Resources.instance.globalOptions());
+            options = og;
+        }
+        return options;
+    }
+
+    protected String[] additionalOptionsNames()
+    {
+        return new String[0];
+    }
+
+    /**
+     * A convenience method for {@link GroovyOption}s to change a parameter, and return the same Command.
+     * 
+     * @param name
+     *            The name of the parameter
+     * @param value
+     *            The new value for the parameter
+     * @return this
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public AbstractCommand parameter(String name, Object value)
+    {
+        Parameter p = getTask().findParameter(name);
+        ValueParameter vp = (ValueParameter) p;
+
+        vp.setValue(value);
+        return this;
     }
 }

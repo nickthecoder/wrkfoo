@@ -140,7 +140,8 @@ public class CommandPanel<R> extends JPanel
                 {
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
                     R row = table.getModel().getRow(r);
-                    command.defaultAction(row);
+                    Option option = command.getOptions().getDefault();
+                    option.runOption( command, row );
                 }
             });
 
@@ -152,7 +153,8 @@ public class CommandPanel<R> extends JPanel
                     me.consume();
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
                     R row = table.getModel().getRow(r);
-                    command.defaultAction(row);
+                    Option option = command.getOptions().getDefault();
+                    option.runOption( command, row );
                 }
             }
         });

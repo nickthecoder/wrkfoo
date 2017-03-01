@@ -13,7 +13,9 @@ New Features
 	Use the options to run other commands
 
 		Reference data from the table using ${row.columnName}.
+		Also ${rowobj.fieldName} to access the OBJECT, rather than one of the predefined columns??? Using reflection.
 		Reference task parameters using ${parameter.parameterName}.
+		${$} is replaced by just $
 
 		Can tell which are options for a row by ( ${row.xxx} ).
 
@@ -45,6 +47,8 @@ New Features
 
 Later Features
 ==============
+
+	Run tasks in a thread
 
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
