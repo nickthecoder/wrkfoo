@@ -64,6 +64,9 @@ public class GroovyOption extends AbstractOption
         } else if (result instanceof Runnable) {
             ((Runnable) result).run();
             
+        } else if (result == null) {
+            // Do nothing
+            
         } else {
             // TODO Do something with groovy output
             System.out.println(result);

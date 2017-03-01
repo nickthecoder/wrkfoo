@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
+import com.sun.xml.internal.fastinfoset.stax.events.Util;
+
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
@@ -97,26 +99,26 @@ public class CommandPanel<R> extends JPanel
 
         if (this.command.getTask().getParameters().getChildren().size() == 0) {
             splitPane.toggle(false);
-            sidePanel.add( new JLabel( "No Parameters" ), BorderLayout.NORTH );
+            sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
-        
-        this.setBackground(Color.blue);        
+
+        this.setBackground(Color.blue);
     }
 
     public ParametersPanel getParametersPanel()
     {
         return parametersPanel;
     }
-    
+
     public JButton getGoButton()
     {
         return goButton;
     }
-    
+
     public void postCreate()
     {
         command.postCreate();
-        
+
         MainWindow.putAction("F9", "toggleSidebar", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -138,10 +140,18 @@ public class CommandPanel<R> extends JPanel
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    int r = table.convertRowIndexToModel(table.getSelectedRow());
-                    R row = table.getModel().getRow(r);
-                    Option option = command.getOptions().getDefault();
-                    option.runOption( command, row );
+                    table.stopEditing();
+                    CommandTableModel<?> model = table.getModel();
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        String code = model.getCode(i);
+                        if (!Util.isEmptyString(code)) {
+                            Option option = command.getOptions().getUnsafe(code);
+                            if (option != null) {
+                                model.setCode( i, "" );
+                                option.runOption(command, model.getRow(i));
+                            }
+                        }
+                    }
                 }
             });
 
@@ -154,7 +164,7 @@ public class CommandPanel<R> extends JPanel
                     int r = table.convertRowIndexToModel(table.getSelectedRow());
                     R row = table.getModel().getRow(r);
                     Option option = command.getOptions().getDefault();
-                    option.runOption( command, row );
+                    option.runOption(command, row);
                 }
             }
         });

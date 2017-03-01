@@ -7,8 +7,8 @@ import javax.swing.table.AbstractTableModel;
 public abstract class CommandTableModel<R> extends AbstractTableModel
 {
     private Command<?> command;
-    
-    private String[] optionValues = new String[] {};
+
+    private String[] codes = new String[] {};
 
     public Columns<R> columns;
 
@@ -19,12 +19,23 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
     }
 
     public abstract R getRow(int row);
-    
+
+    public String getCode(int row)
+    {
+        return codes[row];
+    }
+
+    public void setCode(int row, String code)
+    {
+        codes[row] = code;
+        fireTableRowsUpdated(row, row);
+    }
+
     public Command<?> getCommand()
     {
         return command;
     }
-    
+
     @Override
     public int getColumnCount()
     {
@@ -41,7 +52,7 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
     public void setValueAt(Object value, int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {
-            optionValues[rowIndex] = (String) value;
+            codes[rowIndex] = (String) value;
         }
         fireTableCellUpdated(rowIndex, columnIndex);
     }
@@ -50,12 +61,12 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
     public Object getValueAt(int rowIndex, int columnIndex)
     {
         if (columnIndex == 0) {
-            return optionValues[rowIndex];
+            return codes[rowIndex];
         } else {
             return null;
         }
     }
-    
+
     @Override
     public String getColumnName(int col)
     {
@@ -68,14 +79,14 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
         return columns.getColumn(col).klass;
     }
 
-    public Color getRowBackground( int row )
+    public Color getRowBackground(int row)
     {
         return null;
     }
-    
-    public void update( int rowCount )
+
+    public void update(int rowCount)
     {
-        this.optionValues = new String[rowCount];
+        this.codes = new String[rowCount];
         this.fireTableDataChanged();
     }
 }
