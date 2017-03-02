@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.option.GroovyOptions;
+import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public class Resources
 {
@@ -49,7 +51,7 @@ public class Resources
                         
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
-                        globalOptions.add(new FileOptions(new File(optionsDirectory, name + ".json")));
+                        globalOptions.add(new GroovyOptions(new File(optionsDirectory, name + ".json")));
                     }
                 } finally {
                     json.close();
@@ -63,10 +65,10 @@ public class Resources
         }
     }
 
-    public FileOptions readOptions( String name )
+    public GroovyOptions readOptions( String name )
     {
         try {
-            FileOptions result = new FileOptions(new File( optionsDirectory, name + ".json"));
+            GroovyOptions result = new GroovyOptions(new File( optionsDirectory, name + ".json"));
             return result;
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,7 +82,7 @@ public class Resources
 
         for (String name : optionsName) {
             try {
-                FileOptions fo = new FileOptions(new File(optionsDirectory, name + ".json"));
+                GroovyOptions fo = new GroovyOptions(new File(optionsDirectory, name + ".json"));
                 result.add(fo);
             } catch (IOException e) {
                 e.printStackTrace();

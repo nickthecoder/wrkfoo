@@ -6,6 +6,7 @@ import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.wrkfoo.option.Options;
 
 /**
  * A Command performs some work via a {@link Task}. The Task is defined as usual by a set of {@link Parameter}s.
@@ -18,7 +19,7 @@ import uk.co.nickthecoder.jguifier.Task;
  * @param <R>
  *            The type of object in
  */
-public interface Command<R>
+public interface Command<R> extends Cloneable
 {
     public void postCreate();
     
@@ -60,4 +61,5 @@ public interface Command<R>
 
     public Options getOptions();
 
+    public Command<R> clone();
 }

@@ -7,6 +7,9 @@ import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
+import uk.co.nickthecoder.wrkfoo.option.Options;
+import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 {
@@ -15,6 +18,8 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     public T task;
 
     private CommandTab commandTab;
+
+    private CommandPanel<R> commandPanel;
 
     public AbstractCommand(T task)
     {
@@ -109,7 +114,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         return commandTab;
     }
 
-    private CommandPanel<R> commandPanel;
 
     @Override
     public ParametersPanel createParametersPanel()
@@ -186,5 +190,22 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 
         vp.setValue(value);
         return this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public AbstractCommand<T,R> clone()
+    {
+        try {
+            AbstractCommand<T,R> result = (AbstractCommand<T,R>) super.clone();
+            
+            result.task = (T) this.task.clone();
+            result.commandTab = null;
+            result.commandPanel = null;
+            return result;
+            
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

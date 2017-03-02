@@ -9,12 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import uk.co.nickthecoder.wrkfoo.command.NullCommand;
-
 public class CommandTabbedPane extends JTabbedPane
 {
-    private static final CommandTab DUMMY_COMMAND_TAB = new CommandTab(new NullCommand());
-
     private List<CommandTab> commandTabs;
 
     public CommandTabbedPane()
@@ -25,7 +21,7 @@ public class CommandTabbedPane extends JTabbedPane
     public CommandTab getCurrentTab()
     {
         if (commandTabs.size() == 0) {
-            return DUMMY_COMMAND_TAB;
+            return null;
         }
         return commandTabs.get(getSelectedIndex());
     }
@@ -40,7 +36,6 @@ public class CommandTabbedPane extends JTabbedPane
 
         addTab(null, tab.getPanel());
         setTabComponentAt(getTabCount() - 1, label);
-
     }
 
     public void updateTabInfo(CommandTab tab)

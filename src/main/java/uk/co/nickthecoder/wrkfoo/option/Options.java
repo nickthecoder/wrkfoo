@@ -1,4 +1,5 @@
-package uk.co.nickthecoder.wrkfoo;
+package uk.co.nickthecoder.wrkfoo.option;
+
 
 public interface Options
 {

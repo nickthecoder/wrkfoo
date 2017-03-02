@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.wrkfoo;
+package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.ArrayList;
 import java.util.List;

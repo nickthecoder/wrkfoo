@@ -1,12 +1,14 @@
-package uk.co.nickthecoder.wrkfoo;
+package uk.co.nickthecoder.wrkfoo.option;
 
 import java.io.File;
 import java.io.IOException;
 
-public class FileOptions extends SimpleOptions
+import uk.co.nickthecoder.wrkfoo.EasyJson;
+
+public class GroovyOptions extends SimpleOptions
 {
 
-    public FileOptions(File file)
+    public GroovyOptions(File file)
         throws IOException
     {
         EasyJson json = new EasyJson();

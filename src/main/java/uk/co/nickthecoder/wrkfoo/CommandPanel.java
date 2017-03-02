@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
 public class CommandPanel<R> extends JPanel
@@ -147,7 +148,27 @@ public class CommandPanel<R> extends JPanel
                         if (!Util.empty(code)) {
                             Option option = command.getOptions().getRowOption(code);
                             if (option != null) {
-                                option.runOption(command, model.getRow(i));
+                                option.runOption(command, model.getRow(i), false);
+                            }
+                        }
+                    }
+                }
+            });
+
+        MainWindow.putAction("ctrl ENTER", "defaultRowActionNewTab", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+            new AbstractAction()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    table.stopEditing();
+                    CommandTableModel<?> model = table.getModel();
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        String code = model.getCode(i);
+                        model.setCode(i, "");
+                        if (!Util.empty(code)) {
+                            Option option = command.getOptions().getRowOption(code);
+                            if (option != null) {
+                                option.runOption(command, model.getRow(i), true);
                             }
                         }
                     }
@@ -156,17 +177,34 @@ public class CommandPanel<R> extends JPanel
 
         table.addMouseListener(new MouseAdapter()
         {
+            private int lastRowClicked = 0;
+
             public void mouseClicked(MouseEvent me)
             {
-                if (me.getClickCount() == 2) {
+                if (me.isPopupTrigger()) {
+                    createOptionsMenu();
+
+                } else if (me.getClickCount() == 2) {
+                    boolean newTab = me.isControlDown();
                     me.consume();
-                    int r = table.convertRowIndexToModel(table.getSelectedRow());
+                    int r = table.getSelectedRow() >= 0 ?
+                        table.convertRowIndexToModel(table.getSelectedRow()) :
+                        lastRowClicked;
+
                     R row = table.getModel().getRow(r);
                     Option option = command.getOptions().getDefaultRowOption();
-                    option.runOption(command, row);
+                    option.runOption(command, row, newTab);
+                }
+                if (table.getSelectedRow() >= 0) {
+                    lastRowClicked = table.convertRowIndexToModel(table.getSelectedRow());
                 }
             }
         });
+
+    }
+
+    private void createOptionsMenu()
+    {
 
     }
 

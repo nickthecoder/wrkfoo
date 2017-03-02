@@ -1,4 +1,6 @@
-package uk.co.nickthecoder.wrkfoo;
+package uk.co.nickthecoder.wrkfoo.option;
+
+import uk.co.nickthecoder.wrkfoo.Command;
 
 public class NullOption implements Option
 {
@@ -21,7 +23,7 @@ public class NullOption implements Option
     }
 
     @Override
-    public void runOption(Command<?> command, Object row)
+    public void runOption(Command<?> command, Object row, boolean newTab)
     {        
     }
 

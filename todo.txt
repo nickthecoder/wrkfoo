@@ -1,6 +1,8 @@
 Current Task
 ============
 
+ctrl+Enter => command in New tab
+	Old tab is blank if the option is trying to reuse the command, but changing the parameters.  
 
 BUGS
 ====
@@ -21,6 +23,8 @@ Table takes up too much width when there's scroll bars, causing the parameters p
 New Features
 ============
 
+	Right click a row to show a menu of available options (including the code).
+	 
 	WrkCommandOptions - shows a list of the options files used by the given command
 	WrkOptions - shows the options in the options file
 
@@ -47,6 +51,8 @@ New Features
 		delete a bunch of files with one command (which prompt "Are you sure")
 		tar/zip a bunch of files
 		MultiRowOption interface? which has a "run(List<Object> row)" method. The list is built by CommandPanel.
+
+	Have default options in the jar file, and customised versions in settings directory.
 
 Later Features
 ==============

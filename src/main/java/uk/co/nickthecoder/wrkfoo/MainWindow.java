@@ -18,7 +18,7 @@ import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
 public class MainWindow extends JFrame
 {
-    private CommandTabbedPane tabbedPane;
+    public CommandTabbedPane tabbedPane;
 
     private JToolBar toolbar;
 
@@ -74,14 +74,16 @@ public class MainWindow extends JFrame
             .build());
     }
 
-    private void addTab(Command<?> command)
+    public CommandTab addTab(Command<?> command)
     {
-        CommandTab tab = new CommandTab(command);
+        CommandTab tab = new CommandTab(this, command);
 
         tabbedPane.add( tab );
         
         tab.postCreate();
         tab.go(command);
+        
+        return tab;
     }
 
     public void setVisible(boolean show)
