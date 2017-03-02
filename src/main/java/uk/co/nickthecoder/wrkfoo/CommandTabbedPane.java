@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MouseInputAdapter;
 
 public class CommandTabbedPane extends JTabbedPane
 {
@@ -16,6 +18,7 @@ public class CommandTabbedPane extends JTabbedPane
     public CommandTabbedPane()
     {
         commandTabs = new ArrayList<CommandTab>();
+        enableReordering();
     }
 
     public CommandTab getCurrentTab()
@@ -29,6 +32,7 @@ public class CommandTabbedPane extends JTabbedPane
     public void add(CommandTab tab)
     {
         commandTabs.add(tab);
+        
         tab.tabbedPane = this;
         JLabel label = new JLabel(tab.getCommand().getShortTitle());
         label.setIcon(tab.getCommand().getIcon());
@@ -38,10 +42,24 @@ public class CommandTabbedPane extends JTabbedPane
         setTabComponentAt(getTabCount() - 1, label);
     }
 
+    public void insert( CommandTab tab, int index )
+    {    
+        commandTabs.add(index, tab);
+        
+        tab.tabbedPane = this;
+        JLabel label = new JLabel(tab.getCommand().getShortTitle());
+        label.setIcon(tab.getCommand().getIcon());
+        label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
+        
+        insertTab("", null, tab.getPanel(), null, index );
+        setTabComponentAt(index, label);
+    }
+    
     @Override
     public void removeTabAt(int index)
     {
         super.removeTabAt(index);
+        commandTabs.get(index).tabbedPane = null;
         commandTabs.remove(index);
     }
 
@@ -60,6 +78,11 @@ public class CommandTabbedPane extends JTabbedPane
         }
     }
 
+    public CommandTab getCommandTab(int index)
+    {
+        return this.commandTabs.get(index);
+    }
+
     public CommandTab getSelectedCommandTab()
     {
         int index = getSelectedIndex();
@@ -67,6 +90,54 @@ public class CommandTabbedPane extends JTabbedPane
             return commandTabs.get(index);
         } else {
             return null;
+        }
+    }
+
+    public void enableReordering()
+    {
+        TabReorderHandler handler = new TabReorderHandler();
+        addMouseListener(handler);
+        addMouseMotionListener(handler);
+    }
+
+    private class TabReorderHandler extends MouseInputAdapter
+    {
+        private int draggedTabIndex;
+
+        protected TabReorderHandler()
+        {
+            draggedTabIndex = -1;
+        }
+
+        public void mousePressed(MouseEvent e)
+        {
+            draggedTabIndex = getUI().tabForCoordinate(CommandTabbedPane.this, e.getX(), e.getY());
+        }
+
+        public void mouseReleased(MouseEvent e)
+        {
+            draggedTabIndex = -1;
+        }
+
+        public void mouseDragged(MouseEvent e)
+        {
+            if (draggedTabIndex == -1) {
+                return;
+            }
+
+            int targetTabIndex = getUI().tabForCoordinate(CommandTabbedPane.this, e.getX(), e.getY());
+
+            if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
+
+                boolean isForwardDrag = targetTabIndex > draggedTabIndex;
+
+                CommandTab tab = getCommandTab( draggedTabIndex );
+                removeTabAt(draggedTabIndex);
+                insert(tab, draggedTabIndex + (isForwardDrag ? 1 : -1) );
+
+                draggedTabIndex = targetTabIndex;
+                setSelectedIndex(draggedTabIndex);
+            }
         }
     }
 }
