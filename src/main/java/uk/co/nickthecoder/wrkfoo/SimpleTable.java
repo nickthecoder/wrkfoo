@@ -10,6 +10,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 
 
@@ -21,6 +22,8 @@ public class SimpleTable<R> extends JTable
     public SimpleTable(CommandTableModel<R> model)
     {
         super(model);
+        
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = this.getActionMap();

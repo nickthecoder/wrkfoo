@@ -145,6 +145,8 @@ public class ButtonBuilder
 
         if (method != null) {
             final Method theMethod = this.method;
+            final String receiverClassName = receiver.getClass().getName() + "." + this.methodName;
+            
             Action action = new AbstractAction()
             {
                 @Override
@@ -153,12 +155,10 @@ public class ButtonBuilder
                     try {
                         theMethod.invoke(receiver, EMPTY_VALUES);
                     } catch (RuntimeException re) {
-                        System.err.println("Button Builder failed calling method " + receiver.getClass().getName()
-                            + "." + methodName);
+                        System.err.println("Button Builder failed calling method " + receiverClassName);
                         throw re;
                     } catch (Exception e) {
-                        System.err.println("Button Builder failed calling method " + receiver.getClass().getName()
-                            + "." + methodName);
+                        System.err.println("Button Builder failed calling method " + receiverClassName);
                         throw new RuntimeException(e);
                     }
                 }

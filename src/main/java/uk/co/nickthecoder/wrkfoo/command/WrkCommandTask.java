@@ -16,7 +16,10 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
     public void body()
     {
         results = new ArrayList<Command<?>>();
-        
+
+        WrkCommand wrkCommand = new WrkCommand();
+        results.add( wrkCommand );
+
         WrkF wrkFHome = new WrkF();
         wrkFHome.getTask().directory.setValue( new File( "/home/nick/3D" ) ); //new File( System.getProperty("user.home") ) );
         results.add( wrkFHome );

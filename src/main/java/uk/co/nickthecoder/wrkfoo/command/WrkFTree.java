@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
+import javax.swing.Icon;
+
 public class WrkFTree extends WrkFBaseCommand
 {
     public static WrkFTask createTask()
@@ -27,4 +29,12 @@ public class WrkFTree extends WrkFBaseCommand
     {
         return "WrkFTree " + getTitle();
     }
+    
+
+    @Override
+    public Icon getIcon()
+    {
+        return fileManagerIcon;
+    }
+
 }

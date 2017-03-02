@@ -24,6 +24,7 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
+    public static Icon fileManagerIcon = UIManager.getIcon("FileView.directoryIcon");
     public static Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
     public static Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
 
@@ -31,6 +32,7 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
         try {
             directoryIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("folder.png")) );
             fileIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("file.png")) );
+            fileManagerIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("fileManager.png")) );
         } catch (Exception e) {
             // Do nothing - stick with the default icons
         }

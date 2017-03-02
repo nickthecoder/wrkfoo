@@ -38,6 +38,16 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
     {
         Columns<Command<?>> columns = new Columns<Command<?>>();
 
+        columns.add(new Column<Command<?>>(Icon.class, "")
+        {
+            @Override
+            public Icon getValue(Command<?> row)
+            {
+                return row.getIcon();
+            }
+
+        }.width(30).lock());
+        
         columns.add(new Column<Command<?>>(String.class, "Name")
         {
             @Override
@@ -46,6 +56,7 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
                 return row.getName();
             }
         });
+
 
         return columns;
     }

@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
+import uk.co.nickthecoder.wrkfoo.command.NullCommand;
 import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
 import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
@@ -131,10 +132,20 @@ public class MainWindow extends JFrame
         }
     }
 
+    private CommandTab getCurrentOrNewTab()
+    {
+        CommandTab tab = getCurrentTab();
+        if (tab == null) {
+            NullCommand command = new NullCommand();
+            tab = addTab(command);
+        }
+        return tab;
+    }
+
     public void onHome()
     {
         WrkCommand command = new WrkCommand();
-        getCurrentTab().go(command);
+        getCurrentOrNewTab().go(command);
     }
 
     public void onNewTab()
@@ -162,12 +173,16 @@ public class MainWindow extends JFrame
 
     public void onBack()
     {
-        getCurrentTab().undo();
+        if (getCurrentTab() != null) {
+            getCurrentTab().undo();
+        }
     }
 
     public void onForward()
     {
-        getCurrentTab().redo();
+        if (getCurrentTab() != null) {
+            getCurrentTab().redo();
+        }
     }
 
 }

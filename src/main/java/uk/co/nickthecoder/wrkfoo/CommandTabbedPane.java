@@ -28,7 +28,7 @@ public class CommandTabbedPane extends JTabbedPane
 
     public void add(CommandTab tab)
     {
-        commandTabs.add( tab );
+        commandTabs.add(tab);
         tab.tabbedPane = this;
         JLabel label = new JLabel(tab.getCommand().getShortTitle());
         label.setIcon(tab.getCommand().getIcon());
@@ -39,32 +39,34 @@ public class CommandTabbedPane extends JTabbedPane
     }
 
     @Override
-    public void removeTabAt( int index )
+    public void removeTabAt(int index)
     {
         super.removeTabAt(index);
         commandTabs.remove(index);
     }
-    
+
     public void updateTabInfo(CommandTab tab)
     {
         String title = tab.getCommand().getShortTitle();
         Icon icon = tab.getCommand().getIcon();
         String longTitle = tab.getCommand().getLongTitle();
-        
+
         int index = commandTabs.indexOf(tab);
         JLabel label = (JLabel) getTabComponentAt(index);
         label.setText(title);
         label.setIcon(icon);
-        if ( getSelectedIndex() == index ) {
-            ((JFrame) SwingUtilities.getRoot( this )).setTitle( longTitle );
+        if (getSelectedIndex() == index) {
+            ((JFrame) SwingUtilities.getRoot(this)).setTitle(longTitle);
         }
     }
 
     public CommandTab getSelectedCommandTab()
     {
-        if (commandTabs.size() == 0) {
+        int index = getSelectedIndex();
+        if (index >= 0) {
+            return commandTabs.get(index);
+        } else {
             return null;
         }
-        return commandTabs.get(getSelectedIndex());
     }
 }
