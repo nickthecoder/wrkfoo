@@ -11,19 +11,17 @@ PatternParameters default to regex - should it be regex? Especially for FileList
 
 alt+F4 doesn't work
 	Option "na" or "n2" on wrkf directory to start nautilus. Close nautilus, F4 fails
-	However, do the same WITHOUT closing nautilus, and it F4 works fine.
+	However, do the same WITHOUT closing nautilus, and F4 works fine.
 	Does this when using Exec and using Runtime.exec directly.
 	Not related to nautilus. (I tried gnome-calculator and gedit).
 	Does this when running from Eclipse and from gradle run.
 	If add a break point in Enter action, continue from the break point, switch to nautilus and close it, then F4 works!!!
-	This may be an OS bug, so I'll leave it for now, and try it out on other systems.
+	This may be a Gnome or java bug, so I'll leave it for now, and try it out on other systems.
 
 Table takes up too much width when there's scroll bars, causing the parameters panel to be squashed.
 
 New Features
 ============
-
-	Right click a row to show a menu of available options (including the code).
 
 	Commands
 		Disk Usage command
@@ -32,8 +30,6 @@ New Features
 	 
 	WrkCommandOptions - shows a list of the options files used by the given command
 	WrkOptions - shows the options in the options file
-
-	reorder tabs http://www.jroller.com/pago/entry/make_tabs_in_jtabbedpane_reorderable
 
 	Buttons in a toolbar :
 		Save tab set : 

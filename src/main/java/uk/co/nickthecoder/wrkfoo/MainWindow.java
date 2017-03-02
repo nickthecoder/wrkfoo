@@ -89,6 +89,7 @@ public class MainWindow extends JFrame
     {
         ButtonBuilder builder = new ButtonBuilder(this).component(this.rootPane);
 
+        toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").build());
         toolbar.add(builder.name("home").tooltip("Home : Show all commands").shortcut("ctrl HOME").build());
         toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").build());
         toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").build());
@@ -185,6 +186,11 @@ public class MainWindow extends JFrame
         return tab;
     }
 
+    public void onQuit()
+    {
+        System.exit(0);
+    }
+    
     public void onHome()
     {
         WrkCommand command = new WrkCommand();
