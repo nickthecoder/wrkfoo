@@ -32,7 +32,7 @@ public class CommandTabbedPane extends JTabbedPane
     public void add(CommandTab tab)
     {
         commandTabs.add(tab);
-        
+
         tab.tabbedPane = this;
         JLabel label = new JLabel(tab.getCommand().getShortTitle());
         label.setIcon(tab.getCommand().getIcon());
@@ -42,19 +42,19 @@ public class CommandTabbedPane extends JTabbedPane
         setTabComponentAt(getTabCount() - 1, label);
     }
 
-    public void insert( CommandTab tab, int index )
-    {    
+    public void insert(CommandTab tab, int index)
+    {
         commandTabs.add(index, tab);
-        
+
         tab.tabbedPane = this;
         JLabel label = new JLabel(tab.getCommand().getShortTitle());
         label.setIcon(tab.getCommand().getIcon());
         label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
-        
-        insertTab("", null, tab.getPanel(), null, index );
+
+        insertTab("", null, tab.getPanel(), null, index);
         setTabComponentAt(index, label);
     }
-    
+
     @Override
     public void removeTabAt(int index)
     {
@@ -116,7 +116,43 @@ public class CommandTabbedPane extends JTabbedPane
 
         public void mouseReleased(MouseEvent e)
         {
+            if (draggedTabIndex < 0) {
+                return;
+            }
+
+            CommandTab tab = getCommandTab(draggedTabIndex);
+
+            if (tab == null) {
+                draggedTabIndex = -1;
+                return;
+            }
+            Command<?> command = tab.getCommand();
+
+            MainWindow destinationWindow = MainWindow.getMouseMainWindow();
+            if (destinationWindow == null) {
+
+                // Tear off the tab into a new MainWindow
+                if (commandTabs.size() > 1) {
+                    removeTabAt(draggedTabIndex);
+
+                    MainWindow newWindow = new MainWindow(command);
+                    command.go();
+                    newWindow.setVisible(true);
+                }
+                
+            } else if (destinationWindow != tab.getMainWindow()) {
+                // Move the tab to a different MainWindow
+                MainWindow currentMainWindow = tab.getMainWindow();
+                removeTabAt(draggedTabIndex);
+                destinationWindow.addTab(command);
+                
+                // Current window has no more tabs, so close it.
+                if ( commandTabs.size() == 0) {
+                    currentMainWindow.setVisible(false);
+                }
+            }
             draggedTabIndex = -1;
+
         }
 
         public void mouseDragged(MouseEvent e)
@@ -131,9 +167,9 @@ public class CommandTabbedPane extends JTabbedPane
 
                 boolean isForwardDrag = targetTabIndex > draggedTabIndex;
 
-                CommandTab tab = getCommandTab( draggedTabIndex );
+                CommandTab tab = getCommandTab(draggedTabIndex);
                 removeTabAt(draggedTabIndex);
-                insert(tab, draggedTabIndex + (isForwardDrag ? 1 : -1) );
+                insert(tab, draggedTabIndex + (isForwardDrag ? 1 : -1));
 
                 draggedTabIndex = targetTabIndex;
                 setSelectedIndex(draggedTabIndex);

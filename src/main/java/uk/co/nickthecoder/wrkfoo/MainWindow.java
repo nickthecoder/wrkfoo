@@ -1,12 +1,16 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
@@ -19,12 +23,27 @@ import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
 public class MainWindow extends JFrame
 {
+
+    public JPanel whole;
+
     public CommandTabbedPane tabbedPane;
 
     private JToolBar toolbar;
 
+    private static MainWindow mouseMainWindow;
+
+    /**
+     * The main window that the mouse last entered. Used by {@link CommandTabbedPane} for drag/drop tabs.
+     */
+    public static MainWindow getMouseMainWindow()
+    {
+        return mouseMainWindow;
+    }
+
     public MainWindow(Command<?>... commands)
     {
+        whole = new JPanel();
+
         tabbedPane = new CommandTabbedPane();
         tabbedPane.addChangeListener(new ChangeListener()
         {
@@ -38,9 +57,11 @@ public class MainWindow extends JFrame
         toolbar = new JToolBar();
         fillToolbar();
 
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        getContentPane().add(toolbar, BorderLayout.NORTH);
+        getContentPane().add(whole);
+
+        whole.setLayout(new BorderLayout());
+        whole.add(tabbedPane, BorderLayout.CENTER);
+        whole.add(toolbar, BorderLayout.NORTH);
 
         setTitle("WrkFoo");
 
@@ -56,6 +77,7 @@ public class MainWindow extends JFrame
 
         setLocationRelativeTo(null);
         pack();
+
     }
 
     public CommandTab getCurrentTab()
@@ -92,6 +114,27 @@ public class MainWindow extends JFrame
     {
         super.setVisible(show);
         AutoExit.setVisible(show);
+
+        if (show) {
+            MouseListener listener = new MouseAdapter()
+            {
+                @Override
+                public void mouseExited(MouseEvent e)
+                {
+                    mouseMainWindow = null;
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e)
+                {
+                    mouseMainWindow = MainWindow.this;
+                }
+            };
+            // whole.addMouseListener(listener);
+            // When I add the listener to "whole", no events are detected, so I add it to both of its children instead.
+            toolbar.addMouseListener(listener);
+            tabbedPane.addMouseListener(listener);
+        }
     }
 
     public void putAction(String keyStroke, String name, Action action)
