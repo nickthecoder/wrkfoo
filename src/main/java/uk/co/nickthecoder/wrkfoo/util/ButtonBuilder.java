@@ -32,6 +32,8 @@ public class ButtonBuilder
 
     private String shortcut;
 
+    private String methodName;
+
     private Method method;
 
     public ButtonBuilder(Object receiver)
@@ -100,6 +102,7 @@ public class ButtonBuilder
 
     public ButtonBuilder action(String methodName)
     {
+        this.methodName = methodName;
         try {
             method = receiver.getClass().getMethod(methodName, EMPTY_SIGNATURE);
         } catch (Exception e) {
@@ -136,7 +139,7 @@ public class ButtonBuilder
             if (shortcut == null) {
                 result.setToolTipText(tooltip);
             } else {
-                result.setToolTipText(tooltip + "(" + shortcut + ")");
+                result.setToolTipText(tooltip + "(" + shortcut.replace(' ', '+') + ")");
             }
         }
 
@@ -150,8 +153,12 @@ public class ButtonBuilder
                     try {
                         theMethod.invoke(receiver, EMPTY_VALUES);
                     } catch (RuntimeException re) {
+                        System.err.println("Button Builder failed calling method " + receiver.getClass().getName()
+                            + "." + methodName);
                         throw re;
                     } catch (Exception e) {
+                        System.err.println("Button Builder failed calling method " + receiver.getClass().getName()
+                            + "." + methodName);
                         throw new RuntimeException(e);
                     }
                 }
@@ -163,8 +170,8 @@ public class ButtonBuilder
                 ActionMap actionMap = component.getActionMap();
 
                 KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
-                inputMap.put(keyStroke, label);
-                actionMap.put(label, action);
+                inputMap.put(keyStroke, methodName);
+                actionMap.put(methodName, action);
             }
         }
 
@@ -174,6 +181,7 @@ public class ButtonBuilder
         this.shortcut = null;
         this.tooltip = null;
         this.method = null;
+        this.methodName = null;
 
         return result;
     }

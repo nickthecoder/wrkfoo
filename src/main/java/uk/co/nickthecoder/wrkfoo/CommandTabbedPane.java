@@ -38,6 +38,13 @@ public class CommandTabbedPane extends JTabbedPane
         setTabComponentAt(getTabCount() - 1, label);
     }
 
+    @Override
+    public void removeTabAt( int index )
+    {
+        super.removeTabAt(index);
+        commandTabs.remove(index);
+    }
+    
     public void updateTabInfo(CommandTab tab)
     {
         String title = tab.getCommand().getShortTitle();

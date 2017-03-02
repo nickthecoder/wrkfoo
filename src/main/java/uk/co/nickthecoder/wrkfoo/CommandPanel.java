@@ -12,7 +12,9 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -21,6 +23,7 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
+import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
 public class CommandPanel<R> extends JPanel
@@ -115,6 +118,7 @@ public class CommandPanel<R> extends JPanel
         return goButton;
     }
 
+
     public void postCreate()
     {
         command.postCreate();
@@ -177,35 +181,77 @@ public class CommandPanel<R> extends JPanel
 
         table.addMouseListener(new MouseAdapter()
         {
-            private int lastRowClicked = 0;
 
-            public void mouseClicked(MouseEvent me)
+            @Override
+            public void mouseReleased(MouseEvent me)
             {
                 if (me.isPopupTrigger()) {
-                    createOptionsMenu();
+                    createOptionsMenu(me);
+                }
+            }
 
-                } else if (me.getClickCount() == 2) {
+            @Override
+            public void mousePressed(MouseEvent me)
+            {
+                if (me.isPopupTrigger()) {
+                    createOptionsMenu(me);
+                }
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent me)
+            {
+                if (me.getClickCount() == 2) {
                     boolean newTab = me.isControlDown();
                     me.consume();
-                    int r = table.getSelectedRow() >= 0 ?
-                        table.convertRowIndexToModel(table.getSelectedRow()) :
-                        lastRowClicked;
+                    int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
 
-                    R row = table.getModel().getRow(r);
+                    R row = table.getModel().getRow(rowIndex);
                     Option option = command.getOptions().getDefaultRowOption();
                     option.runOption(command, row, newTab);
                 }
-                if (table.getSelectedRow() >= 0) {
-                    lastRowClicked = table.convertRowIndexToModel(table.getSelectedRow());
-                }
+                
             }
         });
 
     }
 
-    private void createOptionsMenu()
+    private void createOptionsMenu(MouseEvent me)
     {
+        int r = table.rowAtPoint(me.getPoint());
+        int rowIndex = table.convertRowIndexToModel(r);
+        table.getSelectionModel().clearSelection();
+        table.getSelectionModel().addSelectionInterval(r, r);
+        
+        boolean useNewTab = me.isControlDown();
+        
+        JPopupMenu menu = new JPopupMenu();
+        Options options = command.getOptions();
+        for (Option option : options) {
+            if (option.isRow()) {
+                menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
 
+            }
+        }
+        menu.show(me.getComponent(), me.getX(), me.getY());
+    }
+
+    private JMenuItem createOptionsMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
+    {
+        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
+        JMenuItem item = new JMenuItem(option.getLabel() + extra);
+        item.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (option != null) {
+                    option.runOption(command, table.getModel().getRow(rowIndex), useNewTab);
+                }
+            }
+        });
+
+        return item;
     }
 
     public void stopEditing()

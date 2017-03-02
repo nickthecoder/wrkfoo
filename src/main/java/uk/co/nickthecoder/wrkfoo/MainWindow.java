@@ -72,17 +72,18 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
             .build());
+        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
     }
 
     public CommandTab addTab(Command<?> command)
     {
         CommandTab tab = new CommandTab(this, command);
 
-        tabbedPane.add( tab );
-        
+        tabbedPane.add(tab);
+
         tab.postCreate();
         tab.go(command);
-        
+
         return tab;
     }
 
@@ -118,10 +119,10 @@ public class MainWindow extends JFrame
     private void tabChanged()
     {
         CommandTab tab = tabbedPane.getSelectedCommandTab();
-        
-        if ( tab == null) {
+
+        if (tab == null) {
             setTitle("WrkFoo");
-            
+
         } else {
 
             setTitle(tab.getTitle());
@@ -141,6 +142,14 @@ public class MainWindow extends JFrame
         WrkCommand command = new WrkCommand();
         addTab(command);
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+    }
+
+    public void onCloseTab()
+    {
+        int currentTabIndex = tabbedPane.getSelectedIndex();
+        if (currentTabIndex >= 0) {
+            tabbedPane.removeTabAt(currentTabIndex);
+        }
     }
 
     public void onNewWindow()

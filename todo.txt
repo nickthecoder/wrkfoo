@@ -24,6 +24,11 @@ New Features
 ============
 
 	Right click a row to show a menu of available options (including the code).
+
+	Commands
+		Disk Usage command
+			Takes ages to run, but can then navigate the results quickly
+	 	Mount Points, including free space, total space, used all as sizes.
 	 
 	WrkCommandOptions - shows a list of the options files used by the given command
 	WrkOptions - shows the options in the options file

@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class OptionsGroup implements Options
@@ -37,7 +38,7 @@ public class OptionsGroup implements Options
         }
         return null;
     }
-    
+
     @Override
     public Option getNonRowOption(String code)
     {
@@ -50,4 +51,62 @@ public class OptionsGroup implements Options
         return null;
     }
 
+    @Override
+    public Iterator<Option> iterator()
+    {
+        return new OptionsGroupIterator();
+    }
+
+    class OptionsGroupIterator implements Iterator<Option>
+    {
+        private Option next;
+
+        private Iterator<Options> optionsIterator;
+
+        private Iterator<Option> singleIterator;
+
+        public OptionsGroupIterator()
+        {
+            optionsIterator = optionsList.iterator();
+            if (optionsIterator.hasNext()) {
+                singleIterator = optionsIterator.next().iterator();
+                lookAhead();
+            } else {
+                next = null;
+            }
+        }
+
+        private void lookAhead()
+        {
+            while (!singleIterator.hasNext()) {
+                if (optionsIterator.hasNext()) {
+                    singleIterator = optionsIterator.next().iterator();
+                } else {
+                    next = null;
+                    return;
+                }
+            }
+            next = singleIterator.next();
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return next != null;
+        }
+
+        @Override
+        public Option next()
+        {
+            Option result = next;
+            lookAhead();
+            return result;
+        }
+
+        @Override
+        public void remove()
+        {
+            throw new RuntimeException("remove not supported");
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
 
-public interface Options
+public interface Options extends Iterable<Option>
 {
     public Option getDefaultRowOption();
 
