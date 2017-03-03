@@ -1,23 +1,56 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
+import java.awt.Color;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.command.GitStatusTask.GitStatusLine;
 
 public class GitStatus extends ListCommand<GitStatusTask, GitStatusLine>
 {
+    public static Color UNTRACKED = new Color( 255,255, 128 );
+    
+    public static Color NOT_UPDATED = new Color( 255, 128, 128);
+
+    public static Color UPDATED = new Color( 128, 255, 128);
 
     public GitStatus()
     {
         super(new GitStatusTask());
     }
 
+
+    protected ListTableModel<GitStatusLine> createTableModel()
+    {
+        ListTableModel<GitStatusLine> tableModel = new ListTableModel<GitStatusLine>(this, new ArrayList<GitStatusLine>(), getColumns())
+        {
+            @Override
+            public Color getRowBackground(int row)
+            {
+                //SimpleTable table = GitStatus.this.getCommandPanel().table;
+                
+                GitStatusLine line = list.get(row);
+                
+                if ( line.x == '?') return UNTRACKED;
+                
+                if ( line.y == 'M') return NOT_UPDATED;
+
+                if ( line.x == 'M') return UPDATED;
+                
+                return Color.white;
+            }
+        };
+
+        return tableModel;
+    }
+    
     @Override
     protected Columns<GitStatusLine> createColumns()
     {

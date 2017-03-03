@@ -70,7 +70,7 @@ public class SimpleTable<R> extends JTable
 
         if (!isRowSelected(row)) {
 
-            Color bg = getModel().getRowBackground(row);
+            Color bg = getModel().getRowBackground(convertRowIndexToModel(row));
             if (bg == null) {
 
                 if (row % 2 == 0) {
