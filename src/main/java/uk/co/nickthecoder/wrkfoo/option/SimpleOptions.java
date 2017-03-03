@@ -59,6 +59,15 @@ public class SimpleOptions implements Options
             nonRowMap.put(option.getCode(), option);
         }
     }
+    
+    public void addAlias( Option option, String alias )
+    {
+        if (option.isRow()) {
+            rowMap.put(alias, option );
+        } else {            
+            nonRowMap.put(alias, option );
+        }
+    }
 
     @Override
     public Iterator<Option> iterator()
