@@ -28,6 +28,17 @@ public class SimpleOptions implements Options
     }
 
     @Override
+    public Option getOption(String code)
+    {
+        Option result = getRowOption(code);
+        if ( result == null) {
+            return getNonRowOption(code);
+        } else {
+            return result;
+        }
+    }
+    
+    @Override
     public Option getRowOption(String code)
     {
         return rowMap.get(code);

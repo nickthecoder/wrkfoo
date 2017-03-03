@@ -217,7 +217,7 @@ public class CommandPanel<R> extends JPanel
         for (int i = 0; i < model.getRowCount(); i++) {
             String code = model.getCode(i);
             if (!Util.empty(code)) {
-                Option option = command.getOptions().getRowOption(code);
+                Option option = command.getOptions().getOption(code);
                 if (option != null) {
                     if (option.isMultiRow()) {
                         processMultiRowOptions(option, newTab);
@@ -267,9 +267,20 @@ public class CommandPanel<R> extends JPanel
         for (Option option : options) {
             if (option.isRow()) {
                 menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
-
             }
         }
+        
+        boolean first = true;
+        for (Option option : options) {
+            if (!option.isRow()) {
+                if (first) {
+                    menu.addSeparator();
+                    first = false;
+                }
+                menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
+            }
+        }  
+        
         menu.show(me.getComponent(), me.getX(), me.getY());
     }
 
