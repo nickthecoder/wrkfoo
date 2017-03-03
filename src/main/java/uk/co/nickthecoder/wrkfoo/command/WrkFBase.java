@@ -118,7 +118,7 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
             {
                 return row.getName();
             }
-        }.width(300));
+        }.sort().width(300));
 
         columns.add(new Column<File>(Date.class, "lastModified")
         {

@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Default sort order for scan and mounts
+
 ctrl+Enter => command in New tab
 	Old tab is blank if the option is trying to reuse the command, but changing the parameters.  
 
@@ -63,9 +65,6 @@ Later Features
 
 New Commands
 ============
-
-	Disk Usage command
-		Takes ages to run, but can then navigate the results quickly
 
 	Database table (wrkdb)
 	Database row (wrktable)

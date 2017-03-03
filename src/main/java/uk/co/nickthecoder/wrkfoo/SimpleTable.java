@@ -86,6 +86,9 @@ public class SimpleTable<R> extends JTable
 
     }
 
+    /**
+     * When the tab key is pressed, advance to the next editable cell.
+     */
     public void tab()
     {
         int row = getSelectedRow();
@@ -122,6 +125,9 @@ public class SimpleTable<R> extends JTable
         tabToCell(row, col);
     }
 
+    /**
+     * When the shift-tab key is pressed, advance to the previous editable cell.
+     */
     public void untab()
     {
         int row = getSelectedRow();

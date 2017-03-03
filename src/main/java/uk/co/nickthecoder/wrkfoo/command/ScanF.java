@@ -40,7 +40,7 @@ public class ScanF extends ListCommand<ScanFTask, ScannedDirectory>
             {
                 return row.size;
             }
-        }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
+        }.reverseSort().width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 
         return columns;
     }

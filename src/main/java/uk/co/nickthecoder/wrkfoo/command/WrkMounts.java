@@ -33,7 +33,7 @@ public class WrkMounts extends ListCommand<WrkMountsTask, MountPoint>
                 return row.file == null ? null : row.file;
             }
 
-        }.width(200));
+        }.sort().width(200));
 
         columns.add(new Column<MountPoint>(String.class, "name")
         {

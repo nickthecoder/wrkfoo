@@ -55,7 +55,7 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
             {
                 return row.getName();
             }
-        });
+        }.sort());
 
 
         return columns;

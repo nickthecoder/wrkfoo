@@ -3,14 +3,20 @@ package uk.co.nickthecoder.wrkfoo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTable;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 
 public class Columns<R>
 {
     private List<Column<R>> columns;
 
     public Column<R> optionColunm;
+
+    public int defaultSortColumnIndex = -1;
 
     public Columns()
     {
@@ -29,6 +35,9 @@ public class Columns<R>
 
     public void add(Column<R> column)
     {
+        if (column.defaultSort) {
+            defaultSortColumnIndex = columns.size();
+        }
         columns.add(column);
     }
 
@@ -64,7 +73,6 @@ public class Columns<R>
             tableColumn.setPreferredWidth(column.width);
             tableColumn.setMinWidth(column.minWidth);
             tableColumn.setMaxWidth(column.maxWidth);
-
         }
 
         for (int i = getColumnCount() - 1; i >= 0; i--) {
@@ -75,7 +83,22 @@ public class Columns<R>
             }
         }
 
+        // table.setAutoCreateRowSorter(true);
         return table;
     }
 
+    public void defaultSort(JTable table)
+    {
+        if (defaultSortColumnIndex > 0) {
+            
+            TableRowSorter<?> rowSorter = (TableRowSorter<?>) table.getRowSorter();
+            List<SortKey> keys = new ArrayList<SortKey>();
+            SortKey sortKey = new SortKey(defaultSortColumnIndex,
+                columns.get(defaultSortColumnIndex).reverse ?
+                    SortOrder.DESCENDING: SortOrder.ASCENDING  );
+            keys.add(sortKey);
+            rowSorter.setSortKeys(keys);
+            
+        }
+    }
 }

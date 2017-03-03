@@ -19,8 +19,9 @@ public class WrkFTree extends WrkFBase
     {
         super(createTask());
         
-        //getColumns().find("path").visible = true;
-        //getColumns().find("name").visible = false;
+        getColumns().find("path").visible = true;
+        getColumns().find("name").visible = false;
+        getColumns().defaultSortColumnIndex = 2;
     }
     
 

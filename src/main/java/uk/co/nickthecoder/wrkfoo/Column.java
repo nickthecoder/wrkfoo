@@ -23,6 +23,10 @@ public abstract class Column<R>
 
     public String label;
     
+    public boolean defaultSort = false;
+    
+    public boolean reverse = false;
+    
     public boolean editable = false;
 
     public TableCellRenderer cellRenderer = null;
@@ -76,10 +80,24 @@ public abstract class Column<R>
         this.editable = true;
         return this;
     }
-    
+
     public Column<R> hide()
     {
         this.visible = false;
+        return this;
+    }
+
+    public Column<R> sort()
+    {
+        this.reverse = false;
+        this.defaultSort = true;
+        return this;
+    }
+    
+    public Column<R> reverseSort()
+    {
+        this.reverse = true;
+        this.defaultSort = true;
         return this;
     }
     

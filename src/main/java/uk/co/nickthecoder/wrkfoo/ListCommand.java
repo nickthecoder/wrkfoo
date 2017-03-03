@@ -39,6 +39,7 @@ public abstract class ListCommand<T extends Task & ListResults<R>, R> extends Ab
     public void updateResults()
     {
         getTableModel().update(getTask().getResults());
+        columns.defaultSort( getCommandPanel().table );
     }
 
     public ListCommand<T,R> clone()

@@ -5,7 +5,6 @@ import java.io.File;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.command.ScanF;
 import uk.co.nickthecoder.wrkfoo.command.WrkF;
-import uk.co.nickthecoder.wrkfoo.command.WrkMounts;
 
 public class Example
 {
@@ -22,7 +21,7 @@ public class Example
         WrkF wrkFHome = new WrkF();
         wrkFHome.getTask().directory.setValue(new File(System.getProperty("user.home")));
 
-        WrkMounts wrkMounts = new WrkMounts();
+        //WrkMounts wrkMounts = new WrkMounts();
 
         ScanF scanF = new ScanF();
         scanF.getTask().directory.setValue(new File( "/home/nick/documents" )); 
