@@ -62,6 +62,11 @@ public class OptionsGroup implements Options
         return null;
     }
 
+    public void clear()
+    {
+        optionsList.clear();
+    }
+    
     @Override
     public Iterator<Option> iterator()
     {

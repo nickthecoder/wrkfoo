@@ -6,16 +6,31 @@ import java.io.IOException;
 import uk.co.nickthecoder.wrkfoo.EasyJson;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
-public class GroovyOptions extends SimpleOptions implements ReloadableOptions
-{
+public class GroovyOptions extends OptionsGroup implements ReloadableOptions
+{    
     private File file;
+    
+    private SimpleOptions simpleOptions;
 
+    public GroovyOptions()
+    {
+        simpleOptions = new SimpleOptions();        
+        add(simpleOptions);
+    }
+    
     public void load(File file)
         throws IOException
     {
+        load( file, true );
+    }
+    
+    public void load(File file, boolean register)
+    {
         this.file = file;
         loadOptions();
-        Resources.instance.RegisterReloadableOptions(this);
+        if (register) {
+            Resources.instance.RegisterReloadableOptions(this);
+        }
     }
 
     private final void loadOptions()
@@ -24,6 +39,13 @@ public class GroovyOptions extends SimpleOptions implements ReloadableOptions
         try {
             EasyJson.Node root = json.open(file);
 
+            String include = root.getString("include", null);
+            if ( include != null ) {
+                GroovyOptions included = new GroovyOptions();
+                included.load( new File( file.getParent(), include ), false );
+                add( included );
+            }
+            
             EasyJson.Node jglobals = root.getArray("options");
 
             for (EasyJson.Node jopt : jglobals) {
@@ -36,12 +58,12 @@ public class GroovyOptions extends SimpleOptions implements ReloadableOptions
 
                 GroovyOption option = new GroovyOption(code, label, groovyScript, isRow, isMulti);
 
-                add(option);
+                simpleOptions.add(option);
 
                 String aliases = jopt.getString("aliases", null);
                 if (aliases != null) {
                     for (String alias : aliases.split(",")) {
-                        addAlias(option, alias);
+                        simpleOptions.addAlias(option, alias);
                     }
                 }
 
@@ -58,7 +80,9 @@ public class GroovyOptions extends SimpleOptions implements ReloadableOptions
     public void reload()
     {
         if (file != null) {
+            simpleOptions.clear();
             clear();
+            add(simpleOptions);
             loadOptions();
         }
     }
