@@ -35,6 +35,9 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
         String[] lines = output.split("\n");
 
         for (String line : lines) {
+            if (line.length() < 4) {
+                continue;
+            }
             char x = line.charAt(0);
             char y = line.charAt(1);
             String path = line.substring(3);
