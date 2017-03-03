@@ -23,10 +23,6 @@ Table takes up too much width when there's scroll bars, causing the parameters p
 New Features
 ============
 
-	Commands
-		Disk Usage command
-			Takes ages to run, but can then navigate the results quickly
-	 	Mount Points, including free space, total space, used all as sizes.
 	 
 	WrkCommandOptions - shows a list of the options files used by the given command
 	WrkOptions - shows the options in the options file
@@ -45,9 +41,6 @@ New Features
 
 	Sort keeps the folders at the top regardless of anything else.
 
-	Ctrl+click to open a folder in a new tab.
-	Ctrl+enter to open command in a new tab
-
 	Multi-row commands e.g.
 		delete a bunch of files with one command (which prompt "Are you sure")
 		tar/zip a bunch of files
@@ -59,16 +52,20 @@ Later Features
 ==============
 
 	Run tasks in a thread
+		Show a "Running" status, with a Stop button (if the Task implements Stoppable).
 
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
-	Tree structures as well as tables
+	Tree structures as well as tables?
 		A tree structure in the left pane, and the table in the middle
 		e.g. a Tree with Databases as the top level, then tables.
 			Inside tables, there's an item called "data", which calls WrkTable
 
 New Commands
 ============
+
+	Disk Usage command
+		Takes ages to run, but can then navigate the results quickly
 
 	Database table (wrkdb)
 	Database row (wrktable)

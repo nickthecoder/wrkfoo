@@ -28,6 +28,13 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
         wrkFTreeHome.getTask().directory.setValue( new File( "/home/nick/3D" ) ); //new File( System.getProperty("user.home") ) );
         wrkFTreeHome.getTask().depth.setValue( 1 );
         results.add( wrkFTreeHome );
+
+        WrkMounts wrkMountPoints = new WrkMounts();
+        results.add( wrkMountPoints );
+        
+        ScanF scanF = new ScanF();
+        scanF.getTask().directory.setValue( new File( "/home/nick/documents"));
+        results.add( scanF );
     }
 
     @Override

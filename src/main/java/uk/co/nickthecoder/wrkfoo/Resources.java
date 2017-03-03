@@ -3,6 +3,10 @@ package uk.co.nickthecoder.wrkfoo;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOptions;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
@@ -46,9 +50,9 @@ public class Resources
                 EasyJson json = new EasyJson();
                 try {
                     EasyJson.Node root = json.open(settingsFile);
-    
+
                     EasyJson.Node jglobals = root.getArray("globalOptions");
-                        
+
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
                         globalOptions.add(new GroovyOptions(new File(optionsDirectory, name + ".json")));
@@ -65,17 +69,17 @@ public class Resources
         }
     }
 
-    public GroovyOptions readOptions( String name )
+    public GroovyOptions readOptions(String name)
     {
         try {
-            GroovyOptions result = new GroovyOptions(new File( optionsDirectory, name + ".json"));
+            GroovyOptions result = new GroovyOptions(new File(optionsDirectory, name + ".json"));
             return result;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
     public OptionsGroup createGroupOptions(String... optionsName)
     {
         OptionsGroup result = new OptionsGroup();
@@ -93,5 +97,14 @@ public class Resources
         result.add(globalOptions);
 
         return result;
+    }
+
+    public static Icon icon(String name)
+    {
+        try {
+            return new ImageIcon(ImageIO.read(Resources.class.getResource(name)));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

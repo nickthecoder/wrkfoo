@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-public class WrkF extends WrkFBaseCommand
+public class WrkF extends WrkFBase
 {
     public static WrkFTask createTask()
     {

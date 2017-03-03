@@ -6,44 +6,32 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
+public class WrkFBase extends ListCommand<WrkFTask, File>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
-    public static Icon fileManagerIcon = UIManager.getIcon("FileView.directoryIcon");
-    public static Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
-    public static Icon fileIcon = UIManager.getIcon("FileView.fileIcon");
-
-    {
-        try {
-            directoryIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("folder.png")) );
-            fileIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("file.png")) );
-            fileManagerIcon = new ImageIcon( ImageIO.read(MainWindow.class.getResource("fileManager.png")) );
-        } catch (Exception e) {
-            // Do nothing - stick with the default icons
-        }
-    }
+    public static final Icon fileManagerIcon = Resources.icon("fileManager.png");
+    public static final Icon directoryIcon = Resources.icon("folder.png");
+    public static final Icon fileIcon = Resources.icon("file.png");
     
     /**
      * Amount of characters to chop off of the path column.
      */
     private int chopPath = 0;
 
-    public WrkFBaseCommand(WrkFTask task)
+    public WrkFBase(WrkFTask task)
     {
         super(task);
     }
@@ -91,7 +79,7 @@ public class WrkFBaseCommand extends ListCommand<WrkFTask, File>
             public Color getRowBackground(int row)
             {
                 File file = list.get(row);
-                return file.isFile() ? null : WrkFBaseCommand.directoryColor;
+                return file.isFile() ? null : WrkFBase.directoryColor;
             }
         };
 

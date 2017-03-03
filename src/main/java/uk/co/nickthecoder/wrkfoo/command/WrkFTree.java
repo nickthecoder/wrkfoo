@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo.command;
 
 import javax.swing.Icon;
 
-public class WrkFTree extends WrkFBaseCommand
+public class WrkFTree extends WrkFBase
 {
     public static WrkFTask createTask()
     {
