@@ -118,7 +118,6 @@ public class CommandPanel<R> extends JPanel
         return goButton;
     }
 
-
     public void postCreate()
     {
         command.postCreate();
@@ -144,18 +143,7 @@ public class CommandPanel<R> extends JPanel
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    table.stopEditing();
-                    CommandTableModel<?> model = table.getModel();
-                    for (int i = 0; i < model.getRowCount(); i++) {
-                        String code = model.getCode(i);
-                        model.setCode(i, "");
-                        if (!Util.empty(code)) {
-                            Option option = command.getOptions().getRowOption(code);
-                            if (option != null) {
-                                option.runOption(command, model.getRow(i), false);
-                            }
-                        }
-                    }
+                    processOptions(false);
                 }
             });
 
@@ -164,18 +152,7 @@ public class CommandPanel<R> extends JPanel
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    table.stopEditing();
-                    CommandTableModel<?> model = table.getModel();
-                    for (int i = 0; i < model.getRowCount(); i++) {
-                        String code = model.getCode(i);
-                        model.setCode(i, "");
-                        if (!Util.empty(code)) {
-                            Option option = command.getOptions().getRowOption(code);
-                            if (option != null) {
-                                option.runOption(command, model.getRow(i), true);
-                            }
-                        }
-                    }
+                    processOptions(true);
                 }
             });
 
@@ -210,10 +187,48 @@ public class CommandPanel<R> extends JPanel
                     Option option = command.getOptions().getDefaultRowOption();
                     option.runOption(command, row, newTab);
                 }
-                
+
             }
         });
 
+    }
+
+    private void processOptions(boolean newTab)
+    {
+        CommandTableModel<?> model = table.getModel();
+        table.stopEditing();
+
+        // If the selected row has no option, then use the default option on that row only
+        int r = table.getSelectedRow();
+
+        if (r >= 0) {
+            int rowIndex = table.convertRowIndexToModel(r);
+            if (Util.empty(model.getCode(rowIndex))) {
+                R row = table.getModel().getRow(rowIndex);
+                Option option = command.getOptions().getDefaultRowOption();
+                option.runOption(command, row, newTab);
+                return;
+            }
+        }
+
+        // Apply the options on all rows.
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String code = model.getCode(i);
+            model.setCode(i, "");
+            if (!Util.empty(code)) {
+                Option option = command.getOptions().getRowOption(code);
+                if (option != null) {
+                    option.runOption(command, model.getRow(i), newTab);
+                    if (!newTab) {
+                        // TODO Should the remaining options be ignore? (if results were replaced).
+                        // For now, lets be safe, and only apply a single option.
+                        break;
+                        // Note, this is bad, because we are NOT doing this in the order as seen in the GUI
+                        // we are doing based on the UNSORTED rows.
+                    }
+                }
+            }
+        }
     }
 
     private void createOptionsMenu(MouseEvent me)
@@ -222,9 +237,9 @@ public class CommandPanel<R> extends JPanel
         int rowIndex = table.convertRowIndexToModel(r);
         table.getSelectionModel().clearSelection();
         table.getSelectionModel().addSelectionInterval(r, r);
-        
+
         boolean useNewTab = me.isControlDown();
-        
+
         JPopupMenu menu = new JPopupMenu();
         Options options = command.getOptions();
         for (Option option : options) {

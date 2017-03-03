@@ -1,9 +1,6 @@
 Current Task
 ============
 
-ctrl+Enter => command in New tab
-	Old tab is blank if the option is trying to reuse the command, but changing the parameters.  
-
 BUGS
 ====
 
