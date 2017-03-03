@@ -21,6 +21,13 @@ public class SimpleOptions implements Options
         nonRowMap = new HashMap<String,Option>();
     }
 
+    public void clear()
+    {
+        list.clear();
+        rowMap.clear();
+        nonRowMap.clear();
+    }
+    
     @Override
     public Option getDefaultRowOption()
     {

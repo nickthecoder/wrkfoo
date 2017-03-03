@@ -2,6 +2,8 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -10,13 +12,18 @@ import javax.swing.ImageIcon;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOptions;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
+import uk.co.nickthecoder.wrkfoo.option.ReloadableOptions;
 
 public class Resources
 {
     public static final Resources instance = new Resources();
 
-    public String editor;
+    static {
+        Resources.instance.readSettings();
+    }
     
+    public String editor;
+
     private File settingsDirectory;
 
     private File optionsDirectory;
@@ -25,8 +32,12 @@ public class Resources
 
     private OptionsGroup globalOptions;
 
+    private Set<ReloadableOptions> reloadableOptions;
+
     private Resources()
     {
+        reloadableOptions = new HashSet<ReloadableOptions>();
+
         globalOptions = new OptionsGroup();
 
         settingsDirectory = Util.createFile(new File(System.getProperty("user.home")), ".config", "wrkfoo");
@@ -36,7 +47,6 @@ public class Resources
         optionsDirectory.mkdirs();
 
         settingsFile = new File(settingsDirectory, "settings.json");
-        readSettings();
     }
 
     public OptionsGroup globalOptions()
@@ -53,13 +63,15 @@ public class Resources
                 try {
                     EasyJson.Node root = json.open(settingsFile);
 
-                    editor = root.getString("editor", "gedit" );
-                    
+                    editor = root.getString("editor", "gedit");
+
                     EasyJson.Node jglobals = root.getArray("globalOptions");
 
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
-                        globalOptions.add(new GroovyOptions(new File(optionsDirectory, name + ".json")));
+                        GroovyOptions options =new GroovyOptions();
+                        options.load(new File(optionsDirectory, name + ".json"));
+                        globalOptions.add(options);
                     }
                 } finally {
                     json.close();
@@ -81,7 +93,8 @@ public class Resources
     public GroovyOptions readOptions(String name)
     {
         try {
-            GroovyOptions result = new GroovyOptions(getOptionsFile(name));
+            GroovyOptions result = new GroovyOptions();
+            result.load(getOptionsFile(name));
             return result;
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,7 +108,8 @@ public class Resources
 
         for (String name : optionsName) {
             try {
-                GroovyOptions fo = new GroovyOptions(new File(optionsDirectory, name + ".json"));
+                GroovyOptions fo = new GroovyOptions();
+                fo.load(new File(optionsDirectory, name + ".json"));
                 result.add(fo);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -114,6 +128,18 @@ public class Resources
             return new ImageIcon(ImageIO.read(Resources.class.getResource(name)));
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public void RegisterReloadableOptions(ReloadableOptions ro)
+    {
+        reloadableOptions.add(ro);
+    }
+
+    public void reloadOptions()
+    {
+        for (ReloadableOptions ro : reloadableOptions) {
+            ro.reload();
         }
     }
 }

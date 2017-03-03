@@ -97,6 +97,7 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
             .build());
         toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
+        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").build());
     }
 
     public CommandTab addTab(Command<?> command)
@@ -232,6 +233,11 @@ public class MainWindow extends JFrame
         if (getCurrentTab() != null) {
             getCurrentTab().redo();
         }
+    }
+
+    public void onReloadOptions()
+    {
+        Resources.instance.reloadOptions();
     }
 
 }
