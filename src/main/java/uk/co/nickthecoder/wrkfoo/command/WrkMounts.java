@@ -30,7 +30,7 @@ public class WrkMounts extends ListCommand<WrkMountsTask, MountPoint>
             @Override
             public File getValue(MountPoint row)
             {
-                return row.file == null ? null : row.file;
+                return row.file;
             }
 
         }.sort().width(200));

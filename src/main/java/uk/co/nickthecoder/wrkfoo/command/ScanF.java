@@ -23,7 +23,7 @@ public class ScanF extends ListCommand<ScanFTask, ScannedDirectory>
     {
         Columns<ScannedDirectory> columns = new Columns<ScannedDirectory>();
 
-        columns.add(new Column<ScannedDirectory>(String.class, "mount point")
+        columns.add(new Column<ScannedDirectory>(String.class, "path")
         {
             @Override
             public String getValue(ScannedDirectory row)
@@ -31,7 +31,7 @@ public class ScanF extends ListCommand<ScanFTask, ScannedDirectory>
                 return row.path;
             }
 
-        }.width(200));
+        }.tooltip(1).width(200));
 
         columns.add(new Column<ScannedDirectory>(Long.class, "size")
         {

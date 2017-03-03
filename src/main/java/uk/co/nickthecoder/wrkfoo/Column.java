@@ -19,7 +19,7 @@ public abstract class Column<R>
 
     public int width = 150;
 
-    public int minWidth = 100;
+    public int minWidth = 10;
 
     public int maxWidth = 1000;
 
@@ -36,6 +36,8 @@ public abstract class Column<R>
     public boolean visible = true;
     
     public Comparator<?> comparator;
+    
+    public int tooltipColumn = -1;
     
     
     public abstract Object getValue(R row);
@@ -120,6 +122,12 @@ public abstract class Column<R>
     public Column<R> renderer(TableCellRenderer tcr)
     {
         this.cellRenderer = tcr;
+        return this;
+    }
+    
+    public Column<R> tooltip( int columnIndex )
+    {
+        this.tooltipColumn = columnIndex;
         return this;
     }
 }

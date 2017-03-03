@@ -111,7 +111,7 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
             {
                 return row.getPath().substring(chopPath);
             }
-        }.hide().width(300));
+        }.tooltip(2).hide().width(300));
 
         columns.add(new Column<File>(File.class, "name")
         {
@@ -120,7 +120,7 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
             {
                 return row;
             }
-        }.comparator(FoldersFirstComparator.instance).sort().width(300).renderer(FileNameRenderer.instance));
+        }.tooltip(2).comparator(FoldersFirstComparator.instance).sort().width(300).renderer(FileNameRenderer.instance));
 
         columns.add(new Column<File>(Date.class, "lastModified")
         {

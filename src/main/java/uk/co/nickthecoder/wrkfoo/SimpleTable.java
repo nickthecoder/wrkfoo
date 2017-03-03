@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -13,7 +14,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 
-
 public class SimpleTable<R> extends JTable
 {
 
@@ -22,9 +22,9 @@ public class SimpleTable<R> extends JTable
     public SimpleTable(CommandTableModel<R> model)
     {
         super(model);
-        
+
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = this.getActionMap();
 
@@ -53,7 +53,7 @@ public class SimpleTable<R> extends JTable
     {
         return (CommandTableModel<R>) super.getModel();
     }
-    
+
     @Override
     public TableCellRenderer getCellRenderer(int row, int column)
     {
@@ -62,17 +62,17 @@ public class SimpleTable<R> extends JTable
         TableCellRenderer result = getModel().columns.getColumn(modelColumn).cellRenderer;
         return result == null ? super.getCellRenderer(row, column) : result;
     }
-    
+
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
     {
         Component comp = super.prepareRenderer(renderer, row, column);
 
         if (!isRowSelected(row)) {
-            
-            Color bg = getModel().getRowBackground( row );
-            if ( bg == null) {
-                
+
+            Color bg = getModel().getRowBackground(row);
+            if (bg == null) {
+
                 if (row % 2 == 0) {
                     comp.setBackground(this.getBackground());
                 } else {
@@ -183,5 +183,28 @@ public class SimpleTable<R> extends JTable
                 getCellEditor().cancelCellEditing();
             }
         }
+    }
+
+    @Override
+    public String getToolTipText(MouseEvent e)
+    {
+        java.awt.Point p = e.getPoint();
+        int rowIndex = rowAtPoint(p);
+        int columnIndex = columnAtPoint(p);
+
+        if ((rowIndex >= 0) && (columnIndex >= 0)) {
+
+            columnIndex = convertColumnIndexToModel(columnIndex);
+            rowIndex = convertRowIndexToModel(rowIndex);
+            
+            Column<?> column = getModel().columns.getColumn(columnIndex);
+            int tooltipColumn = column.tooltipColumn;
+            if (tooltipColumn >= 0) {
+                Object val = getModel().getValueAt(rowIndex, tooltipColumn); 
+                return val == null ? null : val.toString();
+            }
+        }
+
+        return super.getToolTipText(e);
     }
 }
