@@ -16,6 +16,8 @@ import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
+import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
+import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class WrkFBase extends ListCommand<WrkFTask, File>
@@ -111,14 +113,14 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
             }
         }.hide().width(300));
 
-        columns.add(new Column<File>(String.class, "name")
+        columns.add(new Column<File>(File.class, "name")
         {
             @Override
-            public String getValue(File row)
+            public File getValue(File row)
             {
-                return row.getName();
+                return row;
             }
-        }.sort().width(300));
+        }.comparator(FoldersFirstComparator.instance).sort().width(300).renderer(FileNameRenderer.instance));
 
         columns.add(new Column<File>(Date.class, "lastModified")
         {
@@ -170,4 +172,5 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
     {
         return "wrkf";
     }
+    
 }

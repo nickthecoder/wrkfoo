@@ -89,9 +89,17 @@ public class Columns<R>
 
     public void defaultSort(JTable table)
     {
+        TableRowSorter<?> rowSorter = (TableRowSorter<?>) table.getRowSorter();
+
+        for (int i = getColumnCount() - 1; i >= 0; i--) {
+            Column<?> column = columns.get(i);
+            if ( column.comparator != null ) {
+                rowSorter.setComparator(i, column.comparator);
+            }
+        }
+        
         if (defaultSortColumnIndex > 0) {
             
-            TableRowSorter<?> rowSorter = (TableRowSorter<?>) table.getRowSorter();
             List<SortKey> keys = new ArrayList<SortKey>();
             SortKey sortKey = new SortKey(defaultSortColumnIndex,
                 columns.get(defaultSortColumnIndex).reverse ?

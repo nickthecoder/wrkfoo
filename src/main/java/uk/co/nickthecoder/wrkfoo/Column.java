@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.util.Comparator;
+
 import javax.swing.table.TableCellRenderer;
 
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -32,6 +34,8 @@ public abstract class Column<R>
     public TableCellRenderer cellRenderer = null;
 
     public boolean visible = true;
+    
+    public Comparator<?> comparator;
     
     
     public abstract Object getValue(R row);
@@ -98,6 +102,12 @@ public abstract class Column<R>
     {
         this.reverse = true;
         this.defaultSort = true;
+        return this;
+    }
+    
+    public Column<R> comparator(Comparator<?> value)
+    {
+        comparator = value;
         return this;
     }
     
