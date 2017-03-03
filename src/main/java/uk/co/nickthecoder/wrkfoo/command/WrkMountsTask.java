@@ -12,6 +12,7 @@ import java.util.List;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.command.WrkMountsTask.MountPoint;
+import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 
 public class WrkMountsTask extends Task implements ListResults<MountPoint>
 {
@@ -31,23 +32,23 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
         }
     }
 
-    public boolean accept( MountPoint mp )
+    public boolean accept(MountPoint mp)
     {
         if (mp.size <= 0) {
             return false;
         }
-        if (mp.store.name().equals( "tmpfs")) {
+        if (mp.store.name().equals("tmpfs")) {
             return false;
         }
-        if (mp.store.name().equals( "udev")) {
+        if (mp.store.name().equals("udev")) {
             return false;
         }
-        if (mp.store.name().equals( "rootfs")) {
+        if (mp.store.name().equals("rootfs")) {
             return false;
         }
         return true;
     }
-    
+
     @Override
     public List<MountPoint> getResults()
     {
@@ -74,7 +75,7 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             // Look for a private field called "file" or "root" in the FileStore. (Only works for Unix type systems).
             try {
                 Class<?> klass = store.getClass();
@@ -99,8 +100,18 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
             } catch (Exception e) {
                 // Couldn't find the actual mount point.
                 // e.printStackTrace();
-            }            
+            }
 
+        }
+
+        /**
+         * Suitable for <code>row</code> to be passed to {@link OSCommand#command(String, Object...)}
+         * 
+         * @return The path
+         */
+        public String toString()
+        {
+            return file.getPath();
         }
     }
 }

@@ -12,6 +12,7 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.command.ScanFTask.ScannedDirectory;
+import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 
 public class ScanFTask extends Task implements ListResults<ScannedDirectory>
 {
@@ -38,7 +39,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>
 
         Exec du = new Exec("du", "--bytes", oneFileSystem.getValue() ? "--one-file-system" : null,
             directory.getValue().getPath());
-        
+
         BufferedReader reader = du.runBuffered();
 
         String line;
@@ -89,5 +90,13 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>
             return file;
         }
 
+        /**
+         * Suitable for <code>row</code> to be passed to {@link OSCommand#command(String, Object...)}
+         * @return The path
+         */
+        public String toString()
+        {
+            return this.path;
+        }
     }
 }

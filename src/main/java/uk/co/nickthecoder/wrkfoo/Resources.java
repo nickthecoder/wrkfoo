@@ -15,6 +15,8 @@ public class Resources
 {
     public static final Resources instance = new Resources();
 
+    public String editor;
+    
     private File settingsDirectory;
 
     private File optionsDirectory;
@@ -51,6 +53,8 @@ public class Resources
                 try {
                     EasyJson.Node root = json.open(settingsFile);
 
+                    editor = root.getString("editor", "gedit" );
+                    
                     EasyJson.Node jglobals = root.getArray("globalOptions");
 
                     for (EasyJson.Node jele : jglobals) {
@@ -69,10 +73,15 @@ public class Resources
         }
     }
 
+    public File getOptionsFile(String name)
+    {
+        return new File(optionsDirectory, name + ".json");
+    }
+
     public GroovyOptions readOptions(String name)
     {
         try {
-            GroovyOptions result = new GroovyOptions(new File(optionsDirectory, name + ".json"));
+            GroovyOptions result = new GroovyOptions(getOptionsFile(name));
             return result;
         } catch (IOException e) {
             e.printStackTrace();

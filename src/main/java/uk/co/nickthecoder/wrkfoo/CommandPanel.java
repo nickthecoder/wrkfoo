@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -214,21 +216,41 @@ public class CommandPanel<R> extends JPanel
         // Apply the options on all rows.
         for (int i = 0; i < model.getRowCount(); i++) {
             String code = model.getCode(i);
-            model.setCode(i, "");
             if (!Util.empty(code)) {
                 Option option = command.getOptions().getRowOption(code);
                 if (option != null) {
-                    option.runOption(command, model.getRow(i), newTab);
-                    if (!newTab) {
-                        // TODO Should the remaining options be ignore? (if results were replaced).
-                        // For now, lets be safe, and only apply a single option.
-                        break;
-                        // Note, this is bad, because we are NOT doing this in the order as seen in the GUI
-                        // we are doing based on the UNSORTED rows.
+                    if (option.isMultiRow()) {
+                        processMultiRowOptions(option, newTab);
+                    } else {
+                        model.setCode(i, "");
+                        option.runOption(command, model.getRow(i), newTab);
+                        if (!newTab) {
+                            // TODO Should the remaining options be ignore? (if results were replaced).
+                            // For now, lets be safe, and only apply a single option.
+                            break;
+                            // Note, this is bad, because we are NOT doing this in the order as seen in the GUI
+                            // we are doing based on the UNSORTED rows.
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void processMultiRowOptions( Option option, boolean newTab )
+    {
+        String code = option.getCode();
+        CommandTableModel<?> model = table.getModel();
+
+        List<Object> rows = new ArrayList<Object>();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ( code.equals(model.getCode(i))) {
+                
+                model.setCode(i, "");
+                rows.add( model.getRow( i ) );
+            }
+        }
+        option.runMultiOption(command, rows, newTab);
     }
 
     private void createOptionsMenu(MouseEvent me)

@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.io.File;
+
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
@@ -153,6 +155,11 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 
     private Options options;
 
+    public File getOptionsFile()
+    {
+        return Resources.instance.getOptionsFile( optionsName() );
+    }
+    
     public Options getOptions()
     {
         if (options == null) {

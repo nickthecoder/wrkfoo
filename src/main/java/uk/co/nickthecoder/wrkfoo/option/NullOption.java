@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
+import java.util.List;
+
 import uk.co.nickthecoder.wrkfoo.Command;
 
 public class NullOption implements Option
@@ -22,6 +24,11 @@ public class NullOption implements Option
         return "";
     }
 
+    @Override
+    public void runMultiOption(Command<?> command, List<Object> list, boolean newTab)
+    {        
+    }
+    
     @Override
     public void runOption(Command<?> command, Object row, boolean newTab)
     {        

@@ -23,8 +23,9 @@ public class GroovyOptions extends SimpleOptions
                 String label = jopt.getString("label");
                 String groovyScript = jopt.getString("groovy");
                 boolean isRow = jopt.getBoolean("row", true);
+                boolean isMulti = jopt.getBoolean("multi", false);
                 
-                Option option = new GroovyOption(code, label, groovyScript, isRow);
+                Option option = new GroovyOption(code, label, groovyScript, isRow, isMulti);
 
                 add(option);
             }
