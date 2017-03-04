@@ -110,6 +110,11 @@ public class CommandPanel<R> extends JPanel
 
         this.setBackground(Color.blue);
     }
+    
+    public ToggleSplitPane getSplitPane()
+    {
+        return splitPane;
+    }
 
     public ParametersPanel getParametersPanel()
     {

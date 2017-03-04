@@ -25,6 +25,7 @@ public class ToggleSplitPane extends JSplitPane
     {
         return this.hideLeft ? getLeftComponent() : getRightComponent();
     }
+
     public Component other()
     {
         return this.hideLeft ? getRightComponent() : getLeftComponent();
@@ -60,5 +61,10 @@ public class ToggleSplitPane extends JSplitPane
         if (show == hidden) {
             toggle();
         }
+    }
+
+    public boolean isHidden()
+    {
+        return hidden;
     }
 }

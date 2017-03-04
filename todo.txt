@@ -33,8 +33,6 @@ New Features
 	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
 		
 	Status bar at the bottoms. Display error messages there.
-
-	Shortcuts to switch tabs. Next/Prev as well as by number.
 	
 	Save state of each side panel (open/closed) in tab sets.
 		default to closed.

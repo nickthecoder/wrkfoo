@@ -106,6 +106,7 @@ public class TabSetData
     {
         public String commandClass;
         public Map<String, String> parameters;
+        boolean showParameters = false;
 
         public TabData(Command<?> command)
         {
@@ -117,6 +118,7 @@ public class TabSetData
                     parameters.put(vp.getName(), vp.getStringValue());
                 }
             }
+            showParameters = !command.getCommandPanel().getSplitPane().isHidden();
         }
 
         public Command<?> createCommand()
@@ -140,6 +142,8 @@ public class TabSetData
                     }
                 }
 
+                command.getCommandPanel().getSplitPane().toggle(showParameters);
+                
                 return command;
 
             } catch (Exception e) {
