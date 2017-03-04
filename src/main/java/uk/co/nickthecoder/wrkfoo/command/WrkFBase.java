@@ -15,23 +15,19 @@ import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.command.WrkFTask.WrkFWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBase extends ListCommand<WrkFTask, File>
+public class WrkFBase extends ListCommand<WrkFTask, WrkFWrappedFile>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
     public static final Icon fileManagerIcon = Resources.icon("fileManager.png");
     public static final Icon directoryIcon = Resources.icon("folder.png");
     public static final Icon fileIcon = Resources.icon("file.png");
-
-    /**
-     * Amount of characters to chop off of the path column.
-     */
-    private int chopPath = 0;
 
     public WrkFBase(WrkFTask task)
     {
@@ -72,14 +68,15 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
         return shortTitle;
     }
 
-    protected ListTableModel<File> createTableModel()
+    protected ListTableModel<WrkFWrappedFile> createTableModel()
     {
-        ListTableModel<File> tableModel = new ListTableModel<File>(this, new ArrayList<File>(), getColumns())
+        ListTableModel<WrkFWrappedFile> tableModel = new ListTableModel<WrkFWrappedFile>(this,
+            new ArrayList<WrkFWrappedFile>(), getColumns())
         {
             @Override
             public Color getRowBackground(int row)
             {
-                File file = list.get(row);
+                File file = list.get(row).file;
                 return file.isFile() ? null : WrkFBase.directoryColor;
             }
         };
@@ -88,54 +85,54 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
     }
 
     @Override
-    public Columns<File> createColumns()
+    public Columns<WrkFWrappedFile> createColumns()
     {
-        Columns<File> columns = new Columns<File>();
+        Columns<WrkFWrappedFile> columns = new Columns<WrkFWrappedFile>();
 
-        columns = new Columns<File>();
+        columns = new Columns<WrkFWrappedFile>();
 
-        columns.add(new Column<File>(Icon.class, "")
+        columns.add(new Column<WrkFWrappedFile>(Icon.class, "")
         {
             @Override
-            public Icon getValue(File row)
+            public Icon getValue(WrkFWrappedFile row)
             {
-                return row.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                return row.file.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
             }
         }.width(25).lock());
 
-        columns.add(new Column<File>(String.class, "path")
+        columns.add(new Column<WrkFWrappedFile>(String.class, "path")
         {
             @Override
-            public String getValue(File row)
+            public String getValue(WrkFWrappedFile row)
             {
-                return row.getPath().substring(chopPath);
+                return row.getChoppedPath();
             }
         }.tooltip(2).hide().width(300));
 
-        columns.add(new Column<File>(File.class, "name")
+        columns.add(new Column<WrkFWrappedFile>(File.class, "name")
         {
             @Override
-            public File getValue(File row)
+            public File getValue(WrkFWrappedFile row)
             {
-                return row;
+                return row.file;
             }
         }.tooltip(2).comparator(FoldersFirstComparator.instance).sort().width(300).renderer(FileNameRenderer.instance));
 
-        columns.add(new Column<File>(Date.class, "lastModified")
+        columns.add(new Column<WrkFWrappedFile>(Date.class, "lastModified")
         {
             @Override
-            public Date getValue(File row)
+            public Date getValue(WrkFWrappedFile row)
             {
-                return new Date(row.lastModified());
+                return new Date(row.file.lastModified());
             }
         }.width(120).lock().renderer(DateRenderer.instance));
 
-        columns.add(new Column<File>(Long.class, "size")
+        columns.add(new Column<WrkFWrappedFile>(Long.class, "size")
         {
             @Override
-            public Long getValue(File row)
+            public Long getValue(WrkFWrappedFile row)
             {
-                return row.length();
+                return row.file.length();
             }
         }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 
@@ -161,16 +158,9 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
         });
     }
 
-    public void updateResults()
-    {
-        chopPath = getTask().directory.getValue().getPath().length() + 1;
-        super.updateResults();
-    }
-
     @Override
     protected String optionsName()
     {
         return "wrkf";
     }
-
 }

@@ -1,10 +1,12 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -40,6 +42,11 @@ public class MainWindow extends JFrame
 
     private JTextField optionsTextField;
 
+    public String description;
+    
+    public File tabSetFile;
+    
+    
     /**
      * The main window that the mouse last entered. Used by {@link CommandTabbedPane} for drag/drop tabs.
      */
@@ -73,19 +80,18 @@ public class MainWindow extends JFrame
 
         setTitle("WrkFoo");
 
-        boolean first = true;
         for (Command<?> command : commands) {
-
-            if (first) {
-                this.setTitle(command.getShortTitle());
-            }
-
             addTab(command);
         }
 
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
+    }
 
+    @Override
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(1000, 600);
     }
 
     public CommandTab getCurrentTab()
@@ -112,7 +118,7 @@ public class MainWindow extends JFrame
         toolbar.addSeparator();
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
-            .build());        
+            .build());
     }
 
     private JComponent createToolbarOption()
@@ -251,15 +257,17 @@ public class MainWindow extends JFrame
     {
         CommandTab tab = tabbedPane.getSelectedCommandTab();
 
-        if (tab == null) {
-            setTitle("WrkFoo");
-
-        } else {
-
-            setTitle(tab.getTitle());
-
+        String title = "wrkfoo";
+        
+        if (tab != null) {
+            title = tab.getTitle();
             getRootPane().setDefaultButton(tab.getCommand().getCommandPanel().getGoButton());
         }
+        
+        if (description != null) {
+            title = description + " : " + title;
+        }
+        setTitle(title);
     }
 
     private CommandTab getCurrentOrNewTab()
@@ -340,10 +348,11 @@ public class MainWindow extends JFrame
         WrkTabSets command = new WrkTabSets();
         getCurrentOrNewTab().go(command);
     }
-    
+
     public void onSaveTabSet()
     {
         SaveTabSet sts = new SaveTabSet(this);
+        sts.neverExit();
         sts.promptTask();
     }
 

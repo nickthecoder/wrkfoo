@@ -1,10 +1,12 @@
 Current Task
 ============
 
-	Load / Save tabs
 
 BUGS
 ====
+
+Open a tab : Need to check parameters, and if any are wrong/missing, display the side panel.
+	scanf
 
 PatternParameters default to regex - should it be regex? Especially for FileListerTask?
 
@@ -24,7 +26,28 @@ Duplicating commands doesn't preserve the visibility of parameters.
 New Features
 ============
 
+	WrkTabSet
+		MainFrame to remember the file and the description for when the tabset is saved
+			Show the prompt, but fill it in with the remembered values (i.e. always save as).
+
+	Implement drag and drop across the commands
+		Drag a file to "Places", and it will append it to its places file.
+		Copy / Move files
+
+	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
+	
+		
+	Status bar at the bottoms. Display error messages there.
+
+	Shortcuts to switch tabs. Next/Prev as well as by number.
+	
+	Save state of each side panel (open/closed) in tab sets.
+		default to closed.
+		
+	Default side panel to closed, unless the parameters are incomplete.
+
 	Places
+		Highlight non-existent lines in red
 		Use Gnome's Places as the list
 
 	Bring back multi row selections, and make it easy to run multi options on the selection.

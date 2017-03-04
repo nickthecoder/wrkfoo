@@ -1,49 +1,48 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListResults;
+import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class WrkCommandTask extends Task implements ListResults<Command<?>>
 {
     public List<Command<?>> results;
-    
+
     @Override
     public void body()
     {
         results = new ArrayList<Command<?>>();
 
         WrkCommand wrkCommand = new WrkCommand();
-        results.add( wrkCommand );
+        results.add(wrkCommand);
 
         WrkF wrkFHome = new WrkF();
-        wrkFHome.getTask().directory.setValue( new File( "/home/nick/3D" ) ); //new File( System.getProperty("user.home") ) );
-        results.add( wrkFHome );
-        
+        wrkFHome.getTask().directory.setValue(Resources.instance.getHomeDirectory());
+        results.add(wrkFHome);
+
         WrkFTree wrkFTreeHome = new WrkFTree();
-        wrkFTreeHome.getTask().directory.setValue( new File( "/home/nick/3D" ) ); //new File( System.getProperty("user.home") ) );
-        wrkFTreeHome.getTask().depth.setValue( 1 );
-        results.add( wrkFTreeHome );
+        wrkFTreeHome.getTask().directory.setValue(Resources.instance.getHomeDirectory());
+        wrkFTreeHome.getTask().depth.setValue(1);
+        results.add(wrkFTreeHome);
 
         WrkMounts wrkMountPoints = new WrkMounts();
-        results.add( wrkMountPoints );
-        
+        results.add(wrkMountPoints);
+
         ScanF scanF = new ScanF();
-        scanF.getTask().directory.setValue( new File( "/home/nick/documents"));
-        results.add( scanF );
+        results.add(scanF);
 
         GitStatus gitStatus = new GitStatus();
-        results.add( gitStatus );
-        
+        results.add(gitStatus);
+
         WrkTabSets wrkTabSets = new WrkTabSets();
-        results.add( wrkTabSets );
-        
+        results.add(wrkTabSets);
+
         Places places = new Places();
-        results.add( places );
+        results.add(places);
     }
 
     @Override

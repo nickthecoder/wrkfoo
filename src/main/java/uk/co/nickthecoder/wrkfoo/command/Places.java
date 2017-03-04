@@ -9,10 +9,11 @@ import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.command.PlacesTask.PlacesWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class Places extends ListCommand<PlacesTask, File>
+public class Places extends ListCommand<PlacesTask, PlacesWrappedFile>
 {
     public static final Icon icon = Resources.icon("places.png");
 
@@ -22,60 +23,54 @@ public class Places extends ListCommand<PlacesTask, File>
     }
 
     @Override
-    protected Columns<File> createColumns()
+    protected Columns<PlacesWrappedFile> createColumns()
     {
-        Columns<File> columns = new Columns<File>();
+        Columns<PlacesWrappedFile> columns = new Columns<PlacesWrappedFile>();
 
-        columns = new Columns<File>();
+        columns = new Columns<PlacesWrappedFile>();
 
-        columns.add(new Column<File>(Icon.class, "")
+        columns.add(new Column<PlacesWrappedFile>(Icon.class, "")
         {
             @Override
-            public Icon getValue(File row)
+            public Icon getValue(PlacesWrappedFile row)
             {
-                return row.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                return row.file.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
             }
         }.width(25).lock());
 
-        columns.add(new Column<File>(File.class, "file")
+        columns.add(new Column<PlacesWrappedFile>(File.class, "file")
         {
             @Override
-            public File getValue(File row)
+            public File getValue(PlacesWrappedFile row)
             {
-                return row;
+                return row.file;
             }
         }.hide());
 
-        columns.add(new Column<File>(String.class, "path")
+        columns.add(new Column<PlacesWrappedFile>(String.class, "path")
         {
             @Override
-            public String getValue(File row)
+            public String getValue(PlacesWrappedFile row)
             {
-                String path = row.getPath();
-                String prefix = getTask().store.getValue().getParent();
-                if ((path.startsWith(prefix)) && (path.length() > prefix.length())) {
-                    return path.substring(prefix.length() + 1);
-                } else {
-                    return path;
-                }
+                return row.getChoppedPath();
             }
         }.tooltip(2).width(500));
 
-        columns.add(new Column<File>(Date.class, "lastModified")
+        columns.add(new Column<PlacesWrappedFile>(Date.class, "lastModified")
         {
             @Override
-            public Date getValue(File row)
+            public Date getValue(PlacesWrappedFile row)
             {
-                return new Date(row.lastModified());
+                return new Date(row.file.lastModified());
             }
         }.width(120).lock().renderer(DateRenderer.instance));
 
-        columns.add(new Column<File>(Long.class, "size")
+        columns.add(new Column<PlacesWrappedFile>(Long.class, "size")
         {
             @Override
-            public Long getValue(File row)
+            public Long getValue(PlacesWrappedFile row)
             {
-                return row.length();
+                return row.file.length();
             }
         }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 

@@ -53,6 +53,7 @@ public class CommandPanel<R> extends JPanel
         this.command = foo;
 
         sidePanel = new JPanel();
+        sidePanel.setPreferredSize(new Dimension(300,300));
         body = new JPanel();
         body.setLayout(new BorderLayout());
 
@@ -64,7 +65,7 @@ public class CommandPanel<R> extends JPanel
         scrollablePanel.setLayout(new BoxLayout(scrollablePanel, BoxLayout.Y_AXIS));
         scrollablePanel.add(parametersPanel);
 
-        parametersScrollPane = new JScrollPane(scrollablePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        parametersScrollPane = new JScrollPane(scrollablePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         // parametersScrollPane = new
         // JScrollPane(parametersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -102,8 +103,8 @@ public class CommandPanel<R> extends JPanel
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
+        splitPane.toggle(false);
         if (this.command.getTask().getParameters().getChildren().size() == 0) {
-            splitPane.toggle(false);
             sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
 

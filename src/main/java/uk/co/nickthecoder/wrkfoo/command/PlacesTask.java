@@ -12,14 +12,17 @@ import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.command.PlacesTask.PlacesWrappedFile;
 
-public class PlacesTask extends Task implements ListResults<File>
+public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
 {
     public FileParameter store = new FileParameter.Builder("store").
         file().mustExist().description("Text file containing a list of paths")
         .parameter();
 
-    public List<File> results;
+    public File directory;
+    
+    public List<PlacesWrappedFile> results;
 
     public PlacesTask()
     {
@@ -33,7 +36,7 @@ public class PlacesTask extends Task implements ListResults<File>
     }
 
     @Override
-    public List<File> getResults()
+    public List<PlacesWrappedFile> getResults()
     {
         return results;
     }
@@ -41,7 +44,8 @@ public class PlacesTask extends Task implements ListResults<File>
     @Override
     public void body()
     {
-        results = new ArrayList<File>();
+        directory = store.getValue().getParentFile();
+        results = new ArrayList<PlacesWrappedFile>();
 
         BufferedReader reader = null;
         try {
@@ -54,7 +58,7 @@ public class PlacesTask extends Task implements ListResults<File>
                 if (!file.isAbsolute()) {
                     file = new File( directory, line );
                 }
-                results.add(file);
+                results.add(new PlacesWrappedFile(file));
             }
 
         } catch (Exception e) {
@@ -70,4 +74,18 @@ public class PlacesTask extends Task implements ListResults<File>
 
     }
 
+    public class PlacesWrappedFile extends WrappedFile
+    {
+
+        public PlacesWrappedFile(File file)
+        {
+            super(file);
+            // TODO Auto-generated constructor stub
+        }
+        
+        public File getBase()
+        {
+            return directory;
+        }
+    }
 }

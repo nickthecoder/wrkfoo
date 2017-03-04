@@ -1,44 +1,21 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 import javax.swing.Icon;
 
-import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabSetData;
+import uk.co.nickthecoder.wrkfoo.command.WrkTabSetsTask.WrkTabSetsFile;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-
-public class WrkTabSets extends WrkFBase
+public class WrkTabSets extends ListCommand<WrkTabSetsTask, WrkTabSetsFile>
 {
-
-    public static WrkFTask createTask()
-    {
-        WrkFTask task = new WrkFTask();
-
-        for (Parameter parameter : task.getParameters().getChildren()) {
-            parameter.visible = false;
-        }
-
-        task.directory.setValue(Resources.instance.getTabsDirectory());
-        task.directory.visible = true;
-
-        task.fileExtensions.setValue("json");
-        task.fileExtensions.visible = true;
-
-        return task;
-    }
-
     public WrkTabSets()
     {
-        super(createTask());
+        super(new WrkTabSetsTask());
     }
 
     @Override
@@ -54,20 +31,29 @@ public class WrkTabSets extends WrkFBase
     }
 
     @Override
-    public Columns<File> createColumns()
+    public Columns<WrkTabSetsFile> createColumns()
     {
-        Columns<File> columns = new Columns<File>();
+        Columns<WrkTabSetsFile> columns = new Columns<WrkTabSetsFile>();
 
-        columns = new Columns<File>();
+        columns = new Columns<WrkTabSetsFile>();
 
-        columns.add(new Column<File>(String.class, "name")
+        columns.add(new Column<WrkTabSetsFile>(String.class, "name")
         {
             @Override
-            public String getValue(File row)
+            public String getValue(WrkTabSetsFile row)
             {
-                return row.getName();
+                return row.file.getName();
             }
-        }.tooltip(2).width(300));
+        }.width(100));
+
+        columns.add(new Column<WrkTabSetsFile>(String.class, "description")
+        {
+            @Override
+            public String getValue(WrkTabSetsFile row)
+            {
+                return row.description;
+            }
+        }.width(500));
 
         return columns;
     }
@@ -78,22 +64,8 @@ public class WrkTabSets extends WrkFBase
         return "wrktabsets";
     }
 
-    public void load(File file)
+    public void load( File file )
     {
-        Gson gson = new Gson();
-
-        JsonReader reader;
-        try {
-            reader = new JsonReader(new FileReader(file));
-            TabSetData tsd = gson.fromJson(reader, TabSetData.class);
-            MainWindow mainWindow = tsd.createMainWindow();
-            mainWindow.pack();
-            mainWindow.setVisible(true);
-
-        } catch (FileNotFoundException e) {
-            // TODO Report exception
-            e.printStackTrace();
-        }
-
+        TabSetData.load(file).openMainWindow();
     }
 }
