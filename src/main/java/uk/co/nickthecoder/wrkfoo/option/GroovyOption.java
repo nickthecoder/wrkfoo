@@ -24,8 +24,8 @@ public class GroovyOption extends AbstractOption
             "uk.co.nickthecoder.wrkfoo.command",
             "uk.co.nickthecoder.wrkfoo.util",
             "uk.co.nickthecoder.jguifier.util");
-        importCustomizer.addStaticImport(OSCommand.class.getName(),"command");
-        importCustomizer.addStaticImport(OSCommand.class.getName(),"edit");
+        importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
+        importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
 
         CompilerConfiguration configuration = new CompilerConfiguration();
         configuration.addCompilationCustomizers(importCustomizer);
@@ -46,14 +46,14 @@ public class GroovyOption extends AbstractOption
     @Override
     public void runMultiOption(Command<?> command, List<Object> rows, boolean openNewTab)
     {
-        privateRunOption( command, true, rows, openNewTab);
+        privateRunOption(command, true, rows, openNewTab);
     }
-    
+
     public void runOption(Command<?> command, Object row, boolean openNewTab)
     {
-        privateRunOption( command, false, row, openNewTab);        
+        privateRunOption(command, false, row, openNewTab);
     }
-    
+
     private void privateRunOption(Command<?> command, boolean isMulti, Object rowOrRows, boolean openNewTab)
     {
         if (groovyScript == null) {
@@ -71,13 +71,14 @@ public class GroovyOption extends AbstractOption
         Binding bindings = new Binding();
         bindings.setProperty("command", command);
         bindings.setProperty("task", command.getTask());
-        
-        if (isMulti) {
-            bindings.setProperty("rows", rowOrRows);
-        } else {
-            bindings.setProperty("row", rowOrRows);
+
+        if (isRow()) {
+            if (isMulti) {
+                bindings.setProperty("rows", rowOrRows);
+            } else {
+                bindings.setProperty("row", rowOrRows);
+            }
         }
-        
         groovyScript.setBinding(bindings);
 
         Object result = groovyScript.run();

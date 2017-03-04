@@ -194,7 +194,7 @@ public class CommandPanel<R> extends JPanel
         });
 
     }
-
+    
     private void processOptions(boolean newTab)
     {
         CommandTableModel<?> model = table.getModel();
@@ -253,9 +253,29 @@ public class CommandPanel<R> extends JPanel
         option.runMultiOption(command, rows, newTab);
     }
 
+    public void createNonRowOptionsMenu(MouseEvent me)
+    {        
+        boolean useNewTab = me.isControlDown();
+
+        JPopupMenu menu = new JPopupMenu();
+        Options options = command.getOptions();
+        for (Option option : options) {
+            if (!option.isRow()) {
+                menu.add(createOptionsMenuItem( option, -1, useNewTab));
+            }
+        }
+        
+        menu.show(me.getComponent(), me.getX(), me.getY());
+    }
+
     private void createOptionsMenu(MouseEvent me)
     {
         int r = table.rowAtPoint(me.getPoint());
+        if ( r < 0 ) {
+            createNonRowOptionsMenu(me);
+            return;
+        }
+        
         int rowIndex = table.convertRowIndexToModel(r);
         table.getSelectionModel().clearSelection();
         table.getSelectionModel().addSelectionInterval(r, r);
@@ -293,8 +313,9 @@ public class CommandPanel<R> extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
                 if (option != null) {
-                    option.runOption(command, table.getModel().getRow(rowIndex), useNewTab);
+                    option.runOption(command, row, useNewTab);
                 }
             }
         });

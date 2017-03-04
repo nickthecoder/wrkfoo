@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -11,7 +12,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-public class CommandTabbedPane extends JTabbedPane
+public class CommandTabbedPane extends JTabbedPane implements Iterable<CommandTab>
 {
     private List<CommandTab> commandTabs;
 
@@ -176,4 +177,11 @@ public class CommandTabbedPane extends JTabbedPane
             }
         }
     }
+
+    @Override
+    public Iterator<CommandTab> iterator()
+    {
+        return commandTabs.iterator();
+    }
+
 }

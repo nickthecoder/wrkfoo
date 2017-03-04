@@ -1,16 +1,19 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
@@ -18,7 +21,10 @@ import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.wrkfoo.command.NullCommand;
+import uk.co.nickthecoder.wrkfoo.command.SaveTabSet;
 import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
+import uk.co.nickthecoder.wrkfoo.command.WrkTabSets;
+import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
 public class MainWindow extends JFrame
@@ -31,6 +37,8 @@ public class MainWindow extends JFrame
     private JToolBar toolbar;
 
     private static MainWindow mouseMainWindow;
+
+    private JTextField optionsTextField;
 
     /**
      * The main window that the mouse last entered. Used by {@link CommandTabbedPane} for drag/drop tabs.
@@ -89,15 +97,92 @@ public class MainWindow extends JFrame
     {
         ButtonBuilder builder = new ButtonBuilder(this).component(this.rootPane);
 
+        toolbar.add(createToolbarOption());
+
         toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").build());
-        toolbar.add(builder.name("home").tooltip("Home : Show all commands").shortcut("ctrl HOME").build());
-        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").build());
         toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").build());
+        toolbar.add(builder.name("home").tooltip("Home : Show all commands").shortcut("ctrl HOME").build());
+        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").build());
+        toolbar.addSeparator();
+        toolbar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").build());
+        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").build());
+        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
+        toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").build());
+        toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").build());
+        toolbar.addSeparator();
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
-            .build());
-        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
-        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").build());
+            .build());        
+    }
+
+    private JComponent createToolbarOption()
+    {
+        optionsTextField = new JTextField();
+        optionsTextField.setToolTipText("Enter non-row Options");
+        optionsTextField.setColumns(6);
+
+        putAction("ENTER", "nonRowOption", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+            new AbstractAction()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    processNonRowOption(false);
+                }
+            });
+
+        putAction("ctrl ENTER", "nonRowOptionNewTab", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+            new AbstractAction()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    processNonRowOption(false);
+
+                }
+            });
+
+        optionsTextField.addMouseListener(new MouseAdapter()
+        {
+
+            @Override
+            public void mouseReleased(MouseEvent me)
+            {
+                if (me.isPopupTrigger()) {
+                    createOptionsMenu(me);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me)
+            {
+                if (me.isPopupTrigger()) {
+                    createOptionsMenu(me);
+                }
+            }
+        });
+
+        return optionsTextField;
+    }
+
+    private void createOptionsMenu(MouseEvent me)
+    {
+        CommandTab tab = getCurrentTab();
+        if (tab != null) {
+            tab.getCommand().getCommandPanel().createNonRowOptionsMenu(me);
+        }
+    }
+
+    public void processNonRowOption(boolean newTab)
+    {
+        CommandTab tab = getCurrentTab();
+        if (tab != null) {
+            Command<?> command = tab.getCommand();
+
+            Option option = command.getOptions().getNonRowOption(optionsTextField.getText());
+            if (option != null) {
+                option.runOption(command, null, newTab);
+                optionsTextField.setText("");
+            }
+        }
     }
 
     public CommandTab addTab(Command<?> command)
@@ -191,7 +276,7 @@ public class MainWindow extends JFrame
     {
         System.exit(0);
     }
-    
+
     public void onHome()
     {
         WrkCommand command = new WrkCommand();
@@ -203,6 +288,16 @@ public class MainWindow extends JFrame
         WrkCommand command = new WrkCommand();
         addTab(command);
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+    }
+
+    public void onDuplicateTab()
+    {
+        CommandTab tab = getCurrentTab();
+        if (tab != null) {
+            Command<?> copy = tab.getCommand().clone();
+            addTab(copy);
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        }
     }
 
     public void onCloseTab()
@@ -238,6 +333,18 @@ public class MainWindow extends JFrame
     public void onReloadOptions()
     {
         Resources.instance.reloadOptions();
+    }
+
+    public void onWorkTabSets()
+    {
+        WrkTabSets command = new WrkTabSets();
+        getCurrentOrNewTab().go(command);
+    }
+    
+    public void onSaveTabSet()
+    {
+        SaveTabSet sts = new SaveTabSet(this);
+        sts.promptTask();
     }
 
 }

@@ -1,6 +1,8 @@
 Current Task
 ============
 
+	Load / Save tabs
+
 BUGS
 ====
 
@@ -17,20 +19,20 @@ alt+F4 doesn't work
 
 Table takes up too much width when there's scroll bars, causing the parameters panel to be squashed.
 
+Duplicating commands doesn't preserve the visibility of parameters.
+
 New Features
 ============
 
-	Include options file within another
-		Allow for "row" and "rows" to be adjusted
-			A command which has a row with a File as an attribute can use an options file which only expects a File.
+	Places
+		Use Gnome's Places as the list
 
 	Bring back multi row selections, and make it easy to run multi options on the selection.
 		Select multiple lines, then right click pops up only multi commands
 			But ctrl right click shows both kinds
 
 	Buttons in a toolbar :
-		Save tab set : 
-		Duplicate : Copies the current command to a new tab.
+		Save/Load tab set : 
 		Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
 			Option to place the command parameters in the first line?
 			Option for column names in the first row.

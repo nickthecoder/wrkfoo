@@ -28,6 +28,8 @@ public class Resources
 
     private File optionsDirectory;
 
+    private File tabsDirectory;
+
     private File settingsFile;
 
     private OptionsGroup globalOptions;
@@ -43,6 +45,9 @@ public class Resources
         settingsDirectory = Util.createFile(new File(System.getProperty("user.home")), ".config", "wrkfoo");
         settingsDirectory.mkdirs();
 
+        tabsDirectory = new File( settingsDirectory, "tabs" );
+        tabsDirectory.mkdirs();
+        
         optionsDirectory = Util.createFile(settingsDirectory, "options");
         optionsDirectory.mkdirs();
 
@@ -83,6 +88,11 @@ public class Resources
         } else {
             // Use default values
         }
+    }
+    
+    public File getTabsDirectory()
+    {
+        return tabsDirectory;
     }
 
     public File getOptionsFile(String name)

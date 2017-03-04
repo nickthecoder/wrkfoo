@@ -27,7 +27,7 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
     public static final Icon fileManagerIcon = Resources.icon("fileManager.png");
     public static final Icon directoryIcon = Resources.icon("folder.png");
     public static final Icon fileIcon = Resources.icon("file.png");
-    
+
     /**
      * Amount of characters to chop off of the path column.
      */
@@ -44,7 +44,6 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
         return directoryIcon;
     }
 
-    
     @Override
     public String getTitle()
     {
@@ -54,15 +53,15 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
             return super.getTitle();
         }
     }
-    
+
     @Override
     public String getShortTitle()
     {
         String longTitle = getTitle();
 
         String shortTitle = longTitle;
-        while ( shortTitle.length() > 20 ) {
-            int slash = shortTitle.indexOf( File.separator );
+        while (shortTitle.length() > 20) {
+            int slash = shortTitle.indexOf(File.separator);
             if (slash >= 0) {
                 shortTitle = shortTitle.substring(slash + 1);
             } else {
@@ -142,12 +141,12 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
 
         return columns;
     }
-    
+
     @Override
     public void postCreate()
     {
         super.postCreate();
-        
+
         MainWindow.putAction("alt UP", "upDirectory", getCommandPanel(), new AbstractAction()
         {
             @Override
@@ -168,9 +167,10 @@ public class WrkFBase extends ListCommand<WrkFTask, File>
         super.updateResults();
     }
 
+    @Override
     protected String optionsName()
     {
         return "wrkf";
     }
-    
+
 }

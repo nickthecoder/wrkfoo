@@ -35,9 +35,12 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
         ScanF scanF = new ScanF();
         scanF.getTask().directory.setValue( new File( "/home/nick/documents"));
         results.add( scanF );
-        
+
         GitStatus gitStatus = new GitStatus();
         results.add( gitStatus );
+        
+        WrkTabSets wrkTabSets = new WrkTabSets();
+        results.add( wrkTabSets );
     }
 
     @Override
