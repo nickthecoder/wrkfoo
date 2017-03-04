@@ -116,6 +116,7 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").build());
         toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").build());
         toolbar.addSeparator();
+        toolbar.add(builder.name("run").tooltip("Re-Run the current command").shortcut("F5").build());
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
             .build());
@@ -335,6 +336,13 @@ public class MainWindow extends JFrame
     {
         if (getCurrentTab() != null) {
             getCurrentTab().redo();
+        }
+    }
+
+    public void onRun()
+    {
+        if (getCurrentTab() != null) {
+            getCurrentTab().getCommand().getCommandPanel().go();
         }
     }
 

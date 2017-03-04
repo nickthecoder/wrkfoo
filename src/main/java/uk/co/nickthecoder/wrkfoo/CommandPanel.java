@@ -133,14 +133,6 @@ public class CommandPanel<R> extends JPanel
             }
         });
 
-        MainWindow.putAction("F5", "refresh", this, new AbstractAction()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                go();
-            }
-        });
-
         MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
