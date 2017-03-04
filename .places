@@ -1,0 +1,6 @@
+src/main/java/uk/co/nickthecoder/wrkfoo
+src/main/resources/uk/co/nickthecoder/wrkfoo
+build
+build/install/wrkfoo/lib
+build.gradle
+todo.txt

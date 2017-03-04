@@ -41,6 +41,9 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
         
         WrkTabSets wrkTabSets = new WrkTabSets();
         results.add( wrkTabSets );
+        
+        Places places = new Places();
+        results.add( places );
     }
 
     @Override

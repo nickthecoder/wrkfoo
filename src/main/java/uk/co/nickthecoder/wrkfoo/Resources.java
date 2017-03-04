@@ -21,8 +21,10 @@ public class Resources
     static {
         Resources.instance.readSettings();
     }
-    
+
     public String editor;
+
+    private File homeDirectory;
 
     private File settingsDirectory;
 
@@ -40,14 +42,15 @@ public class Resources
     {
         reloadableOptions = new HashSet<ReloadableOptions>();
 
+        homeDirectory = new File(System.getProperty("user.home"));
         globalOptions = new OptionsGroup();
 
-        settingsDirectory = Util.createFile(new File(System.getProperty("user.home")), ".config", "wrkfoo");
+        settingsDirectory = Util.createFile(homeDirectory, ".config", "wrkfoo");
         settingsDirectory.mkdirs();
 
-        tabsDirectory = new File( settingsDirectory, "tabs" );
+        tabsDirectory = new File(settingsDirectory, "tabs");
         tabsDirectory.mkdirs();
-        
+
         optionsDirectory = Util.createFile(settingsDirectory, "options");
         optionsDirectory.mkdirs();
 
@@ -74,7 +77,7 @@ public class Resources
 
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
-                        GroovyOptions options =new GroovyOptions();
+                        GroovyOptions options = new GroovyOptions();
                         options.load(new File(optionsDirectory, name + ".json"));
                         globalOptions.add(options);
                     }
@@ -89,7 +92,12 @@ public class Resources
             // Use default values
         }
     }
-    
+
+    public File getHomeDirectory()
+    {
+        return homeDirectory;
+    }
+
     public File getTabsDirectory()
     {
         return tabsDirectory;
