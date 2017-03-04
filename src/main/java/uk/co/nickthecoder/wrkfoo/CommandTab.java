@@ -117,15 +117,19 @@ public class CommandTab
             // setIcon( newCommand.getIcon() );
         }
 
-        command.getCommandPanel().stopEditing();
-        if (getTask().checkParameters()) {
+        if (updateHistory) {
+            history.add(command);
+        }
 
-            if (updateHistory) {
-                history.add(command);
-            }
+        if (getCommand().getCommandPanel().check()) {
+            // All parameters are ok, run the command.
 
             getTask().run();
             newCommand.updateResults();
+
+        } else {
+            // Missing/incorrect parameters. Show the parameters panel.
+            getCommand().getCommandPanel().getSplitPane().toggle(true);
         }
 
         if (tabbedPane != null) {

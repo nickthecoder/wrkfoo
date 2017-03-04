@@ -97,7 +97,7 @@ public class History
             for (String key : parameterValues.keySet()) {
                 try {
                     Parameter parameter = task.getParameters().findParameter(key);
-                    ((ValueParameter) parameter).setValue(parameterValues.get(key));
+                    ((ValueParameter) parameter).setDefaultValue(parameterValues.get(key));
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -330,9 +330,16 @@ public class CommandPanel<R> extends JPanel
         }
     }
 
+    public boolean check()
+    {
+        return parametersPanel.check(command.getTask());
+    }
+    
     public void go()
     {
-        command.go();
+        if (check()) {
+            command.go();
+        }
     }
 
 }

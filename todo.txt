@@ -33,10 +33,7 @@ New Features
 	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
 		
 	Status bar at the bottoms. Display error messages there.
-	
-	Save state of each side panel (open/closed) in tab sets.
-		default to closed.
-		
+
 	Default side panel to closed, unless the parameters are incomplete.
 
 	Places
