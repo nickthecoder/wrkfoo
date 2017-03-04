@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import uk.co.nickthecoder.jguifier.FileParameter;
@@ -14,19 +13,25 @@ public class SaveTabSet extends Task
 {
     public MainWindow mainWindow;
 
-    public FileParameter fileParameter = new FileParameter.Builder("file")
+    public FileParameter saveAs = new FileParameter.Builder("saveAs")
         .writable().mayExist().file()
-        .value(new File(Resources.instance.getTabsDirectory(), "new.json")).parameter();
+        .description("Save location")
+        .parameter();
 
     public StringParameter description = new StringParameter.Builder("description")
+        .description("And optional description, which will appear in the window title")
         .optional().parameter();
 
     public SaveTabSet(MainWindow mainWindow)
     {
         this.mainWindow = mainWindow;
-        addParameters(fileParameter, description);
+        addParameters(saveAs, description);
 
-        fileParameter.setDefaultValue(mainWindow.tabSetFile);
+        if (mainWindow.tabSetFile == null) {
+            saveAs.setDefaultValue(Resources.instance.getTabsDirectory());
+        } else {
+            saveAs.setDefaultValue(mainWindow.tabSetFile);
+        }
         description.setDefaultValue(mainWindow.description);
     }
 
@@ -36,7 +41,7 @@ public class SaveTabSet extends Task
         mainWindow.description = description.getValue();
 
         try {
-            TabSetData.save(fileParameter.getValue(), mainWindow);
+            TabSetData.save(saveAs.getValue(), mainWindow);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             // TODO Report the error.
