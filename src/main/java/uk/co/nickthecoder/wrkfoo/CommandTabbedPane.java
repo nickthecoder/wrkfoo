@@ -140,15 +140,15 @@ public class CommandTabbedPane extends JTabbedPane implements Iterable<CommandTa
                     command.go();
                     newWindow.setVisible(true);
                 }
-                
+
             } else if (destinationWindow != tab.getMainWindow()) {
                 // Move the tab to a different MainWindow
                 MainWindow currentMainWindow = tab.getMainWindow();
                 removeTabAt(draggedTabIndex);
                 destinationWindow.addTab(command);
-                
+
                 // Current window has no more tabs, so close it.
-                if ( commandTabs.size() == 0) {
+                if (commandTabs.size() == 0) {
                     currentMainWindow.setVisible(false);
                 }
             }
@@ -184,4 +184,27 @@ public class CommandTabbedPane extends JTabbedPane implements Iterable<CommandTa
         return commandTabs.iterator();
     }
 
+    public void nextTab()
+    {
+        int newIndex = getSelectedIndex() + 1;
+        if (newIndex <= 0) {
+            return;
+        }
+        if (newIndex >= getTabCount()) {
+            newIndex = 0;
+        }
+        setSelectedIndex(newIndex);
+    }
+
+    public void previousTab()
+    {
+        int newIndex = getSelectedIndex() - 1;
+        if (newIndex < -1) {
+            return;
+        }
+        if (newIndex == -1) {
+            newIndex = getTabCount() - 1;
+        }
+        setSelectedIndex(newIndex);
+    }
 }

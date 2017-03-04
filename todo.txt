@@ -26,16 +26,11 @@ Duplicating commands doesn't preserve the visibility of parameters.
 New Features
 ============
 
-	WrkTabSet
-		MainFrame to remember the file and the description for when the tabset is saved
-			Show the prompt, but fill it in with the remembered values (i.e. always save as).
-
 	Implement drag and drop across the commands
 		Drag a file to "Places", and it will append it to its places file.
 		Copy / Move files
 
 	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
-	
 		
 	Status bar at the bottoms. Display error messages there.
 

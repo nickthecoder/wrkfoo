@@ -144,37 +144,63 @@ public class ButtonBuilder
         }
 
         if (method != null) {
-            final Method theMethod = this.method;
-            final String receiverClassName = receiver.getClass().getName() + "." + this.methodName;
-            
-            Action action = new AbstractAction()
-            {
-                @Override
-                public void actionPerformed(ActionEvent event)
-                {
-                    try {
-                        theMethod.invoke(receiver, EMPTY_VALUES);
-                    } catch (RuntimeException re) {
-                        System.err.println("Button Builder failed calling method " + receiverClassName);
-                        throw re;
-                    } catch (Exception e) {
-                        System.err.println("Button Builder failed calling method " + receiverClassName);
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
+            Action action = createAction();
             result.addActionListener(action);
 
-            if (shortcut != null) {
-                InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-                ActionMap actionMap = component.getActionMap();
-
-                KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
-                inputMap.put(keyStroke, methodName);
-                actionMap.put(methodName, action);
-            }
+            mapShortcut(action);
         }
 
+        reset();
+
+        return result;
+    }
+
+    public void buildShortcut()
+    {
+        if (method != null) {
+            mapShortcut(createAction());
+        }
+        reset();
+    }
+
+    private Action createAction()
+    {
+        final Method theMethod = this.method;
+        final String receiverClassName = receiver.getClass().getName() + "." + this.methodName;
+
+        Action action = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+                try {
+                    theMethod.invoke(receiver, EMPTY_VALUES);
+                } catch (RuntimeException re) {
+                    System.err.println("Button Builder failed calling method " + receiverClassName);
+                    throw re;
+                } catch (Exception e) {
+                    System.err.println("Button Builder failed calling method " + receiverClassName);
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        return action;
+    }
+
+    private void mapShortcut(Action action)
+    {
+        if (shortcut != null) {
+            InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            ActionMap actionMap = component.getActionMap();
+
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
+            inputMap.put(keyStroke, methodName);
+            actionMap.put(methodName, action);
+        }
+    }
+
+    private void reset()
+    {
         // Reset the builder, so that it can be used again.
         this.label = null;
         this.icon = null;
@@ -183,6 +209,5 @@ public class ButtonBuilder
         this.method = null;
         this.methodName = null;
 
-        return result;
     }
 }

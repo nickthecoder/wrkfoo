@@ -43,10 +43,9 @@ public class MainWindow extends JFrame
     private JTextField optionsTextField;
 
     public String description;
-    
+
     public File tabSetFile;
-    
-    
+
     /**
      * The main window that the mouse last entered. Used by {@link CommandTabbedPane} for drag/drop tabs.
      */
@@ -120,6 +119,40 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
         toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
             .build());
+
+        builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
+        builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
+
+        // Keyboard shortcuts alt+1 .. alt+9 switches to that tab number.
+        for (int i = 1; i <= 9; i++) {
+            switchTabMapping(i);
+        }
+    }
+
+    /**
+     * Create a keyboard shortcut to switch to a numbered tab.
+     * 
+     * @param tabNumber
+     *            1 based, so subtract 1 to get valid indexes.
+     */
+    private void switchTabMapping(final int tabNumber)
+    {
+        InputMap inputMap = this.rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = this.rootPane.getActionMap();
+
+        String name = "switchToTab" + tabNumber;
+        KeyStroke keyStroke = KeyStroke.getKeyStroke("alt " + tabNumber);
+        inputMap.put(keyStroke, name);
+        actionMap.put(name, new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (tabNumber <= tabbedPane.getTabCount()) {
+                    tabbedPane.setSelectedIndex(tabNumber - 1);
+                }
+            }
+        });
     }
 
     private JComponent createToolbarOption()
@@ -259,12 +292,12 @@ public class MainWindow extends JFrame
         CommandTab tab = tabbedPane.getSelectedCommandTab();
 
         String title = "wrkfoo";
-        
+
         if (tab != null) {
             title = tab.getTitle();
             getRootPane().setDefaultButton(tab.getCommand().getCommandPanel().getGoButton());
         }
-        
+
         if (description != null) {
             title = description + " : " + title;
         }
@@ -364,4 +397,13 @@ public class MainWindow extends JFrame
         sts.promptTask();
     }
 
+    public void onNextTab()
+    {
+        tabbedPane.nextTab();
+    }
+
+    public void onPreviousTab()
+    {
+        tabbedPane.previousTab();
+    }
 }
