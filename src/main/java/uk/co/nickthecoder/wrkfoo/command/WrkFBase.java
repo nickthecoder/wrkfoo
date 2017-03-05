@@ -107,7 +107,7 @@ public class WrkFBase extends ListCommand<WrkFTask, WrkFWrappedFile>
             {
                 return getIconForFile(row.file);
             }
-        }.width(25).lock());
+        }.width(25).lock().trivial());
 
         columns.add(new Column<WrkFWrappedFile>(String.class, "path")
         {

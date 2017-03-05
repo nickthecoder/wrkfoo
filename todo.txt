@@ -1,6 +1,11 @@
 Current Task
 ============
 
+	Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
+		Option to place the command parameters in the first line?
+		Option for column names in the first row.
+		Copy to clipboard for pasting into a spreadsheet.
+
 BUGS
 ====
 
@@ -18,35 +23,28 @@ alt+F4 doesn't work
 New Features
 ============
 
-	Implement drag and drop across the commands
-		Drag a file to "Places", and it will append it to its places file.
-		Copy / Move files
-
-	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
-		
 	Status bar at the bottoms. Display error messages there.
-
 
 	Bring back multi row selections, and make it easy to run multi options on the selection.
 		Select multiple lines, then right click pops up only multi commands
 			But ctrl right click shows both kinds
 
 	Buttons in a toolbar :
-		Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
-			Option to place the command parameters in the first line?
-			Option for column names in the first row.
-			Copy to clipboard for pasting into a spreadsheet.
 		Filter : Filters table results, without help from the Command.
 
 
 Later Features
 ==============
 
-	Run tasks in a thread
-		Show a "Running" status, with a Stop button (if the Task implements Stoppable).
-
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
+
+	Implement drag and drop across the commands
+		Drag a file to "Places", and it will append it to its places file.
+		Copy / Move files
+
+	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
+		
 New Commands
 ============
 

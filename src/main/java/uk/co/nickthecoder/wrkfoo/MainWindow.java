@@ -20,10 +20,12 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.TableModel;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.wrkfoo.command.NullCommand;
 import uk.co.nickthecoder.wrkfoo.command.SaveTabSet;
+import uk.co.nickthecoder.wrkfoo.command.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
 import uk.co.nickthecoder.wrkfoo.command.WrkTabSets;
 import uk.co.nickthecoder.wrkfoo.option.Option;
@@ -114,6 +116,7 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
         toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").build());
         toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").build());
+        toolbar.add(builder.name("exportTable").tooltip("Export Table Data").build());
         toolbar.addSeparator();
         toolbar.add(builder.name("run").tooltip("Re-Run the current command").shortcut("F5").build());
         toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
@@ -395,6 +398,17 @@ public class MainWindow extends JFrame
         SaveTabSet sts = new SaveTabSet(this);
         sts.neverExit();
         sts.promptTask();
+    }
+
+    public void onExportTable()
+    {
+        if (getCurrentTab() != null) {
+            TableModel model = getCurrentTab().getCommand().getTableModel();
+            Columns<?> columns = getCurrentTab().getCommand().getColumns();
+            ExportTableData std = new ExportTableData(model, columns);
+            std.neverExit();
+            std.promptTask();
+        }
     }
 
     public void onNextTab()

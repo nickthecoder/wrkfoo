@@ -42,17 +42,4 @@ public abstract class ListCommand<T extends Task & ListResults<R>, R> extends Ab
         columns.defaultSort( getCommandPanel().table );
     }
 
-    public ListCommand<T,R> clone()
-    {
-        try {
-            ListCommand<T, R> result = (ListCommand<T, R>) super.clone();
-
-            result.tableModel = null;
-            return result;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
