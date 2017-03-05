@@ -1,14 +1,18 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
+import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
@@ -22,6 +26,10 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     private CommandTab commandTab;
 
     private CommandPanel<R> commandPanel;
+
+    private GoThread goThread;
+
+    private List<CommandListener> commandListeners = new ArrayList<CommandListener>();
 
     public AbstractCommand(T task)
     {
@@ -116,7 +124,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         return commandTab;
     }
 
-
     @Override
     public ParametersPanel createParametersPanel()
     {
@@ -136,19 +143,81 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         return commandPanel;
     }
 
+    public class GoThread extends Thread
+    {
+        @Override
+        public void run()
+        {
+            try {
+                if (commandTab != null) {
+                    commandTab.go(AbstractCommand.this);
+                } else {
+                    task.run();
+                }
+                updateResults();
+            } finally {
+                end();
+            }
+        }
+    }
+
+    public void addCommandListener(CommandListener cl)
+    {
+        commandListeners.add(cl);
+    }
+
+    public void removeCommandListener(CommandListener cl)
+    {
+        commandListeners.remove(cl);
+    }
+
+    private void fireChangedState(boolean isRunning)
+    {
+        for (CommandListener cl : commandListeners) {
+            try {
+                cl.changedState(isRunning);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized boolean isRunning()
+    {
+        return goThread != null;
+    }
+
     /**
      * Routed through commandTab, so that it can record the history.
      */
     @Override
-    public void go()
+    public synchronized void go()
     {
-        if (commandTab != null) {
-            commandTab.go(this);
-        } else {
-            System.out.println("Not attached to a AbstractCommand");
-            task.run();
+        if (goThread == null) {
+            goThread = new GoThread();
+
+            fireChangedState(true);
+
+            try {
+                goThread.start();
+            } catch (Exception e) {
+                goThread = null;
+            }
         }
-        updateResults();
+    }
+
+    @Override
+    public synchronized void stop()
+    {
+        if (task instanceof Stoppable) {
+            ((Stoppable) task).stop();
+        }
+    }
+
+    private synchronized void end()
+    {
+        goThread = null;
+        fireChangedState(false);
     }
 
     public abstract void updateResults();
@@ -157,9 +226,9 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 
     public File getOptionsFile()
     {
-        return Resources.instance.getOptionsFile( optionsName() );
+        return Resources.instance.getOptionsFile(optionsName());
     }
-    
+
     public Options getOptions()
     {
         if (options == null) {
@@ -189,30 +258,39 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
      *            The new value for the parameter
      * @return this
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public AbstractCommand parameter(String name, Object value)
+    @SuppressWarnings({ "unchecked" })
+    public AbstractCommand<T, R> parameter(String name, Object value)
     {
         Parameter p = getTask().findParameter(name);
-        ValueParameter vp = (ValueParameter) p;
+        ValueParameter<Object> vp = (ValueParameter<Object>) p;
 
         vp.setValue(value);
         return this;
     }
-    
-    @SuppressWarnings("unchecked")
-    public AbstractCommand<T,R> clone()
+
+    /**
+     * Rather than trying to duplicate a command by cloning it, this creates a new instance of the same type of
+     * command, and then copies the task's parameter values across.
+     * In rare cases commands may need to override this method to perform additional logic.
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public AbstractCommand<T, R> duplicate()
     {
         try {
-            AbstractCommand<T,R> result = (AbstractCommand<T,R>) super.clone();
-            
-            result.task = (T) this.task.clone();
-            result.commandTab = null;
-            result.commandPanel = null;
-            return result;
-            
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
+            AbstractCommand<T, R> copy = this.getClass().newInstance();
+
+            for (ValueParameter src : getTask().getParameters().allValueParameters()) {
+                ValueParameter dest = ((ValueParameter) copy.getTask().findParameter(src.getName()));
+                try {
+                    dest.setValue(src.getValue());
+                } catch (ParameterException e) {
+                    dest.setDefaultValue(src.getValue());
+                }
+            }
+            return copy;
+
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 }

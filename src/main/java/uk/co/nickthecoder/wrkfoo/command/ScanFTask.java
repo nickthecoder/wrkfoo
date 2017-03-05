@@ -10,12 +10,14 @@ import uk.co.nickthecoder.jguifier.BooleanParameter;
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Exec;
+import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.command.ScanFTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 
-public class ScanFTask extends Task implements ListResults<ScannedDirectory>
+public class ScanFTask extends Task implements ListResults<ScannedDirectory>, Stoppable
 {
+    private Exec du;
 
     public FileParameter directory = new FileParameter.Builder("directory").mustExist().directory()
         .description("Starting directory")
@@ -35,9 +37,10 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>
     @Override
     public void body()
     {
+        stopping = false;
         results = new ArrayList<ScannedDirectory>();
 
-        Exec du = new Exec("du", "--bytes", oneFileSystem.getValue() ? "--one-file-system" : null,
+        du = new Exec("du", "--bytes", oneFileSystem.getValue() ? "--one-file-system" : null,
             directory.getValue().getPath());
 
         BufferedReader reader = du.runBuffered();
@@ -45,6 +48,10 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>
         String line;
         try {
             while ((line = reader.readLine()) != null) {
+                if (stopping) {
+                    break;
+                }
+
                 int tab = line.indexOf('\t');
                 if (tab >= 0) {
                     long size = Long.parseLong(line.substring(0, tab));
@@ -92,11 +99,23 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>
 
         /**
          * Suitable for <code>row</code> to be passed to {@link OSCommand#command(String, Object...)}
+         * 
          * @return The path
          */
         public String toString()
         {
             return this.path;
+        }
+    }
+
+    private boolean stopping = false;
+
+    @Override
+    public void stop()
+    {
+        stopping = true;
+        if (du != null) {
+            du.stop();
         }
     }
 }

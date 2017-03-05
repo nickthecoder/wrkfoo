@@ -336,7 +336,7 @@ public class MainWindow extends JFrame
     {
         CommandTab tab = getCurrentTab();
         if (tab != null) {
-            Command<?> copy = tab.getCommand().clone();
+            Command<?> copy = tab.getCommand().duplicate();
             addTab(copy);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         }

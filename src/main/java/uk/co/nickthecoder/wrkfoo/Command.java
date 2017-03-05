@@ -19,7 +19,7 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  * @param <R>
  *            The type of object in
  */
-public interface Command<R> extends Cloneable
+public interface Command<R>
 {
     public void postCreate();
     
@@ -59,7 +59,13 @@ public interface Command<R> extends Cloneable
 
     public void go();
 
+    public void stop();
+
     public Options getOptions();
 
-    public Command<R> clone();
+    public Command<R> duplicate();
+    
+    public void addCommandListener( CommandListener cl );
+
+    public void removeCommandListener( CommandListener cl );
 }

@@ -34,7 +34,7 @@ public class Places extends ListCommand<PlacesTask, PlacesWrappedFile>
             @Override
             public Icon getValue(PlacesWrappedFile row)
             {
-                return row.file.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                return WrkFBase.getIconForFile(row.file);
             }
         }.width(25).lock());
 

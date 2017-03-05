@@ -1,15 +1,8 @@
 Current Task
 ============
 
-	Places
-		Highlight non-existent lines in red
-		Use Gnome's Places as the list
-
 BUGS
 ====
-
-Open a tab : Need to check parameters, and if any are wrong/missing, display the side panel.
-	scanf
 
 PatternParameters default to regex - should it be regex? Especially for FileListerTask?
 
@@ -21,10 +14,6 @@ alt+F4 doesn't work
 	Does this when running from Eclipse and from gradle run.
 	If add a break point in Enter action, continue from the break point, switch to nautilus and close it, then F4 works!!!
 	This may be a Gnome or java bug, so I'll leave it for now, and try it out on other systems.
-
-Table takes up too much width when there's scroll bars, causing the parameters panel to be squashed.
-
-Duplicating commands doesn't preserve the visibility of parameters.
 
 New Features
 ============
@@ -43,15 +32,12 @@ New Features
 			But ctrl right click shows both kinds
 
 	Buttons in a toolbar :
-		Save/Load tab set : 
 		Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
 			Option to place the command parameters in the first line?
 			Option for column names in the first row.
 			Copy to clipboard for pasting into a spreadsheet.
 		Filter : Filters table results, without help from the Command.
 
-
-	Shortcuts for task parameters? e.g. ctrl+d to change directory, ctrl+g to filter files.
 
 Later Features
 ==============
@@ -60,11 +46,6 @@ Later Features
 		Show a "Running" status, with a Stop button (if the Task implements Stoppable).
 
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
-
-	Tree structures as well as tables?
-		A tree structure in the left pane, and the table in the middle
-		e.g. a Tree with Databases as the top level, then tables.
-			Inside tables, there's an item called "data", which calls WrkTable
 
 New Commands
 ============
@@ -76,7 +57,6 @@ New Commands
 	Myth recording (wrkmyth)
 	TV Series (wrktv)
 	TV Episode (wrktve)
-	git status (wrkgits)
 	other git stuff (branches, commits etc)
 	Pinkwino (will need a REST API)
 		Pinkwino instance (so I can list all of my wikis) (wrkpw)

@@ -34,6 +34,15 @@ public class WrkFBase extends ListCommand<WrkFTask, WrkFWrappedFile>
         super(task);
     }
 
+    public static Icon getIconForFile( File file )
+    {
+        if (file.exists()) {
+            return file.isDirectory() ? directoryIcon : fileIcon;
+        } else {
+            return null;
+        }
+    }
+    
     @Override
     public Icon getIcon()
     {
@@ -96,7 +105,7 @@ public class WrkFBase extends ListCommand<WrkFTask, WrkFWrappedFile>
             @Override
             public Icon getValue(WrkFWrappedFile row)
             {
-                return row.file.isDirectory() ? WrkF.directoryIcon : WrkF.fileIcon;
+                return getIconForFile(row.file);
             }
         }.width(25).lock());
 

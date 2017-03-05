@@ -65,7 +65,7 @@ public class GroovyOption extends AbstractOption
         // The new tab cannot share the same Command as the current tab, so create a copy first
         // just in case the option reuses the command.
         if (openNewTab) {
-            command = command.clone();
+            command = command.duplicate();
         }
 
         Binding bindings = new Binding();

@@ -3,6 +3,8 @@ package uk.co.nickthecoder.wrkfoo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,12 +25,13 @@ import javax.swing.JTable;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
+import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
-public class CommandPanel<R> extends JPanel
+public class CommandPanel<R> extends JPanel implements CommandListener
 {
     private Command<R> command;
 
@@ -42,6 +45,8 @@ public class CommandPanel<R> extends JPanel
 
     private JButton goButton;
 
+    private JButton stopButton;
+
     public SimpleTable<R> table;
 
     private JScrollPane tableScrollPane;
@@ -53,7 +58,7 @@ public class CommandPanel<R> extends JPanel
         this.command = foo;
 
         sidePanel = new JPanel();
-        sidePanel.setPreferredSize(new Dimension(300,300));
+        sidePanel.setPreferredSize(new Dimension(300, 300));
         body = new JPanel();
         body.setLayout(new BorderLayout());
 
@@ -79,7 +84,14 @@ public class CommandPanel<R> extends JPanel
 
         sidePanel.add(parametersScrollPane, BorderLayout.CENTER);
 
+        JPanel goStop = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        
         goButton = new JButton("Go");
+        goButton.setIcon(Resources.icon("run.png"));
         goButton.addActionListener(new ActionListener()
         {
             @Override
@@ -88,7 +100,22 @@ public class CommandPanel<R> extends JPanel
                 go();
             }
         });
-        sidePanel.add(goButton, BorderLayout.SOUTH);
+        goStop.add(goButton,gbc);
+
+        stopButton = new JButton("Stop");
+        stopButton.setIcon(Resources.icon("stop.png"));
+        stopButton.setVisible(false);
+        stopButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                stop();
+            }
+        });
+        goStop.add(stopButton,gbc);
+
+        sidePanel.add(goStop, BorderLayout.SOUTH);
 
         table = command.createTable();
         table.setAutoCreateRowSorter(true);
@@ -109,8 +136,9 @@ public class CommandPanel<R> extends JPanel
         }
 
         this.setBackground(Color.blue);
+        this.command.addCommandListener(this);
     }
-    
+
     public ToggleSplitPane getSplitPane()
     {
         return splitPane;
@@ -192,7 +220,7 @@ public class CommandPanel<R> extends JPanel
         });
 
     }
-    
+
     private void processOptions(boolean newTab)
     {
         CommandTableModel<?> model = table.getModel();
@@ -235,45 +263,45 @@ public class CommandPanel<R> extends JPanel
         }
     }
 
-    private void processMultiRowOptions( Option option, boolean newTab )
+    private void processMultiRowOptions(Option option, boolean newTab)
     {
         String code = option.getCode();
         CommandTableModel<?> model = table.getModel();
 
         List<Object> rows = new ArrayList<Object>();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if ( code.equals(model.getCode(i))) {
-                
+            if (code.equals(model.getCode(i))) {
+
                 model.setCode(i, "");
-                rows.add( model.getRow( i ) );
+                rows.add(model.getRow(i));
             }
         }
         option.runMultiOption(command, rows, newTab);
     }
 
     public void createNonRowOptionsMenu(MouseEvent me)
-    {        
+    {
         boolean useNewTab = me.isControlDown();
 
         JPopupMenu menu = new JPopupMenu();
         Options options = command.getOptions();
         for (Option option : options) {
             if (!option.isRow()) {
-                menu.add(createOptionsMenuItem( option, -1, useNewTab));
+                menu.add(createOptionsMenuItem(option, -1, useNewTab));
             }
         }
-        
+
         menu.show(me.getComponent(), me.getX(), me.getY());
     }
 
     private void createOptionsMenu(MouseEvent me)
     {
         int r = table.rowAtPoint(me.getPoint());
-        if ( r < 0 ) {
+        if (r < 0) {
             createNonRowOptionsMenu(me);
             return;
         }
-        
+
         int rowIndex = table.convertRowIndexToModel(r);
         table.getSelectionModel().clearSelection();
         table.getSelectionModel().addSelectionInterval(r, r);
@@ -287,7 +315,7 @@ public class CommandPanel<R> extends JPanel
                 menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
             }
         }
-        
+
         boolean first = true;
         for (Option option : options) {
             if (!option.isRow()) {
@@ -297,8 +325,8 @@ public class CommandPanel<R> extends JPanel
                 }
                 menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
             }
-        }  
-        
+        }
+
         menu.show(me.getComponent(), me.getX(), me.getY());
     }
 
@@ -334,11 +362,26 @@ public class CommandPanel<R> extends JPanel
     {
         return parametersPanel.check(command.getTask());
     }
-    
+
     public void go()
     {
         if (check()) {
             command.go();
+        }
+    }
+    
+    public void stop()
+    {
+        command.stop();
+    }
+    
+    @Override
+    public void changedState(boolean isRunning)
+    {
+        goButton.setEnabled(!isRunning);
+        if ( command.getTask() instanceof Stoppable) {
+            goButton.setVisible(!isRunning);
+            stopButton.setVisible(isRunning);
         }
     }
 
