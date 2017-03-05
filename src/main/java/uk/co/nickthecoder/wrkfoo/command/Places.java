@@ -47,6 +47,15 @@ public class Places extends ListCommand<PlacesTask, PlacesWrappedFile>
             }
         }.hide());
 
+        columns.add(new Column<PlacesWrappedFile>(String.class, "name")
+        {
+            @Override
+            public String getValue(PlacesWrappedFile row)
+            {
+                return row.name;
+            }
+        }.width(150));
+
         columns.add(new Column<PlacesWrappedFile>(String.class, "path")
         {
             @Override
@@ -54,7 +63,7 @@ public class Places extends ListCommand<PlacesTask, PlacesWrappedFile>
             {
                 return row.getChoppedPath();
             }
-        }.tooltip(2).width(500));
+        }.tooltip(4).width(500));
 
         columns.add(new Column<PlacesWrappedFile>(Date.class, "lastModified")
         {

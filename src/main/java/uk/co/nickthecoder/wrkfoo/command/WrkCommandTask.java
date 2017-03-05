@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -42,6 +43,7 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
         results.add(wrkTabSets);
 
         Places places = new Places();
+        places.task.store.setValue(Util.createFile(Resources.instance.getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));
         results.add(places);
     }
 

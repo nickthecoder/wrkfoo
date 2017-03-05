@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +23,8 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
         file().mustExist().description("Text file containing a list of paths")
         .parameter();
 
-    public File directory;
-    
+    private File directory;
+
     public List<PlacesWrappedFile> results;
 
     public PlacesTask()
@@ -50,15 +53,12 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(store.getValue())));
-            File directory = store.getValue().getParentFile();
-            
+
             String line;
             while ((line = reader.readLine()) != null) {
-                File file = new File(line);
-                if (!file.isAbsolute()) {
-                    file = new File( directory, line );
+                if (!line.startsWith("#")) {     
+                    results.add(createWrappedFile(line));
                 }
-                results.add(new PlacesWrappedFile(file));
             }
 
         } catch (Exception e) {
@@ -74,15 +74,49 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
 
     }
 
+    private PlacesWrappedFile createWrappedFile(String line)
+        throws MalformedURLException
+    {
+        File file;
+        String name = null;
+
+        if (line.startsWith("file://")) {
+            int space = line.indexOf(' ');
+            URL url;
+            if (space > 0) {
+                url = new URL(line.substring(0, space));
+            } else {
+                url = new URL(line);
+            }
+            try {
+                file = new File(url.toURI());
+            } catch (URISyntaxException e) {
+                file = new File(url.getPath());
+            }
+        } else {
+            file = new File(line);
+        }
+        if (name == null) {
+            name = file.getName();
+        }
+
+        if (!file.isAbsolute()) {
+            file = new File(directory, line);
+        }
+        return new PlacesWrappedFile(file, name);
+    }
+
     public class PlacesWrappedFile extends WrappedFile
     {
+        public String name;
 
-        public PlacesWrappedFile(File file)
+        public PlacesWrappedFile(File file, String name)
         {
             super(file);
-            // TODO Auto-generated constructor stub
+            this.name = name;
         }
-        
+
+        @Override
         public File getBase()
         {
             return directory;

@@ -1,6 +1,9 @@
 Current Task
 ============
 
+	Places
+		Highlight non-existent lines in red
+		Use Gnome's Places as the list
 
 BUGS
 ====
@@ -34,11 +37,6 @@ New Features
 		
 	Status bar at the bottoms. Display error messages there.
 
-	Default side panel to closed, unless the parameters are incomplete.
-
-	Places
-		Highlight non-existent lines in red
-		Use Gnome's Places as the list
 
 	Bring back multi row selections, and make it easy to run multi options on the selection.
 		Select multiple lines, then right click pops up only multi commands
