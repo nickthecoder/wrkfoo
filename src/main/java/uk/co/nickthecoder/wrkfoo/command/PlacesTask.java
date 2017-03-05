@@ -85,6 +85,7 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
             URL url;
             if (space > 0) {
                 url = new URL(line.substring(0, space));
+                name = line.substring(space +1);
             } else {
                 url = new URL(line);
             }
