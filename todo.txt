@@ -1,11 +1,6 @@
 Current Task
 ============
 
-	Save : Dumps data as a file. cvs, plain text, html. Select which columns to display.
-		Option to place the command parameters in the first line?
-		Option for column names in the first row.
-		Copy to clipboard for pasting into a spreadsheet.
-
 BUGS
 ====
 

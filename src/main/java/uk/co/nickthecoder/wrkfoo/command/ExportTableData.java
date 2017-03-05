@@ -13,13 +13,12 @@ import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class ExportTableData extends Task
 {
-    private TableModel model;
-
-    private Columns<?> columns;
+    private Command<?> command;
 
     public FileParameter saveAs = new FileParameter.Builder("saveAs")
         .writable().mayExist().file()
@@ -31,16 +30,22 @@ public class ExportTableData extends Task
         .value(true)
         .parameter();
 
-    public ExportTableData(TableModel model, Columns<?> columns)
+    public BooleanParameter includeParameters = new BooleanParameter.Builder("includeParameters")
+        .value(false)
+        .parameter();
+
+    public ExportTableData(Command<?> command)
     {
-        addParameters(saveAs, includeHeadings);
-        this.model = model;
-        this.columns = columns;
+        this.command = command;
+        addParameters(saveAs, includeHeadings, includeParameters);
     }
 
     @Override
     public void body()
     {
+        TableModel model = command.getTableModel();
+        Columns<?> columns = command.getColumns();
+
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(saveAs.getValue());
@@ -50,7 +55,12 @@ public class ExportTableData extends Task
             int rowCount = model.getRowCount();
             int columnCount = model.getColumnCount();
 
-            format.begin();
+            if (includeParameters.getValue()) {
+                String paramString = command.getTask().getCommandString(false);
+                format.begin(paramString);
+            } else {
+                format.begin();
+            }
 
             if (includeHeadings.getValue()) {
                 format.beingRow(true);
@@ -71,7 +81,7 @@ public class ExportTableData extends Task
                 }
                 format.endRow(false);
             }
-            
+
             format.end();
 
         } catch (IOException e) {
@@ -98,6 +108,8 @@ public class ExportTableData extends Task
     public interface TableFormat
     {
         public void begin();
+
+        public void begin(String title);
 
         public void beingRow(boolean isHeading);
 
@@ -142,6 +154,11 @@ public class ExportTableData extends Task
         {
         }
 
+        public void begin(String title)
+        {
+            out.println(title);
+        }
+
         public void beingRow(boolean isHeading)
         {
             isFirstColumn = true;
@@ -176,6 +193,12 @@ public class ExportTableData extends Task
             super(out);
         }
 
+        public void begin(String title)
+        {
+            out.print("#");
+            super.begin(title);
+        }
+
         public void cell(boolean isHeading, Object cell)
         {
             if (!isFirstColumn) {
@@ -201,6 +224,21 @@ public class ExportTableData extends Task
             out.println("<html>");
             out.println("<head></head>");
             out.println("<body>");
+            out.println("  <table>");
+        }
+
+        public void begin(String title)
+        {
+            out.println("<html>");
+            out.println("<head>");
+            out.print("  <title>");
+            out.print(escapeHTML(title));
+            out.println("</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.print("<h1>");
+            out.print(escapeHTML(title));
+            out.println("</h1>");
             out.println("  <table>");
         }
 

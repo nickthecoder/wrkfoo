@@ -20,12 +20,11 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.TableModel;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
+import uk.co.nickthecoder.wrkfoo.command.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.command.NullCommand;
 import uk.co.nickthecoder.wrkfoo.command.SaveTabSet;
-import uk.co.nickthecoder.wrkfoo.command.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
 import uk.co.nickthecoder.wrkfoo.command.WrkTabSets;
 import uk.co.nickthecoder.wrkfoo.option.Option;
@@ -403,9 +402,7 @@ public class MainWindow extends JFrame
     public void onExportTable()
     {
         if (getCurrentTab() != null) {
-            TableModel model = getCurrentTab().getCommand().getTableModel();
-            Columns<?> columns = getCurrentTab().getCommand().getColumns();
-            ExportTableData std = new ExportTableData(model, columns);
+            ExportTableData std = new ExportTableData(getCurrentTab().getCommand());
             std.neverExit();
             std.promptTask();
         }
