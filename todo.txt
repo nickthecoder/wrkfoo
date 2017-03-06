@@ -1,7 +1,10 @@
 Current Task
 ============
 
-Options with "IF" clauses.
+	Take all table related stuff out of CommandPanel (in readiness for non table based commands).
+	
+	Instead of Command.getTable(), have Command.createResultsComponent, and ListCommand returns a new TableResults
+	
 
 BUGS
 ====

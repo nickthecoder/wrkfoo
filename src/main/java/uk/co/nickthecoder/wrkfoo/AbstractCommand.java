@@ -25,8 +25,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
 
     private CommandTab commandTab;
 
-    private CommandPanel<R> commandPanel;
-
     private GoThread goThread;
 
     private List<CommandListener> commandListeners = new ArrayList<CommandListener>();
@@ -114,7 +112,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     {
         this.commandTab = null;
         this.clearResults();
-        this.commandPanel = null;
         this.columns = null;
     }
 
@@ -131,16 +128,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
         pp.addParameters(getTask().getParameters());
         return pp;
 
-    }
-
-    public CommandPanel<R> getCommandPanel()
-    {
-        if (commandPanel == null) {
-            commandPanel = new CommandPanel<R>(this);
-            commandPanel.postCreate();
-        }
-
-        return commandPanel;
     }
 
     public class GoThread extends Thread
