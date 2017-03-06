@@ -7,23 +7,23 @@ import uk.co.nickthecoder.wrkfoo.EasyJson;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class GroovyOptions extends OptionsGroup implements ReloadableOptions
-{    
+{
     private File file;
-    
+
     private SimpleOptions simpleOptions;
 
     public GroovyOptions()
     {
-        simpleOptions = new SimpleOptions();        
+        simpleOptions = new SimpleOptions();
         add(simpleOptions);
     }
-    
+
     public void load(File file)
         throws IOException
     {
-        load( file, true );
+        load(file, true);
     }
-    
+
     public void load(File file, boolean register)
     {
         this.file = file;
@@ -40,23 +40,24 @@ public class GroovyOptions extends OptionsGroup implements ReloadableOptions
             EasyJson.Node root = json.open(file);
 
             String include = root.getString("include", null);
-            if ( include != null ) {
+            if (include != null) {
                 GroovyOptions included = new GroovyOptions();
-                included.load( new File( file.getParent(), include ), false );
-                add( included );
+                included.load(new File(file.getParent(), include), false);
+                add(included);
             }
-            
+
             EasyJson.Node jglobals = root.getArray("options");
 
             for (EasyJson.Node jopt : jglobals) {
 
                 String code = jopt.getString("code");
                 String label = jopt.getString("label");
+                String ifScript = jopt.getString("if", null);
                 String groovyScript = jopt.getString("groovy");
                 boolean isRow = jopt.getBoolean("row", true);
                 boolean isMulti = jopt.getBoolean("multi", false);
 
-                GroovyOption option = new GroovyOption(code, label, groovyScript, isRow, isMulti);
+                GroovyOption option = new GroovyOption(code, label, groovyScript, ifScript, isRow, isMulti);
 
                 simpleOptions.add(option);
 

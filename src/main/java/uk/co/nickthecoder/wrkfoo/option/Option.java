@@ -14,6 +14,7 @@ public interface Option
     
     public void runOption( Command<?> command, Object row, boolean newTab );
 
+    public boolean isApplicable( Object row );
     
     public boolean isRow();
     

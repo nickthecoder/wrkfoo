@@ -26,6 +26,7 @@ public class GroovyOption extends AbstractOption
             "uk.co.nickthecoder.jguifier.util");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
+        importCustomizer.addStaticImport(OSCommand.class.getName(), "openFolder");
 
         CompilerConfiguration configuration = new CompilerConfiguration();
         configuration.addCompilationCustomizers(importCustomizer);
@@ -33,16 +34,21 @@ public class GroovyOption extends AbstractOption
         return new GroovyShell(configuration);
     }
 
-    private String groovySource;
+    private final String groovyIfSource;
+
+    private final String groovySource;
 
     private Script groovyScript;
 
-    public GroovyOption(String code, String label, String script, boolean isRow, boolean isMulti)
+    private Script groovyIfScript;
+
+    public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti)
     {
         super(code, label, isRow, isMulti);
         this.groovySource = script;
+        this.groovyIfSource = ifScript;
     }
-
+    
     @Override
     public void runMultiOption(Command<?> command, List<Object> rows, boolean openNewTab)
     {
@@ -54,34 +60,36 @@ public class GroovyOption extends AbstractOption
         privateRunOption(command, false, row, openNewTab);
     }
 
+    @Override
+    public boolean isApplicable( Object row )
+    {
+        if ( groovyIfSource == null) {
+            return true;
+        }
+        
+        if (groovyIfScript == null) {
+            groovyIfScript = createShell().parse(groovyIfSource);
+        }
+
+        Object result = runScript(groovyIfScript, null, false, row);
+
+        return result == Boolean.TRUE;
+    }
+
     private void privateRunOption(Command<?> command, boolean isMulti, Object rowOrRows, boolean openNewTab)
     {
         if (groovyScript == null) {
             groovyScript = createShell().parse(groovySource);
         }
-
         CommandTab tab = command.getCommandTab();
-
+        
         // The new tab cannot share the same Command as the current tab, so create a copy first
         // just in case the option reuses the command.
         if (openNewTab) {
             command = command.duplicate();
         }
-
-        Binding bindings = new Binding();
-        bindings.setProperty("command", command);
-        bindings.setProperty("task", command.getTask());
-
-        if (isRow()) {
-            if (isMulti) {
-                bindings.setProperty("rows", rowOrRows);
-            } else {
-                bindings.setProperty("row", rowOrRows);
-            }
-        }
-        groovyScript.setBinding(bindings);
-
-        Object result = groovyScript.run();
+        
+        Object result = runScript(groovyScript, command, isMulti, rowOrRows);
 
         if (result instanceof Command) {
             Command<?> newCommand = (Command<?>) result;
@@ -106,5 +114,26 @@ public class GroovyOption extends AbstractOption
             // System.out.println(result);
         }
 
+    }
+
+    private Object runScript(Script script, Command<?> command, boolean isMulti, Object rowOrRows)
+    {
+
+        Binding bindings = new Binding();
+        bindings.setProperty("command", command);
+        if ( command != null ) {
+            bindings.setProperty("task", command.getTask());
+        }
+
+        if (isRow()) {
+            if (isMulti) {
+                bindings.setProperty("rows", rowOrRows);
+            } else {
+                bindings.setProperty("row", rowOrRows);
+            }
+        }
+        script.setBinding(bindings);
+
+        return script.run();
     }
 }

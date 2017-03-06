@@ -20,17 +20,17 @@ public class OptionsGroup implements Options
 
         optionsList.add(options);
     }
-
+    
     @Override
-    public Option getDefaultRowOption()
+    public Option getDefaultRowOption(Object row)
     {
-        return getRowOption("");
+        return getRowOption( "", row );
     }
 
     @Override
     public Option getOption(String code)
     {
-        Option result = getRowOption(code);
+        Option result = getRowOption(code, null);
         if ( result == null) {
             return getNonRowOption(code);
         } else {
@@ -39,10 +39,10 @@ public class OptionsGroup implements Options
     }
     
     @Override
-    public Option getRowOption(String code)
+    public Option getRowOption(String code, Object row)
     {
         for (Options options : optionsList) {
-            Option option = options.getRowOption(code);
+            Option option = options.getRowOption(code, row);
             if (option != null) {
                 return option;
             }

@@ -212,7 +212,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
                     int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
 
                     R row = table.getModel().getRow(rowIndex);
-                    Option option = command.getOptions().getDefaultRowOption();
+                    Option option = command.getOptions().getDefaultRowOption(row);
                     option.runOption(command, row, newTab);
                 }
 
@@ -233,7 +233,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
             int rowIndex = table.convertRowIndexToModel(r);
             if (Util.empty(model.getCode(rowIndex))) {
                 R row = table.getModel().getRow(rowIndex);
-                Option option = command.getOptions().getDefaultRowOption();
+                Option option = command.getOptions().getDefaultRowOption(row);
                 option.runOption(command, row, newTab);
                 return;
             }
@@ -305,6 +305,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
         int rowIndex = table.convertRowIndexToModel(r);
         table.getSelectionModel().clearSelection();
         table.getSelectionModel().addSelectionInterval(r, r);
+        Object row = table.getModel().getRow(rowIndex);
 
         boolean useNewTab = me.isControlDown();
 
@@ -312,7 +313,9 @@ public class CommandPanel<R> extends JPanel implements CommandListener
         Options options = command.getOptions();
         for (Option option : options) {
             if (option.isRow()) {
-                menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
+                if ( option.isApplicable(row)) {
+                    menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
+                }
             }
         }
 

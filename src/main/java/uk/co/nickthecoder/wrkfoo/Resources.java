@@ -24,6 +24,8 @@ public class Resources
 
     public String editor;
 
+    public String fileManager;
+
     private File homeDirectory;
 
     private File settingsDirectory;
@@ -72,6 +74,7 @@ public class Resources
                     EasyJson.Node root = json.open(settingsFile);
 
                     editor = root.getString("editor", "gedit");
+                    fileManager = root.getString("fileManager", "nautilus");
 
                     EasyJson.Node jglobals = root.getArray("globalOptions");
 

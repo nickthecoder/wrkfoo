@@ -1,19 +1,24 @@
 Current Task
 ============
 
-	Status bar
-		Error messages
-		Completion message
-		Stop button
-		Move the "Export Table"
+Options with "IF" clauses.
+
 BUGS
 ====
 
 New Features
 ============
 
-	Status bar at the bottoms. Display error messages there.
+	Options which run commands which output text.		
+		Groovy option checks if there IS output of an Exec, and displays it in current/new tab
+			Create ExecCommand
 
+	Status bar
+		Error messages
+		Completion message
+		Stop button
+		Move the "Export Table"
+		
 	Bring back multi row selections, and make it easy to run multi options on the selection.
 		Select multiple lines, then right click pops up only multi commands
 			But ctrl right click shows both kinds

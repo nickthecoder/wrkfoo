@@ -49,5 +49,10 @@ public class OSCommand
     {
         return command( Resources.instance.editor, args );
     }
+    
+    public static Exec openFolder(Object arg)
+    {
+        return command( Resources.instance.fileManager, arg );
+    }
 }
 
