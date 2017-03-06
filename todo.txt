@@ -1,19 +1,13 @@
 Current Task
 ============
 
+	Status bar
+		Error messages
+		Completion message
+		Stop button
+		Move the "Export Table"
 BUGS
 ====
-
-PatternParameters default to regex - should it be regex? Especially for FileListerTask?
-
-alt+F4 doesn't work
-	Option "na" or "n2" on wrkf directory to start nautilus. Close nautilus, F4 fails
-	However, do the same WITHOUT closing nautilus, and F4 works fine.
-	Does this when using Exec and using Runtime.exec directly.
-	Not related to nautilus. (I tried gnome-calculator and gedit).
-	Does this when running from Eclipse and from gradle run.
-	If add a break point in Enter action, continue from the break point, switch to nautilus and close it, then F4 works!!!
-	This may be a Gnome or java bug, so I'll leave it for now, and try it out on other systems.
 
 New Features
 ============
@@ -24,15 +18,11 @@ New Features
 		Select multiple lines, then right click pops up only multi commands
 			But ctrl right click shows both kinds
 
-	Buttons in a toolbar :
-		Filter : Filters table results, without help from the Command.
-
 
 Later Features
 ==============
 
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
-
 
 	Implement drag and drop across the commands
 		Drag a file to "Places", and it will append it to its places file.
@@ -40,23 +30,3 @@ Later Features
 
 	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
 		
-New Commands
-============
-
-	crontab entry (wrkcron)
-
-	Database table (wrkdb)
-	Database row (wrktable)
-	Myth recording (wrkmyth)
-	TV Series (wrktv)
-	TV Episode (wrktve)
-	other git stuff (branches, commits etc)
-	Pinkwino (will need a REST API)
-		Pinkwino instance (so I can list all of my wikis) (wrkpw)
-		namespace (wrkpwn)
-		wiki Page (List Namespace, List Links, List Related Pages etc) (wrkpwp)
-		Version (wrkpwv)
-	To-do (from FDroid) - forgotten the name of the utility
-		groups
-		tasks
-	To-do text files (one file for each project, using symlinks in a single directory, or just a List of files) (wrktodo)

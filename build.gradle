@@ -11,7 +11,7 @@ apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
-mainClassName = "uk.co.nickthecoder.wrkfoo.Example"
+mainClassName = "uk.co.nickthecoder.wrkfoo.WrkFoo"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7

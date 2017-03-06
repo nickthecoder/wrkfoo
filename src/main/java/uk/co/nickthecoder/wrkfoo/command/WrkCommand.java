@@ -1,26 +1,16 @@
 package uk.co.nickthecoder.wrkfoo.command;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListCommand;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
 {
-    public static Icon icon;
-
-    {
-        try {
-            icon = new ImageIcon(ImageIO.read(MainWindow.class.getResource("home.png")));
-        } catch (Exception e) {
-            // Do nothing
-        }
-    }
+    public static Icon icon = Resources.icon("home.png");
 
     public WrkCommand()
     {
