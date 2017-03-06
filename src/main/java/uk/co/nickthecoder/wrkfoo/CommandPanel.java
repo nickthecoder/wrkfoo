@@ -92,6 +92,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
         
         goButton = new JButton("Go");
         goButton.setIcon(Resources.icon("run.png"));
+        goButton.setToolTipText("(Re)Run the command (F5)");
         goButton.addActionListener(new ActionListener()
         {
             @Override
@@ -147,11 +148,6 @@ public class CommandPanel<R> extends JPanel implements CommandListener
     public ParametersPanel getParametersPanel()
     {
         return parametersPanel;
-    }
-
-    public JButton getGoButton()
-    {
-        return goButton;
     }
 
     public void postCreate()

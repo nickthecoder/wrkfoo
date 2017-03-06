@@ -291,14 +291,7 @@ public class MainWindow extends JFrame
 
     private void tabChanged()
     {
-        CommandTab tab = tabbedPane.getSelectedCommandTab();
-
         String title = "wrkfoo";
-
-        if (tab != null) {
-            title = tab.getTitle();
-            getRootPane().setDefaultButton(tab.getCommand().getCommandPanel().getGoButton());
-        }
 
         if (description != null) {
             title = description + " : " + title;
