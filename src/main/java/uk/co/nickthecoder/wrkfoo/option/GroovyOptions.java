@@ -53,11 +53,14 @@ public class GroovyOptions extends OptionsGroup implements ReloadableOptions
                 String code = jopt.getString("code");
                 String label = jopt.getString("label");
                 String ifScript = jopt.getString("if", null);
-                String groovyScript = jopt.getString("groovy");
+                String action = jopt.getString("groovy", null);
+                if (action == null) {
+                    action = jopt.getString( "action" );
+                }
                 boolean isRow = jopt.getBoolean("row", true);
                 boolean isMulti = jopt.getBoolean("multi", false);
 
-                GroovyOption option = new GroovyOption(code, label, groovyScript, ifScript, isRow, isMulti);
+                GroovyOption option = new GroovyOption(code, label, action, ifScript, isRow, isMulti);
 
                 simpleOptions.add(option);
 

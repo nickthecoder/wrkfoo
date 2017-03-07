@@ -25,7 +25,7 @@ public class GroovyOption extends AbstractOption
             "uk.co.nickthecoder.wrkfoo.tool",
             "uk.co.nickthecoder.wrkfoo.util",
             "uk.co.nickthecoder.jguifier.util");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "tool");
+        importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "gui");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "openFolder");
