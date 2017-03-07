@@ -76,12 +76,6 @@ public class WrkMounts extends AbstractListTool<WrkMountsTask, MountPoint>
     }
 
     @Override
-    protected String optionsName()
-    {
-        return "wrkmounts";
-    }
-
-    @Override
     public Icon getIcon()
     {
         return icon;

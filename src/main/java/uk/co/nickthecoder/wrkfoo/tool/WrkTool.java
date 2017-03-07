@@ -50,10 +50,4 @@ public class WrkTool extends AbstractListTool<WrkToolTask, Tool>
 
         return columns;
     }
-
-    @Override
-    protected String optionsName()
-    {
-        return "wrktool";
-    }
 }

@@ -120,12 +120,6 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine>
     }
 
     @Override
-    protected String optionsName()
-    {
-        return "gitstatus";
-    }
-
-    @Override
     public Icon getIcon()
     {
         return Resources.icon("git.png");

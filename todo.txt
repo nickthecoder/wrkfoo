@@ -2,7 +2,7 @@ Current Task
 ============
 
 
-		
+
 BUGS
 ====
 
@@ -13,8 +13,6 @@ Stop all stoppable tools when closing the tab/main window/exiting application.
 
 New Features
 ============
-
-	Tag some commands as non-rerunable, and prevent going forward through the history. e.g. git commits.
 
 	Tar my .config/wrkfoo directory, and put it in the documents folder.
 		Put the tar command in a shell script so I can run it multiple times.

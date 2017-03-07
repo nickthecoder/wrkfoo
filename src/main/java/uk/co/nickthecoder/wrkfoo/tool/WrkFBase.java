@@ -167,9 +167,4 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
         });
     }
 
-    @Override
-    protected String optionsName()
-    {
-        return "wrkf";
-    }
 }

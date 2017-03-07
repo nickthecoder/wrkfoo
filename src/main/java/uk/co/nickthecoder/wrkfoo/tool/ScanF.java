@@ -46,12 +46,6 @@ public class ScanF extends AbstractListTool<ScanFTask, ScannedDirectory>
     }
 
     @Override
-    protected String optionsName()
-    {
-        return "scanf";
-    }
-
-    @Override
     public Icon getIcon()
     {
         return icon;

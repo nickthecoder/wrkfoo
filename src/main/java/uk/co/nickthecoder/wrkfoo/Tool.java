@@ -26,8 +26,6 @@ public interface Tool
     public String getName();
 
     public String getShortTitle();
-
-    public String getTitle();
     
     public String getLongTitle();
 

@@ -92,12 +92,6 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
     }
 
     @Override
-    protected String optionsName()
-    {
-        return "places";
-    }
-
-    @Override
     public Icon getIcon()
     {
         return icon;

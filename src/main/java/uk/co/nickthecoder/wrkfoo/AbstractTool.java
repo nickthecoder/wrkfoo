@@ -28,7 +28,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private List<ToolListener> toolListeners = new ArrayList<ToolListener>();
 
     private ToolPanel toolPanel;
-    
+
     public AbstractTool(T task)
     {
         this.task = task;
@@ -46,10 +46,14 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return task;
     }
 
-    @Override
-    public String getTitle()
+    /**
+     * Used by both getShortTitle and getLongTitle unless either are overridden in sub-classes.
+     * 
+     * @return The title, which may be used 
+     */
+    protected String getTitle()
     {
-        return task.getName();
+        return getClass().getSimpleName();
     }
 
     @Override
@@ -69,6 +73,11 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return this.getClass().getSimpleName();
     }
+    
+    protected String optionsName()
+    {
+        return getClass().getSimpleName().toLowerCase();
+    }
 
     @Override
     public Icon getIcon()
@@ -87,7 +96,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return true;
     }
-    
+
     @Override
     public void attachTo(ToolTab tab)
     {
@@ -108,7 +117,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return toolTab;
     }
-    
 
     public class GoThread extends Thread
     {
@@ -127,8 +135,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
             }
         }
     }
-    
-
 
     public void addToolListener(ToolListener cl)
     {
@@ -150,7 +156,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
             }
         }
     }
-    
 
     /**
      * Routed through toolTab, so that it can record the history.
@@ -190,13 +195,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return goThread != null;
     }
-
-
-    protected String optionsName()
-    {
-        return null;
-    }
-
 
     /**
      * A convenience method for {@link GroovyOption}s to change a parameter, and return the same Tool.
@@ -242,8 +240,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
             throw new RuntimeException(e);
         }
     }
-    
-
 
     @Override
     public ParametersPanel createParametersPanel()
@@ -253,7 +249,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return pp;
 
     }
-    
+
     private Options options;
 
     public File getOptionsFile()
@@ -275,12 +271,12 @@ public abstract class AbstractTool<T extends Task> implements Tool
         }
         return options;
     }
-    
+
     protected ToolPanel createToolPanel()
     {
-        return new ToolPanel( this );
+        return new ToolPanel(this);
     }
-    
+
     @Override
     public ToolPanel getToolPanel()
     {
