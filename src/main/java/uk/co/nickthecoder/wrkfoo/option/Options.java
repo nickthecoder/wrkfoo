@@ -5,7 +5,7 @@ public interface Options extends Iterable<Option>
 {
     public Option getDefaultRowOption(Object row);
 
-    public Option getOption(String code);
+    public Option getOption(String code, Object row);
 
     public Option getRowOption(String code, Object row);
 

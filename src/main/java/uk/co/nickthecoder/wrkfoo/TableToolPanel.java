@@ -21,7 +21,7 @@ public class TableToolPanel<R> extends ToolPanel
     protected SimpleTable<R> table;
 
     protected TableTool<R> tableTool;
-    
+
     public TableToolPanel(TableTool<R> tool)
     {
         super(tool);
@@ -36,7 +36,7 @@ public class TableToolPanel<R> extends ToolPanel
         @SuppressWarnings("unchecked")
         TableResultsPanel<R> results = (TableResultsPanel<R>) resultsPanel;
         table = results.table;
-        
+
         MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
@@ -84,7 +84,7 @@ public class TableToolPanel<R> extends ToolPanel
 
                     R row = table.getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getDefaultRowOption(row);
-                    option.runOption(tableTool, row, newTab);
+                    getMainWindow().runOption(option, tableTool, row, newTab);
                 }
 
             }
@@ -136,30 +136,27 @@ public class TableToolPanel<R> extends ToolPanel
         ToolTableModel<?> model = table.getModel();
         table.stopEditing();
 
-        // If the selected row has no option, then use the default option on that row only
-        int r = table.getSelectedRow();
-
-        if (r >= 0) {
-            int rowIndex = table.convertRowIndexToModel(r);
-            if (Util.empty(model.getCode(rowIndex))) {
-                R row = table.getModel().getRow(rowIndex);
-                Option option = tableTool.getOptions().getDefaultRowOption(row);
-                option.runOption(tableTool, row, newTab);
-                return;
-            }
-        }
-
         // Apply the options on all rows.
+        boolean foundOne = false;
+
         for (int i = 0; i < model.getRowCount(); i++) {
             String code = model.getCode(i);
             if (!Util.empty(code)) {
-                Option option = tableTool.getOptions().getOption(code);
+                foundOne = true;
+
+                Object row = model.getRow(i);
+                Option option = tableTool.getOptions().getOption(code, row);
                 if (option != null) {
                     if (option.isMultiRow()) {
-                        processMultiRowOptions(option, newTab);
+                        processMultiRowOptions(tableTool, option, newTab);
                     } else {
                         model.setCode(i, "");
-                        option.runOption(tableTool, model.getRow(i), newTab);
+                        if (!getMainWindow().runOption(option, tableTool, row, newTab)) {
+                            model.setCode(i, code); // Put back the code
+                            // TODO Should I stop on error?
+                            break;
+                        }
+
                         if (!newTab) {
                             // TODO Should the remaining options be ignore? (if results were replaced).
                             // For now, lets be safe, and only apply a single option.
@@ -168,6 +165,22 @@ public class TableToolPanel<R> extends ToolPanel
                             // we are doing based on the UNSORTED rows.
                         }
                     }
+                }
+            }
+        }
+
+        // Run the default option on the current row if no options have been entered.
+        if (!foundOne) {
+            int r = table.getSelectedRow();
+    
+            if (r >= 0) {
+                int rowIndex = table.convertRowIndexToModel(r);
+                if (Util.empty(model.getCode(rowIndex))) {
+                    R row = table.getModel().getRow(rowIndex);
+                    Option option = tableTool.getOptions().getDefaultRowOption(row);
+                    getMainWindow().runOption(option, tableTool, row, newTab);
+    
+                    return;
                 }
             }
         }
@@ -184,30 +197,29 @@ public class TableToolPanel<R> extends ToolPanel
             {
                 Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
                 if (option != null) {
-                    option.runOption(tableTool, row, useNewTab);
+                    getMainWindow().runOption(option, tableTool, row, useNewTab);
                 }
             }
         });
 
         return item;
     }
-    
-    private void processMultiRowOptions(Option option, boolean newTab)
+
+    private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab)
     {
-        String code = option.getCode();
         ToolTableModel<?> model = table.getModel();
 
         List<Object> rows = new ArrayList<Object>();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (code.equals(model.getCode(i))) {
-
+            Object row = model.getRow(i);
+            Option otherOption = tableTool.getOptions().getRowOption(model.getCode(i), row);
+            if (otherOption == option) {
                 model.setCode(i, "");
                 rows.add(model.getRow(i));
             }
         }
-        option.runMultiOption(tableTool, rows, newTab);
+        getMainWindow().runMultipleOption(option, tableTool, rows, newTab);
     }
-    
 
     public void stopEditing()
     {

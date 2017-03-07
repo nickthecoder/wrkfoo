@@ -185,7 +185,7 @@ public class ToolPanel extends JPanel implements ToolListener
             public void actionPerformed(ActionEvent e)
             {
                 if (option != null) {
-                    option.runOption(tool, useNewTab);
+                    getMainWindow().runOption(option, tool, useNewTab);
                 }
             }
         });

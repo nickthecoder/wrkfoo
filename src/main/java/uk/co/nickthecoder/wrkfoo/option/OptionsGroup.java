@@ -28,9 +28,9 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public Option getOption(String code)
+    public Option getOption(String code, Object row)
     {
-        Option result = getRowOption(code, null);
+        Option result = getRowOption(code, row);
         if ( result == null) {
             return getNonRowOption(code);
         } else {

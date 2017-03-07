@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -248,9 +250,43 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
             Option option = tool.getOptions().getNonRowOption(optionsTextField.getText());
             if (option != null) {
-                option.runOption(tool, newTab);
-                optionsTextField.setText("");
+                if (runOption(option, tool, newTab)) {
+                    optionsTextField.setText("");
+                }
             }
+        }
+    }
+
+    public boolean runOption(Option option, Tool tool, boolean newTab)
+    {
+        try {
+            option.runOption(tool, newTab);
+            return true;
+        } catch (Throwable e) {
+            handleException(e);
+            return false;
+        }
+    }
+
+    public boolean runOption(Option option, TableTool<?> tool, Object row, boolean newTab)
+    {
+        try {
+            option.runOption(tool, row, newTab);
+            return true;
+        } catch (Throwable e) {
+            handleException(e);
+            return false;
+        }
+    }
+
+    public boolean runMultipleOption(Option option, TableTool<?> tool, List<Object> rows, boolean newTab)
+    {
+        try {
+            option.runMultiOption(tool, rows, newTab);
+            return true;
+        } catch (Throwable e) {
+            handleException(e);
+            return false;
         }
     }
 
@@ -476,16 +512,30 @@ public class MainWindow extends JFrame implements ExceptionHandler
         tabbedPane.previousTab();
     }
 
+    /**
+     * Records the time that the last error message was sent. Used to determine if later messages should obscure the error.
+     */
+    private long lastError = new Date().getTime();
+
+    /**
+     * If an error and then a regular message is sent, how long must have elpsed for the message to replace the error.
+     */
+    private final static long ERROR_TIMEOUT_MILLIS = 5000l; // 5 seconds
+
     public void setMessage(String text)
     {
-        message.setForeground(Color.black);
-        message.setText(text);
+        if (new Date().getTime() - lastError > ERROR_TIMEOUT_MILLIS) {
+            message.setForeground(Color.black);
+            message.setText(text);
+
+        }
     }
 
     public void setErrorMessage(String text)
     {
         message.setForeground(Color.red);
         message.setText(text);
+        lastError = new Date().getTime();
     }
 
     @Override
