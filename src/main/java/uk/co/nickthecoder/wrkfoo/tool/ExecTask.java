@@ -22,6 +22,7 @@ public abstract class ExecTask extends Task implements TextResults, Stoppable
     {
         exec = getExec();
         exec.stdout();
+        exec.mergeStderr();
         exec.run();
         results = exec.getStdout().toString();
     }

@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Merge stderr and out in ExecTask
+
 BUGS
 ====
 

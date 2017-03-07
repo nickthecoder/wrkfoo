@@ -14,7 +14,7 @@ public class ExecTool extends AbstractTextTool<SimpleExecTask>
 
     public ExecTool(Exec exec)
     {
-        super(new SimpleExecTask(exec));
+        this(new SimpleExecTask(exec));
     }
     
     public ExecTool dir( File directory )
