@@ -7,4 +7,6 @@ public interface TableCommand<R> extends Command
     public TableCommandPanel<R> getCommandPanel();
     
     public Columns<R> getColumns();
+    
+    public void clearResults();
 }

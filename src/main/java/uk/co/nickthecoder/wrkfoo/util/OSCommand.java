@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.command.ExecCommand;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 
 /**
@@ -43,6 +44,12 @@ public class OSCommand
             }
         }
         return result;
+    }
+    
+    public static ExecCommand gui( String command, Object... args)
+    {
+        Exec exec = command( command, args ); 
+        return new ExecCommand(exec);
     }
 
     public static Exec edit(Object... args)

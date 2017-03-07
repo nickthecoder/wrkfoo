@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -46,7 +45,7 @@ public class CommandPanel extends JPanel implements CommandListener
 
     private JScrollPane parametersScrollPane;
 
-    protected JComponent resultsComponent;
+    protected ResultsPanel resultsPanel;
     
     public CommandPanel(Command foo)
     {
@@ -113,8 +112,8 @@ public class CommandPanel extends JPanel implements CommandListener
 
         sidePanel.add(goStop, BorderLayout.SOUTH);
 
-        resultsComponent = command.createResultsComponent();
-        body.add(resultsComponent, BorderLayout.CENTER);
+        resultsPanel = command.createResultsComponent();
+        body.add(resultsPanel, BorderLayout.CENTER);
 
         splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
         splitPane.setResizeWeight(1);
@@ -136,6 +135,11 @@ public class CommandPanel extends JPanel implements CommandListener
         return splitPane;
     }
 
+    public ResultsPanel getResultsPanel()
+    {
+        return resultsPanel;
+    }
+    
     public ParametersPanel getParametersPanel()
     {
         return parametersPanel;

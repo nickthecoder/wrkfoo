@@ -1,16 +1,24 @@
 Current Task
 ============
 
-	Options which run commands which output text.		
-		Groovy option checks if there IS output of an Exec, and displays it in current/new tab
-			Create ExecCommand
-
 BUGS
 ====
+
+Command.updateResults is called from two places. CommandTab.go and AbstractCommand.GoThread.run
+	Is that ok?
 
 New Features
 ============
 
+	Rename "groovy" to "action" in the options json files.
+	
+	Rename "Command" to "Tool" - will take a while!!!
+		Including all related classes such as CommandPanel.
+	
+	Tar my .config/wrkfoo directory, and put it in the documents folder.
+
+	Right click on a tab to change the text.
+		Save this info when saving tabset
 
 	Format WrkTree's path so that it is indented appropriately.
 		When sorted by a different column (or path backwards), then don't do the fancy formatting.

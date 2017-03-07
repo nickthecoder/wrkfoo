@@ -2,18 +2,17 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class TableResults<R> extends JPanel
+public class TableResultsPanel<R> extends ResultsPanel
 {
     public SimpleTable<R> table;
 
     public JScrollPane tableScrollPane;
 
-    public TableResults(SimpleTable<R> table)
+    public TableResultsPanel(SimpleTable<R> table)
     {
-        this.setLayout(new BorderLayout());
+        super();
         this.table = table;
         table.setAutoCreateRowSorter(true);
 

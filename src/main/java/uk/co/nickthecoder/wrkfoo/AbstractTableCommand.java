@@ -1,11 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.io.File;
-
-import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.wrkfoo.option.Options;
-import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public abstract class AbstractTableCommand<T extends Task, R> extends AbstractCommand<T> implements TableCommand<R>
 {
@@ -28,45 +23,33 @@ public abstract class AbstractTableCommand<T extends Task, R> extends AbstractCo
     protected abstract Columns<R> createColumns();
 
 
-
-    @Override
-    public ParametersPanel createParametersPanel()
-    {
-        ParametersPanel pp = new ParametersPanel();
-        pp.addParameters(getTask().getParameters());
-        return pp;
-
-    }
     
     @Override
     public void detach()
     {
         super.detach();
         this.columns = null;
+        this.clearResults();
+    }
+
+    protected TableCommandPanel<R> createCommandPanel()
+    {
+        return new TableCommandPanel<R>(this);
     }
     
-    public abstract void updateResults();
-
-    private Options options;
-
-    public File getOptionsFile()
+    @SuppressWarnings("unchecked")
+    @Override
+    public TableCommandPanel<R> getCommandPanel()
     {
-        return Resources.instance.getOptionsFile(optionsName());
+        return (TableCommandPanel<R>) super.getCommandPanel();
     }
 
-    public Options getOptions()
-    {
-        if (options == null) {
 
-            OptionsGroup og = new OptionsGroup();
-            String name = optionsName();
-            if (name != null) {
-                og.add(Resources.instance.readOptions(name));
-            }
-            og.add(Resources.instance.globalOptions());
-            options = og;
-        }
-        return options;
+    @Override
+    public TableResultsPanel<R> createResultsComponent()
+    {
+        SimpleTable<R> table = getColumns().createTable(getTableModel());
+        return new TableResultsPanel<R>(table);
     }
 
 }

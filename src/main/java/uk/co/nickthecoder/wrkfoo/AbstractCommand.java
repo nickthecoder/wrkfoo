@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +9,13 @@ import javax.swing.Icon;
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParameterException;
+import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
+import uk.co.nickthecoder.wrkfoo.option.Options;
+import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public abstract class AbstractCommand<T extends Task> implements Command
 {
@@ -23,6 +27,8 @@ public abstract class AbstractCommand<T extends Task> implements Command
 
     private List<CommandListener> commandListeners = new ArrayList<CommandListener>();
 
+    private CommandPanel commandPanel;
+    
     public AbstractCommand(T task)
     {
         this.task = task;
@@ -84,11 +90,12 @@ public abstract class AbstractCommand<T extends Task> implements Command
 
         this.commandTab = tab;
     }
+
     @Override
     public void detach()
     {
         this.commandTab = null;
-        this.clearResults();
+        this.commandPanel = null;
     }
 
     @Override
@@ -228,5 +235,54 @@ public abstract class AbstractCommand<T extends Task> implements Command
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+
+
+    @Override
+    public ParametersPanel createParametersPanel()
+    {
+        ParametersPanel pp = new ParametersPanel();
+        pp.addParameters(getTask().getParameters());
+        return pp;
+
+    }
+    
+    private Options options;
+
+    public File getOptionsFile()
+    {
+        return Resources.instance.getOptionsFile(optionsName());
+    }
+
+    public Options getOptions()
+    {
+        if (options == null) {
+
+            OptionsGroup og = new OptionsGroup();
+            String name = optionsName();
+            if (name != null) {
+                og.add(Resources.instance.readOptions(name));
+            }
+            og.add(Resources.instance.globalOptions());
+            options = og;
+        }
+        return options;
+    }
+    
+    protected CommandPanel createCommandPanel()
+    {
+        return new CommandPanel( this );
+    }
+    
+    @Override
+    public CommandPanel getCommandPanel()
+    {
+        if (commandPanel == null) {
+            commandPanel = createCommandPanel();
+            commandPanel.postCreate();
+        }
+
+        return commandPanel;
     }
 }

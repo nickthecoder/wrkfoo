@@ -34,7 +34,7 @@ public class TableCommandPanel<R> extends CommandPanel
 
         // TODO Is there a better design pattern than this? It works, but looks ugly.
         @SuppressWarnings("unchecked")
-        TableResults<R> results = (TableResults<R>) resultsComponent;
+        TableResultsPanel<R> results = (TableResultsPanel<R>) resultsPanel;
         table = results.table;
         
         MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
