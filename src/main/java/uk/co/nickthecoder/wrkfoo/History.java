@@ -9,6 +9,8 @@ import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.jguifier.util.Exec;
+import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 public class History
 {
@@ -28,7 +30,12 @@ public class History
             history.remove(history.size() - 1);
         }
 
-        Moment moment = new Moment(tool);
+        Moment moment;
+        if (tool.isRerunnable()) {
+            moment = new Moment(tool);
+        } else {
+            moment = new Moment(new ExecTool(new Exec("echo", "Tool prevented from rerunning")));
+        }
         history.add(moment);
         currentIndex ++;
     }

@@ -50,6 +50,8 @@ public interface Tool
 
     public ToolPanel getToolPanel();
 
+    public boolean isRerunnable();
+    
     public void go();
 
     public void stop();

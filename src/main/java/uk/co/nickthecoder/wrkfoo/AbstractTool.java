@@ -82,7 +82,12 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return task.getParameters();
     }
 
-
+    @Override
+    public boolean isRerunnable()
+    {
+        return true;
+    }
+    
     @Override
     public void attachTo(ToolTab tab)
     {

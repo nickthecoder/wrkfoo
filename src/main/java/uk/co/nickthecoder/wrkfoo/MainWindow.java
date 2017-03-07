@@ -153,6 +153,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
         builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
+        
+        // There's an illusive bug, which causes alt F4 not to work, so I've added a different shortcut.
+        // I've not spent too long hunting the bug, because I think it may be a bug in Gnome (or maybe Java).
+        builder.name("closeWindow").shortcut("ctrl F4").buildShortcut();
 
         // Keyboard shortcuts alt+1 .. alt+9 switches to that tab number.
         for (int i = 1; i <= 9; i++) {
@@ -512,6 +516,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
         tabbedPane.previousTab();
     }
 
+    public void onCloseWindow()
+    {
+        setVisible(false);
+    }
+    
     /**
      * Records the time that the last error message was sent. Used to determine if later messages should obscure the error.
      */
