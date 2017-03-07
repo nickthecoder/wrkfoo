@@ -54,6 +54,6 @@ public class WrkTool extends AbstractListTool<WrkToolTask, Tool>
     @Override
     protected String optionsName()
     {
-        return "wrkcommand";
+        return "wrktool";
     }
 }

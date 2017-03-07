@@ -1,56 +1,32 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
-import groovy.lang.Script;
 
 import java.util.List;
 
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-
-import uk.co.nickthecoder.wrkfoo.Tool;
-import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
-import uk.co.nickthecoder.wrkfoo.util.OSCommand;
+import uk.co.nickthecoder.wrkfoo.Tool;
+import uk.co.nickthecoder.wrkfoo.ToolTab;
 
 public class GroovyOption extends AbstractOption
 {
-    private static GroovyShell createShell()
-    {
-        ImportCustomizer importCustomizer = new ImportCustomizer();
-        importCustomizer.addStarImports(
-            "uk.co.nickthecoder.wrkfoo",
-            "uk.co.nickthecoder.wrkfoo.tool",
-            "uk.co.nickthecoder.wrkfoo.util",
-            "uk.co.nickthecoder.jguifier.util");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "gui");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "openFolder");
 
-        CompilerConfiguration configuration = new CompilerConfiguration();
-        configuration.addCompilationCustomizers(importCustomizer);
+    private final GroovyScriptlet ifScriptlet;
 
-        return new GroovyShell(configuration);
-    }
-
-    private final String groovyIfSource;
-
-    private final String groovySource;
-
-    private Script groovyScript;
-
-    private Script groovyIfScript;
+    private final GroovyScriptlet action;
 
     public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti)
     {
         super(code, label, isRow, isMulti);
-        this.groovySource = script;
-        this.groovyIfSource = ifScript;
+        this.action = new GroovyScriptlet(script);
+        if (ifScript != null) {
+            this.ifScriptlet = new GroovyScriptlet(ifScript);
+        } else {
+            ifScriptlet = null;
+        }
     }
-    
+
     @Override
     public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab)
     {
@@ -70,35 +46,28 @@ public class GroovyOption extends AbstractOption
     }
 
     @Override
-    public boolean isApplicable( Object row )
+    public boolean isApplicable(Object row)
     {
-        if ( groovyIfSource == null) {
+        if (ifScriptlet == null) {
             return true;
         }
-        
-        if (groovyIfScript == null) {
-            groovyIfScript = createShell().parse(groovyIfSource);
-        }
 
-        Object result = runScript(groovyIfScript, null, false, row);
+        Object result = runScript(ifScriptlet, null, false, row);
 
         return result == Boolean.TRUE;
     }
 
     private void privateRunOption(Tool tool, boolean isMulti, Object rowOrRows, boolean openNewTab)
     {
-        if (groovyScript == null) {
-            groovyScript = createShell().parse(groovySource);
-        }
         ToolTab tab = tool.getToolTab();
-        
+
         // The new tab cannot share the same Tool as the current tab, so create a copy first
         // just in case the option reuses the tool.
         if (openNewTab) {
             tool = tool.duplicate();
         }
-        
-        Object result = runScript(groovyScript, tool, isMulti, rowOrRows);
+
+        Object result = runScript(action, tool, isMulti, rowOrRows);
 
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
@@ -125,12 +94,11 @@ public class GroovyOption extends AbstractOption
 
     }
 
-    private Object runScript(Script script, Tool tool, boolean isMulti, Object rowOrRows)
+    private Object runScript(GroovyScriptlet scriplet, Tool tool, boolean isMulti, Object rowOrRows)
     {
-
         Binding bindings = new Binding();
         bindings.setProperty("tool", tool);
-        if ( tool != null ) {
+        if (tool != null) {
             bindings.setProperty("task", tool.getTask());
         }
 
@@ -141,8 +109,9 @@ public class GroovyOption extends AbstractOption
                 bindings.setProperty("row", rowOrRows);
             }
         }
-        script.setBinding(bindings);
 
-        return script.run();
+        return scriplet.run(bindings);
     }
+
+
 }

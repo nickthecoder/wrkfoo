@@ -52,5 +52,4 @@ public class WrkToolTask extends Task implements ListResults<Tool>
     {
         return results;
     }
-
 }

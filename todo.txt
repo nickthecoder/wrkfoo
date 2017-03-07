@@ -9,11 +9,6 @@ Command.updateResults is called from two places. CommandTab.go and AbstractComma
 
 New Features
 ============
-
-	Rename "groovy" to "action" in the options json files.
-	
-	Rename "Command" to "Tool" - will take a while!!!
-		Including all related classes such as CommandPanel.
 	
 	Tar my .config/wrkfoo directory, and put it in the documents folder.
 		Put the tar command in a shell script so I can run it multiple times.
