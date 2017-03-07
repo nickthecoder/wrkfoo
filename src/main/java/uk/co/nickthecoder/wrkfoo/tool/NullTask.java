@@ -1,23 +1,18 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.wrkfoo.ListResults;
+import uk.co.nickthecoder.wrkfoo.TextResults;
 
-public class NullTask extends Task implements ListResults<Object>
-{
-    public List<Object> results = new ArrayList<Object>(0);
-    
+public class NullTask extends Task implements TextResults
+{    
     @Override
     public void body()
     {        
     }
 
     @Override
-    public List<Object> getResults()
+    public String getResults()
     {
-        return results;
+        return "";
     }
 }

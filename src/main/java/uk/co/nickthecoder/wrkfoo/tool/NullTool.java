@@ -1,22 +1,14 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
+import uk.co.nickthecoder.wrkfoo.AbstractTextTool;
 
 /**
  * A tool which does nothing!
  */
-public class NullTool extends AbstractListTool<NullTask, Object>
+public class NullTool extends AbstractTextTool<NullTask>
 {
     public NullTool()
     {
         super(new NullTask());
     }
-
-    @Override
-    protected Columns<Object> createColumns()
-    {
-        return new Columns<Object>();
-    }
-
 }
