@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -43,12 +44,10 @@ public class CommandPanel<R> extends JPanel implements CommandListener
 
     private JButton stopButton;
 
-    protected SimpleTable<R> table;
-
-    protected JScrollPane tableScrollPane;
-
     private JScrollPane parametersScrollPane;
 
+    protected JComponent resultsComponent;
+    
     public CommandPanel(Command<R> foo)
     {
         this.command = foo;
@@ -114,12 +113,8 @@ public class CommandPanel<R> extends JPanel implements CommandListener
 
         sidePanel.add(goStop, BorderLayout.SOUTH);
 
-        table = command.createTable();
-        table.setAutoCreateRowSorter(true);
-
-        tableScrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-        body.add(tableScrollPane, BorderLayout.CENTER);
+        resultsComponent = command.createResultsComponent();
+        body.add(resultsComponent, BorderLayout.CENTER);
 
         splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
         splitPane.setResizeWeight(1);
@@ -169,14 +164,15 @@ public class CommandPanel<R> extends JPanel implements CommandListener
         Options options = command.getOptions();
         for (Option option : options) {
             if (!option.isRow()) {
-                menu.add(createOptionsMenuItem(option, -1, useNewTab));
+                menu.add(createOptionsMenuItem(option, useNewTab));
             }
         }
 
         menu.show(me.getComponent(), me.getX(), me.getY());
     }
 
-    protected JMenuItem createOptionsMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
+
+    protected JMenuItem createOptionsMenuItem(final Option option, final boolean useNewTab)
     {
         String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
         JMenuItem item = new JMenuItem(option.getLabel() + extra);
@@ -185,25 +181,15 @@ public class CommandPanel<R> extends JPanel implements CommandListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
                 if (option != null) {
-                    option.runOption(command, row, useNewTab);
+                    option.runOption(command, null, useNewTab);
                 }
             }
         });
 
         return item;
     }
-
-    public void stopEditing()
-    {
-        if (table.isEditing()) {
-            if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
-                table.getCellEditor().cancelCellEditing();
-            }
-        }
-    }
-
+    
     public boolean check()
     {
         return parametersPanel.check(command.getTask());

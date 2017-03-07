@@ -1,12 +1,14 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
@@ -16,6 +18,7 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
 
 public class TableCommandPanel<R> extends CommandPanel<R>
 {
+    protected SimpleTable<R> table;
 
     public TableCommandPanel(Command<R> command)
     {
@@ -26,6 +29,11 @@ public class TableCommandPanel<R> extends CommandPanel<R>
     {
         super.postCreate();
 
+        // TODO Is there a better design pattern than this? It works, but looks ugly.
+        @SuppressWarnings("unchecked")
+        TableResults<R> results = (TableResults<R>) resultsComponent;
+        table = results.table;
+        
         MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
@@ -162,6 +170,25 @@ public class TableCommandPanel<R> extends CommandPanel<R>
         }
     }
 
+    protected JMenuItem createOptionsMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
+    {
+        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
+        JMenuItem item = new JMenuItem(option.getLabel() + extra);
+        item.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
+                if (option != null) {
+                    option.runOption(command, row, useNewTab);
+                }
+            }
+        });
+
+        return item;
+    }
+    
     private void processMultiRowOptions(Option option, boolean newTab)
     {
         String code = option.getCode();
@@ -176,6 +203,16 @@ public class TableCommandPanel<R> extends CommandPanel<R>
             }
         }
         option.runMultiOption(command, rows, newTab);
+    }
+    
+
+    public void stopEditing()
+    {
+        if (table.isEditing()) {
+            if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+                table.getCellEditor().cancelCellEditing();
+            }
+        }
     }
 
 }

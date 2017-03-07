@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
@@ -51,7 +52,7 @@ public interface Command<R>
 
     public CommandTableModel<R> getTableModel();
 
-    public SimpleTable<R> createTable();
+    public JComponent createResultsComponent();
 
     public ParametersPanel createParametersPanel();
 

@@ -108,10 +108,6 @@ public class CommandTab
 
     private void go(Command<?> newCommand, boolean updateHistory)
     {
-        if (this.command != null) {
-            this.command.getCommandPanel().stopEditing();
-        }
-
         if (newCommand != this.command) {
             attach(newCommand);
             // setIcon( newCommand.getIcon() );

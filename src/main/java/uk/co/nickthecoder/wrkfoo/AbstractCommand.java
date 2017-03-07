@@ -93,13 +93,6 @@ public abstract class AbstractCommand<T extends Task, R> implements Command<R>
     protected abstract Columns<R> createColumns();
 
     @Override
-    public SimpleTable<R> createTable()
-    {
-        SimpleTable<R> result = getColumns().createTable(getTableModel());
-        return result;
-    }
-
-    @Override
     public void attachTo(CommandTab tab)
     {
         assert (this.commandTab == null);

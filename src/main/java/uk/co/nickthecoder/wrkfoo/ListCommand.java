@@ -8,7 +8,7 @@ public abstract class ListCommand<T extends Task & ListResults<R>, R> extends Ab
 {
     protected ListTableModel<R> tableModel;
 
-    private CommandPanel<R> commandPanel;
+    private TableCommandPanel<R> commandPanel;
 
     public ListCommand(T task)
     {
@@ -38,7 +38,14 @@ public abstract class ListCommand<T extends Task & ListResults<R>, R> extends Ab
     }
 
     @Override
-    public CommandPanel<R> getCommandPanel()
+    public TableResults<R> createResultsComponent()
+    {
+        SimpleTable<R> table = getColumns().createTable(getTableModel());
+        return new TableResults<R>(table);
+    }
+
+    @Override
+    public TableCommandPanel<R> getCommandPanel()
     {
         if (commandPanel == null) {
             commandPanel = new TableCommandPanel<R>(this);
@@ -47,13 +54,13 @@ public abstract class ListCommand<T extends Task & ListResults<R>, R> extends Ab
 
         return commandPanel;
     }
+
     @Override
     public void updateResults()
     {
         getTableModel().update(getTask().getResults());
-        columns.defaultSort( getCommandPanel().table );
+        columns.defaultSort(getCommandPanel().table);
     }
-
 
     @Override
     public void detach()
