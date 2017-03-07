@@ -22,13 +22,13 @@ public class History
         currentIndex = -1; // We don't have any Moment yet.
     }
 
-    public void add(Command command)
+    public void add(Tool tool)
     {
         while (currentIndex < history.size() - 1) {
             history.remove(history.size() - 1);
         }
 
-        Moment moment = new Moment(command);
+        Moment moment = new Moment(tool);
         history.add(moment);
         currentIndex ++;
     }
@@ -38,7 +38,7 @@ public class History
         return currentIndex > 0;
     }
 
-    public Command undo()
+    public Tool undo()
     {
         if (currentIndex == 0) {
             throw new RuntimeException("Cannot undo");
@@ -53,7 +53,7 @@ public class History
         return currentIndex < history.size() - 1;
     }
 
-    public Command redo()
+    public Tool redo()
     {
         if (currentIndex > history.size() - 1) {
             throw new RuntimeException("Cannot redo");
@@ -68,15 +68,15 @@ public class History
      */
     private final class Moment
     {
-        Command command;
+        Tool tool;
         Map<String, Object> parameterValues;
 
-        Moment(Command command)
+        Moment(Tool tool)
         {
-            this.command = command;
+            this.tool = tool;
             parameterValues = new HashMap<String, Object>();
 
-            saveParameters(command.getTask().getParameters());
+            saveParameters(tool.getTask().getParameters());
         }
 
         void saveParameters(GroupParameter group)
@@ -90,9 +90,9 @@ public class History
         }
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        public Command restore()
+        public Tool restore()
         {
-            Task task = command.getTask();
+            Task task = tool.getTask();
             
             for (String key : parameterValues.keySet()) {
                 try {
@@ -103,7 +103,7 @@ public class History
                     e.printStackTrace();
                 }
             }
-            return command;
+            return tool;
         }
 
     }

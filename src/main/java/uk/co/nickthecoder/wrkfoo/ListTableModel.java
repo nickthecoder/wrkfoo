@@ -2,14 +2,14 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.util.List;
 
-public class ListTableModel<R> extends CommandTableModel<R>
+public class ListTableModel<R> extends ToolTableModel<R>
 {
     public List<R> list;
 
 
-    public ListTableModel(TableCommand<?> command, List<R> list, Columns<R> columns)
+    public ListTableModel(TableTool<?> tool, List<R> list, Columns<R> columns)
     {
-        super(command, columns);
+        super(tool, columns);
         this.list = list;
     }
 

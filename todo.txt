@@ -16,6 +16,8 @@ New Features
 		Including all related classes such as CommandPanel.
 	
 	Tar my .config/wrkfoo directory, and put it in the documents folder.
+		Put the tar command in a shell script so I can run it multiple times.
+		No, just copy (or symlink), don't tar.
 
 	Right click on a tab to change the text.
 		Save this info when saving tabset

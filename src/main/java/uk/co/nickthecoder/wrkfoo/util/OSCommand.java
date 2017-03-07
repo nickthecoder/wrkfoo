@@ -4,27 +4,27 @@ import java.util.Collection;
 
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.command.ExecCommand;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
+import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 /**
  * A convenient way to run commands from a {@link GroovyOption}.
  * 
- * @see #command(String, Object...)
+ * @see #tool(String, Object...)
  */
 public class OSCommand
 {
     /**
-     * Prepares (but does not run) an {@link Exec}, with the given command and arguments.
+     * Prepares (but does not run) an {@link Exec}, with the given tool and arguments.
      * <p>
      * Any null arguments are stripped out. If one of <code>args</code> is a {@link Collection}, then each item in the
      * collection is sent as a separate argument (again, nulls are stripped out).
      * </p>
      * 
-     * @param command
-     *            The name of the command to run
+     * @param tool
+     *            The name of the tool to run
      * @param args
-     *            The arguments for the command.
+     *            The arguments for the tool.
      * @return An {@link Exec}, which is NOT run by this method.
      */
     public static Exec command(String command, Object... args)
@@ -46,10 +46,10 @@ public class OSCommand
         return result;
     }
     
-    public static ExecCommand gui( String command, Object... args)
+    public static ExecTool gui( String command, Object... args)
     {
         Exec exec = command( command, args ); 
-        return new ExecCommand(exec);
+        return new ExecTool(exec);
     }
 
     public static Exec edit(Object... args)

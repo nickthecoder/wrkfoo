@@ -33,10 +33,10 @@ public class TabSetData
     public TabSetData(MainWindow mainWindow)
     {
         tabs = new ArrayList<TabData>();
-        for (CommandTab commandTab : mainWindow.tabbedPane) {
-            Command command = commandTab.getCommand();
+        for (ToolTab toolTab : mainWindow.tabbedPane) {
+            Tool tool = toolTab.getTool();
 
-            TabData tabData = new TabData(command);
+            TabData tabData = new TabData(tool);
             tabs.add(tabData);
         }
         width = mainWindow.getWidth();
@@ -95,8 +95,8 @@ public class TabSetData
         mainWindow.tabSetFile = tabSetFile;
 
         for (TabData tabData : tabs) {
-            Command command = tabData.createCommand();
-            mainWindow.addTab(command);
+            Tool tool = tabData.createTool();
+            mainWindow.addTab(tool);
         }
 
         return mainWindow;
@@ -104,31 +104,31 @@ public class TabSetData
 
     public static class TabData
     {
-        public String commandClass;
+        public String toolClass;
         public Map<String, String> parameters;
         boolean showParameters = false;
 
-        public TabData(Command command)
+        public TabData(Tool tool)
         {
-            commandClass = command.getClass().getName();
+            toolClass = tool.getClass().getName();
             parameters = new HashMap<String, String>();
-            for (Parameter parameter : command.getParameters().getChildren()) {
+            for (Parameter parameter : tool.getParameters().getChildren()) {
                 if (parameter instanceof ValueParameter) {
                     ValueParameter<?> vp = (ValueParameter<?>) parameter;
                     parameters.put(vp.getName(), vp.getStringValue());
                 }
             }
-            showParameters = !command.getCommandPanel().getSplitPane().isHidden();
+            showParameters = !tool.getToolPanel().getSplitPane().isHidden();
         }
 
-        public Command createCommand()
+        public Tool createTool()
         {
             try {
                 @SuppressWarnings("unchecked")
-                Class<Command> klass = (Class<Command>) Class.forName(commandClass);
-                Command command = klass.newInstance();
+                Class<Tool> klass = (Class<Tool>) Class.forName(toolClass);
+                Tool tool = klass.newInstance();
 
-                GroupParameter gp = command.getParameters();
+                GroupParameter gp = tool.getParameters();
                 for (String key : parameters.keySet()) {
                     String value = parameters.get(key);
                     Parameter parameter = gp.findParameter(key);
@@ -142,9 +142,9 @@ public class TabSetData
                     }
                 }
 
-                command.getCommandPanel().getSplitPane().toggle(showParameters);
+                tool.getToolPanel().getSplitPane().toggle(showParameters);
                 
-                return command;
+                return tool;
 
             } catch (Exception e) {
                 return null;

@@ -9,10 +9,10 @@ import java.util.List;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
-import uk.co.nickthecoder.wrkfoo.Command;
-import uk.co.nickthecoder.wrkfoo.CommandTab;
+import uk.co.nickthecoder.wrkfoo.Tool;
+import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
-import uk.co.nickthecoder.wrkfoo.TableCommand;
+import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 
 public class GroovyOption extends AbstractOption
@@ -22,10 +22,10 @@ public class GroovyOption extends AbstractOption
         ImportCustomizer importCustomizer = new ImportCustomizer();
         importCustomizer.addStarImports(
             "uk.co.nickthecoder.wrkfoo",
-            "uk.co.nickthecoder.wrkfoo.command",
+            "uk.co.nickthecoder.wrkfoo.tool",
             "uk.co.nickthecoder.wrkfoo.util",
             "uk.co.nickthecoder.jguifier.util");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
+        importCustomizer.addStaticImport(OSCommand.class.getName(), "tool");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "gui");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
         importCustomizer.addStaticImport(OSCommand.class.getName(), "openFolder");
@@ -52,21 +52,21 @@ public class GroovyOption extends AbstractOption
     }
     
     @Override
-    public void runMultiOption(TableCommand<?> command, List<Object> rows, boolean openNewTab)
+    public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab)
     {
-        privateRunOption(command, true, rows, openNewTab);
+        privateRunOption(tool, true, rows, openNewTab);
     }
 
     @Override
-    public void runOption(Command command, boolean openNewTab)
+    public void runOption(Tool tool, boolean openNewTab)
     {
-        privateRunOption(command, false, null, openNewTab);
+        privateRunOption(tool, false, null, openNewTab);
     }
 
     @Override
-    public void runOption(TableCommand<?> command, Object row, boolean openNewTab)
+    public void runOption(TableTool<?> tool, Object row, boolean openNewTab)
     {
-        privateRunOption(command, false, row, openNewTab);
+        privateRunOption(tool, false, row, openNewTab);
     }
 
     @Override
@@ -85,30 +85,30 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Command command, boolean isMulti, Object rowOrRows, boolean openNewTab)
+    private void privateRunOption(Tool tool, boolean isMulti, Object rowOrRows, boolean openNewTab)
     {
         if (groovyScript == null) {
             groovyScript = createShell().parse(groovySource);
         }
-        CommandTab tab = command.getCommandTab();
+        ToolTab tab = tool.getToolTab();
         
-        // The new tab cannot share the same Command as the current tab, so create a copy first
-        // just in case the option reuses the command.
+        // The new tab cannot share the same Tool as the current tab, so create a copy first
+        // just in case the option reuses the tool.
         if (openNewTab) {
-            command = command.duplicate();
+            tool = tool.duplicate();
         }
         
-        Object result = runScript(groovyScript, command, isMulti, rowOrRows);
+        Object result = runScript(groovyScript, tool, isMulti, rowOrRows);
 
-        if (result instanceof Command) {
-            Command newCommand = (Command) result;
+        if (result instanceof Tool) {
+            Tool newTool = (Tool) result;
             if (openNewTab) {
                 MainWindow mainWindow = tab.getMainWindow();
-                CommandTab newTab = mainWindow.addTab(newCommand);
+                ToolTab newTab = mainWindow.addTab(newTool);
                 mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
 
             } else {
-                tab.go(newCommand);
+                tab.go(newTool);
             }
 
         } else if (result instanceof Runnable) {
@@ -125,13 +125,13 @@ public class GroovyOption extends AbstractOption
 
     }
 
-    private Object runScript(Script script, Command command, boolean isMulti, Object rowOrRows)
+    private Object runScript(Script script, Tool tool, boolean isMulti, Object rowOrRows)
     {
 
         Binding bindings = new Binding();
-        bindings.setProperty("command", command);
-        if ( command != null ) {
-            bindings.setProperty("task", command.getTask());
+        bindings.setProperty("tool", tool);
+        if ( tool != null ) {
+            bindings.setProperty("task", tool.getTask());
         }
 
         if (isRow()) {

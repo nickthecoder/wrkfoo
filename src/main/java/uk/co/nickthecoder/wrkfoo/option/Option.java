@@ -2,8 +2,8 @@ package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.List;
 
-import uk.co.nickthecoder.wrkfoo.Command;
-import uk.co.nickthecoder.wrkfoo.TableCommand;
+import uk.co.nickthecoder.wrkfoo.Tool;
+import uk.co.nickthecoder.wrkfoo.TableTool;
 
 public interface Option
 {    
@@ -11,11 +11,11 @@ public interface Option
     
     public String getLabel();
 
-    public void runMultiOption( TableCommand<?> command, List<Object> row, boolean newTab );
+    public void runMultiOption( TableTool<?> tool, List<Object> row, boolean newTab );
     
-    public void runOption( Command command, boolean newTab );
+    public void runOption( Tool tool, boolean newTab );
 
-    public void runOption( TableCommand<?> command, Object row, boolean newTab );
+    public void runOption( TableTool<?> tool, Object row, boolean newTab );
 
     public boolean isApplicable( Object row );
     

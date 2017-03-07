@@ -5,7 +5,7 @@ import java.util.Comparator;
 import javax.swing.table.TableCellRenderer;
 
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.command.ExportTableData;
+import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 
 /**
  * 

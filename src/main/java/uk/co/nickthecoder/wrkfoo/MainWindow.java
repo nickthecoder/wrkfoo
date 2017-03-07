@@ -22,12 +22,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
-import uk.co.nickthecoder.wrkfoo.command.ExportTableData;
-import uk.co.nickthecoder.wrkfoo.command.NullCommand;
-import uk.co.nickthecoder.wrkfoo.command.SaveTabSet;
-import uk.co.nickthecoder.wrkfoo.command.WrkCommand;
-import uk.co.nickthecoder.wrkfoo.command.WrkTabSets;
 import uk.co.nickthecoder.wrkfoo.option.Option;
+import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
+import uk.co.nickthecoder.wrkfoo.tool.NullTool;
+import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
+import uk.co.nickthecoder.wrkfoo.tool.WrkTool;
+import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
 import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
 
 public class MainWindow extends JFrame
@@ -35,7 +35,7 @@ public class MainWindow extends JFrame
 
     public JPanel whole;
 
-    public CommandTabbedPane tabbedPane;
+    public ToolTabbedPane tabbedPane;
 
     private JToolBar toolbar;
 
@@ -48,18 +48,18 @@ public class MainWindow extends JFrame
     public File tabSetFile;
 
     /**
-     * The main window that the mouse last entered. Used by {@link CommandTabbedPane} for drag/drop tabs.
+     * The main window that the mouse last entered. Used by {@link ToolTabbedPane} for drag/drop tabs.
      */
     public static MainWindow getMouseMainWindow()
     {
         return mouseMainWindow;
     }
 
-    public MainWindow(Command... commands)
+    public MainWindow(Tool... tools)
     {
         whole = new JPanel();
 
-        tabbedPane = new CommandTabbedPane();
+        tabbedPane = new ToolTabbedPane();
         tabbedPane.addChangeListener(new ChangeListener()
         {
             @Override
@@ -80,8 +80,8 @@ public class MainWindow extends JFrame
 
         setTitle("WrkFoo");
 
-        for (Command command : commands) {
-            addTab(command);
+        for (Tool tool : tools) {
+            addTab(tool);
         }
 
         pack();
@@ -94,7 +94,7 @@ public class MainWindow extends JFrame
         return new Dimension(1000, 600);
     }
 
-    public CommandTab getCurrentTab()
+    public ToolTab getCurrentTab()
     {
         return tabbedPane.getCurrentTab();
     }
@@ -107,7 +107,7 @@ public class MainWindow extends JFrame
 
         toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").build());
         toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").build());
-        toolbar.add(builder.name("home").tooltip("Home : Show all commands").shortcut("ctrl HOME").build());
+        toolbar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").build());
         toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").build());
         toolbar.addSeparator();
         toolbar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").build());
@@ -117,9 +117,9 @@ public class MainWindow extends JFrame
         toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").build());
         toolbar.add(builder.name("exportTable").tooltip("Export Table Data").build());
         toolbar.addSeparator();
-        toolbar.add(builder.name("run").tooltip("Re-Run the current command").shortcut("F5").build());
-        toolbar.add(builder.name("back").tooltip("Go back through the command history").shortcut("alt Left").build());
-        toolbar.add(builder.name("forward").tooltip("Go forward through the command history").shortcut("alt RIGHT")
+        toolbar.add(builder.name("run").tooltip("Re-Run the current tool").shortcut("F5").build());
+        toolbar.add(builder.name("back").tooltip("Go back through the tool history").shortcut("alt Left").build());
+        toolbar.add(builder.name("forward").tooltip("Go forward through the tool history").shortcut("alt RIGHT")
             .build());
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
@@ -207,34 +207,34 @@ public class MainWindow extends JFrame
 
     private void createOptionsMenu(MouseEvent me)
     {
-        CommandTab tab = getCurrentTab();
+        ToolTab tab = getCurrentTab();
         if (tab != null) {
-            tab.getCommand().getCommandPanel().createNonRowOptionsMenu(me);
+            tab.getTool().getToolPanel().createNonRowOptionsMenu(me);
         }
     }
 
     public void processNonRowOption(boolean newTab)
     {
-        CommandTab tab = getCurrentTab();
+        ToolTab tab = getCurrentTab();
         if (tab != null) {
-            Command command = tab.getCommand();
+            Tool tool = tab.getTool();
 
-            Option option = command.getOptions().getNonRowOption(optionsTextField.getText());
+            Option option = tool.getOptions().getNonRowOption(optionsTextField.getText());
             if (option != null) {
-                option.runOption(command, newTab);
+                option.runOption(tool, newTab);
                 optionsTextField.setText("");
             }
         }
     }
 
-    public CommandTab addTab(Command command)
+    public ToolTab addTab(Tool tool)
     {
-        CommandTab tab = new CommandTab(this, command);
+        ToolTab tab = new ToolTab(this, tool);
 
         tabbedPane.add(tab);
 
         tab.postCreate();
-        tab.go(command);
+        tab.go(tool);
 
         return tab;
     }
@@ -299,12 +299,12 @@ public class MainWindow extends JFrame
         setTitle(title);
     }
 
-    private CommandTab getCurrentOrNewTab()
+    private ToolTab getCurrentOrNewTab()
     {
-        CommandTab tab = getCurrentTab();
+        ToolTab tab = getCurrentTab();
         if (tab == null) {
-            NullCommand command = new NullCommand();
-            tab = addTab(command);
+            NullTool tool = new NullTool();
+            tab = addTab(tool);
         }
         return tab;
     }
@@ -316,22 +316,22 @@ public class MainWindow extends JFrame
 
     public void onHome()
     {
-        WrkCommand command = new WrkCommand();
-        getCurrentOrNewTab().go(command);
+        WrkTool tool = new WrkTool();
+        getCurrentOrNewTab().go(tool);
     }
 
     public void onNewTab()
     {
-        WrkCommand command = new WrkCommand();
-        addTab(command);
+        WrkTool tool = new WrkTool();
+        addTab(tool);
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
     }
 
     public void onDuplicateTab()
     {
-        CommandTab tab = getCurrentTab();
+        ToolTab tab = getCurrentTab();
         if (tab != null) {
-            Command copy = tab.getCommand().duplicate();
+            Tool copy = tab.getTool().duplicate();
             addTab(copy);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         }
@@ -347,9 +347,9 @@ public class MainWindow extends JFrame
 
     public void onNewWindow()
     {
-        WrkCommand command = new WrkCommand();
-        MainWindow newWindow = new MainWindow(command);
-        command.go();
+        WrkTool tool = new WrkTool();
+        MainWindow newWindow = new MainWindow(tool);
+        tool.go();
         newWindow.setVisible(true);
     }
 
@@ -370,7 +370,7 @@ public class MainWindow extends JFrame
     public void onRun()
     {
         if (getCurrentTab() != null) {
-            getCurrentTab().getCommand().getCommandPanel().go();
+            getCurrentTab().getTool().getToolPanel().go();
         }
     }
 
@@ -381,8 +381,8 @@ public class MainWindow extends JFrame
 
     public void onWorkTabSets()
     {
-        WrkTabSets command = new WrkTabSets();
-        getCurrentOrNewTab().go(command);
+        WrkTabSets tool = new WrkTabSets();
+        getCurrentOrNewTab().go(tool);
     }
 
     public void onSaveTabSet()
@@ -395,9 +395,9 @@ public class MainWindow extends JFrame
     public void onExportTable()
     {
         if (getCurrentTab() != null) {
-            Command command = getCurrentTab().getCommand();
-            if (command instanceof TableCommand<?>) {
-                ExportTableData std = new ExportTableData( (TableCommand<?>) command );
+            Tool tool = getCurrentTab().getTool();
+            if (tool instanceof TableTool<?>) {
+                ExportTableData std = new ExportTableData( (TableTool<?>) tool );
                 std.neverExit();
                 std.promptTask();
             }

@@ -61,7 +61,7 @@ public class Columns<R>
         return null;
     }
 
-    public SimpleTable<R> createTable(CommandTableModel<R> tableModel)
+    public SimpleTable<R> createTable(ToolTableModel<R> tableModel)
     {
         SimpleTable<R> table = new SimpleTable<R>(tableModel);
         TableColumnModel tcm = table.getColumnModel();

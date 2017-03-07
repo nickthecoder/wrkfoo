@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-import uk.co.nickthecoder.wrkfoo.command.WrkF;
+import uk.co.nickthecoder.wrkfoo.tool.WrkF;
 
 /**
  * Renders a File using just its name.
