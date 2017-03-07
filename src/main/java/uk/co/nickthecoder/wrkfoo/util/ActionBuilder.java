@@ -16,17 +16,23 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 
-public class ButtonBuilder
+public class ActionBuilder
 {
-    private Object receiver;
+    private final Object receiver;
 
     private Class<?> resourceClass;
 
     private JComponent component;
 
+    private ExceptionHandler exceptionHandler;
+
     private String label;
 
     private Icon icon;
+
+    private boolean visible = true;
+
+    private boolean enable = true;
 
     private String tooltip;
 
@@ -36,7 +42,7 @@ public class ButtonBuilder
 
     private Method method;
 
-    public ButtonBuilder(Object receiver)
+    public ActionBuilder(Object receiver)
     {
         this.receiver = receiver;
         this.resourceClass = receiver.getClass();
@@ -46,33 +52,42 @@ public class ButtonBuilder
         } else if (receiver instanceof JComponent) {
             component((JComponent) receiver);
         }
+        if (receiver instanceof ExceptionHandler) {
+            exceptionHandler = (ExceptionHandler) receiver;
+        }
     }
 
-    public ButtonBuilder component(JFrame frame)
+    public ActionBuilder exceptionHandler(ExceptionHandler handler)
+    {
+        this.exceptionHandler = handler;
+        return this;
+    }
+
+    public ActionBuilder component(JFrame frame)
     {
         this.component = frame.getRootPane();
         return this;
     }
 
-    public ButtonBuilder component(JComponent component)
+    public ActionBuilder component(JComponent component)
     {
         this.component = component;
         return this;
     }
 
-    public ButtonBuilder label(String label)
+    public ActionBuilder label(String label)
     {
         this.label = label;
         return this;
     }
 
-    public ButtonBuilder resources(Class<?> klass)
+    public ActionBuilder resources(Class<?> klass)
     {
         resourceClass = klass;
         return this;
     }
 
-    public ButtonBuilder icon(String iconName)
+    public ActionBuilder icon(String iconName)
     {
         try {
             Image image = ImageIO.read(resourceClass.getResource(iconName));
@@ -85,13 +100,37 @@ public class ButtonBuilder
         return this;
     }
 
-    public ButtonBuilder tooltip(String text)
+    public ActionBuilder hide()
+    {
+        visible = false;
+        return this;
+    }
+
+    public ActionBuilder show(boolean value)
+    {
+        visible = value;
+        return this;
+    }
+
+    public ActionBuilder enable(boolean value)
+    {
+        enable = value;
+        return this;
+    }
+
+    public ActionBuilder disable()
+    {
+        enable = false;
+        return this;
+    }
+
+    public ActionBuilder tooltip(String text)
     {
         tooltip = text;
         return this;
     }
 
-    public ButtonBuilder shortcut(String shortcut)
+    public ActionBuilder shortcut(String shortcut)
     {
         this.shortcut = shortcut;
         return this;
@@ -100,7 +139,7 @@ public class ButtonBuilder
     private static final Class<?>[] EMPTY_SIGNATURE = {};
     private static final Object[] EMPTY_VALUES = {};
 
-    public ButtonBuilder action(String methodName)
+    public ActionBuilder action(String methodName)
     {
         this.methodName = methodName;
         try {
@@ -119,7 +158,7 @@ public class ButtonBuilder
      * @param name
      * @return this
      */
-    public ButtonBuilder name(String name)
+    public ActionBuilder name(String name)
     {
         icon(name + ".png");
         action("on" + name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -127,7 +166,7 @@ public class ButtonBuilder
         return this;
     }
 
-    public JButton build()
+    public JButton buildButton()
     {
         JButton result = new JButton();
 
@@ -150,6 +189,8 @@ public class ButtonBuilder
             mapShortcut(action);
         }
 
+        result.setVisible(visible);
+        result.setEnabled(enable);
         reset();
 
         return result;
@@ -166,8 +207,7 @@ public class ButtonBuilder
     private Action createAction()
     {
         final Method theMethod = this.method;
-        final String receiverClassName = receiver.getClass().getName() + "." + this.methodName;
-
+        final ExceptionHandler handler = this.exceptionHandler;
         Action action = new AbstractAction()
         {
             @Override
@@ -175,12 +215,10 @@ public class ButtonBuilder
             {
                 try {
                     theMethod.invoke(receiver, EMPTY_VALUES);
-                } catch (RuntimeException re) {
-                    System.err.println("Button Builder failed calling method " + receiverClassName);
-                    throw re;
-                } catch (Exception e) {
-                    System.err.println("Button Builder failed calling method " + receiverClassName);
-                    throw new RuntimeException(e);
+                } catch (Throwable e) {
+                    if (handler != null) {
+                        handler.handleException(e);
+                    }
                 }
             }
         };
@@ -208,6 +246,7 @@ public class ButtonBuilder
         this.tooltip = null;
         this.method = null;
         this.methodName = null;
-
+        this.visible = true;
+        this.enable = true;
     }
 }

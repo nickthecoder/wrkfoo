@@ -53,6 +53,8 @@ public interface Tool
     public void go();
 
     public void stop();
+    
+    public boolean isRunning();
 
     public Options getOptions();
 

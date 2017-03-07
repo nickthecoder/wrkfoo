@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -12,8 +13,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -22,15 +25,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
+import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.Option;
+import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
-import uk.co.nickthecoder.wrkfoo.tool.WrkTool;
 import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
-import uk.co.nickthecoder.wrkfoo.util.ButtonBuilder;
+import uk.co.nickthecoder.wrkfoo.tool.WrkTool;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
+import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
-public class MainWindow extends JFrame
+public class MainWindow extends JFrame implements ExceptionHandler
 {
 
     public JPanel whole;
@@ -43,9 +49,20 @@ public class MainWindow extends JFrame
 
     private JTextField optionsTextField;
 
+    private JToolBar statusBar;
+
+    private JLabel message;
+
+    /**
+     * Description of the tab set, set when the tabs are save/loaded.
+     */
     public String description;
 
     public File tabSetFile;
+
+    private JButton goButton;
+
+    private JButton stopButton;
 
     /**
      * The main window that the mouse last entered. Used by {@link ToolTabbedPane} for drag/drop tabs.
@@ -65,18 +82,21 @@ public class MainWindow extends JFrame
             @Override
             public void stateChanged(ChangeEvent e)
             {
-                tabChanged();
+                changedTab();
             }
         });
 
         toolbar = new JToolBar();
-        fillToolbar();
+        statusBar = new JToolBar();
+
+        fillToolbars();
 
         getContentPane().add(whole);
 
         whole.setLayout(new BorderLayout());
         whole.add(tabbedPane, BorderLayout.CENTER);
         whole.add(toolbar, BorderLayout.NORTH);
+        whole.add(statusBar, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
 
@@ -99,28 +119,35 @@ public class MainWindow extends JFrame
         return tabbedPane.getCurrentTab();
     }
 
-    private void fillToolbar()
+    private void fillToolbars()
     {
-        ButtonBuilder builder = new ButtonBuilder(this).component(this.rootPane);
+        ActionBuilder builder = new ActionBuilder(this).component(this.rootPane);
 
         toolbar.add(createToolbarOption());
 
-        toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").build());
-        toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").build());
-        toolbar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").build());
-        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").build());
+        toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
+        toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
+        toolbar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").buildButton());
+        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").buildButton());
         toolbar.addSeparator();
-        toolbar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").build());
-        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").build());
-        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").build());
-        toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").build());
-        toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").build());
-        toolbar.add(builder.name("exportTable").tooltip("Export Table Data").build());
+        toolbar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
+        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").buildButton());
+        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").buildButton());
+        toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").buildButton());
+        toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").buildButton());
+        toolbar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
         toolbar.addSeparator();
-        toolbar.add(builder.name("run").tooltip("Re-Run the current tool").shortcut("F5").build());
-        toolbar.add(builder.name("back").tooltip("Go back through the tool history").shortcut("alt Left").build());
+        toolbar
+            .add(builder.name("back").tooltip("Go back through the tool history").shortcut("alt Left").buildButton());
         toolbar.add(builder.name("forward").tooltip("Go forward through the tool history").shortcut("alt RIGHT")
-            .build());
+            .buildButton());
+
+        goButton = builder.name("run").tooltip("Re-Run the current tool").shortcut("F5").disable().buildButton();
+        stopButton = builder.name("stop").tooltip("Stop current tool").shortcut("ctrl ESCAPE").hide().buildButton();
+        statusBar.add(goButton);
+        statusBar.add(stopButton);
+        message = new JLabel("");
+        statusBar.add(message);
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
         builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
@@ -284,19 +311,47 @@ public class MainWindow extends JFrame
         KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
         inputMap.put(keyStroke, name);
         actionMap.put(name, action);
-
-        // Bodge! I don't want the table stealing any of MY keyboard shortcuts
-        // TODO table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, name);
     }
 
-    private void tabChanged()
+    public void changedTab()
     {
         String title = "wrkfoo";
+
+        int goState = -1; // -1 Disabled Go, 0 = Go, 1 = Stop
+
+        ToolTab tab = getCurrentTab();
+        if (tab != null) {
+            Tool tool = tab.getTool();
+            title = tool.getLongTitle();
+            if (tool.isRunning()) {
+                goState = (tool.getTask() instanceof Stoppable) ? 1 : -1;
+                title = title + " (running)";
+            } else {
+                goState = 0;
+            }
+        }
+
+        goButton.setVisible(goState != 1);
+        stopButton.setVisible(goState == 1);
+        goButton.setEnabled(goState >= 0);
 
         if (description != null) {
             title = description + " : " + title;
         }
         setTitle(title);
+    }
+
+    public void changedState(Tool changedTool)
+    {
+        ToolTab tab = getCurrentTab();
+        if ((tab != null) && (tab.getTool() == changedTool)) {
+            if (changedTool.isRunning()) {
+                setMessage("Running");
+            } else {
+                setMessage("Finished");
+            }
+            changedTab();
+        }
     }
 
     private ToolTab getCurrentOrNewTab()
@@ -374,6 +429,13 @@ public class MainWindow extends JFrame
         }
     }
 
+    public void onStop()
+    {
+        if (getCurrentTab() != null) {
+            getCurrentTab().getTool().stop();
+        }
+    }
+
     public void onReloadOptions()
     {
         Resources.instance.reloadOptions();
@@ -397,7 +459,7 @@ public class MainWindow extends JFrame
         if (getCurrentTab() != null) {
             Tool tool = getCurrentTab().getTool();
             if (tool instanceof TableTool<?>) {
-                ExportTableData std = new ExportTableData( (TableTool<?>) tool );
+                ExportTableData std = new ExportTableData((TableTool<?>) tool);
                 std.neverExit();
                 std.promptTask();
             }
@@ -412,5 +474,32 @@ public class MainWindow extends JFrame
     public void onPreviousTab()
     {
         tabbedPane.previousTab();
+    }
+
+    public void setMessage(String text)
+    {
+        message.setForeground(Color.black);
+        message.setText(text);
+    }
+
+    public void setErrorMessage(String text)
+    {
+        message.setForeground(Color.red);
+        message.setText(text);
+    }
+
+    @Override
+    public void handleException(Throwable e)
+    {
+        // Find the root cause, but stop at ScriptletExceptions, because they are useful.
+        do {
+            if (e instanceof ScriptletException) {
+                break;
+            }
+
+            e = e.getCause();
+        } while (e.getCause() != null);
+
+        setErrorMessage(e.getMessage());
     }
 }

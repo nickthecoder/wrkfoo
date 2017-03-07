@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
@@ -46,7 +47,7 @@ public class ToolPanel extends JPanel implements ToolListener
     private JScrollPane parametersScrollPane;
 
     protected ResultsPanel resultsPanel;
-    
+
     public ToolPanel(Tool foo)
     {
         this.tool = foo;
@@ -83,7 +84,7 @@ public class ToolPanel extends JPanel implements ToolListener
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        
+
         goButton = new JButton("Go");
         goButton.setIcon(Resources.icon("run.png"));
         goButton.setToolTipText("(Re)Run the tool (F5)");
@@ -95,7 +96,7 @@ public class ToolPanel extends JPanel implements ToolListener
                 go();
             }
         });
-        goStop.add(goButton,gbc);
+        goStop.add(goButton, gbc);
 
         stopButton = new JButton("Stop");
         stopButton.setIcon(Resources.icon("stop.png"));
@@ -108,7 +109,7 @@ public class ToolPanel extends JPanel implements ToolListener
                 stop();
             }
         });
-        goStop.add(stopButton,gbc);
+        goStop.add(stopButton, gbc);
 
         sidePanel.add(goStop, BorderLayout.SOUTH);
 
@@ -139,7 +140,7 @@ public class ToolPanel extends JPanel implements ToolListener
     {
         return resultsPanel;
     }
-    
+
     public ParametersPanel getParametersPanel()
     {
         return parametersPanel;
@@ -158,7 +159,6 @@ public class ToolPanel extends JPanel implements ToolListener
         });
 
     }
-    
 
     public void createNonRowOptionsMenu(MouseEvent me)
     {
@@ -174,7 +174,6 @@ public class ToolPanel extends JPanel implements ToolListener
 
         menu.show(me.getComponent(), me.getX(), me.getY());
     }
-
 
     protected JMenuItem createOptionsMenuItem(final Option option, final boolean useNewTab)
     {
@@ -193,7 +192,7 @@ public class ToolPanel extends JPanel implements ToolListener
 
         return item;
     }
-    
+
     public boolean check()
     {
         return parametersPanel.check(tool.getTask());
@@ -205,20 +204,31 @@ public class ToolPanel extends JPanel implements ToolListener
             tool.go();
         }
     }
-    
+
     public void stop()
     {
         tool.stop();
     }
-    
+
     @Override
-    public void changedState(boolean isRunning)
+    public void changedState(Tool tool)
     {
+        boolean isRunning = tool.isRunning();
         goButton.setEnabled(!isRunning);
-        if ( tool.getTask() instanceof Stoppable) {
+        if (tool.getTask() instanceof Stoppable) {
             goButton.setVisible(!isRunning);
             stopButton.setVisible(isRunning);
         }
+
+        MainWindow mainWindow = getMainWindow();
+        if (mainWindow != null) {
+            mainWindow.changedState( tool );
+        }
+    }
+
+    public MainWindow getMainWindow()
+    {
+        return (MainWindow) SwingUtilities.getRoot(this);
     }
 
 }

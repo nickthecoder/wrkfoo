@@ -135,11 +135,11 @@ public abstract class AbstractTool<T extends Task> implements Tool
         toolListeners.remove(cl);
     }
 
-    private void fireChangedState(boolean isRunning)
+    private void fireChangedState()
     {
         for (ToolListener cl : toolListeners) {
             try {
-                cl.changedState(isRunning);
+                cl.changedState(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,7 +156,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         if (goThread == null) {
             goThread = new GoThread();
 
-            fireChangedState(true);
+            fireChangedState();
 
             try {
                 goThread.start();
@@ -177,9 +177,10 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private synchronized void end()
     {
         goThread = null;
-        fireChangedState(false);
+        fireChangedState();
     }
 
+    @Override
     public synchronized boolean isRunning()
     {
         return goThread != null;
