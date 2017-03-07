@@ -2,13 +2,13 @@ package uk.co.nickthecoder.wrkfoo.command;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Command;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
-public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
+public class WrkCommand extends AbstractListCommand<WrkCommandTask, Command>
 {
     public static Icon icon = Resources.icon("home.png");
 
@@ -24,24 +24,24 @@ public class WrkCommand extends ListCommand<WrkCommandTask, Command<?>>
     }
 
     @Override
-    public Columns<Command<?>> createColumns()
+    public Columns<Command> createColumns()
     {
-        Columns<Command<?>> columns = new Columns<Command<?>>();
+        Columns<Command> columns = new Columns<Command>();
 
-        columns.add(new Column<Command<?>>(Icon.class, "")
+        columns.add(new Column<Command>(Icon.class, "")
         {
             @Override
-            public Icon getValue(Command<?> row)
+            public Icon getValue(Command row)
             {
                 return row.getIcon();
             }
 
         }.width(30).lock());
         
-        columns.add(new Column<Command<?>>(String.class, "Name")
+        columns.add(new Column<Command>(String.class, "Name")
         {
             @Override
-            public String getValue(Command<?> row)
+            public String getValue(Command row)
             {
                 return row.getName();
             }

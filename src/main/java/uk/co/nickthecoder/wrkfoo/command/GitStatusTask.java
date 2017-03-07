@@ -42,10 +42,10 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             char y = line.charAt(1);
             String path = line.substring(3);
             String renamed = null;
-            int arrow = line.indexOf(" -> ");
+            int arrow = path.indexOf(" -> ");
             if (arrow >= 0) {
-                path = path.substring(0, arrow);
-                renamed = path.substring(arrow + 4);
+                renamed = path.substring(0, arrow);
+                path = path.substring(arrow + 4);
             }
             GitStatusLine gsl = new GitStatusLine(x, y, path, renamed);
             results.add(gsl);
@@ -71,9 +71,9 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             this.x = x;
             this.y = y;
             this.path = path;
-            int lastSlash = path.lastIndexOf( File.separatorChar );
+            int lastSlash = path.lastIndexOf(File.separatorChar);
             if (lastSlash >= 0) {
-                name = path.substring(lastSlash+ 1);
+                name = path.substring(lastSlash + 1);
             } else {
                 name = path;
             }

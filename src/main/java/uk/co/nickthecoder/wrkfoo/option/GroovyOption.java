@@ -12,6 +12,7 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.CommandTab;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.TableCommand;
 import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 
 public class GroovyOption extends AbstractOption
@@ -50,12 +51,19 @@ public class GroovyOption extends AbstractOption
     }
     
     @Override
-    public void runMultiOption(Command<?> command, List<Object> rows, boolean openNewTab)
+    public void runMultiOption(TableCommand<?> command, List<Object> rows, boolean openNewTab)
     {
         privateRunOption(command, true, rows, openNewTab);
     }
 
-    public void runOption(Command<?> command, Object row, boolean openNewTab)
+    @Override
+    public void runOption(Command command, boolean openNewTab)
+    {
+        privateRunOption(command, false, null, openNewTab);
+    }
+
+    @Override
+    public void runOption(TableCommand<?> command, Object row, boolean openNewTab)
     {
         privateRunOption(command, false, row, openNewTab);
     }
@@ -76,7 +84,7 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Command<?> command, boolean isMulti, Object rowOrRows, boolean openNewTab)
+    private void privateRunOption(Command command, boolean isMulti, Object rowOrRows, boolean openNewTab)
     {
         if (groovyScript == null) {
             groovyScript = createShell().parse(groovySource);
@@ -92,7 +100,7 @@ public class GroovyOption extends AbstractOption
         Object result = runScript(groovyScript, command, isMulti, rowOrRows);
 
         if (result instanceof Command) {
-            Command<?> newCommand = (Command<?>) result;
+            Command newCommand = (Command) result;
             if (openNewTab) {
                 MainWindow mainWindow = tab.getMainWindow();
                 CommandTab newTab = mainWindow.addTab(newCommand);
@@ -116,7 +124,7 @@ public class GroovyOption extends AbstractOption
 
     }
 
-    private Object runScript(Script script, Command<?> command, boolean isMulti, Object rowOrRows)
+    private Object runScript(Script script, Command command, boolean isMulti, Object rowOrRows)
     {
 
         Binding bindings = new Binding();

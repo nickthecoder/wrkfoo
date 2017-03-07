@@ -28,9 +28,9 @@ import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
 
-public class CommandPanel<R> extends JPanel implements CommandListener
+public class CommandPanel extends JPanel implements CommandListener
 {
-    protected Command<R> command;
+    private Command command;
 
     private ToggleSplitPane splitPane;
 
@@ -48,7 +48,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
 
     protected JComponent resultsComponent;
     
-    public CommandPanel(Command<R> foo)
+    public CommandPanel(Command foo)
     {
         this.command = foo;
 
@@ -182,7 +182,7 @@ public class CommandPanel<R> extends JPanel implements CommandListener
             public void actionPerformed(ActionEvent e)
             {
                 if (option != null) {
-                    option.runOption(command, null, useNewTab);
+                    option.runOption(command, useNewTab);
                 }
             }
         });

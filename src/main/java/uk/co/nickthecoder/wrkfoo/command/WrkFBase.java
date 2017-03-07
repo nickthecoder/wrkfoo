@@ -11,7 +11,7 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -21,7 +21,7 @@ import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBase extends ListCommand<WrkFTask, WrkFWrappedFile>
+public class WrkFBase extends AbstractListCommand<WrkFTask, WrkFWrappedFile>
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 

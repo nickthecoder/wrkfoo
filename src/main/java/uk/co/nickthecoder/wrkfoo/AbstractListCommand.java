@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class ListCommand<T extends Task & ListResults<R>, R> extends AbstractCommand<T, R> implements TableCommand<R>
+public abstract class AbstractListCommand<T extends Task & ListResults<R>, R> extends AbstractTableCommand<T, R> implements TableCommand<R>
 {
     protected ListTableModel<R> tableModel;
 
     private TableCommandPanel<R> commandPanel;
 
-    public ListCommand(T task)
+    public AbstractListCommand(T task)
     {
         super(task);
     }

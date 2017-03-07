@@ -4,12 +4,12 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.command.ScanFTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class ScanF extends ListCommand<ScanFTask, ScannedDirectory>
+public class ScanF extends AbstractListCommand<ScanFTask, ScannedDirectory>
 {
     public static final Icon icon = Resources.icon("diskUsage.png");
 

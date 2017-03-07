@@ -16,13 +16,16 @@ import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 
-public class TableCommandPanel<R> extends CommandPanel<R>
+public class TableCommandPanel<R> extends CommandPanel
 {
     protected SimpleTable<R> table;
 
-    public TableCommandPanel(Command<R> command)
+    protected TableCommand<R> tableCommand;
+    
+    public TableCommandPanel(TableCommand<R> command)
     {
         super(command);
+        tableCommand = command;
     }
 
     public void postCreate()
@@ -80,8 +83,8 @@ public class TableCommandPanel<R> extends CommandPanel<R>
                     int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
 
                     R row = table.getModel().getRow(rowIndex);
-                    Option option = command.getOptions().getDefaultRowOption(row);
-                    option.runOption(command, row, newTab);
+                    Option option = tableCommand.getOptions().getDefaultRowOption(row);
+                    option.runOption(tableCommand, row, newTab);
                 }
 
             }
@@ -105,7 +108,7 @@ public class TableCommandPanel<R> extends CommandPanel<R>
         boolean useNewTab = me.isControlDown();
 
         JPopupMenu menu = new JPopupMenu();
-        Options options = command.getOptions();
+        Options options = tableCommand.getOptions();
         for (Option option : options) {
             if (option.isRow()) {
                 if (option.isApplicable(row)) {
@@ -140,8 +143,8 @@ public class TableCommandPanel<R> extends CommandPanel<R>
             int rowIndex = table.convertRowIndexToModel(r);
             if (Util.empty(model.getCode(rowIndex))) {
                 R row = table.getModel().getRow(rowIndex);
-                Option option = command.getOptions().getDefaultRowOption(row);
-                option.runOption(command, row, newTab);
+                Option option = tableCommand.getOptions().getDefaultRowOption(row);
+                option.runOption(tableCommand, row, newTab);
                 return;
             }
         }
@@ -150,13 +153,13 @@ public class TableCommandPanel<R> extends CommandPanel<R>
         for (int i = 0; i < model.getRowCount(); i++) {
             String code = model.getCode(i);
             if (!Util.empty(code)) {
-                Option option = command.getOptions().getOption(code);
+                Option option = tableCommand.getOptions().getOption(code);
                 if (option != null) {
                     if (option.isMultiRow()) {
                         processMultiRowOptions(option, newTab);
                     } else {
                         model.setCode(i, "");
-                        option.runOption(command, model.getRow(i), newTab);
+                        option.runOption(tableCommand, model.getRow(i), newTab);
                         if (!newTab) {
                             // TODO Should the remaining options be ignore? (if results were replaced).
                             // For now, lets be safe, and only apply a single option.
@@ -181,7 +184,7 @@ public class TableCommandPanel<R> extends CommandPanel<R>
             {
                 Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
                 if (option != null) {
-                    option.runOption(command, row, useNewTab);
+                    option.runOption(tableCommand, row, useNewTab);
                 }
             }
         });
@@ -202,7 +205,7 @@ public class TableCommandPanel<R> extends CommandPanel<R>
                 rows.add(model.getRow(i));
             }
         }
-        option.runMultiOption(command, rows, newTab);
+        option.runMultiOption(tableCommand, rows, newTab);
     }
     
 

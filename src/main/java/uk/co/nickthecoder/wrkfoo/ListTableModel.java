@@ -7,7 +7,7 @@ public class ListTableModel<R> extends CommandTableModel<R>
     public List<R> list;
 
 
-    public ListTableModel(Command<?> command, List<R> list, Columns<R> columns)
+    public ListTableModel(TableCommand<?> command, List<R> list, Columns<R> columns)
     {
         super(command, columns);
         this.list = list;

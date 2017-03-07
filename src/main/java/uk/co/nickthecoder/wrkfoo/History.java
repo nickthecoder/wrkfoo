@@ -22,7 +22,7 @@ public class History
         currentIndex = -1; // We don't have any Moment yet.
     }
 
-    public void add(Command<?> command)
+    public void add(Command command)
     {
         while (currentIndex < history.size() - 1) {
             history.remove(history.size() - 1);
@@ -38,7 +38,7 @@ public class History
         return currentIndex > 0;
     }
 
-    public Command<?> undo()
+    public Command undo()
     {
         if (currentIndex == 0) {
             throw new RuntimeException("Cannot undo");
@@ -53,7 +53,7 @@ public class History
         return currentIndex < history.size() - 1;
     }
 
-    public Command<?> redo()
+    public Command redo()
     {
         if (currentIndex > history.size() - 1) {
             throw new RuntimeException("Cannot redo");
@@ -68,10 +68,10 @@ public class History
      */
     private final class Moment
     {
-        Command<?> command;
+        Command command;
         Map<String, Object> parameterValues;
 
-        Moment(Command<?> command)
+        Moment(Command command)
         {
             this.command = command;
             parameterValues = new HashMap<String, Object>();
@@ -90,7 +90,7 @@ public class History
         }
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
-        public Command<?> restore()
+        public Command restore()
         {
             Task task = command.getTask();
             

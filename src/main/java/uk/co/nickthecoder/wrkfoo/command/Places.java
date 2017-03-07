@@ -7,13 +7,13 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.command.PlacesTask.PlacesWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class Places extends ListCommand<PlacesTask, PlacesWrappedFile>
+public class Places extends AbstractListCommand<PlacesTask, PlacesWrappedFile>
 {
     public static final Icon icon = Resources.icon("places.png");
 

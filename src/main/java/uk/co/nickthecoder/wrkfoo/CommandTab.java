@@ -14,13 +14,13 @@ public class CommandTab
 
     private MainWindow mainWindow;
 
-    private Command<?> command;
+    private Command command;
 
     private History history;
 
     private JPanel panel;
 
-    public CommandTab(MainWindow mainWindow, Command<?> command)
+    public CommandTab(MainWindow mainWindow, Command command)
     {
         this.mainWindow = mainWindow;
         panel = new JPanel();
@@ -65,7 +65,7 @@ public class CommandTab
         });
     }
 
-    private final void attach(Command<?> command)
+    private final void attach(Command command)
     {
         if (this.command != null) {
             this.command.detach();
@@ -77,7 +77,7 @@ public class CommandTab
         panel.add(command.getCommandPanel());
     }
 
-    public Command<?> getCommand()
+    public Command getCommand()
     {
         return command;
     }
@@ -101,12 +101,12 @@ public class CommandTab
         }
     }
 
-    public void go(Command<?> newCommand)
+    public void go(Command newCommand)
     {
         go(newCommand, true);
     }
 
-    private void go(Command<?> newCommand, boolean updateHistory)
+    private void go(Command newCommand, boolean updateHistory)
     {
         if (newCommand != this.command) {
             attach(newCommand);

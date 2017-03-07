@@ -34,7 +34,7 @@ public class TabSetData
     {
         tabs = new ArrayList<TabData>();
         for (CommandTab commandTab : mainWindow.tabbedPane) {
-            Command<?> command = commandTab.getCommand();
+            Command command = commandTab.getCommand();
 
             TabData tabData = new TabData(command);
             tabs.add(tabData);
@@ -95,7 +95,7 @@ public class TabSetData
         mainWindow.tabSetFile = tabSetFile;
 
         for (TabData tabData : tabs) {
-            Command<?> command = tabData.createCommand();
+            Command command = tabData.createCommand();
             mainWindow.addTab(command);
         }
 
@@ -108,7 +108,7 @@ public class TabSetData
         public Map<String, String> parameters;
         boolean showParameters = false;
 
-        public TabData(Command<?> command)
+        public TabData(Command command)
         {
             commandClass = command.getClass().getName();
             parameters = new HashMap<String, String>();
@@ -121,12 +121,12 @@ public class TabSetData
             showParameters = !command.getCommandPanel().getSplitPane().isHidden();
         }
 
-        public Command<?> createCommand()
+        public Command createCommand()
         {
             try {
                 @SuppressWarnings("unchecked")
-                Class<Command<?>> klass = (Class<Command<?>>) Class.forName(commandClass);
-                Command<?> command = klass.newInstance();
+                Class<Command> klass = (Class<Command>) Class.forName(commandClass);
+                Command command = klass.newInstance();
 
                 GroupParameter gp = command.getParameters();
                 for (String key : parameters.keySet()) {

@@ -55,7 +55,7 @@ public class MainWindow extends JFrame
         return mouseMainWindow;
     }
 
-    public MainWindow(Command<?>... commands)
+    public MainWindow(Command... commands)
     {
         whole = new JPanel();
 
@@ -80,7 +80,7 @@ public class MainWindow extends JFrame
 
         setTitle("WrkFoo");
 
-        for (Command<?> command : commands) {
+        for (Command command : commands) {
             addTab(command);
         }
 
@@ -217,17 +217,17 @@ public class MainWindow extends JFrame
     {
         CommandTab tab = getCurrentTab();
         if (tab != null) {
-            Command<?> command = tab.getCommand();
+            Command command = tab.getCommand();
 
             Option option = command.getOptions().getNonRowOption(optionsTextField.getText());
             if (option != null) {
-                option.runOption(command, null, newTab);
+                option.runOption(command, newTab);
                 optionsTextField.setText("");
             }
         }
     }
 
-    public CommandTab addTab(Command<?> command)
+    public CommandTab addTab(Command command)
     {
         CommandTab tab = new CommandTab(this, command);
 
@@ -331,7 +331,7 @@ public class MainWindow extends JFrame
     {
         CommandTab tab = getCurrentTab();
         if (tab != null) {
-            Command<?> copy = tab.getCommand().duplicate();
+            Command copy = tab.getCommand().duplicate();
             addTab(copy);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         }
@@ -395,7 +395,7 @@ public class MainWindow extends JFrame
     public void onExportTable()
     {
         if (getCurrentTab() != null) {
-            Command<?> command = getCurrentTab().getCommand();
+            Command command = getCurrentTab().getCommand();
             if (command instanceof TableCommand<?>) {
                 ExportTableData std = new ExportTableData( (TableCommand<?>) command );
                 std.neverExit();

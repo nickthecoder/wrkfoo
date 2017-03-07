@@ -6,12 +6,12 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.command.WrkMountsTask.MountPoint;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkMounts extends ListCommand<WrkMountsTask, MountPoint>
+public class WrkMounts extends AbstractListCommand<WrkMountsTask, MountPoint>
 {
     public static final Icon icon = Resources.icon("disks.png");
 

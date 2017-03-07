@@ -127,7 +127,7 @@ public class CommandTabbedPane extends JTabbedPane implements Iterable<CommandTa
                 draggedTabIndex = -1;
                 return;
             }
-            Command<?> command = tab.getCommand();
+            Command command = tab.getCommand();
 
             MainWindow destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {

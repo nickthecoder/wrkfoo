@@ -6,12 +6,12 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.ListCommand;
+import uk.co.nickthecoder.wrkfoo.AbstractListCommand;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabSetData;
 import uk.co.nickthecoder.wrkfoo.command.WrkTabSetsTask.WrkTabSetsFile;
 
-public class WrkTabSets extends ListCommand<WrkTabSetsTask, WrkTabSetsFile>
+public class WrkTabSets extends AbstractListCommand<WrkTabSetsTask, WrkTabSetsFile>
 {
     public WrkTabSets()
     {

@@ -9,14 +9,14 @@ import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
-public class WrkCommandTask extends Task implements ListResults<Command<?>>
+public class WrkCommandTask extends Task implements ListResults<Command>
 {
-    public List<Command<?>> results;
+    public List<Command> results;
 
     @Override
     public void body()
     {
-        results = new ArrayList<Command<?>>();
+        results = new ArrayList<Command>();
 
         WrkCommand wrkCommand = new WrkCommand();
         results.add(wrkCommand);
@@ -48,7 +48,7 @@ public class WrkCommandTask extends Task implements ListResults<Command<?>>
     }
 
     @Override
-    public List<Command<?>> getResults()
+    public List<Command> getResults()
     {
         return results;
     }

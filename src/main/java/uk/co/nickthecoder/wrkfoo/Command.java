@@ -17,10 +17,8 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  * Commands also have the meta-data needed to display these results in a GUI table,
  * i.e. it defines the columns, and any special cell renderers etc.
  * 
- * @param <R>
- *            The type of object in
  */
-public interface Command<R>
+public interface Command
 {
     public void postCreate();
     
@@ -46,7 +44,6 @@ public interface Command<R>
 
     public CommandTab getCommandTab();
 
-    public Columns<R> getColumns();
 
     public void updateResults();
 
@@ -56,7 +53,7 @@ public interface Command<R>
 
     public ParametersPanel createParametersPanel();
 
-    public CommandPanel<R> getCommandPanel();
+    public CommandPanel getCommandPanel();
 
     public void go();
 
@@ -64,7 +61,7 @@ public interface Command<R>
 
     public Options getOptions();
 
-    public Command<R> duplicate();
+    public Command duplicate();
     
     public void addCommandListener( CommandListener cl );
 

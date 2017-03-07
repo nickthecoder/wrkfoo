@@ -6,13 +6,13 @@ import javax.swing.table.AbstractTableModel;
 
 public abstract class CommandTableModel<R> extends AbstractTableModel
 {
-    private Command<?> command;
+    private TableCommand<?> command;
 
     private String[] codes = new String[] {};
 
     public Columns<R> columns;
 
-    public CommandTableModel(Command<?> command, Columns<R> columns)
+    public CommandTableModel(TableCommand<?> command, Columns<R> columns)
     {
         this.command = command;
         this.columns = columns;
@@ -31,7 +31,7 @@ public abstract class CommandTableModel<R> extends AbstractTableModel
         fireTableRowsUpdated(row, row);
     }
 
-    public Command<?> getCommand()
+    public TableCommand<?> getCommand()
     {
         return command;
     }
