@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class ListCommand<T extends Task & ListResults<R>, R> extends AbstractCommand<T, R>
+public abstract class ListCommand<T extends Task & ListResults<R>, R> extends AbstractCommand<T, R> implements TableCommand<R>
 {
     protected ListTableModel<R> tableModel;
 

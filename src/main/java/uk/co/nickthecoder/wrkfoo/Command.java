@@ -50,7 +50,7 @@ public interface Command<R>
 
     public void updateResults();
 
-    public CommandTableModel<R> getTableModel();
+    // public CommandTableModel<R> getTableModel();
 
     public JComponent createResultsComponent();
 

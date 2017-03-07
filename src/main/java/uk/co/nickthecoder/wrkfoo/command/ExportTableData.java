@@ -13,12 +13,12 @@ import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TableCommand;
 
 public class ExportTableData extends Task
 {
-    private Command<?> command;
+    private TableCommand<?> command;
 
     public FileParameter saveAs = new FileParameter.Builder("saveAs")
         .writable().mayExist().file()
@@ -34,7 +34,7 @@ public class ExportTableData extends Task
         .value(false)
         .parameter();
 
-    public ExportTableData(Command<?> command)
+    public ExportTableData(TableCommand<?> command)
     {
         this.command = command;
         addParameters(saveAs, includeHeadings, includeParameters);

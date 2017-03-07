@@ -395,9 +395,12 @@ public class MainWindow extends JFrame
     public void onExportTable()
     {
         if (getCurrentTab() != null) {
-            ExportTableData std = new ExportTableData(getCurrentTab().getCommand());
-            std.neverExit();
-            std.promptTask();
+            Command<?> command = getCurrentTab().getCommand();
+            if (command instanceof TableCommand<?>) {
+                ExportTableData std = new ExportTableData( (TableCommand<?>) command );
+                std.neverExit();
+                std.promptTask();
+            }
         }
     }
 

@@ -1,10 +1,9 @@
 Current Task
 ============
 
-	Take all table related stuff out of CommandPanel (in readiness for non table based commands).
-	
-	Instead of Command.getTable(), have Command.createResultsComponent, and ListCommand returns a new TableResults
-	
+	Options which run commands which output text.		
+		Groovy option checks if there IS output of an Exec, and displays it in current/new tab
+			Create ExecCommand
 
 BUGS
 ====
@@ -12,9 +11,12 @@ BUGS
 New Features
 ============
 
-	Options which run commands which output text.		
-		Groovy option checks if there IS output of an Exec, and displays it in current/new tab
-			Create ExecCommand
+
+	Format WrkTree's path so that it is indented appropriately.
+		When sorted by a different column (or path backwards), then don't do the fancy formatting.
+		Just need to count the "/" and multiply by a constant for a left padding.
+
+		If I implement "Columns.insert", then it needs to update the column indexes of tooltips and defaultSort.
 
 	Status bar
 		Error messages
