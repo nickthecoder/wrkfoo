@@ -97,6 +97,11 @@ public class TabSetData
         for (TabData tabData : tabs) {
             Tool tool = tabData.createTool();
             mainWindow.addTab(tool);
+            String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
+            ToolTab tab = tool.getToolTab();
+            tab.setTitleTemplate(tt);
+            // We added the tab before giving it its titleTemplate, so now we need to update it.
+            tab.getTabbedPane().updateTabInfo(tab);
         }
 
         return mainWindow;
@@ -107,9 +112,11 @@ public class TabSetData
         public String toolClass;
         public Map<String, String> parameters;
         boolean showParameters = false;
+        public String titleTemplate = "%t";
 
         public TabData(Tool tool)
         {
+            titleTemplate = tool.getToolTab().getTitleTemplate();
             toolClass = tool.getClass().getName();
             parameters = new HashMap<String, String>();
             for (Parameter parameter : tool.getParameters().getChildren()) {
@@ -143,6 +150,7 @@ public class TabSetData
                 }
 
                 tool.getToolPanel().getSplitPane().toggle(showParameters);
+                //tool.getToolTab().setTitleTemplate(titleTemplate);
                 
                 return tool;
 

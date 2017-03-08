@@ -14,6 +14,7 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class ActionBuilder
@@ -166,6 +167,20 @@ public class ActionBuilder
         return this;
     }
 
+    public JMenuItem buildMenuItem()
+    {
+        JMenuItem result = new JMenuItem( label );
+
+        if (method != null) {
+            Action action = createAction();
+            result.addActionListener(action);
+
+            mapShortcut(action);
+        }
+        
+        return result;
+    }
+    
     public JButton buildButton()
     {
         JButton result = new JButton();

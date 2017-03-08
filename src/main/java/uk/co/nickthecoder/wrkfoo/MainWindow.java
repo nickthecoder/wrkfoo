@@ -47,6 +47,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     private JToolBar toolbar;
 
+    /**
+     * remembers the MainWindow that the mouse was last inside (or null if it isn't in
+     * a MainWindow). Used when dragging/dropping tabs.
+     */
     private static MainWindow mouseMainWindow;
 
     private JTextField optionsTextField;
@@ -153,7 +157,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
         builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
-        
+
         // There's an illusive bug, which causes alt F4 not to work, so I've added a different shortcut.
         // I've not spent too long hunting the bug, because I think it may be a bug in Gnome (or maybe Java).
         builder.name("closeWindow").shortcut("ctrl F4").buildShortcut();
@@ -309,7 +313,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void setVisible(boolean show)
     {
         super.setVisible(show);
-        AutoExit.setVisible(show);
 
         if (show) {
             MouseListener listener = new MouseAdapter()
@@ -330,7 +333,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
             // When I add the listener to "whole", no events are detected, so I add it to both of its children instead.
             toolbar.addMouseListener(listener);
             tabbedPane.addMouseListener(listener);
+        } else {
+            dispose();
         }
+
+        AutoExit.setVisible(show);
     }
 
     public void putAction(String keyStroke, String name, Action action)
@@ -520,9 +527,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         setVisible(false);
     }
-    
+
     /**
-     * Records the time that the last error message was sent. Used to determine if later messages should obscure the error.
+     * Records the time that the last error message was sent. Used to determine if later messages should obscure the
+     * error.
      */
     private long lastError = new Date().getTime();
 

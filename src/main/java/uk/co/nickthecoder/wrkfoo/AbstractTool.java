@@ -74,7 +74,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return this.getClass().getSimpleName();
     }
     
-    protected String optionsName()
+    public String optionsName()
     {
         return getClass().getSimpleName().toLowerCase();
     }

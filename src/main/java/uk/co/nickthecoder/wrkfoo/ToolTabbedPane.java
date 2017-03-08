@@ -8,9 +8,14 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
+
+import uk.co.nickthecoder.jguifier.StringParameter;
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
 {
@@ -30,24 +35,72 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
         return toolTabs.get(getSelectedIndex());
     }
 
-    public void add(ToolTab tab)
+    public void add(final ToolTab tab)
     {
         toolTabs.add(tab);
 
-        tab.tabbedPane = this;
-        JLabel label = new JLabel(tab.getTool().getShortTitle());
-        label.setIcon(tab.getTool().getIcon());
-        label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
+        tab.setTabbedPane(this);
+        JLabel tabLabel = new JLabel(tab.getTitle());
+        tabLabel.setIcon(tab.getTool().getIcon());
+        tabLabel.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
 
         addTab(null, tab.getPanel());
-        setTabComponentAt(getTabCount() - 1, label);
+        setTabComponentAt(getTabCount() - 1, tabLabel);
+    }
+
+    private int popupMenuTabIndex;
+
+    private JPopupMenu createTabPopupMenu(MouseEvent me)
+    {
+        JPopupMenu menu = new JPopupMenu();
+        popupMenuTabIndex = getUI().tabForCoordinate(ToolTabbedPane.this, me.getX(), me.getY());
+
+        ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
+        menu.add(builder.label("Rename Tab").action("onRenameTab").buildMenuItem());
+
+        menu.show(me.getComponent(), me.getX(), me.getY());
+
+        return menu;
+    }
+
+    public MainWindow getMainWindow()
+    {
+        return getCurrentTab().getMainWindow();
+    }
+
+    public void onRenameTab()
+    {
+        new RenameTabTask(popupMenuTabIndex).neverExit().promptTask();
+    }
+
+    public class RenameTabTask extends Task
+    {
+        public StringParameter name = new StringParameter.Builder("name").parameter();
+        private int tabIndex;
+
+        public RenameTabTask(int tabIndex)
+        {
+            super();
+            this.tabIndex = tabIndex;
+            name.setDefaultValue(getToolTab(tabIndex).getTitleTemplate());
+            addParameters(name);
+        }
+
+        @Override
+        public void body()
+        {
+            ToolTab tab = getToolTab(tabIndex);
+            tab.setTitleTemplate(name.getValue());
+            tab.getMainWindow().changedTab();
+            ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
+        }
     }
 
     public void insert(ToolTab tab, int index)
     {
         toolTabs.add(index, tab);
 
-        tab.tabbedPane = this;
+        tab.setTabbedPane(this);
         JLabel label = new JLabel(tab.getTool().getShortTitle());
         label.setIcon(tab.getTool().getIcon());
         label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
@@ -60,13 +113,13 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public void removeTabAt(int index)
     {
         super.removeTabAt(index);
-        toolTabs.get(index).tabbedPane = null;
+        toolTabs.get(index).setTabbedPane(null);
         toolTabs.remove(index);
     }
 
     public void updateTabInfo(ToolTab tab)
     {
-        String title = tab.getTool().getShortTitle();
+        String title = tab.getTitle();
         Icon icon = tab.getTool().getIcon();
         String longTitle = tab.getTool().getLongTitle();
 
@@ -82,6 +135,15 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public ToolTab getToolTab(int index)
     {
         return this.toolTabs.get(index);
+    }
+
+    public void setSelectedToolTab(ToolTab tab)
+    {
+        for (int i = 0; i < getTabCount(); i++) {
+            if (this.toolTabs.get(i) == tab) {
+                setSelectedIndex(i);
+            }
+        }
     }
 
     public ToolTab getSelectedToolTab()
@@ -112,11 +174,19 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         public void mousePressed(MouseEvent e)
         {
+            if (e.isPopupTrigger()) {
+                createTabPopupMenu(e);
+                return;
+            }
             draggedTabIndex = getUI().tabForCoordinate(ToolTabbedPane.this, e.getX(), e.getY());
         }
 
         public void mouseReleased(MouseEvent e)
         {
+            if (e.isPopupTrigger()) {
+                createTabPopupMenu(e);
+                return;
+            }
             if (draggedTabIndex < 0) {
                 return;
             }

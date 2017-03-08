@@ -10,7 +10,7 @@ import uk.co.nickthecoder.jguifier.Task;
 
 public class ToolTab
 {
-    ToolTabbedPane tabbedPane;
+    private ToolTabbedPane tabbedPane;
 
     private MainWindow mainWindow;
 
@@ -19,6 +19,8 @@ public class ToolTab
     private History history;
 
     private JPanel panel;
+    
+    private String titleTemplate = "%t";
 
     public ToolTab(MainWindow mainWindow, Tool tool)
     {
@@ -29,9 +31,19 @@ public class ToolTab
         attach(tool);
     }
 
+    public void setTitleTemplate( String value)
+    {
+        titleTemplate = value;
+    }
+    
+    public String getTitleTemplate()
+    {
+        return titleTemplate;
+    }
+    
     public String getTitle()
     {
-        return tool.getShortTitle();
+        return titleTemplate.replaceAll("%t", tool.getShortTitle());
     }
 
     public JPanel getPanel()
@@ -39,6 +51,16 @@ public class ToolTab
         return panel;
     }
 
+    public ToolTabbedPane getTabbedPane()
+    {
+        return tabbedPane;
+    }
+    
+    void setTabbedPane(ToolTabbedPane value)
+    {
+        tabbedPane = value;
+    }
+    
     public MainWindow getMainWindow()
     {
         return mainWindow;
