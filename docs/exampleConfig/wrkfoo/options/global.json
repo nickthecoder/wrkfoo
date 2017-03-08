@@ -1,0 +1,9 @@
+{
+    "options": [
+        {code: "eo", label: "Edit Options", groovy: "edit(command.optionsFile)", row:false},
+        {code: "of", label: "Options Folder", groovy: "command('gnome-open', Resources.instance.optionsDirectory)", row:false},
+        {code: "du", label: "Scan Directory", groovy: "new ScanF()", row: false},
+        {code: "df", label: "Work Mount Points", groovy: "new WrkMounts()", row: false},
+        {code: "=", label: "Calculator", groovy: "command('gnome-calculator')", row: false}
+    ]
+}

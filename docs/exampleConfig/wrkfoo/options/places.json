@@ -1,0 +1,6 @@
+{
+    include: "files.json",
+    options: [
+        {code: "e", label: "Edit Places", groovy: "edit(task.store.value)", row:false}
+    ]
+}

@@ -5,14 +5,8 @@ Current Task
 BUGS
 ====
 
-Stop all stoppable tools when closing the tab/main window/exiting application.
-
 New Features
 ============
-
-	Tar my .config/wrkfoo directory, and put it in the documents folder.
-		Put the tar command in a shell script so I can run it multiple times.
-		No, just copy (or symlink), don't tar.
 
 	Format WrkTree's path so that it is indented appropriately.
 		When sorted by a different column (or path backwards), then don't do the fancy formatting.

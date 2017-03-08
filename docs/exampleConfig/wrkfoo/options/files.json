@@ -1,0 +1,8 @@
+{
+    options:[
+        {code:"", label: "Work with Directory", if:"row.file.isDirectory()", action: "new WrkF().parameter('directory',row.file)"},
+        {code:"", label: "Open File", if:"!row.file.isDirectory()", action: "command('gnome-open', row.file)"},
+        {code:"n", label:"Open Folder", groovy:"openFolder(row)" },
+        {code:"te", label:"Text Editor", if:"!row.file.isDirectory()", groovy:"edit(rows)", multi:true}
+    ]
+}
