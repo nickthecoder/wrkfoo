@@ -85,7 +85,7 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
             @Override
             public Color getRowBackground(int row)
             {
-                File file = list.get(row).file;
+                File file = getRow(row).file;
                 return file.isFile() ? null : WrkFBase.directoryColor;
             }
         };

@@ -36,7 +36,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine>
             @Override
             public Color getRowBackground(int row)
             {
-                GitStatusLine line = list.get(row);
+                GitStatusLine line = getRow(row);
 
                 if (line.x == '?') {
                     return UNTRACKED;

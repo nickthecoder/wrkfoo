@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ListTableModel<R> extends ToolTableModel<R>
 {
-    public List<R> list;
+    private List<R> list;
 
 
     public ListTableModel(TableTool<?> tool, List<R> list, Columns<R> columns)
