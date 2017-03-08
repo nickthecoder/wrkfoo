@@ -17,6 +17,7 @@ import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class TabSetData
 {
@@ -125,7 +126,7 @@ public class TabSetData
                     parameters.put(vp.getName(), vp.getStringValue());
                 }
             }
-            showParameters = !tool.getToolPanel().getSplitPane().isHidden();
+            showParameters = tool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
         }
 
         public Tool createTool()
@@ -149,9 +150,9 @@ public class TabSetData
                     }
                 }
 
-                tool.getToolPanel().getSplitPane().toggle(showParameters);
-                //tool.getToolTab().setTitleTemplate(titleTemplate);
-                
+                tool.getToolPanel().getSplitPane()
+                    .setState(showParameters ? HidingSplitPane.State.BOTH : HidingSplitPane.State.LEFT);
+
                 return tool;
 
             } catch (Exception e) {

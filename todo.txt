@@ -1,26 +1,30 @@
 Current Task
 ============
 
+	Change ToogleSplitPane so that it has three states LEFT, RIGHT, SPLIT
+		Rename to HidingSplitPane
+
 
 BUGS
 ====
 
+Changing a param (in wrkftree) doesn't record in history.
+
 New Features
 ============
-
-	Format WrkTree's path so that it is indented appropriately.
-		When sorted by a different column (or path backwards), then don't do the fancy formatting.
-		Just need to count the "/" and multiply by a constant for a left padding.
-
-		If I implement "Columns.insert", then it needs to update the column indexes of tooltips and defaultSort.
 
 	Bring back multi row selections, and make it easy to run multi options on the selection.
 		Select multiple lines, then right click pops up only multi commands
 			But ctrl right click shows both kinds
 
+	Set the focus intellegently
+		When F9 is pressed, set the focus on the appropriate panel.
 
 Later Features
 ==============
+
+	Tree commands
+		Rewrite wrkftree using a JTree, which gets more results when directories are opened. 
 
 	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 

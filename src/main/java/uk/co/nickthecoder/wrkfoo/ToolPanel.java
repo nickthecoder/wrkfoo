@@ -26,13 +26,13 @@ import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.Options;
-import uk.co.nickthecoder.wrkfoo.util.ToggleSplitPane;
+import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class ToolPanel extends JPanel implements ToolListener
 {
     private Tool tool;
 
-    private ToggleSplitPane splitPane;
+    private HidingSplitPane splitPane;
 
     private JPanel sidePanel;
 
@@ -116,13 +116,13 @@ public class ToolPanel extends JPanel implements ToolListener
         resultsPanel = tool.createResultsComponent();
         body.add(resultsPanel, BorderLayout.CENTER);
 
-        splitPane = new ToggleSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel, false);
+        splitPane = new HidingSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel);
         splitPane.setResizeWeight(1);
 
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
 
-        splitPane.toggle(false);
+        splitPane.setState(HidingSplitPane.State.LEFT);
         if (this.tool.getTask().getParameters().getChildren().size() == 0) {
             sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
@@ -131,7 +131,7 @@ public class ToolPanel extends JPanel implements ToolListener
         this.tool.addToolListener(this);
     }
 
-    public ToggleSplitPane getSplitPane()
+    public HidingSplitPane getSplitPane()
     {
         return splitPane;
     }
@@ -150,11 +150,18 @@ public class ToolPanel extends JPanel implements ToolListener
     {
         tool.postCreate();
 
-        MainWindow.putAction("F9", "toggleSidebar", this, new AbstractAction()
+        MainWindow.putAction("F9", "toggleLeftPane", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {
-                splitPane.toggle();
+                splitPane.toggleLeft();
+            }
+        });
+        MainWindow.putAction("F10", "toggleRightPane", this, new AbstractAction()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                splitPane.toggleRight();
             }
         });
 

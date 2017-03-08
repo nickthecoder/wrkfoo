@@ -151,7 +151,7 @@ public class ToolTab
 
         } else {
             // Missing/incorrect parameters. Show the parameters panel.
-            getTool().getToolPanel().getSplitPane().toggle(true);
+            getTool().getToolPanel().getSplitPane().showRight();
         }
 
         if (tabbedPane != null) {
