@@ -30,19 +30,19 @@ public class GroovyOption extends AbstractOption
     @Override
     public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab)
     {
-        privateRunOption(tool, true, rows, openNewTab);
+        privateRunOption(tool, rows, openNewTab);
     }
 
     @Override
     public void runOption(Tool tool, boolean openNewTab)
     {
-        privateRunOption(tool, false, null, openNewTab);
+        privateRunOption(tool, null, openNewTab);
     }
 
     @Override
     public void runOption(TableTool<?> tool, Object row, boolean openNewTab)
     {
-        privateRunOption(tool, false, row, openNewTab);
+        privateRunOption(tool, row, openNewTab);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Tool tool, boolean isMulti, Object rowOrRows, boolean openNewTab)
+    private void privateRunOption(Tool tool, Object rowOrRows, boolean openNewTab)
     {
         ToolTab tab = tool.getToolTab();
 
@@ -67,7 +67,7 @@ public class GroovyOption extends AbstractOption
             tool = tool.duplicate();
         }
 
-        Object result = runScript(action, tool, isMulti, rowOrRows);
+        Object result = runScript(action, tool, isMultiRow(), rowOrRows);
 
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;

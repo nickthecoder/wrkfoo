@@ -5,18 +5,14 @@ Current Task
 BUGS
 ====
 
+Open wrkfoo tb set "te" against a file, then F4 to close gedit sometimes closes the wrkfoo window.
+	Try using Swingutils.runlater??
+
+SizeRenderer highlight, but now I don't want it to, unless it IS selected (so do nothing in the renderer).
+
 New Features
 ============
 
-	When using a new tab from an option, add it AFTER the current one
-		and when closing it, go to the PREVIOUS tab.
-
-	Bring back multi row selections, and make it easy to run multi options on the selection.
-		Select multiple lines, then right click pops up only multi commands
-			But ctrl right click shows both kinds
-
-	Set the focus intellegently
-		When F9 is pressed, set the focus on the appropriate panel.
 
 Later Features
 ==============

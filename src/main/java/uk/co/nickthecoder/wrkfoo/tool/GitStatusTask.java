@@ -92,5 +92,10 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             }
             return new File(directory.getValue(), this.renamed);
         }
+        
+        public String toString()
+        {
+            return getFile().getPath();
+        }
     }
 }

@@ -100,6 +100,11 @@ public class TableToolPanel<R> extends ToolPanel
             return;
         }
 
+        if (table.getSelectedRowCount() > 1) {
+            createMultiOptionsMenu(me);
+            return;
+        }
+
         int rowIndex = table.convertRowIndexToModel(r);
         table.getSelectionModel().clearSelection();
         table.getSelectionModel().addSelectionInterval(r, r);
@@ -108,15 +113,18 @@ public class TableToolPanel<R> extends ToolPanel
         boolean useNewTab = me.isControlDown();
 
         JPopupMenu menu = new JPopupMenu();
+
+        // Add row options first
         Options options = tableTool.getOptions();
         for (Option option : options) {
             if (option.isRow()) {
                 if (option.isApplicable(row)) {
-                    menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
+                    menu.add(createMenuItem(option, rowIndex, useNewTab));
                 }
             }
         }
 
+        // Add non-row options next
         boolean first = true;
         for (Option option : options) {
             if (!option.isRow()) {
@@ -124,11 +132,77 @@ public class TableToolPanel<R> extends ToolPanel
                     menu.addSeparator();
                     first = false;
                 }
-                menu.add(createOptionsMenuItem(option, rowIndex, useNewTab));
+                menu.add(createMenuItem(option, rowIndex, useNewTab));
             }
         }
 
         menu.show(me.getComponent(), me.getX(), me.getY());
+    }
+
+    private void createMultiOptionsMenu(MouseEvent me)
+    {
+        JPopupMenu menu = new JPopupMenu();
+
+        Options options = tableTool.getOptions();
+        for (Option option : options) {
+            if (option.isMultiRow()) {
+                menu.add(createMultiMenuItem(option));
+            }
+        }
+
+        menu.show(me.getComponent(), me.getX(), me.getY());
+    }
+
+    private JMenuItem createMenuItem(Option option)
+    {
+        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
+        String text = option.getLabel() + extra;
+        return new JMenuItem(text);
+    }
+
+    protected JMenuItem createMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
+    {
+        JMenuItem item = createMenuItem(option);
+        item.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
+                if (option != null) {
+                    getMainWindow().runOption(option, tableTool, row, useNewTab);
+                }
+            }
+        });
+
+        return item;
+    }
+
+    private JMenuItem createMultiMenuItem(final Option option)
+    {
+        JMenuItem item = createMenuItem(option);
+        item.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                ToolTableModel<?> model = table.getModel();
+                List<Object> rows = new ArrayList<Object>();
+                
+                for ( int r : table.getSelectedRows() ) {
+                    // TODO check if I need to convert from view to model
+                    Object row = model.getRow(r);
+
+                    if (option.isApplicable(row)) {
+                        rows.add( row );
+                        table.removeRowSelectionInterval(r, r);
+                    }
+                }
+                getMainWindow().runMultipleOption(option, tableTool, rows, false);
+            }
+        });
+
+        return item;
     }
 
     private void processOptions(boolean newTab)
@@ -172,37 +246,18 @@ public class TableToolPanel<R> extends ToolPanel
         // Run the default option on the current row if no options have been entered.
         if (!foundOne) {
             int r = table.getSelectedRow();
-    
+
             if (r >= 0) {
                 int rowIndex = table.convertRowIndexToModel(r);
                 if (Util.empty(model.getCode(rowIndex))) {
                     R row = table.getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getDefaultRowOption(row);
                     getMainWindow().runOption(option, tableTool, row, newTab);
-    
+
                     return;
                 }
             }
         }
-    }
-
-    protected JMenuItem createOptionsMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
-    {
-        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
-        JMenuItem item = new JMenuItem(option.getLabel() + extra);
-        item.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Object row = rowIndex >= 0 ? table.getModel().getRow(rowIndex) : null;
-                if (option != null) {
-                    getMainWindow().runOption(option, tableTool, row, useNewTab);
-                }
-            }
-        });
-
-        return item;
     }
 
     private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab)
