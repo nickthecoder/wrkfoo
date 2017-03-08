@@ -123,12 +123,8 @@ public abstract class AbstractTool<T extends Task> implements Tool
         @Override
         public void run()
         {
-            try {
-                if (toolTab != null) {
-                    toolTab.go(AbstractTool.this);
-                } else {
-                    task.run();
-                }
+            try {            
+                task.run();
                 updateResults();
             } finally {
                 end();

@@ -141,8 +141,7 @@ public class ToolTab
         if (getTool().getToolPanel().check()) {
             // All parameters are ok, run the tool.
 
-            getTask().run();
-            newTool.updateResults();
+            newTool.go();
 
         } else {
             // Missing/incorrect parameters. Show the parameters panel.
