@@ -71,7 +71,7 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             this.x = x;
             this.y = y;
             this.path = path;
-            int lastSlash = path.lastIndexOf(File.separatorChar);
+            int lastSlash = path.lastIndexOf(path.length()-1,File.separatorChar);
             if (lastSlash >= 0) {
                 name = path.substring(lastSlash + 1);
             } else {
