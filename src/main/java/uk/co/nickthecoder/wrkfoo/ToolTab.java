@@ -10,7 +10,7 @@ import uk.co.nickthecoder.jguifier.Task;
 
 public class ToolTab
 {
-    private ToolTabbedPane tabbedPane;
+    private TabbedPane tabbedPane;
 
     private MainWindow mainWindow;
 
@@ -51,12 +51,12 @@ public class ToolTab
         return panel;
     }
 
-    public ToolTabbedPane getTabbedPane()
+    public TabbedPane getTabbedPane()
     {
         return tabbedPane;
     }
     
-    void setTabbedPane(ToolTabbedPane value)
+    void setTabbedPane(TabbedPane value)
     {
         tabbedPane = value;
         if (value == null) {

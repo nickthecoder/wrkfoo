@@ -46,7 +46,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     
     public JPanel whole;
 
-    public ToolTabbedPane tabbedPane;
+    public TabbedPane tabbedPane;
 
     private JToolBar toolbar;
 
@@ -74,7 +74,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     private JButton stopButton;
 
     /**
-     * The main window that the mouse last entered. Used by {@link ToolTabbedPane} for drag/drop tabs.
+     * The main window that the mouse last entered. Used by {@link TabbedPane} for drag/drop tabs.
      */
     public static MainWindow getMouseMainWindow()
     {
@@ -85,7 +85,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         whole = new JPanel();
 
-        tabbedPane = new ToolTabbedPane();
+        tabbedPane = new TabbedPane();
         tabbedPane.addChangeListener(new ChangeListener()
         {
             @Override

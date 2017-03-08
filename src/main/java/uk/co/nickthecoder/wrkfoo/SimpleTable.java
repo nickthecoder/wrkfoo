@@ -3,7 +3,10 @@ package uk.co.nickthecoder.wrkfoo;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
@@ -44,6 +47,20 @@ public class SimpleTable<R> extends JTable
             public void actionPerformed(ActionEvent e)
             {
                 untab();
+            }
+        });
+
+        // Select the first row when table receives the focus, and no row is selected.
+        this.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                if (getSelectedRow() <0) {
+                    if ( getRowCount() > 0 ) {
+                        tabToCell(0,0);
+                    }
+                }
             }
         });
     }
@@ -102,8 +119,6 @@ public class SimpleTable<R> extends JTable
             row = 0;
         }
 
-        int startRow = row;
-
         // Find the next editable cell.
         do {
             col++;
@@ -111,10 +126,7 @@ public class SimpleTable<R> extends JTable
                 col = 0;
                 row++;
                 if (row >= getRowCount()) {
-                    row = 0;
-                }
-                // Prevent an endless loop if no cells are editable
-                if (row == startRow) {
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();                
                     return;
                 }
             }
@@ -141,8 +153,6 @@ public class SimpleTable<R> extends JTable
             row = 0;
         }
 
-        int startRow = row;
-
         // Find the previous editable cell.
         do {
             col--;
@@ -150,10 +160,7 @@ public class SimpleTable<R> extends JTable
                 col = getColumnCount() - 1;
                 row--;
                 if (row < 0) {
-                    row = getRowCount() - 1;
-                }
-                // Prevent an endless loop if no cells are editable
-                if (row == startRow) {
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();                
                     return;
                 }
             }

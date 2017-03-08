@@ -1,5 +1,8 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.awt.KeyboardFocusManager;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,6 +11,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -17,11 +21,11 @@ import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
+public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 {
     private List<ToolTab> toolTabs;
 
-    public ToolTabbedPane()
+    public TabbedPane()
     {
         toolTabs = new ArrayList<ToolTab>();
         enableReordering();
@@ -33,7 +37,7 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
             return null;
         }
         int index = getSelectedIndex();
-        if (index < 0 ) {
+        if (index < 0) {
             return null;
         }
         if (index >= toolTabs.size()) {
@@ -51,7 +55,16 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
         tabLabel.setIcon(tab.getTool().getIcon());
         tabLabel.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
 
-        addTab(null, tab.getPanel());
+        JPanel panel = tab.getPanel();
+        panel.addFocusListener(new FocusAdapter()
+        {
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();                
+            }
+        });
+        addTab(null, panel);
         setTabComponentAt(getTabCount() - 1, tabLabel);
     }
 
@@ -60,12 +73,12 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
     private JPopupMenu createTabPopupMenu(MouseEvent me)
     {
         JPopupMenu menu = new JPopupMenu();
-        popupMenuTabIndex = getUI().tabForCoordinate(ToolTabbedPane.this, me.getX(), me.getY());
+        popupMenuTabIndex = getUI().tabForCoordinate(TabbedPane.this, me.getX(), me.getY());
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
         menu.add(builder.label("Rename Tab").action("onRenameTab").buildMenuItem());
         menu.add(builder.label("Close Tab").action("onCloseTab").buildMenuItem());
-        
+
         menu.show(me.getComponent(), me.getX(), me.getY());
 
         return menu;
@@ -80,7 +93,7 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
     {
         new RenameTabTask(popupMenuTabIndex).neverExit().promptTask();
     }
-    
+
     public void onCloseTab()
     {
         removeTabAt(popupMenuTabIndex);
@@ -132,11 +145,11 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void removeAllTabs()
     {
-        for (int i = getTabCount() -1; i >=0; i -- ) {
+        for (int i = getTabCount() - 1; i >= 0; i--) {
             removeTabAt(i);
         }
     }
-    
+
     public void updateTabInfo(ToolTab tab)
     {
         String title = tab.getTitle();
@@ -157,6 +170,13 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
         return this.toolTabs.get(index);
     }
 
+    @Override
+    public void setSelectedIndex( int i )
+    {
+        super.setSelectedIndex(i);
+        getComponentAt(i).requestFocus();
+    }
+    
     public void setSelectedToolTab(ToolTab tab)
     {
         for (int i = 0; i < getTabCount(); i++) {
@@ -198,7 +218,7 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 createTabPopupMenu(e);
                 return;
             }
-            draggedTabIndex = getUI().tabForCoordinate(ToolTabbedPane.this, e.getX(), e.getY());
+            draggedTabIndex = getUI().tabForCoordinate(TabbedPane.this, e.getX(), e.getY());
         }
 
         public void mouseReleased(MouseEvent e)
@@ -252,7 +272,7 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 return;
             }
 
-            int targetTabIndex = getUI().tabForCoordinate(ToolTabbedPane.this, e.getX(), e.getY());
+            int targetTabIndex = getUI().tabForCoordinate(TabbedPane.this, e.getX(), e.getY());
 
             if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
 

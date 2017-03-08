@@ -1,9 +1,6 @@
 Current Task
 ============
 
-	Change ToogleSplitPane so that it has three states LEFT, RIGHT, SPLIT
-		Rename to HidingSplitPane
-
 
 BUGS
 ====
