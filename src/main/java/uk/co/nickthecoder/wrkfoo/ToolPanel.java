@@ -207,9 +207,7 @@ public class ToolPanel extends JPanel implements ToolListener
 
     public void go()
     {
-        if (check()) {
-            tool.go();
-        }
+        tool.getToolTab().go(tool);
     }
 
     public void stop()
@@ -229,7 +227,7 @@ public class ToolPanel extends JPanel implements ToolListener
 
         MainWindow mainWindow = getMainWindow();
         if (mainWindow != null) {
-            mainWindow.changedState( tool );
+            mainWindow.changedState(tool);
         }
     }
 

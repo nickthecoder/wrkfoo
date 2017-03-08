@@ -13,7 +13,7 @@ New Features
 ============
 
 	Highlight the current text field (in jguifier)
-		Create a subclass of JTextField
+		Create a subclass of JTextField?
 
 	When using a new tab from an option, add it AFTER the current one
 		and when closing it, go to the PREVIOUS tab.
