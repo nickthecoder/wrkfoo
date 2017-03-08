@@ -2,10 +2,6 @@ Current Task
 ============
 
 
-	Right click on a tab to change the text.
-		Save this info when saving tabset
-
-
 BUGS
 ====
 

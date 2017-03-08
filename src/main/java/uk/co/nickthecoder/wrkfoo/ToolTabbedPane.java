@@ -57,7 +57,8 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
         menu.add(builder.label("Rename Tab").action("onRenameTab").buildMenuItem());
-
+        menu.add(builder.label("Close Tab").action("onCloseTab").buildMenuItem());
+        
         menu.show(me.getComponent(), me.getX(), me.getY());
 
         return menu;
@@ -71,6 +72,11 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public void onRenameTab()
     {
         new RenameTabTask(popupMenuTabIndex).neverExit().promptTask();
+    }
+    
+    public void onCloseTab()
+    {
+        removeTabAt(popupMenuTabIndex);
     }
 
     public class RenameTabTask extends Task
