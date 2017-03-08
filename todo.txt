@@ -7,8 +7,13 @@ BUGS
 
 Changing a param (in wrkftree) doesn't record in history.
 
+The selected table row being blue hides git status's colour coding.
+
 New Features
 ============
+
+	Highlight the current text field (in jguifier)
+		Create a subclass of JTextField
 
 	When using a new tab from an option, add it AFTER the current one
 		and when closing it, go to the PREVIOUS tab.

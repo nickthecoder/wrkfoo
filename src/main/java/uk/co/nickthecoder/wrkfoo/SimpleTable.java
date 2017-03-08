@@ -14,7 +14,6 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.TableCellRenderer;
 
 public class SimpleTable<R> extends JTable
@@ -26,7 +25,7 @@ public class SimpleTable<R> extends JTable
     {
         super(model);
 
-        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = this.getActionMap();
@@ -51,14 +50,15 @@ public class SimpleTable<R> extends JTable
         });
 
         // Select the first row when table receives the focus, and no row is selected.
-        this.addFocusListener(new FocusAdapter() {
+        this.addFocusListener(new FocusAdapter()
+        {
 
             @Override
             public void focusGained(FocusEvent e)
             {
-                if (getSelectedRow() <0) {
-                    if ( getRowCount() > 0 ) {
-                        tabToCell(0,0);
+                if (getSelectedRow() < 0) {
+                    if (getRowCount() > 0) {
+                        tabToCell(0, 0);
                     }
                 }
             }
@@ -85,20 +85,28 @@ public class SimpleTable<R> extends JTable
     {
         Component comp = super.prepareRenderer(renderer, row, column);
 
-        if (!isRowSelected(row)) {
+        if (isRowSelected(row)) {
 
-            Color bg = getModel().getRowBackground(convertRowIndexToModel(row));
-            if (bg == null) {
-
-                if (row % 2 == 0) {
-                    comp.setBackground(this.getBackground());
-                } else {
-                    comp.setBackground(oddRowColor);
-                }
+            if (getSelectedColumn() == column) {
+                return comp;
             } else {
-                comp.setBackground(bg);
+                comp.setForeground(Color.black);
             }
+
         }
+
+        Color bg = getModel().getRowBackground(convertRowIndexToModel(row));
+        if (bg == null) {
+
+            if (row % 2 == 0) {
+                comp.setBackground(this.getBackground());
+            } else {
+                comp.setBackground(oddRowColor);
+            }
+        } else {
+            comp.setBackground(bg);
+        }
+
         return comp;
 
     }
@@ -126,7 +134,7 @@ public class SimpleTable<R> extends JTable
                 col = 0;
                 row++;
                 if (row >= getRowCount()) {
-                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();                
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
                     return;
                 }
             }
@@ -160,7 +168,7 @@ public class SimpleTable<R> extends JTable
                 col = getColumnCount() - 1;
                 row--;
                 if (row < 0) {
-                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();                
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();
                     return;
                 }
             }
@@ -203,11 +211,11 @@ public class SimpleTable<R> extends JTable
 
             columnIndex = convertColumnIndexToModel(columnIndex);
             rowIndex = convertRowIndexToModel(rowIndex);
-            
+
             Column<?> column = getModel().columns.getColumn(columnIndex);
             int tooltipColumn = column.tooltipColumn;
             if (tooltipColumn >= 0) {
-                Object val = getModel().getValueAt(rowIndex, tooltipColumn); 
+                Object val = getModel().getValueAt(rowIndex, tooltipColumn);
                 return val == null ? null : val.toString();
             }
         }
