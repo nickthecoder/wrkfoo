@@ -28,6 +28,8 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private List<ToolListener> toolListeners = new ArrayList<ToolListener>();
 
     private ToolPanel toolPanel;
+    
+    private boolean useNewTab;
 
     public AbstractTool(T task)
     {
@@ -49,7 +51,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     /**
      * Used by both getShortTitle and getLongTitle unless either are overridden in sub-classes.
      * 
-     * @return The title, which may be used 
+     * @return The title, which may be used
      */
     protected String getTitle()
     {
@@ -73,7 +75,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return this.getClass().getSimpleName();
     }
-    
+
     public String optionsName()
     {
         return getClass().getSimpleName().toLowerCase();
@@ -105,6 +107,27 @@ public abstract class AbstractTool<T extends Task> implements Tool
         this.toolTab = tab;
     }
 
+    public void setUseNewTab(boolean value)
+    {
+        this.useNewTab = value;
+    }
+
+    public boolean getUseNewTab()
+    {
+        return useNewTab;
+    }
+
+    /**
+     * A fluent API verison of {@link #setUsenewTab(boolean)}.
+     * 
+     * @return this
+     */
+    public Tool newTab()
+    {
+        setUseNewTab(true);
+        return this;
+    }
+
     @Override
     public void detach()
     {
@@ -123,7 +146,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         @Override
         public void run()
         {
-            try {            
+            try {
                 task.run();
                 updateResults();
             } finally {

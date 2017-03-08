@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import groovyjarjarcommonscli.Option;
+
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
@@ -7,6 +9,7 @@ import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.option.Options;
+import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 /**
  * A Tool performs some work via a {@link Task}. The Task is defined as usual by a set of {@link Parameter}s.
@@ -20,13 +23,13 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
 public interface Tool
 {
     public void postCreate();
-    
+
     public Task getTask();
 
     public String getName();
 
     public String getShortTitle();
-    
+
     public String getLongTitle();
 
     public Icon getIcon();
@@ -39,6 +42,11 @@ public interface Tool
 
     public ToolTab getToolTab();
 
+    /**
+     * If this tool is created by an {@link Option}, should it cause a new tab to be created?
+     * Useful for {@link ExecTool}s.
+     */
+    public boolean getUseNewTab();
 
     public void updateResults();
 
@@ -49,18 +57,18 @@ public interface Tool
     public ToolPanel getToolPanel();
 
     public boolean isRerunnable();
-    
+
     public void go();
 
     public void stop();
-    
+
     public boolean isRunning();
 
     public Options getOptions();
 
     public Tool duplicate();
-    
-    public void addToolListener( ToolListener cl );
 
-    public void removeToolListener( ToolListener cl );
+    public void addToolListener(ToolListener cl);
+
+    public void removeToolListener(ToolListener cl);
 }

@@ -8,7 +8,7 @@ import uk.co.nickthecoder.wrkfoo.AbstractTextTool;
 public class ExecTool extends AbstractTextTool<SimpleExecTask>
 {
     private boolean rerunnable = true;
-
+    
     public ExecTool(SimpleExecTask task)
     {
         super(task);
@@ -30,7 +30,7 @@ public class ExecTool extends AbstractTextTool<SimpleExecTask>
     {
         return rerunnable;
     }
-
+    
     /**
      * Prevents this tool from being re-run by going back/forward in history.
      * Doesn't prevent the task from being re-run manually by clicking the Go button.
