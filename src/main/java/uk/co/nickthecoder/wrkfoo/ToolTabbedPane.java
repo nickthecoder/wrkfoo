@@ -32,7 +32,14 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
         if (toolTabs.size() == 0) {
             return null;
         }
-        return toolTabs.get(getSelectedIndex());
+        int index = getSelectedIndex();
+        if (index < 0 ) {
+            return null;
+        }
+        if (index >= toolTabs.size()) {
+            return null;
+        }
+        return toolTabs.get(index);
     }
 
     public void add(final ToolTab tab)
@@ -123,6 +130,13 @@ public class ToolTabbedPane extends JTabbedPane implements Iterable<ToolTab>
         toolTabs.remove(index);
     }
 
+    public void removeAllTabs()
+    {
+        for (int i = getTabCount() -1; i >=0; i -- ) {
+            removeTabAt(i);
+        }
+    }
+    
     public void updateTabInfo(ToolTab tab)
     {
         String title = tab.getTitle();

@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +42,8 @@ import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 public class MainWindow extends JFrame implements ExceptionHandler
 {
 
+    private static final List<MainWindow> windows = new ArrayList<MainWindow>();
+    
     public JPanel whole;
 
     public ToolTabbedPane tabbedPane;
@@ -313,8 +316,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void setVisible(boolean show)
     {
         super.setVisible(show);
-
+        
         if (show) {
+            windows.add(this);
+            
             MouseListener listener = new MouseAdapter()
             {
                 @Override
@@ -329,11 +334,14 @@ public class MainWindow extends JFrame implements ExceptionHandler
                     mouseMainWindow = MainWindow.this;
                 }
             };
-            // whole.addMouseListener(listener);
-            // When I add the listener to "whole", no events are detected, so I add it to both of its children instead.
+            
+            // When I add the listener to this, or "whole", no events are detected, this is the next I could do.
             toolbar.addMouseListener(listener);
             tabbedPane.addMouseListener(listener);
+            statusBar.addMouseListener(listener);
         } else {
+            windows.remove(this);
+            tabbedPane.removeAllTabs();
             dispose();
         }
 
@@ -411,8 +419,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return tab;
     }
 
+    
     public void onQuit()
     {
+        // Close all of the windows, which will stop any stoppable tasks.
+        for ( MainWindow window : windows ) {
+            window.setVisible(false);
+        }
         System.exit(0);
     }
 

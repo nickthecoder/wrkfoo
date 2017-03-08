@@ -5,9 +5,6 @@ Current Task
 BUGS
 ====
 
-Command.updateResults is called from two places. CommandTab.go and AbstractCommand.GoThread.run
-	Is that ok?
-
 Stop all stoppable tools when closing the tab/main window/exiting application.
 
 New Features

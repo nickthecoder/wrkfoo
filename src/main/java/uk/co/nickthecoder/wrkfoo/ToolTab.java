@@ -59,6 +59,12 @@ public class ToolTab
     void setTabbedPane(ToolTabbedPane value)
     {
         tabbedPane = value;
+        if (value == null) {
+            Tool tool = getTool();
+            if (tool.isRunning()) {
+                tool.stop();
+            }
+        }
     }
     
     public MainWindow getMainWindow()
