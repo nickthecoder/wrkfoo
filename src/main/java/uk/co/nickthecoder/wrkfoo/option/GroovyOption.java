@@ -73,7 +73,7 @@ public class GroovyOption extends AbstractOption
             Tool newTool = (Tool) result;
             if (openNewTab || newTool.getUseNewTab()) {
                 MainWindow mainWindow = tab.getMainWindow();
-                ToolTab newTab = mainWindow.addTab(newTool);
+                ToolTab newTab = mainWindow.insertTab(newTool);
                 mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
 
             } else {

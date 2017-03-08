@@ -46,10 +46,19 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         return toolTabs.get(index);
     }
 
+    public void insert(final ToolTab tab)
+    {
+        int index = getSelectedIndex() + 1;
+        add(tab, index);
+    }
+
     public void add(final ToolTab tab)
     {
-        toolTabs.add(tab);
+        add(tab, toolTabs.size());
+    }
 
+    public void add(final ToolTab tab, int position)
+    {
         tab.setTabbedPane(this);
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
@@ -61,11 +70,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             @Override
             public void focusGained(FocusEvent e)
             {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();                
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
             }
         });
-        addTab(null, panel);
-        setTabComponentAt(getTabCount() - 1, tabLabel);
+
+        insertTab(null, null, panel, null, position);
+        toolTabs.add(position, tab);
+        setTabComponentAt(position, tabLabel);
     }
 
     private int popupMenuTabIndex;
@@ -138,9 +149,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     @Override
     public void removeTabAt(int index)
     {
+        if ((index > 0) && (getSelectedIndex() == index)) {
+            setSelectedIndex(index - 1);
+        }
         super.removeTabAt(index);
         toolTabs.get(index).setTabbedPane(null);
         toolTabs.remove(index);
+
     }
 
     public void removeAllTabs()
@@ -171,12 +186,12 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     }
 
     @Override
-    public void setSelectedIndex( int i )
+    public void setSelectedIndex(int i)
     {
         super.setSelectedIndex(i);
         getComponentAt(i).requestFocus();
     }
-    
+
     public void setSelectedToolTab(ToolTab tab)
     {
         for (int i = 0; i < getTabCount(); i++) {
