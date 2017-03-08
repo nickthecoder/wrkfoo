@@ -47,7 +47,6 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         Color.white
     };
 
-    
     private JLabel label;
 
     private JPanel back;
@@ -73,7 +72,7 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
         add(progress);
         add(back);
 
-        // Ignore the background color give to us by any "prepareRenderer" code, such as in 
+        // Ignore the background color give to us by any "prepareRenderer" code, such as in
         // Columns.Table.prepareRenderer
         this.setOpaque(true);
     }
@@ -94,19 +93,11 @@ public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutMan
 
             dtcr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            if (isSelected) {
-                // Ignore the bar chart effect
-                back.setBackground(dtcr.getBackground());
-                progress.setBackground(dtcr.getBackground());
-                label.setForeground(dtcr.getForeground());
-            } else {
-                
-                progress.setBackground(colors[index+1]);
-                back.setBackground(colors[index]);
-                
-                progress.setBounds(0, 0, width, this.getHeight());
-                label.setForeground(foregrounds[index]);
-            }
+            progress.setBackground(colors[index + 1]);
+            back.setBackground(colors[index]);
+
+            progress.setBounds(0, 0, width, this.getHeight());
+            label.setForeground(foregrounds[index]);
 
             label.setText(format.format(size) + units[index]);
         }
