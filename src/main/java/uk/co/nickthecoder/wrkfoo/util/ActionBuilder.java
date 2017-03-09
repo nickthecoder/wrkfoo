@@ -169,7 +169,12 @@ public class ActionBuilder
 
     public JMenuItem buildMenuItem()
     {
-        JMenuItem result = new JMenuItem( label );
+        String text = label;
+        if (shortcut != null) {
+            text += " (" + shortcut.replace(' ', '+') + ")";
+        }
+        
+        JMenuItem result = new JMenuItem(text);
 
         if (method != null) {
             Action action = createAction();
@@ -177,10 +182,10 @@ public class ActionBuilder
 
             mapShortcut(action);
         }
-        
+
         return result;
     }
-    
+
     public JButton buildButton()
     {
         JButton result = new JButton();
@@ -193,7 +198,7 @@ public class ActionBuilder
             if (shortcut == null) {
                 result.setToolTipText(tooltip);
             } else {
-                result.setToolTipText(tooltip + "(" + shortcut.replace(' ', '+') + ")");
+                result.setToolTipText(tooltip + " (" + shortcut.replace(' ', '+') + ")");
             }
         }
 

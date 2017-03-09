@@ -87,8 +87,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         popupMenuTabIndex = getUI().tabForCoordinate(TabbedPane.this, me.getX(), me.getY());
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
-        menu.add(builder.label("Rename Tab").action("onRenameTab").buildMenuItem());
-        menu.add(builder.label("Close Tab").action("onCloseTab").buildMenuItem());
+        menu.add(builder.label("Rename Tab").shortcut("ctrl R").action("onRenameTab").buildMenuItem());
+        menu.add(builder.label("Close Tab").shortcut("ctrl W").action("onCloseTab").buildMenuItem());
 
         menu.show(me.getComponent(), me.getX(), me.getY());
 
