@@ -102,31 +102,37 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
         return icon;
     }
 
-    public void add()
+    public Task add()
     {
-        final FileParameter file = new FileParameter.Builder("file").fileOrDirectory()
+        Task addTask = new AddTask();
+
+        return addTask.neverExit();
+    }
+    
+    public class AddTask extends Task
+    {
+        public final FileParameter file = new FileParameter.Builder("file").fileOrDirectory()
             .value( Resources.instance.getHomeDirectory())
             .parameter();
         
-        final StringParameter name = new StringParameter.Builder("name").optional().parameter();
-            
-        final Task appendTask = new Task()
-        {
-            @Override
-            public void body()
-            {
-                try {
-                    new Exec( "echo", "file://" + file.getValue().getPath(), name.getValue() )
-                        .stdout(task.store.getValue(), true) // append to the Places file
-                        .run();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Places.this.go();
-            }
-        };
-        appendTask.addParameters(file,name);
-        appendTask.neverExit().promptTask();
-    }
+        public final StringParameter placeName = new StringParameter.Builder("placeName").optional().parameter();
 
+        public AddTask()
+        {
+            super();
+            addParameters(file, placeName);
+        }
+                @Override
+        public void body()
+        {
+            try {
+                new Exec( "echo", "file://" + file.getValue().getPath(), placeName.getValue() )
+                    .stdout(task.store.getValue(), true) // append to the Places file
+                    .run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Places.this.go();
+        }
+    };
 }
