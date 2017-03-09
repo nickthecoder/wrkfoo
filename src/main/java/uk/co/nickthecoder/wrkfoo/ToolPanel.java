@@ -158,7 +158,7 @@ public class ToolPanel extends JPanel implements ToolListener
                 splitPane.toggleLeft();
             }
         });
-        MainWindow.putAction("F10", "toggleRightPane", this, new AbstractAction()
+        MainWindow.putAction("ctrl F9", "toggleRightPane", this, new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
             {

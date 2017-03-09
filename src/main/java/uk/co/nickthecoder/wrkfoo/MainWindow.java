@@ -160,7 +160,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
         builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
+        builder.name("jumpToToolbar").shortcut("F10").buildShortcut();
+        builder.name("jumpToResults").shortcut("F11").buildShortcut();
+        builder.name("jumpToParameters").shortcut("F12").buildShortcut();
 
+        
         // There's an illusive bug, which causes alt F4 not to work, so I've added a different shortcut.
         // I've not spent too long hunting the bug, because I think it may be a bug in Gnome (or maybe Java).
         builder.name("closeWindow").shortcut("ctrl F4").buildShortcut();
@@ -552,7 +556,28 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         setVisible(false);
     }
-
+    
+    public void onJumpToToolbar()
+    {
+        optionsTextField.requestFocusInWindow();
+    }
+    
+    public void onJumpToResults()
+    {
+        ToolTab tab = getCurrentTab();
+        if (tab != null) {
+            tab.getTool().getToolPanel().getSplitPane().focusLeft();
+        }
+    }
+    
+    public void onJumpToParameters()
+    {
+        ToolTab tab = getCurrentTab();
+        if (tab != null) {
+            tab.getTool().getToolPanel().getSplitPane().focusRight();
+        }        
+    }
+    
     /**
      * Records the time that the last error message was sent. Used to determine if later messages should obscure the
      * error.

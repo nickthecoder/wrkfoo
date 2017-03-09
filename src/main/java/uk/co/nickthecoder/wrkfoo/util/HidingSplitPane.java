@@ -74,6 +74,18 @@ public class HidingSplitPane extends JSplitPane
         this.state = newState;
     }
 
+    public void focusLeft()
+    {
+        showLeft();
+        getLeftComponent().requestFocusInWindow();
+    }
+
+    public void focusRight()
+    {
+        showRight();
+        getRightComponent().requestFocusInWindow();
+    }
+
     public void focus()
     {
         if ( state == State.RIGHT ) {
