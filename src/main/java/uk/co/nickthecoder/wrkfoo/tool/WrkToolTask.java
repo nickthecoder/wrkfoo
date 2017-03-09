@@ -43,8 +43,12 @@ public class WrkToolTask extends Task implements ListResults<Tool>
         results.add(wrkTabSets);
 
         Places places = new Places();
-        places.task.store.setValue(Util.createFile(Resources.instance.getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));
+        places.task.store.setValue(Util.createFile(Resources.instance.getHomeDirectory(), ".config", "gtk-3.0",
+            "bookmarks"));
         results.add(places);
+
+        WrkOptionsFiles wrkOptionFiles = new WrkOptionsFiles();
+        results.add(wrkOptionFiles);
     }
 
     @Override

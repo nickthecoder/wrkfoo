@@ -6,12 +6,23 @@ edit options
 BUGS
 ====
 
+Having a missing options file throws exception when the tool tries to use it.
 
 New Features
 ============
 
+Change OSCommand stuff. Choose valid names, and maybe an object, with multiple fields instead of lots of individuals.
+
 Use filtered menu for option menus
 	Use different filter. Anywhere in the label.
+	Merge the different options files together and sort by code??? by Label???
+	Add a "Non-Row Options" label, and ensure it isn't filter out! 
+
+Custom options applied to a tab
+	e.g. WrkF is given more options, suitable only for images.
+	Save names of custom options in tabset
+	
+
 
 Code review & Javadoc comments
 

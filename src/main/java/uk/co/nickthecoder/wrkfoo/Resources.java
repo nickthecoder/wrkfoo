@@ -103,6 +103,11 @@ public class Resources
         return tabsDirectory;
     }
 
+    public File getOptionsDirectory()
+    {
+        return optionsDirectory;
+    }
+    
     public File getOptionsFile(String name)
     {
         return new File(optionsDirectory, name);
@@ -117,27 +122,37 @@ public class Resources
         }
     }
 
-   
+    
+    public OptionsData readOptionsData(File file)
+    {
+        OptionsData cached = optionsDataByFile.get(file);
+        if (cached != null) {
+            //System.out.println( "Using cached version of : " + file + " (" + cached.options.size() +")" );
+            return cached;
+        }
+        
+        OptionsData optionsData = OptionsData.load(file);   
+        optionsDataByFile.put(optionsData.file, optionsData);
+
+        //System.out.println( "Loaded options : " + file  + " (" + optionsData.options.size() + ")" );
+
+        return optionsData;
+    }
     
     public GroovyOptions readOptions(String name)
     {
-        OptionsData cached = optionsDataByFile.get(getOptionsFile(name));
-        if (cached != null) {
-            System.out.println("Reusing cached options " + name);
-            return cached.groovyOptions;
-        }
-
-        OptionsData optionsData = OptionsData.load(getOptionsFile(name));
-        GroovyOptions result = optionsData.groovyOptions;
-        optionsDataByFile.put(optionsData.file, optionsData);
-
-        optionsDataByFile.put(optionsData.file, optionsData);
-        return result;
+        return readOptions( getOptionsFile(name) );
+    }
+    
+    public GroovyOptions readOptions(File file)
+    {
+        return readOptionsData(file).groovyOptions;
     }
 
     public void reloadOptions()
     {
         for (OptionsData optionsData : optionsDataByFile.values()) {
+            //System.out.println( "Reloading options : " + optionsData.file );
             optionsData.reload();
         }
     }
