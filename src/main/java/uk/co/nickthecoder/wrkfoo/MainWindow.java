@@ -619,6 +619,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
             e = e.getCause();
         } while (true);
 
+        e.printStackTrace();
         setErrorMessage(e.getMessage());
     }
 }
