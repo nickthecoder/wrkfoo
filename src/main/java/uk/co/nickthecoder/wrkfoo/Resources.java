@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,8 +10,8 @@ import javax.swing.ImageIcon;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOptions;
+import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
-import uk.co.nickthecoder.wrkfoo.option.ReloadableOptions;
 
 public class Resources
 {
@@ -38,11 +37,11 @@ public class Resources
 
     private OptionsGroup globalOptions;
 
-    private Set<ReloadableOptions> reloadableOptions;
+    private Set<OptionsData> loadedOptionsData;
 
     private Resources()
     {
-        reloadableOptions = new HashSet<ReloadableOptions>();
+        loadedOptionsData = new HashSet<OptionsData>();
 
         homeDirectory = new File(System.getProperty("user.home"));
         globalOptions = new OptionsGroup();
@@ -80,9 +79,7 @@ public class Resources
 
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
-                        GroovyOptions options = new GroovyOptions();
-                        options.load(new File(optionsDirectory, name + ".json"));
-                        globalOptions.add(options);
+                        globalOptions.add(OptionsData.load(getOptionsFile(name)).groovyOptions);
                     }
                 } finally {
                     json.close();
@@ -111,38 +108,6 @@ public class Resources
         return new File(optionsDirectory, name + ".json");
     }
 
-    public GroovyOptions readOptions(String name)
-    {
-        try {
-            GroovyOptions result = new GroovyOptions();
-            result.load(getOptionsFile(name));
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public OptionsGroup createGroupOptions(String... optionsName)
-    {
-        OptionsGroup result = new OptionsGroup();
-
-        for (String name : optionsName) {
-            try {
-                GroovyOptions fo = new GroovyOptions();
-                fo.load(new File(optionsDirectory, name + ".json"));
-                result.add(fo);
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Do nothing
-            }
-        }
-
-        result.add(globalOptions);
-
-        return result;
-    }
-
     public static Icon icon(String name)
     {
         try {
@@ -152,15 +117,17 @@ public class Resources
         }
     }
 
-    public void RegisterReloadableOptions(ReloadableOptions ro)
+    public GroovyOptions readOptions(String name)
     {
-        reloadableOptions.add(ro);
+        GroovyOptions result = OptionsData.load(getOptionsFile(name)).groovyOptions;
+        result.add(Resources.instance.globalOptions());
+        return result;
     }
 
     public void reloadOptions()
     {
-        for (ReloadableOptions ro : reloadableOptions) {
-            ro.reload();
+        for (OptionsData optionsData : loadedOptionsData) {
+            optionsData.reload();
         }
     }
 }

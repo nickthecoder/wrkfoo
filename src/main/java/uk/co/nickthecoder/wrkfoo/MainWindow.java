@@ -588,9 +588,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
             if (e instanceof ScriptletException) {
                 break;
             }
-
+            if (e.getCause() == null) {
+                break;
+            }
             e = e.getCause();
-        } while (e.getCause() != null);
+        } while (true);
 
         setErrorMessage(e.getMessage());
     }
