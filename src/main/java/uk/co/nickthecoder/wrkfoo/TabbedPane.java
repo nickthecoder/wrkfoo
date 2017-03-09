@@ -79,12 +79,10 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         setTabComponentAt(position, tabLabel);
     }
 
-    private int popupMenuTabIndex;
 
     private JPopupMenu createTabPopupMenu(MouseEvent me)
     {
         JPopupMenu menu = new JPopupMenu();
-        popupMenuTabIndex = getUI().tabForCoordinate(TabbedPane.this, me.getX(), me.getY());
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
         menu.add(builder.label("Rename Tab").shortcut("ctrl R").action("onRenameTab").buildMenuItem());
@@ -102,12 +100,12 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void onRenameTab()
     {
-        new RenameTabTask(popupMenuTabIndex).neverExit().promptTask();
+        new RenameTabTask(getSelectedIndex()).neverExit().promptTask();
     }
 
     public void onCloseTab()
     {
-        removeTabAt(popupMenuTabIndex);
+        removeTabAt(getSelectedIndex());
     }
 
     public class RenameTabTask extends Task
