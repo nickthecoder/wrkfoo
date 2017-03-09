@@ -54,7 +54,7 @@ public class OptionsData
 
     private void createOptions()
     {
-        for (String include : include) {
+        for (String include : this.include) {
             Options includedOptions = Resources.instance.readOptions(include);
             groovyOptions.add(includedOptions);
         }
