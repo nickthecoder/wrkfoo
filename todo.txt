@@ -2,7 +2,6 @@ Current Task
 ============
 
 edit options
-Resources to cache options, so that included files aren't loaded multiple times.
 
 BUGS
 ====
@@ -11,6 +10,8 @@ BUGS
 New Features
 ============
 
+Use filtered menu for option menus
+	Use different filter. Anywhere in the label.
 
 Code review & Javadoc comments
 

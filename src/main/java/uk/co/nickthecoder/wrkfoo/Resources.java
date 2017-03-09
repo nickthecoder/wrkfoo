@@ -1,8 +1,8 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -37,11 +37,11 @@ public class Resources
 
     private OptionsGroup globalOptions;
 
-    private Set<OptionsData> loadedOptionsData;
+    private Map<File, OptionsData> optionsDataByFile;
 
     private Resources()
     {
-        loadedOptionsData = new HashSet<OptionsData>();
+        optionsDataByFile = new HashMap<File, OptionsData>();
 
         homeDirectory = new File(System.getProperty("user.home"));
         globalOptions = new OptionsGroup();
@@ -79,7 +79,7 @@ public class Resources
 
                     for (EasyJson.Node jele : jglobals) {
                         String name = jele.getAsString();
-                        globalOptions.add(OptionsData.load(getOptionsFile(name)).groovyOptions);
+                        globalOptions.add(readOptions(name));
                     }
                 } finally {
                     json.close();
@@ -105,7 +105,7 @@ public class Resources
 
     public File getOptionsFile(String name)
     {
-        return new File(optionsDirectory, name + ".json");
+        return new File(optionsDirectory, name);
     }
 
     public static Icon icon(String name)
@@ -117,16 +117,27 @@ public class Resources
         }
     }
 
+   
+    
     public GroovyOptions readOptions(String name)
     {
-        GroovyOptions result = OptionsData.load(getOptionsFile(name)).groovyOptions;
-        result.add(Resources.instance.globalOptions());
+        OptionsData cached = optionsDataByFile.get(getOptionsFile(name));
+        if (cached != null) {
+            System.out.println("Reusing cached options " + name);
+            return cached.groovyOptions;
+        }
+
+        OptionsData optionsData = OptionsData.load(getOptionsFile(name));
+        GroovyOptions result = optionsData.groovyOptions;
+        optionsDataByFile.put(optionsData.file, optionsData);
+
+        optionsDataByFile.put(optionsData.file, optionsData);
         return result;
     }
 
     public void reloadOptions()
     {
-        for (OptionsData optionsData : loadedOptionsData) {
+        for (OptionsData optionsData : optionsDataByFile.values()) {
             optionsData.reload();
         }
     }

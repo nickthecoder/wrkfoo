@@ -24,14 +24,12 @@ public class OptionsData
 
         JsonReader reader;
         try {
-            System.out.println( "Loading options " + file );
             reader = new JsonReader(new FileReader(file));
             OptionsData optionsData = gson.fromJson(reader, OptionsData.class);
             optionsData.file = file;
 
             optionsData.groovyOptions = new GroovyOptions();
             optionsData.createOptions();
-            System.out.println( "Created options" );
 
             return optionsData;
 
@@ -54,14 +52,12 @@ public class OptionsData
 
     private void createOptions()
     {
-        System.out.println( "Creating options " + include.size() + " includes. " + options.size() + " options ");
         for (String include : include) {
             Options includedOptions = Resources.instance.readOptions(include);
             groovyOptions.add(includedOptions);
         }
 
         for (OptionData optionData : options) {
-            System.out.println( "Creating option : "+ optionData );
             GroovyOption groovyOption = optionData.createOption();
             groovyOptions.add(groovyOption);
         }
@@ -90,8 +86,6 @@ public class OptionsData
 
         public GroovyOption createOption()
         {
-            System.out.println( "Creating option : " + code );
-
             return new GroovyOption(code, label, action, ifScript, isRow(), multi);
         }
         

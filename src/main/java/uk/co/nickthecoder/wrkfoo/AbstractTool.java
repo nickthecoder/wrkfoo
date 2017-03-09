@@ -78,7 +78,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     public String optionsName()
     {
-        return getClass().getSimpleName().toLowerCase();
+        return getClass().getSimpleName().toLowerCase() + ".json";
     }
 
     @Override
