@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
 
@@ -19,7 +20,7 @@ public class ToolTab
     private History history;
 
     private JPanel panel;
-    
+
     private String titleTemplate = "%t";
 
     public ToolTab(MainWindow mainWindow, Tool tool)
@@ -31,16 +32,16 @@ public class ToolTab
         attach(tool);
     }
 
-    public void setTitleTemplate( String value)
+    public void setTitleTemplate(String value)
     {
         titleTemplate = value;
     }
-    
+
     public String getTitleTemplate()
     {
         return titleTemplate;
     }
-    
+
     public String getTitle()
     {
         return titleTemplate.replaceAll("%t", tool.getShortTitle());
@@ -55,7 +56,7 @@ public class ToolTab
     {
         return tabbedPane;
     }
-    
+
     void setTabbedPane(TabbedPane value)
     {
         tabbedPane = value;
@@ -66,7 +67,7 @@ public class ToolTab
             }
         }
     }
-    
+
     public MainWindow getMainWindow()
     {
         return mainWindow;
@@ -93,7 +94,7 @@ public class ToolTab
         });
     }
 
-    private final void attach(Tool tool)
+    private final void attach(final Tool tool)
     {
         if (this.tool != null) {
             this.tool.detach();
@@ -103,6 +104,14 @@ public class ToolTab
         tool.attachTo(this);
         panel.removeAll();
         panel.add(tool.getToolPanel());
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                tool.getToolPanel().getSplitPane().focus();
+            }
+        });
+
     }
 
     public Tool getTool()
