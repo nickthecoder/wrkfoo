@@ -112,7 +112,7 @@ public class TableToolPanel<R> extends ToolPanel
 
         boolean useNewTab = me.isControlDown();
 
-        JPopupMenu menu = new JPopupMenu();
+        JPopupMenu menu = createPopupMenu();
 
         // Add row options first
         Options options = tableTool.getOptions();
@@ -141,7 +141,7 @@ public class TableToolPanel<R> extends ToolPanel
 
     private void createMultiOptionsMenu(MouseEvent me)
     {
-        JPopupMenu menu = new JPopupMenu();
+        JPopupMenu menu = createPopupMenu();
 
         Options options = tableTool.getOptions();
         for (Option option : options) {

@@ -15,12 +15,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
+import uk.co.nickthecoder.jguifier.guiutil.FilteredPopupMenu;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -167,11 +167,17 @@ public class ToolPanel extends JPanel implements ToolListener
 
     }
 
+    protected FilteredPopupMenu createPopupMenu()
+    {
+        FilteredPopupMenu menu = FilteredPopupMenu.createContains();
+        return menu;
+    }
+    
     public void createNonRowOptionsMenu(MouseEvent me)
     {
         boolean useNewTab = me.isControlDown();
 
-        JPopupMenu menu = new JPopupMenu();
+        FilteredPopupMenu menu = createPopupMenu();
         Options options = tool.getOptions();
         for (Option option : options) {
             if (!option.isRow()) {
