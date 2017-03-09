@@ -69,7 +69,7 @@ public class TabSetData
 
         TabSetData tsd = new TabSetData(mainWindow);
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         String json = gson.toJson(tsd);
 
         PrintWriter out = null;

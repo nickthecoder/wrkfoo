@@ -6,10 +6,17 @@ BUGS
 
 Having a missing options file throws exception when the tool tries to use it.
 
+Focus not going back to the table when running tasks/tools.
+
+
 New Features
 ============
 
-Make ValueParameter.toString return getStringValue ?? This will make scripts more compact. 
+Load setting without using EasyGSON, then delete.
+
+Error handler - click the error message to see it in full and maybe the stack trace too.
+
+Implement multi-line StringParameter, and use it for add/edit/copy of Options.
 
 Popup Menu items :
 	Merge the different options files together and sort by their code??? by Label???

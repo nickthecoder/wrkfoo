@@ -74,7 +74,8 @@ public class OptionsData
 
     public void save() throws FileNotFoundException
     {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        
         String json = gson.toJson(this);
 
         PrintWriter out = null;
