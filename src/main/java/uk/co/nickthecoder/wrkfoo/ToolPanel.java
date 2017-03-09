@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.FilteredPopupMenu;
+import uk.co.nickthecoder.jguifier.guiutil.MenuItemFilter;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -167,12 +168,26 @@ public class ToolPanel extends JPanel implements ToolListener
 
     }
 
+    public static final MenuItemFilter menuItemFilter = new MenuItemFilter()
+    {
+        @Override
+        public boolean accept(JMenuItem menuItem, String filterText)
+        {
+            if (!menuItem.isEnabled()) {
+                // Keep information items, such as "Non-Row Options"
+                return true;
+            }
+            return menuItem.getText().toLowerCase().contains(filterText.toLowerCase());
+        }
+    };
+
     protected FilteredPopupMenu createPopupMenu()
     {
-        FilteredPopupMenu menu = FilteredPopupMenu.createContains();
+
+        FilteredPopupMenu menu = FilteredPopupMenu.create(menuItemFilter);
         return menu;
     }
-    
+
     public void createNonRowOptionsMenu(MouseEvent me)
     {
         boolean useNewTab = me.isControlDown();

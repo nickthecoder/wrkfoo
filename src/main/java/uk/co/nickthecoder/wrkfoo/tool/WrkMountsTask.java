@@ -12,7 +12,7 @@ import java.util.List;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.WrkMountsTask.MountPoint;
-import uk.co.nickthecoder.wrkfoo.util.OSCommand;
+import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class WrkMountsTask extends Task implements ListResults<MountPoint>
 {
@@ -105,7 +105,7 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
         }
 
         /**
-         * Suitable for <code>row</code> to be passed to {@link OSCommand#command(String, Object...)}
+         * Suitable for <code>row</code> to be passed to {@link OSHelper#command(String, Object...)}
          * 
          * @return The path
          */

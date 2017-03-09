@@ -130,6 +130,9 @@ public class TableToolPanel<R> extends ToolPanel
             if (!option.isRow()) {
                 if (first) {
                     menu.addSeparator();
+                    JMenuItem instruction = new JMenuItem("Non-Row Options");
+                    instruction.setEnabled(false);
+                    menu.add(instruction);
                     first = false;
                 }
                 menu.add(createMenuItem(option, rowIndex, useNewTab));
@@ -188,13 +191,13 @@ public class TableToolPanel<R> extends ToolPanel
             {
                 ToolTableModel<?> model = table.getModel();
                 List<Object> rows = new ArrayList<Object>();
-                
-                for ( int r : table.getSelectedRows() ) {
+
+                for (int r : table.getSelectedRows()) {
                     // TODO check if I need to convert from view to model
                     Object row = model.getRow(r);
 
                     if (option.isApplicable(row)) {
-                        rows.add( row );
+                        rows.add(row);
                         table.removeRowSelectionInterval(r, r);
                     }
                 }

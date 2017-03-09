@@ -21,8 +21,16 @@ public class Resources
         Resources.instance.readSettings();
     }
 
+    /**
+     * The name of your preferred text editor. Defaults to <code>gedit</code>
+     */
     public String editor;
 
+    /**
+     * The name of the program used as a file manager. For example <code>nautilus</code>. If you are running Gnome, then
+     * you can also use <code>gnome-open</code>, and this will use gnome's default file manager (which is usually
+     * nautilus).
+     */
     public String fileManager;
 
     private File homeDirectory;
@@ -107,7 +115,7 @@ public class Resources
     {
         return optionsDirectory;
     }
-    
+
     public File getOptionsFile(String name)
     {
         return new File(optionsDirectory, name);
@@ -122,28 +130,27 @@ public class Resources
         }
     }
 
-    
     public OptionsData readOptionsData(File file)
     {
         OptionsData cached = optionsDataByFile.get(file);
         if (cached != null) {
-            //System.out.println( "Using cached version of : " + file + " (" + cached.options.size() +")" );
+            // System.out.println( "Using cached version of : " + file + " (" + cached.options.size() +")" );
             return cached;
         }
-        
-        OptionsData optionsData = OptionsData.load(file);   
+
+        OptionsData optionsData = OptionsData.load(file);
         optionsDataByFile.put(optionsData.file, optionsData);
 
-        //System.out.println( "Loaded options : " + file  + " (" + optionsData.options.size() + ")" );
+        // System.out.println( "Loaded options : " + file + " (" + optionsData.options.size() + ")" );
 
         return optionsData;
     }
-    
+
     public GroovyOptions readOptions(String name)
     {
-        return readOptions( getOptionsFile(name) );
+        return readOptions(getOptionsFile(name));
     }
-    
+
     public GroovyOptions readOptions(File file)
     {
         return readOptionsData(file).groovyOptions;
@@ -152,7 +159,7 @@ public class Resources
     public void reloadOptions()
     {
         for (OptionsData optionsData : optionsDataByFile.values()) {
-            //System.out.println( "Reloading options : " + optionsData.file );
+            // System.out.println( "Reloading options : " + optionsData.file );
             optionsData.reload();
         }
     }

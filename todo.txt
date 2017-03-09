@@ -1,7 +1,7 @@
 Current Task
 ============
 
-edit options
+Change OSCommand stuff. Choose valid names, and maybe an object, with multiple fields instead of lots of individuals.
 
 BUGS
 ====
@@ -11,18 +11,23 @@ Having a missing options file throws exception when the tool tries to use it.
 New Features
 ============
 
-Change OSCommand stuff. Choose valid names, and maybe an object, with multiple fields instead of lots of individuals.
+Make ValueParameter.toString return getStringValue ?? This will make scripts more compact. 
 
-Use filtered menu for option menus
-	Use different filter. Anywhere in the label.
-	Merge the different options files together and sort by code??? by Label???
-	Add a "Non-Row Options" label, and ensure it isn't filter out! 
+Places -> Add option
+
+Popup Menu items :
+	Merge the different options files together and sort by their code??? by Label???
+	Maybe make the top-level ones bold (if that is possible).
+		Global options aren't bold, but included ones are?
+		Use background colors? Could specify a bg colour for each options file.
+		Special menuitemfilter e.g. "*" to show everything, but it usually excludes globals. "-" to only show top level options.
 
 Custom options applied to a tab
 	e.g. WrkF is given more options, suitable only for images.
 	Save names of custom options in tabset
-	
+	Create a global option to add a custom options file	
 
+Allow additional packages to be imported from the settings.json into GroovyScriptlet
 
 Code review & Javadoc comments
 

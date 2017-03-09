@@ -1,12 +1,11 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
-
-import uk.co.nickthecoder.wrkfoo.util.OSCommand;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
+
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
 public class GroovyScriptlet
 {
@@ -18,10 +17,6 @@ public class GroovyScriptlet
             "uk.co.nickthecoder.wrkfoo.tool",
             "uk.co.nickthecoder.wrkfoo.util",
             "uk.co.nickthecoder.jguifier.util");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "command");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "gui");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "edit");
-        importCustomizer.addStaticImport(OSCommand.class.getName(), "openFolder");
 
         CompilerConfiguration configuration = new CompilerConfiguration();
         configuration.addCompilationCustomizers(importCustomizer);

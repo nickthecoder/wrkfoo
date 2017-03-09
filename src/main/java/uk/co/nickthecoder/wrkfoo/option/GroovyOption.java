@@ -8,6 +8,7 @@ import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class GroovyOption extends AbstractOption
 {
@@ -98,6 +99,7 @@ public class GroovyOption extends AbstractOption
     {
         Binding bindings = new Binding();
         bindings.setProperty("tool", tool);
+        bindings.setProperty("os", OSHelper.instance);
         if (tool != null) {
             bindings.setProperty("task", tool.getTask());
         }

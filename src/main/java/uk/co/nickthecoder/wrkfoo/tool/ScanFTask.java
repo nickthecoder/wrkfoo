@@ -13,7 +13,7 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.ScanFTask.ScannedDirectory;
-import uk.co.nickthecoder.wrkfoo.util.OSCommand;
+import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class ScanFTask extends Task implements ListResults<ScannedDirectory>, Stoppable
 {
@@ -98,7 +98,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
         }
 
         /**
-         * Suitable for <code>row</code> to be passed to {@link OSCommand#command(String, Object...)}
+         * Suitable for <code>row</code> to be passed to {@link OSHelper#command(String, Object...)}
          * 
          * @return The path
          */
