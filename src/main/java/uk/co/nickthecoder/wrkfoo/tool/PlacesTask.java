@@ -104,16 +104,18 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
         if (!file.isAbsolute()) {
             file = new File(directory, line);
         }
-        return new PlacesWrappedFile(file, name);
+        return new PlacesWrappedFile(file, line, name);
     }
 
     public class PlacesWrappedFile extends WrappedFile
     {
-        public String name;
+        public String line; // The whole line of the Places file.
+        public String name; // The display name (which will be the filename if none was specified).
 
-        public PlacesWrappedFile(File file, String name)
+        public PlacesWrappedFile(File file, String line, String name)
         {
             super(file);
+            this.line = line;
             this.name = name;
         }
 

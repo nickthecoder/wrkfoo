@@ -4,6 +4,7 @@ import groovy.lang.Binding;
 
 import java.util.List;
 
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
@@ -21,10 +22,10 @@ public class GroovyOption extends AbstractOption
     {
         super(code, label, isRow, isMulti);
         this.action = new GroovyScriptlet(script);
-        if (ifScript != null) {
-            this.ifScriptlet = new GroovyScriptlet(ifScript);
-        } else {
+        if (Util.empty(ifScript )) {
             ifScriptlet = null;
+        } else {
+            this.ifScriptlet = new GroovyScriptlet(ifScript);
         }
     }
 

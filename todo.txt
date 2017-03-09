@@ -1,8 +1,6 @@
 Current Task
 ============
 
-Change OSCommand stuff. Choose valid names, and maybe an object, with multiple fields instead of lots of individuals.
-
 BUGS
 ====
 
@@ -12,8 +10,6 @@ New Features
 ============
 
 Make ValueParameter.toString return getStringValue ?? This will make scripts more compact. 
-
-Places -> Add option
 
 Popup Menu items :
 	Merge the different options files together and sort by their code??? by Label???

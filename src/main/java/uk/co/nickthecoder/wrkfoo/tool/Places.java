@@ -1,13 +1,18 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.jguifier.FileParameter;
+import uk.co.nickthecoder.jguifier.StringParameter;
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.util.Exec;
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.PlacesTask.PlacesWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -96,4 +101,29 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
     {
         return icon;
     }
+
+    public void add()
+    {
+        final FileParameter file = new FileParameter.Builder("file").fileOrDirectory().parameter();
+        final StringParameter name = new StringParameter.Builder("name").optional().parameter();
+            
+        final Task appendTask = new Task()
+        {
+            @Override
+            public void body()
+            {
+                try {
+                    new Exec( "echo", "file://" + file.getValue().getPath(), name.getValue() )
+                        .stdout(task.store.getValue(), true) // append to the Places file
+                        .run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Places.this.go();
+            }
+        };
+        appendTask.addParameters(file,name);
+        appendTask.neverExit().promptTask();
+    }
+
 }
