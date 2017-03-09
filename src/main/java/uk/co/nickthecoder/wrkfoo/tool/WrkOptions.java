@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
@@ -98,19 +99,19 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         return Resources.icon("options.png");
     }
     
-    public void editOption( OptionData optionData )
+    public Task editOption( OptionData optionData )
     {
-        new EditOption( getTask().optionsData, optionData ).neverExit().promptTask();
+        return new EditOption( getTask().optionsData, optionData ).neverExit();
     }
     
-    public void addOption(  )
+    public Task addOption(  )
     {
-        new EditOption.AddOption( getTask().optionsData ).neverExit().promptTask();
+        return new EditOption.AddOption( getTask().optionsData ).neverExit();
     }
     
-    public void deleteOption( OptionData optionData )
+    public Task deleteOption( OptionData optionData )
     {
-        new EditOption.DeleteOption( getTask().optionsData, optionData).neverExit().promptTask();
+        return new EditOption.DeleteOption( getTask().optionsData, optionData).neverExit();
     }
 
 }
