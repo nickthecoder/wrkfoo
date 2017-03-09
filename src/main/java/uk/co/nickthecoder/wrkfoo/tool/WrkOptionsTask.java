@@ -19,6 +19,11 @@ public class WrkOptionsTask extends Task implements ListResults<OptionData>
     public FileParameter optionsFile = new FileParameter.Builder("optionsFile").mustExist()
         .parameter();
 
+    public WrkOptionsTask()
+    {
+        addParameters( optionsFile );
+    }
+    
     @Override
     public List<OptionData> getResults()
     {
