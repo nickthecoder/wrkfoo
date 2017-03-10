@@ -95,7 +95,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                 return row.name;
             }
 
-        }.tooltip(4).sort().width(250));
+        }.tooltip(4).sort().width(500));
 
         columns.add(new Column<GitStatusLine>(String.class, "path")
         {
