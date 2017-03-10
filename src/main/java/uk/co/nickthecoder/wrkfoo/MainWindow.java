@@ -513,6 +513,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onReloadOptions()
     {
+        Resources.instance.readSettings();
         Resources.instance.reloadOptions();
     }
 

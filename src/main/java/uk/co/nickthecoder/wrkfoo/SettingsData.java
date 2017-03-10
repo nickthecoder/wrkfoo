@@ -36,7 +36,7 @@ public class SettingsData
         fileManager = Resources.instance.fileManager;
         globalOptions = Resources.instance.globalOptionsNames;
     }
-
+    
     public void save(File file) throws FileNotFoundException
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

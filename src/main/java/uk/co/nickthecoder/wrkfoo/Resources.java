@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,6 @@ public class Resources
 
     private File settingsFile;
 
-
     private OptionsGroup globalOptions;
 
     private Map<File, OptionsData> optionsDataByFile;
@@ -78,33 +78,26 @@ public class Resources
         return globalOptions;
     }
 
-    private void readSettings()
+    public void readSettings()
     {
-        if (settingsFile.exists()) {
-
-            try {
-                EasyJson json = new EasyJson();
-                try {
-                    EasyJson.Node root = json.open(settingsFile);
-
-                    editor = root.getString("editor", "gedit");
-                    fileManager = root.getString("fileManager", "nautilus");
-
-                    EasyJson.Node jglobals = root.getArray("globalOptions");
-
-                    for (EasyJson.Node jele : jglobals) {
-                        String name = jele.getAsString();
-                        globalOptions.add(readOptions(name));
-                    }
-                } finally {
-                    json.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            SettingsData settings = SettingsData.load(settingsFile);
+            if (settings.editor != null) {
+                this.editor = settings.editor;
             }
-
-        } else {
-            // Use default values
+            if (settings.fileManager != null) {
+                this.editor = settings.fileManager;
+            }
+            if (settings.globalOptions != null) {
+                this.globalOptions.clear();
+                this.globalOptionsNames = new ArrayList<String>( settings.globalOptions );
+                for (String name : this.globalOptionsNames) {
+                    this.globalOptions.add( this.readOptions(name));
+                }
+            }
+            
+        } catch (FileNotFoundException e) {
+            System.err.println( "Settings file : " + settingsFile + " not found. Using defaults." );
         }
     }
 

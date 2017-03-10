@@ -2,6 +2,8 @@ Current Task
 ============
 
 
+Finish loading setting the good way!
+
 BUGS
 ====
 
@@ -15,12 +17,13 @@ Use rm, and the current editing cell can become below the bottom of the table. u
 Multiple copies of a tool are added to History, despite having the same tool and parameters.
 	e.g. GitStatus after doing a few git adds.
 
+RegexParameter doesn't error for empty required values.
+
 New Features
 ============
 
-Add a grep option, which searches a directory's files for a regex, and then lists the files that matched.
-
 RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
+	Should grep then use RegexParameter?
 
 Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
 	Add another column.
@@ -46,6 +49,11 @@ Custom options applied to a tab
 Allow additional packages to be imported from the settings.json into GroovyScriptlet
 
 Code review & Javadoc comments
+
+mmv option
+
+mvlc move lower case
+
 
 Later Features
 ==============
