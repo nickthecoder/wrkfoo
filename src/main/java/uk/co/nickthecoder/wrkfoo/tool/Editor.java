@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
-import javax.swing.JComponent;
+import javax.swing.JToolBar;
 
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
@@ -45,9 +45,10 @@ public class Editor extends AbstractTool<EditorTask>
         return editorPanel;
     }
 
-    public void attachToolBar(JComponent toolBar)
+    public void attachToolBar(JToolBar toolBar)
     {
         getToolTab().getMainWindow().getToolbar().add(toolBar,0);
+        toolBar.addSeparator();
     }
 
     @Override

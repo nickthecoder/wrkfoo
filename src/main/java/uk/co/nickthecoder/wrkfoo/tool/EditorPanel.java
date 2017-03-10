@@ -46,7 +46,14 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         ActionBuilder builder = new ActionBuilder(this);
 
         toolBar.add(builder.name("documentSave").tooltip("Save Document").shortcut("ctrl S").buildButton());
-
+        // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").shortcut("ctrl S").buildButton());
+        toolBar.add(builder.name("documentRevert").tooltip("Revert").shortcut("ctrl F5").buildButton());
+        toolBar.addSeparator();
+        toolBar.add(builder.name("editUndo").tooltip("Undo").shortcut("ctrl Z").buildButton());
+        toolBar.add(builder.name("editRedo").tooltip("Redo").shortcut("ctrl shift Z").buildButton());
+        toolBar.add(builder.name("editCopy").tooltip("Copy").shortcut("ctrl C").buildButton());
+        toolBar.add(builder.name("editPaste").tooltip("Paste").shortcut("ctrl V").buildButton());
+        //toolBar.add(builder.name("editFind").tooltip("Find").shortcut("ctrl V").buildButton());
     }
 
     public void detach()
@@ -69,20 +76,40 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         }
     }
 
-    public void onDocumentSave()
-    {
-        try {
-            editorPane.save();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void handleException(Throwable e)
     {
         editorTask.getToolTab().getMainWindow().handleException(e);
+    }
+
+    public void onDocumentSave() throws IOException
+    {
+        editorPane.save();
+    }
+
+    public void onDocumentRevert() throws IOException
+    {
+        editorPane.reload();
+    }
+
+    public void onEditUndo()
+    {
+        editorPane.undoLastAction();
+    }
+
+    public void onEditRedo()
+    {
+        editorPane.redoLastAction();
+    }
+
+    public void onEditCopy()
+    {
+        editorPane.copy();
+    }
+
+    public void onEditPaste()
+    {
+        editorPane.paste();
     }
 
 }
