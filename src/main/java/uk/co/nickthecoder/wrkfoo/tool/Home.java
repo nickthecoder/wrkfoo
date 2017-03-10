@@ -8,13 +8,13 @@ import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
-public class WrkTool extends AbstractListTool<WrkToolTask, Tool>
+public class Home extends AbstractListTool<HomeTask, Tool>
 {
     public static Icon icon = Resources.icon("home.png");
 
-    public WrkTool()
+    public Home()
     {
-        super(new WrkToolTask());
+        super(new HomeTask());
     }
 
     @Override

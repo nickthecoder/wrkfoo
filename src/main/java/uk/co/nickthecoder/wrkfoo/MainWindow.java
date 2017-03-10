@@ -35,7 +35,7 @@ import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
 import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
-import uk.co.nickthecoder.wrkfoo.tool.WrkTool;
+import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
@@ -222,7 +222,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 public void actionPerformed(ActionEvent e)
                 {
                     processNonRowOption(true);
-
                 }
             });
 
@@ -447,13 +446,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onHome()
     {
-        WrkTool tool = new WrkTool();
+        Home tool = new Home();
         getCurrentOrNewTab().go(tool);
     }
 
     public void onNewTab()
     {
-        WrkTool tool = new WrkTool();
+        Home tool = new Home();
         addTab(tool);
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
     }
@@ -478,7 +477,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onNewWindow()
     {
-        WrkTool tool = new WrkTool();
+        Home tool = new Home();
         MainWindow newWindow = new MainWindow(tool);
         tool.go();
         newWindow.setVisible(true);

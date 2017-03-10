@@ -4,7 +4,7 @@ import java.io.File;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.tool.ScanF;
-import uk.co.nickthecoder.wrkfoo.tool.WrkTool;
+import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.tool.WrkF;
 
 public class Example
@@ -33,7 +33,7 @@ public class Example
         //WrkF wrkFVideos= new WrkF();
         //wrkFVideos.getTask().directory.setValue(new File("/gidea/video/categories/TV Shows"));
         
-        WrkTool wrkTool = new WrkTool();
+        Home wrkTool = new Home();
         
         MainWindow mainWindow = new MainWindow( wrkTool );
         //MainWindow mainWindow = new MainWindow( wrkFTreeSrc, wrkFHome, wrkFImages, wrkFVideos );
