@@ -27,14 +27,14 @@ public class Resources
     /**
      * The name of your preferred text editor. Defaults to <code>gedit</code>
      */
-    public String editor;
+    public String editor = "gedit";
 
     /**
      * The name of the program used as a file manager. For example <code>nautilus</code>. If you are running Gnome, then
      * you can also use <code>gnome-open</code>, and this will use gnome's default file manager (which is usually
      * nautilus).
      */
-    public String fileManager;
+    public String fileManager = "nautilus";
 
     public List<String> globalOptionsNames;
 
@@ -82,22 +82,23 @@ public class Resources
     {
         try {
             SettingsData settings = SettingsData.load(settingsFile);
+            
             if (settings.editor != null) {
                 this.editor = settings.editor;
             }
             if (settings.fileManager != null) {
-                this.editor = settings.fileManager;
+                this.fileManager = settings.fileManager;
             }
             if (settings.globalOptions != null) {
                 this.globalOptions.clear();
-                this.globalOptionsNames = new ArrayList<String>( settings.globalOptions );
+                this.globalOptionsNames = new ArrayList<String>(settings.globalOptions);
                 for (String name : this.globalOptionsNames) {
-                    this.globalOptions.add( this.readOptions(name));
+                    this.globalOptions.add(this.readOptions(name));
                 }
             }
-            
+
         } catch (FileNotFoundException e) {
-            System.err.println( "Settings file : " + settingsFile + " not found. Using defaults." );
+            System.err.println("Settings file : " + settingsFile + " not found. Using defaults.");
         }
     }
 
