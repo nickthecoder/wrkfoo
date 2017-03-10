@@ -1,8 +1,9 @@
 Current Task
 ============
 
+Multiple copies of a tool are added to History, despite having the same tool and parameters.
+	e.g. GitStatus after doing a few git adds.
 
-Finish loading setting the good way!
 
 BUGS
 ====
@@ -12,10 +13,6 @@ Having a missing options file throws exception when the tool tries to use it.
 Focus not going back to the table when running tasks/tools.
 
 Use rm, and the current editing cell can become below the bottom of the table. use stopEditing???
-
-
-Multiple copies of a tool are added to History, despite having the same tool and parameters.
-	e.g. GitStatus after doing a few git adds.
 
 RegexParameter doesn't error for empty required values.
 
@@ -27,8 +24,6 @@ RegexParameter - add popup-menu for oft used constructs, such as quote, whitespa
 
 Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
 	Add another column.
-
-Load setting without using EasyGSON, then delete.
 
 Error handler - click the error message to see it in full and maybe the stack trace too.
 
