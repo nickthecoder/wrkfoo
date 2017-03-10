@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,7 +22,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     private RTextScrollPane scrollPane;
 
-    private JToolBar toolBar;
+    JToolBar toolBar;
 
     public EditorPanel(Editor editorTask)
     {
@@ -38,7 +37,6 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
         populateToolBar();
-        editorTask.attachToolBar(toolBar);
     }
 
     private void populateToolBar()
@@ -54,17 +52,6 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar.add(builder.name("editCopy").tooltip("Copy").shortcut("ctrl C").buildButton());
         toolBar.add(builder.name("editPaste").tooltip("Paste").shortcut("ctrl V").buildButton());
         //toolBar.add(builder.name("editFind").tooltip("Find").shortcut("ctrl V").buildButton());
-    }
-
-    public void detach()
-    {
-        try {
-            Container parent = toolBar.getParent();
-            parent.remove(toolBar);
-            parent.repaint();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void load(File file)
