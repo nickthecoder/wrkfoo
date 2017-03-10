@@ -9,9 +9,10 @@ import java.util.Date;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
+import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -21,7 +22,7 @@ import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
+public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implements DirectoryTool
 {
     public static final Color directoryColor = new Color(255, 255, 230);
 
@@ -34,7 +35,7 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
         super(task);
     }
 
-    public static Icon getIconForFile( File file )
+    public static Icon getIconForFile(File file)
     {
         if (file.exists()) {
             return file.isDirectory() ? directoryIcon : fileIcon;
@@ -42,7 +43,7 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
             return null;
         }
     }
-    
+
     @Override
     public Icon getIcon()
     {
@@ -165,6 +166,12 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
                 go();
             }
         });
+    }
+
+    @Override
+    public File getDirectory()
+    {
+        return task.directory.getValue();
     }
 
 }

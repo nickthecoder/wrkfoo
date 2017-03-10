@@ -119,12 +119,8 @@ public class SimpleTable<R> extends JTable
         int row = getSelectedRow();
         int col = getSelectedColumn();
 
-        // Make sure we start with legal values.
-        if (col < 0) {
-            col = 0;
-        }
-        if (row < 0) {
-            row = 0;
+        if ((col < 0) || (row < 0) ) {
+            return;
         }
 
         // Find the next editable cell.

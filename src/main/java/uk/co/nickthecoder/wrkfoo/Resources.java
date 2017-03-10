@@ -1,7 +1,9 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -33,6 +35,8 @@ public class Resources
      */
     public String fileManager;
 
+    public List<String> globalOptionsNames;
+
     private File homeDirectory;
 
     private File settingsDirectory;
@@ -43,12 +47,15 @@ public class Resources
 
     private File settingsFile;
 
+
     private OptionsGroup globalOptions;
 
     private Map<File, OptionsData> optionsDataByFile;
 
     private Resources()
     {
+        globalOptionsNames = new ArrayList<String>();
+
         optionsDataByFile = new HashMap<File, OptionsData>();
 
         homeDirectory = new File(System.getProperty("user.home"));

@@ -6,14 +6,15 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
+import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.GitStatusTask.GitStatusLine;
 
-public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine>
+public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> implements DirectoryTool
 {
     public static Color UNTRACKED = new Color(255, 255, 128);
 
@@ -123,5 +124,11 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine>
     public Icon getIcon()
     {
         return Resources.icon("git.png");
+    }
+
+    @Override
+    public File getDirectory()
+    {
+        return task.directory.getValue();
     }
 }

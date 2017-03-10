@@ -7,11 +7,12 @@ import javax.swing.Icon;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
+import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabSetData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkTabSetsTask.WrkTabSetsFile;
 
-public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile>
+public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile> implements DirectoryTool
 {
     public WrkTabSets()
     {
@@ -61,5 +62,11 @@ public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile>
     public void load( File file )
     {
         TabSetData.load(file).openMainWindow();
+    }
+
+    @Override
+    public File getDirectory()
+    {
+        return Resources.instance.getTabsDirectory();
     }
 }
