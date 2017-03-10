@@ -136,7 +136,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         toolTabs.add(index, tab);
 
         tab.setTabbedPane(this);
-        JLabel label = new JLabel(tab.getTool().getShortTitle());
+        JLabel label = new JLabel(tab.getTool().getToolTab().getTitle());
         label.setIcon(tab.getTool().getIcon());
         label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
 
