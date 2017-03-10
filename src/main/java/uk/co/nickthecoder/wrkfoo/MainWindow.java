@@ -54,7 +54,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public TabbedPane tabbedPane;
 
-    private JToolBar toolbar;
+    private JToolBar toolBar;
 
     /**
      * remembers the MainWindow that the mouse was last inside (or null if it isn't in
@@ -103,8 +103,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
             }
         });
 
-        toolbar = new JToolBar();
+        toolBar = new JToolBar();
         statusBar = new JToolBar();
+        toolBar.setFloatable(false);
+        statusBar.setFloatable(false);
 
         fillToolbars();
 
@@ -112,7 +114,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         whole.setLayout(new BorderLayout());
         whole.add(tabbedPane, BorderLayout.CENTER);
-        whole.add(toolbar, BorderLayout.NORTH);
+        whole.add(toolBar, BorderLayout.NORTH);
         whole.add(statusBar, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
@@ -131,6 +133,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return new Dimension(1000, 600);
     }
 
+    public JToolBar getToolbar()
+    {
+        return toolBar;
+    }
+    
     public ToolTab getCurrentTab()
     {
         return tabbedPane.getCurrentTab();
@@ -140,23 +147,23 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         ActionBuilder builder = new ActionBuilder(this).component(this.rootPane);
 
-        toolbar.add(createToolbarOption());
+        toolBar.add(createToolbarOption());
 
-        toolbar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
-        toolbar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
-        toolbar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").buildButton());
-        toolbar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").buildButton());
-        toolbar.addSeparator();
-        toolbar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
-        toolbar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").buildButton());
-        toolbar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").buildButton());
-        toolbar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").buildButton());
-        toolbar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").buildButton());
-        toolbar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
-        toolbar.addSeparator();
-        toolbar
+        toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
+        toolBar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
+        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").buildButton());
+        toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").buildButton());
+        toolBar.addSeparator();
+        toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
+        toolBar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").buildButton());
+        toolBar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").buildButton());
+        toolBar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").buildButton());
+        toolBar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").buildButton());
+        toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
+        toolBar.addSeparator();
+        toolBar
             .add(builder.name("back").tooltip("Go back through the tool history").shortcut("alt Left").buildButton());
-        toolbar.add(builder.name("forward").tooltip("Go forward through the tool history").shortcut("alt RIGHT")
+        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").shortcut("alt RIGHT")
             .buildButton());
 
         goButton = builder.name("run").tooltip("Re-Run the current tool").shortcut("F5").disable().buildButton();
@@ -215,7 +222,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     private JComponent createToolbarOption()
     {
         optionsTextField = new JTextField();
-        optionsTextField.setToolTipText("Enter non-row Options");
+        optionsTextField.setToolTipText("Enter non-row Options (F10)");
         optionsTextField.setColumns(6);
 
         putAction("ENTER", "nonRowOption", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
@@ -362,7 +369,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
             };
 
             // When I add the listener to this, or "whole", no events are detected, this is the next I could do.
-            toolbar.addMouseListener(listener);
+            toolBar.addMouseListener(listener);
             tabbedPane.addMouseListener(listener);
             statusBar.addMouseListener(listener);
         } else {

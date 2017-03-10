@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import javax.swing.SwingUtilities;
+
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -13,7 +15,7 @@ public class WrkFoo extends Task
     @Override
     public void body()
     {
-        if (tabSet.getValue() == null ) {
+        if (tabSet.getValue() == null) {
             MainWindow mainWindow = new MainWindow();
             mainWindow.onWorkTabSets();
             mainWindow.setVisible(true);
@@ -22,12 +24,18 @@ public class WrkFoo extends Task
         }
     }
 
-    public static void main(String[] argv)
+    public static void main(final String[] argv)
     {
-        Util.defaultLookAndFeel();
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                Util.defaultLookAndFeel();
 
-        WrkFoo wrkFoo = new WrkFoo();
-        wrkFoo.go(argv);
+                WrkFoo wrkFoo = new WrkFoo();
+                wrkFoo.go(argv);
+            }
+        });
     }
 
 }

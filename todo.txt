@@ -15,6 +15,9 @@ RegexParameter doesn't error for empty required values.
 New Features
 ============
 
+Embed a (simple?) editor.
+	Primarily I want it to host my todo.txt files, because editting it in eclipse is annoying (too many other tabs open).
+
 Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
 	Add another column.
 

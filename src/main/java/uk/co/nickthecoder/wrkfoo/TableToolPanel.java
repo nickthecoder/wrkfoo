@@ -32,7 +32,6 @@ public class TableToolPanel<R> extends ToolPanel
     {
         super.postCreate();
 
-        // TODO Is there a better design pattern than this? It works, but looks ugly.
         @SuppressWarnings("unchecked")
         TableResultsPanel<R> results = (TableResultsPanel<R>) resultsPanel;
         table = results.table;
