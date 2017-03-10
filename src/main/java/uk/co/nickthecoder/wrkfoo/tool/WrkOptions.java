@@ -20,6 +20,26 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         return task;
     }
 
+    @Override
+    public String getLongTitle()
+    {
+        try {
+            return "WrkOptions : " + task.optionsFile.getValue().getName();
+        } catch (Exception e) {
+            return super.getLongTitle();
+        }
+    }
+    
+    @Override
+    public String getShortTitle()
+    {
+        try {
+            return task.optionsFile.getValue().getName();
+        } catch (Exception e) {
+            return super.getShortTitle();
+        }
+    }
+        
     public WrkOptions()
     {
         super(new WrkOptionsTask());

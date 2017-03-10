@@ -48,22 +48,27 @@ public class OptionsData
 
     public List<OptionData> options = new ArrayList<OptionData>();
 
-    private OptionsData()
+    public OptionsData(File file)
     {
+        this.file = file;
+        groovyOptions = new GroovyOptions();
     }
 
     private void createOptions()
     {
-        for (String include : this.include) {
-            Options includedOptions = Resources.instance.readOptions(include);
-            groovyOptions.add(includedOptions);
+        if (this.include != null) {
+            for (String include : this.include) {
+                Options includedOptions = Resources.instance.readOptions(include);
+                groovyOptions.add(includedOptions);
+            }
         }
 
-        for (OptionData optionData : options) {
-            GroovyOption groovyOption = optionData.createOption();
-            groovyOptions.add(groovyOption);
+        if (this.options != null) {
+            for (OptionData optionData : options) {
+                GroovyOption groovyOption = optionData.createOption();
+                groovyOptions.add(groovyOption);
+            }
         }
-
     }
 
     public void reload()
@@ -75,7 +80,7 @@ public class OptionsData
     public void save() throws FileNotFoundException
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-        
+
         String json = gson.toJson(this);
 
         PrintWriter out = null;
@@ -105,7 +110,7 @@ public class OptionsData
         {
             return new GroovyOption(code, label, action, ifScript, isRow(), multi);
         }
-        
+
         public boolean isRow()
         {
             return row == Boolean.FALSE ? false : true;

@@ -27,12 +27,6 @@ public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOp
     {
         return Resources.icon("options.png");
     }
-    
-    @Override
-    public String getLongTitle()
-    {
-        return "WrkOptionsFiles " + getTitle();
-    }
 
     @Override
     protected Columns<WrkOptionsFile> createColumns()

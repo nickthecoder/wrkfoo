@@ -1,8 +1,6 @@
 Current Task
 ============
 
-Implement multi-line StringParameter, and use it for add/edit/copy of Options.
-
 BUGS
 ====
 
@@ -17,6 +15,17 @@ RegexParameter doesn't error for empty required values.
 New Features
 ============
 
+Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
+	Add another column.
+
+WrkOption doesn't say which option file it is for
+
+TabbedTool
+	A tool, which has TWO or more tasks, and therefore many results.
+	Useful when one item is made up of two different types of list.
+	e.g. A wiki page has a set of versions, a set of back links, a set of forward links etc.
+		So the WrkWikiPage, will have multiple tabs.
+	
 Popup Menu items :
 	Merge the different options files together and sort by their code??? by Label???
 	Maybe make the top-level ones bold (if that is possible).
@@ -26,9 +35,6 @@ Popup Menu items :
 
 RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
 	Should grep then use RegexParameter?
-
-Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
-	Add another column.
 
 Custom options applied to a tab
 	e.g. WrkF is given more options, suitable only for images.
