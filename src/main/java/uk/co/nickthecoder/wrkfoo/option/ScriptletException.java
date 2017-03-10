@@ -13,6 +13,6 @@ public class ScriptletException extends RuntimeException
 
     public String getMessage()
     {
-        return "Error running groovy script : " + scriptlet.source + "\n" + super.getMessage();
+        return "Error running groovy script.\n\n" + super.getMessage() + "\n" + scriptlet.source + "\n";
     }
 }

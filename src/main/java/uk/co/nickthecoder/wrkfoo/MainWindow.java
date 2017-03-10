@@ -8,6 +8,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +23,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -32,10 +38,10 @@ import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
+import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
 import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
-import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
@@ -43,7 +49,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 {
 
     private static final List<MainWindow> windows = new ArrayList<MainWindow>();
-    
+
     public JPanel whole;
 
     public TabbedPane tabbedPane;
@@ -72,6 +78,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     private JButton goButton;
 
     private JButton stopButton;
+
+    private JButton errorButton;
 
     /**
      * The main window that the mouse last entered. Used by {@link TabbedPane} for drag/drop tabs.
@@ -155,6 +163,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
         stopButton = builder.name("stop").tooltip("Stop current tool").shortcut("ctrl ESCAPE").hide().buildButton();
         statusBar.add(goButton);
         statusBar.add(stopButton);
+
+        errorButton = builder.name("showError").tooltip("Show stack trace").shortcut("ctrl E").hide().buildButton();
+        statusBar.add(errorButton);
+
         message = new JLabel("");
         statusBar.add(message);
 
@@ -164,7 +176,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
         builder.name("jumpToResults").shortcut("F11").buildShortcut();
         builder.name("jumpToParameters").shortcut("F12").buildShortcut();
 
-        
         // There's an illusive bug, which causes alt F4 not to work, so I've added a different shortcut.
         // I've not spent too long hunting the bug, because I think it may be a bug in Gnome (or maybe Java).
         builder.name("closeWindow").shortcut("ctrl F4").buildShortcut();
@@ -313,9 +324,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
         tab.postCreate();
         tab.go(tool);
 
-        return tab;        
+        return tab;
     }
-    
+
     public ToolTab addTab(Tool tool)
     {
         ToolTab tab = new ToolTab(this, tool);
@@ -331,10 +342,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void setVisible(boolean show)
     {
         super.setVisible(show);
-        
+
         if (show) {
             windows.add(this);
-            
+
             MouseListener listener = new MouseAdapter()
             {
                 @Override
@@ -349,7 +360,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
                     mouseMainWindow = MainWindow.this;
                 }
             };
-            
+
             // When I add the listener to this, or "whole", no events are detected, this is the next I could do.
             toolbar.addMouseListener(listener);
             tabbedPane.addMouseListener(listener);
@@ -434,11 +445,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return tab;
     }
 
-    
     public void onQuit()
     {
         // Close all of the windows, which will stop any stoppable tasks.
-        for ( MainWindow window : windows ) {
+        for (MainWindow window : windows) {
             window.setVisible(false);
         }
         System.exit(0);
@@ -556,12 +566,12 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         setVisible(false);
     }
-    
+
     public void onJumpToToolbar()
     {
         optionsTextField.requestFocusInWindow();
     }
-    
+
     public void onJumpToResults()
     {
         ToolTab tab = getCurrentTab();
@@ -569,15 +579,25 @@ public class MainWindow extends JFrame implements ExceptionHandler
             tab.getTool().getToolPanel().getSplitPane().focusLeft();
         }
     }
-    
+
     public void onJumpToParameters()
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().focusRight();
-        }        
+        }
     }
-    
+
+    public void onShowError()
+    {
+        if (stackTrace != null) {
+            JTextArea textArea = new JTextArea(stackTrace);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(900, 300));
+            JOptionPane.showMessageDialog(null, scrollPane, "Error", JOptionPane.OK_OPTION);
+        }
+    }
+
     /**
      * Records the time that the last error message was sent. Used to determine if later messages should obscure the
      * error.
@@ -619,7 +639,18 @@ public class MainWindow extends JFrame implements ExceptionHandler
             e = e.getCause();
         } while (true);
 
-        e.printStackTrace();
+        StringWriter writer = new StringWriter();
+        e.printStackTrace(new PrintWriter(writer));
+        stackTrace = writer.toString();
+        try {
+            writer.close();
+
+        } catch (IOException e1) {
+        }
+
+        errorButton.setVisible(true);
         setErrorMessage(e.getMessage());
     }
+
+    private String stackTrace;
 }

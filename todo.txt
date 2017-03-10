@@ -1,9 +1,9 @@
 Current Task
 ============
 
-Multiple copies of a tool are added to History, despite having the same tool and parameters.
-	e.g. GitStatus after doing a few git adds.
+Error handler - click the error message to see it in full and maybe the stack trace too.
 
+Implement multi-line StringParameter, and use it for add/edit/copy of Options.
 
 BUGS
 ====
@@ -19,22 +19,18 @@ RegexParameter doesn't error for empty required values.
 New Features
 ============
 
-RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
-	Should grep then use RegexParameter?
-
-Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
-	Add another column.
-
-Error handler - click the error message to see it in full and maybe the stack trace too.
-
-Implement multi-line StringParameter, and use it for add/edit/copy of Options.
-
 Popup Menu items :
 	Merge the different options files together and sort by their code??? by Label???
 	Maybe make the top-level ones bold (if that is possible).
 		Global options aren't bold, but included ones are?
 		Use background colors? Could specify a bg colour for each options file.
 		Special menuitemfilter e.g. "*" to show everything, but it usually excludes globals. "-" to only show top level options.
+
+RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
+	Should grep then use RegexParameter?
+
+Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
+	Add another column.
 
 Custom options applied to a tab
 	e.g. WrkF is given more options, suitable only for images.
@@ -52,8 +48,6 @@ mvlc move lower case
 
 Later Features
 ==============
-
-	Remove EasyGSON
 
 	Tree commands
 		Rewrite wrkftree using a JTree, which gets more results when directories are opened. 
@@ -84,5 +78,4 @@ F4 often doesn't work
 Open wrkfoo tb set "te" against a file, then F4 to close gedit sometimes closes the wrkfoo window.
 	Gedit doesn't have keyboard focus, but is infront of wrkfoo window. Surely this is a gnome bug.
 	Try using Swingutils.runlater?? Doesn't help!
-
 	
