@@ -1,8 +1,6 @@
 Current Task
 ============
 
-Error handler - click the error message to see it in full and maybe the stack trace too.
-
 Implement multi-line StringParameter, and use it for add/edit/copy of Options.
 
 BUGS

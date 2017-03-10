@@ -21,6 +21,7 @@ public class EditOption extends Task
         .parameter();
 
     public StringParameter action = new StringParameter.Builder("action")
+        .multiLine().size(300, 160)
         .parameter();
 
     public StringChoiceParameter type = new StringChoiceParameter.Builder("type")
@@ -28,6 +29,7 @@ public class EditOption extends Task
         .parameter();
 
     public StringParameter ifScript = new StringParameter.Builder("if")
+        .multiLine().size(300, 80)
         .description("Groovy script. Is the row applicable to this option?")
         .optional().parameter();
 
@@ -105,7 +107,7 @@ public class EditOption extends Task
         public void body()
         {
             optionsData.options.remove(optionData);
-            
+
             try {
                 optionsData.save();
                 optionsData.reload();
