@@ -7,6 +7,7 @@ import java.util.List;
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Exec;
+import uk.co.nickthecoder.jguifier.util.FileLister;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.GitStatusTask.GitStatusLine;
 
@@ -48,7 +49,23 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
                 path = path.substring(arrow + 4);
             }
             GitStatusLine gsl = new GitStatusLine(x, y, path, renamed);
+            if (gsl.getFile().isDirectory()) {
+                addDirectory(gsl);
+            }
             results.add(gsl);
+        }
+    }
+
+    private void addDirectory( GitStatusLine gsl )
+    {
+        int prefix = gsl.getFile().getPath().length() + 1;
+        
+        FileLister fileLister = new FileLister().depth(10).includeHidden();
+        List<File> listing = fileLister.listFiles(gsl.getFile());
+        for ( File file : listing ) {
+            String newPath = gsl.path + file.getPath().substring(prefix);
+            GitStatusLine extra = new GitStatusLine( gsl.x, gsl.y, newPath, null);
+            results.add(extra);
         }
     }
 
@@ -71,7 +88,7 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             this.x = x;
             this.y = y;
             this.path = path;
-            int lastSlash = path.lastIndexOf(path.length()-1,File.separatorChar);
+            int lastSlash = path.lastIndexOf(path.length() - 1, File.separatorChar);
             if (lastSlash >= 0) {
                 name = path.substring(lastSlash + 1);
             } else {
@@ -92,7 +109,7 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             }
             return new File(directory.getValue(), this.renamed);
         }
-        
+
         public String toString()
         {
             return getFile().getPath();
