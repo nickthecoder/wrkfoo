@@ -221,7 +221,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
             {
                 public void actionPerformed(ActionEvent e)
                 {
-                    processNonRowOption(false);
+                    processNonRowOption(true);
 
                 }
             });

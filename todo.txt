@@ -1,6 +1,7 @@
 Current Task
 ============
 
+
 BUGS
 ====
 
@@ -10,8 +11,21 @@ Focus not going back to the table when running tasks/tools.
 
 Use rm, and the current editing cell can become below the bottom of the table. use stopEditing???
 
+
+ctrl+enter in the toolbar option doesn't open a new tab.
+
+Multiple copies of a tool are added to History, despite having the same tool and parameters.
+	e.g. GitStatus after doing a few git adds.
+
 New Features
 ============
+
+Add a grep option, which searches a directory's files for a regex, and then lists the files that matched.
+
+RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
+
+Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
+	Add another column.
 
 Load setting without using EasyGSON, then delete.
 
