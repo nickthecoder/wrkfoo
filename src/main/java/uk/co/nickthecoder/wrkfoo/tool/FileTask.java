@@ -26,7 +26,6 @@ public abstract class FileTask extends Task implements ListResults<RelativePath>
     
     public FileTask()
     {
-        addParameter( directory );
     }
     
     @Override

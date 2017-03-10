@@ -42,7 +42,7 @@ public class GrepTask extends FileTask
 
     public GrepTask()
     {
-        addParameters(regex, type, ignoreCase, matchWords, matchLines, invertResults);
+        addParameters(regex, directory, type, ignoreCase, matchWords, matchLines, invertResults);
     }
 
     public Exec getExec()

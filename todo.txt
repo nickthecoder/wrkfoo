@@ -1,11 +1,12 @@
 Current Task
 ============
 
-Embed a (simple?) editor.
-	Primarily I want it to host my todo.txt files, because editing it in eclipse is annoying (too many other tabs open).
-
 BUGS
 ====
+
+Moving a tab renames it back to its default.
+
+Editor needs to add/remove the toolbar when TabbedPane changes selected tab.
 
 Having a missing options file throws exception when the tool tries to use it.
 
@@ -18,9 +19,16 @@ RegexParameter doesn't error for empty required values.
 New Features
 ============
 
+Icon for Editor
+
+Allow tabs to have their own shortcut
+
+Grep to open inbuilt editor and seach for the grep expression
 
 Embed a terminal emulator :
 	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
+
+Go back/forward through History into a new tab (copies the entire history). ctrl+alt+left / right.
 
 Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
 	Add another column.
