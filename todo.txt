@@ -18,8 +18,6 @@ New Features
 
 Un-close tab. Useful when you close a tab by mistake.
 
-Editor title is the file being edited.
-
 WrkOptions : New WrkOptionsIncludes
 	Lists the includes, and allows add, remove, work with.
 

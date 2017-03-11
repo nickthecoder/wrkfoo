@@ -37,6 +37,18 @@ public class Editor extends AbstractTool<EditorTask>
         this();
         task.file.setDefaultValue(file);
     }
+    
+    @Override
+    public String getTitle()
+    {
+        return task.file.getValue().getName();
+    }
+
+    @Override
+    public String getLongTitle()
+    {
+        return task.file.getValue().getPath();
+    }
 
     @Override
     public EditorTask getTask()
