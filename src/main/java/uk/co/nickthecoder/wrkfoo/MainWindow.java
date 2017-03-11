@@ -604,6 +604,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onShowError()
     {
+        errorButton.setVisible(false);
         if (stackTrace != null) {
             JTextArea textArea = new JTextArea(stackTrace);
             JScrollPane scrollPane = new JScrollPane(textArea);
