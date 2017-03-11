@@ -37,7 +37,7 @@ public class Editor extends AbstractTool<EditorTask>
         this();
         task.file.setDefaultValue(file);
     }
-    
+
     @Override
     public String getTitle()
     {
@@ -102,40 +102,37 @@ public class Editor extends AbstractTool<EditorTask>
         getToolTab().getTabbedPane().addChangeListener(tabbedPaneListener);
 
         createResultsComponent();
-        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
-        mainWindow.getToolbarPanel().add(editorPanel.toolBar, 0);
-    }
-
-    public void setToolBarVisible(boolean show)
-    {
-        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
-        JToolBar toolBar = editorPanel.toolBar;
-        if (show) {
-            if (toolBar.getParent() == null) {
-                mainWindow.getToolbarPanel().add(toolBar, 0);
-                mainWindow.getToolbarPanel().repaint();
-            }
-        } else {
-            if ((toolBar.getParent() != null) && (mainWindow != null)) {
-                mainWindow.getToolbarPanel().remove(toolBar);
-                mainWindow.getToolbarPanel().repaint();
-            }
-        }
+        setToolBarVisible(true);
     }
 
     @Override
     public void detach()
     {
         setToolBarVisible(false);
-        if (getToolTab() == null) {
-            System.out.println("Editor.detach. No tool tab");
-        }
-        if (getToolTab().getTabbedPane() == null) {
-            System.out.println("itor.detach. No tabbed pane");
-        }
         getToolTab().getTabbedPane().removeChangeListener(tabbedPaneListener);
         super.detach();
     }
+    
+    private void setToolBarVisible(boolean show)
+    {
+        JToolBar tb = editorPanel.toolBar;
+
+        if (show) {
+            if (tb.getParent() == null) {
+                MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
+                mainWindow.getToolbarPanel().add(tb);
+                mainWindow.getToolbarPanel().repaint();
+            }
+
+        } else {
+            if (tb.getParent() != null) {
+                MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
+                mainWindow.getToolbarPanel().remove(editorPanel.toolBar);
+                mainWindow.getToolbarPanel().repaint();
+            }
+        }
+    }
+
 
     public static class EditorTask extends Task
     {

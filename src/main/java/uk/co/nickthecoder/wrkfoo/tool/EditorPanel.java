@@ -36,7 +36,6 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         this.add(scrollPane, BorderLayout.CENTER);
 
         toolBar = new JToolBar();
-        toolBar.setFloatable(false);
         populateToolBar();
     }
 
