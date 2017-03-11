@@ -10,6 +10,7 @@ import org.fife.ui.rsyntaxtextarea.FileLocation;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
@@ -66,7 +67,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     @Override
     public void handleException(Throwable e)
     {
-        editorTask.getToolTab().getMainWindow().handleException(e);
+        MainWindow.getMainWindow(editorTask.getToolPanel()).handleException(e);
     }
 
     public void onDocumentSave() throws IOException

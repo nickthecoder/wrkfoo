@@ -13,8 +13,6 @@ public class ToolTab
 {
     private TabbedPane tabbedPane;
 
-    private MainWindow mainWindow;
-
     private Tool tool;
 
     private History history;
@@ -23,13 +21,12 @@ public class ToolTab
 
     private String titleTemplate = "%t";
 
-    public ToolTab(MainWindow mainWindow, Tool tool)
+    public ToolTab(Tool tool)
     {
-        this.mainWindow = mainWindow;
+        this.tool = tool;
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         history = new History();
-        attach(tool);
     }
 
     public void setTitleTemplate(String value)
@@ -57,22 +54,6 @@ public class ToolTab
         return tabbedPane;
     }
 
-    void setTabbedPane(TabbedPane value)
-    {
-        tabbedPane = value;
-        if (value == null) {
-            Tool tool = getTool();
-            if (tool.isRunning()) {
-                tool.stop();
-            }
-        }
-    }
-
-    public MainWindow getMainWindow()
-    {
-        return mainWindow;
-    }
-
     public void postCreate()
     {
         MainWindow.putAction("alt LEFT", "Action.undo", panel, new AbstractAction()
@@ -94,14 +75,20 @@ public class ToolTab
         });
     }
 
+    void setTabbedPane(TabbedPane value)
+    {
+        if (value == null) {
+            detach();
+        }
+        tabbedPane = value;
+        if (value != null) {
+            attach(tool);
+        }
+    }
+    
     private final void attach(final Tool tool)
     {
-        if (this.tool != null) {
-            this.tool.detach();
-        }
-
         this.tool = tool;
-        tool.attachTo(this);
         panel.removeAll();
         panel.add(tool.getToolPanel());
         SwingUtilities.invokeLater(new Runnable()
@@ -111,7 +98,17 @@ public class ToolTab
                 tool.getToolPanel().getSplitPane().focus();
             }
         });
+        tool.attachTo(this);
 
+    }
+
+    private void detach()
+    {
+        this.tool.detach();
+        Tool tool = getTool();
+        if (tool.isRunning()) {
+            tool.stop();
+        }
     }
 
     public Tool getTool()

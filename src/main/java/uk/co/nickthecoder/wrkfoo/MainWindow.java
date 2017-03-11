@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -30,6 +31,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -87,6 +89,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public static MainWindow getMouseMainWindow()
     {
         return mouseMainWindow;
+    }
+    
+    public static MainWindow getMainWindow( Component component )
+    {
+        return (MainWindow) SwingUtilities.getWindowAncestor(component);
     }
 
     public MainWindow(Tool... tools)
@@ -324,7 +331,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public ToolTab insertTab(Tool tool)
     {
-        ToolTab tab = new ToolTab(this, tool);
+        ToolTab tab = new ToolTab(tool);
 
         tabbedPane.insert(tab);
 
@@ -336,7 +343,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public ToolTab addTab(Tool tool)
     {
-        ToolTab tab = new ToolTab(this, tool);
+        ToolTab tab = new ToolTab(tool);
 
         tabbedPane.add(tab);
 
@@ -635,6 +642,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
     @Override
     public void handleException(Throwable e)
     {
+        // TODO Remove this for production.
+        e.printStackTrace();
+        
         // Find the root cause, but stop at ScriptletExceptions, because they are useful.
         do {
             if (e instanceof ScriptletException) {

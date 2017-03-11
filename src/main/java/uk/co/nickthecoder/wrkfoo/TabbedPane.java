@@ -59,7 +59,6 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void add(final ToolTab tab, int position)
     {
-        tab.setTabbedPane(this);
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
         tabLabel.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
@@ -77,6 +76,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         insertTab(null, null, panel, null, position);
         toolTabs.add(position, tab);
         setTabComponentAt(position, tabLabel);
+    
+        tab.setTabbedPane(this);
     }
 
 
@@ -95,7 +96,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public MainWindow getMainWindow()
     {
-        return getCurrentTab().getMainWindow();
+        return MainWindow.getMainWindow(this);
     }
 
     public void onRenameTab()
@@ -126,7 +127,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         {
             ToolTab tab = getToolTab(tabIndex);
             tab.setTitleTemplate(name.getValue());
-            tab.getMainWindow().changedTab();
+            MainWindow.getMainWindow(TabbedPane.this).changedTab();
             ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
         }
     }
@@ -147,12 +148,18 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     @Override
     public void removeTabAt(int index)
     {
-        if ((index > 0) && (getSelectedIndex() == index)) {
-            setSelectedIndex(index - 1);
-        }
-        super.removeTabAt(index);
-        toolTabs.get(index).setTabbedPane(null);
+        ToolTab tab = toolTabs.get(index);
+        
         toolTabs.remove(index);
+        super.removeTabAt(index);
+
+        if (getSelectedIndex() == index) {
+            if (index > 0) {
+                setSelectedIndex(index - 1);
+            }
+        }
+
+        tab.setTabbedPane(null);
 
     }
 
@@ -264,9 +271,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                     newWindow.setVisible(true);
                 }
 
-            } else if (destinationWindow != tab.getMainWindow()) {
+            } else if (destinationWindow != MainWindow.getMainWindow(tab.getPanel())) {
                 // Move the tab to a different MainWindow
-                MainWindow currentMainWindow = tab.getMainWindow();
+                MainWindow currentMainWindow = MainWindow.getMainWindow(tab.getPanel());
                 removeTabAt(draggedTabIndex);
                 destinationWindow.addTab(tool);
 

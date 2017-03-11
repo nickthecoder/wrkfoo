@@ -4,10 +4,6 @@ Current Task
 BUGS
 ====
 
-Moving a tab renames it back to its default.
-
-Editor needs to add/remove the toolbar when TabbedPane changes selected tab.
-
 Having a missing options file throws exception when the tool tries to use it.
 
 Focus not going back to the table when running tasks/tools.
