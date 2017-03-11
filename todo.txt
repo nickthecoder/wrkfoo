@@ -4,10 +4,6 @@ Current Task
 BUGS
 ====
 
-Boolean Parameter looks naff when hasn't got a description
-
-RegexParameter doesn't error for empty required values.
-
 ExecTool break the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
@@ -20,8 +16,6 @@ Un-close tab. Useful when you close a tab by mistake.
 
 WrkOptions : New WrkOptionsIncludes
 	Lists the includes, and allows add, remove, work with.
-
-Editor to put a "*" in the tab title when it is dirty.
 
 Grep to open inbuilt editor and seach for the grep expression
 

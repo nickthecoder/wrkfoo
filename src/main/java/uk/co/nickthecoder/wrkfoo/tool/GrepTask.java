@@ -3,13 +3,13 @@ package uk.co.nickthecoder.wrkfoo.tool;
 import java.io.File;
 
 import uk.co.nickthecoder.jguifier.BooleanParameter;
+import uk.co.nickthecoder.jguifier.PatternParameter;
 import uk.co.nickthecoder.jguifier.StringChoiceParameter;
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 
 public class GrepTask extends FileTask
 {
-    public StringParameter regex = new StringParameter.Builder("regex")
+    public PatternParameter regex = new PatternParameter.Builder("regex")
         .parameter();
 
     public StringChoiceParameter type = new StringChoiceParameter.Builder("type")
@@ -47,12 +47,11 @@ public class GrepTask extends FileTask
 
     public Exec getExec()
     {
-        String re = regex.getStringValue();
         return new Exec("grep", "-rHs" + type.getValue(),
             invertResults.getValue() ? "-L" : "-l",
             ignoreCase.getValue() ? "-i" : null,
             matchWords.getValue() ? "-w" : null,
             matchLines.getValue() ? "-x" : null,
-            re, ".");
+            regex.getRegex(), ".");
     }
 }
