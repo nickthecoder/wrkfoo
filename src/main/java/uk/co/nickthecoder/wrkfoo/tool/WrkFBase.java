@@ -144,7 +144,7 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
             {
                 return row.file.length();
             }
-        }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
+        }.width(120).lock().renderer(SizeRenderer.getInstance()));
 
         return columns;
     }
