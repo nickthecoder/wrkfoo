@@ -19,7 +19,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 {
     private Editor editorTask;
 
-    private TextEditorPane editorPane;
+    TextEditorPane editorPane;
 
     private RTextScrollPane scrollPane;
 
@@ -72,6 +72,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     public void onDocumentSave() throws IOException
     {
         editorPane.save();
+        editorTask.checkDirty();
     }
 
     public void onDocumentRevert() throws IOException

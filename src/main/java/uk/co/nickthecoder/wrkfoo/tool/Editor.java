@@ -6,6 +6,8 @@ import javax.swing.Icon;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
@@ -41,7 +43,7 @@ public class Editor extends AbstractTool<EditorTask>
     @Override
     public String getTitle()
     {
-        return task.file.getValue().getName();
+        return task.file.getValue().getName() + (editorPanel.editorPane.isDirty() ? " *" : "");
     }
 
     @Override
@@ -67,10 +69,41 @@ public class Editor extends AbstractTool<EditorTask>
     {
         if (editorPanel == null) {
             editorPanel = new EditorPanel(this);
+            editorPanel.editorPane.getDocument().addDocumentListener( new DocumentListener() {
+
+                @Override
+                public void insertUpdate(DocumentEvent e)
+                {                  
+                    checkDirty();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e)
+                {
+                    checkDirty();
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e)
+                {
+                    checkDirty();
+                }
+                
+            });
         }
         return editorPanel;
     }
 
+    private boolean wasDirty = false;
+    
+    public void checkDirty()
+    {
+        if ( editorPanel.editorPane.isDirty() != wasDirty ) {
+            wasDirty = editorPanel.editorPane.isDirty();
+            getToolTab().getTabbedPane().updateTabInfo(getToolTab());
+        }
+    }
+    
     private ChangeListener tabbedPaneListener;
 
     @Override
@@ -91,13 +124,6 @@ public class Editor extends AbstractTool<EditorTask>
                 }
             }
         };
-
-        if (getToolTab() == null) {
-            System.out.println("No tool tab");
-        }
-        if (getToolTab().getTabbedPane() == null) {
-            System.out.println("No tabbed pane");
-        }
 
         getToolTab().getTabbedPane().addChangeListener(tabbedPaneListener);
 
