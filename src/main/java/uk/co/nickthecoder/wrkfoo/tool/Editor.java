@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
+import javax.swing.Icon;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,6 +11,7 @@ import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.AbstractTool;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.tool.Editor.EditorTask;
@@ -18,11 +20,18 @@ public class Editor extends AbstractTool<EditorTask>
 {
     private EditorPanel editorPanel;
 
+    public static final Icon icon = Resources.icon("textEditor.png");
+
     public Editor()
     {
         super(new EditorTask());
     }
 
+    public Icon getIcon()
+    {
+        return icon;
+    }
+    
     public Editor(File file)
     {
         this();
