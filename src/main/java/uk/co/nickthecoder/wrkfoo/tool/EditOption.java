@@ -61,7 +61,6 @@ public class EditOption extends Task
         optionData.row = !type.getValue().equals("non-row");
         optionData.multi = type.getValue().equals("multi");
         optionData.ifScript = ifScript.getValue();
-
     }
 
     @Override

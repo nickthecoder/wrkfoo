@@ -20,11 +20,21 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         return task;
     }
 
+    public WrkOptions()
+    {
+        super(new WrkOptionsTask());
+    }
+    
+    public WrkOptions(File optionsFile)
+    {
+        super(createTask(optionsFile));
+    }
+
     @Override
     public String getLongTitle()
     {
         try {
-            return "WrkOptions : " + task.optionsFile.getValue().getName();
+            return "Options : " + task.optionsFile.getValue().getName();
         } catch (Exception e) {
             return super.getLongTitle();
         }
@@ -40,16 +50,6 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         }
     }
         
-    public WrkOptions()
-    {
-        super(new WrkOptionsTask());
-    }
-    
-    public WrkOptions(File optionsFile)
-    {
-        super(createTask(optionsFile));
-    }
-
     @Override
     protected Columns<OptionData> createColumns()
     {
