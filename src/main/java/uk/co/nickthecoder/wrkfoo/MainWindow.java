@@ -46,6 +46,7 @@ import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
 import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
+import uk.co.nickthecoder.wrkfoo.util.WrapLayout;
 
 public class MainWindow extends JFrame implements ExceptionHandler
 {
@@ -55,6 +56,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public JPanel whole;
 
     public TabbedPane tabbedPane;
+
+    private JPanel toolBarPanel;
 
     private JToolBar toolBar;
 
@@ -90,8 +93,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         return mouseMainWindow;
     }
-    
-    public static MainWindow getMainWindow( Component component )
+
+    public static MainWindow getMainWindow(Component component)
     {
         return (MainWindow) SwingUtilities.getWindowAncestor(component);
     }
@@ -110,10 +113,15 @@ public class MainWindow extends JFrame implements ExceptionHandler
             }
         });
 
+        toolBarPanel = new JPanel();
+        toolBarPanel.setLayout(new WrapLayout(WrapLayout.LEFT));
+
         toolBar = new JToolBar();
         statusBar = new JToolBar();
         toolBar.setFloatable(false);
         statusBar.setFloatable(false);
+
+        toolBarPanel.add(toolBar);
 
         fillToolbars();
 
@@ -121,7 +129,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         whole.setLayout(new BorderLayout());
         whole.add(tabbedPane, BorderLayout.CENTER);
-        whole.add(toolBar, BorderLayout.NORTH);
+        whole.add(toolBarPanel, BorderLayout.NORTH);
         whole.add(statusBar, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
@@ -140,11 +148,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return new Dimension(1000, 600);
     }
 
-    public JToolBar getToolbar()
+    public JPanel getToolbarPanel()
     {
-        return toolBar;
+        return toolBarPanel;
     }
-    
+
     public ToolTab getCurrentTab()
     {
         return tabbedPane.getCurrentTab();
@@ -645,7 +653,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         // TODO Remove this for production.
         e.printStackTrace();
-        
+
         // Find the root cause, but stop at ScriptletExceptions, because they are useful.
         do {
             if (e instanceof ScriptletException) {

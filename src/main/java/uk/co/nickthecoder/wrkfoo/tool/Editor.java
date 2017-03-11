@@ -47,7 +47,7 @@ public class Editor extends AbstractTool<EditorTask>
     @Override
     public String getLongTitle()
     {
-        return task.file.getValue().getPath();
+        return task.file.getValue().getName();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Editor extends AbstractTool<EditorTask>
 
         createResultsComponent();
         MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
-        mainWindow.getToolbar().add(editorPanel.toolBar, 0);
+        mainWindow.getToolbarPanel().add(editorPanel.toolBar, 0);
     }
 
     public void setToolBarVisible(boolean show)
@@ -112,13 +112,13 @@ public class Editor extends AbstractTool<EditorTask>
         JToolBar toolBar = editorPanel.toolBar;
         if (show) {
             if (toolBar.getParent() == null) {
-                mainWindow.getToolbar().add(toolBar, 0);
-                mainWindow.getToolbar().repaint();
+                mainWindow.getToolbarPanel().add(toolBar, 0);
+                mainWindow.getToolbarPanel().repaint();
             }
         } else {
             if ((toolBar.getParent() != null) && (mainWindow != null)) {
-                mainWindow.getToolbar().remove(toolBar);
-                mainWindow.getToolbar().repaint();
+                mainWindow.getToolbarPanel().remove(toolBar);
+                mainWindow.getToolbarPanel().repaint();
             }
         }
     }

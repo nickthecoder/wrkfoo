@@ -21,8 +21,6 @@ Un-close tab. Useful when you close a tab by mistake.
 WrkOptions : New WrkOptionsIncludes
 	Lists the includes, and allows add, remove, work with.
 
-Make the MainFrame "toolbar" a flowing panel, which contains a JToolbar, so that other toolbars can be added.
-
 Editor to put a "*" in the tab title when it is dirty.
 
 Grep to open inbuilt editor and seach for the grep expression
