@@ -4,10 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.util.Util;
 
 public class ToolTab
 {
@@ -21,6 +26,8 @@ public class ToolTab
 
     private String titleTemplate = "%t";
 
+    private String shortcut;
+
     public ToolTab(Tool tool)
     {
         this.tool = tool;
@@ -32,6 +39,45 @@ public class ToolTab
     public void setTitleTemplate(String value)
     {
         titleTemplate = value;
+    }
+
+    public String getShortcut()
+    {
+        return shortcut;
+    }
+    
+    public void setShortcut(String value)
+    {
+        if ( Util.equals(value,  shortcut)) {
+            return;
+        }
+
+        InputMap inputMap = getTabbedPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getTabbedPane().getActionMap();
+
+        if (shortcut != null) {
+            String actionMapKey = "selectToolTab-" + shortcut;
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
+            inputMap.remove(keyStroke);
+            actionMap.remove(actionMapKey);
+        }
+        
+        shortcut = value;
+        String actionMapKey = "selectToolTab-" + shortcut;
+
+        if (!Util.empty(shortcut)) {
+
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
+            inputMap.put(keyStroke, actionMapKey);
+            actionMap.put(actionMapKey, new AbstractAction()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    getTabbedPane().setSelectedToolTab(ToolTab.this);
+                }
+            });
+        }
     }
 
     public String getTitleTemplate()
@@ -85,7 +131,7 @@ public class ToolTab
             attach(tool);
         }
     }
-    
+
     private final void attach(final Tool tool)
     {
         this.tool = tool;

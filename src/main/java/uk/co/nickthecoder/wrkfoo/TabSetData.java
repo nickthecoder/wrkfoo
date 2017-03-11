@@ -101,6 +101,7 @@ public class TabSetData
             String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
             ToolTab tab = tool.getToolTab();
             tab.setTitleTemplate(tt);
+            tab.setShortcut(tabData.shortcut);
             // We added the tab before giving it its titleTemplate, so now we need to update it.
             tab.getTabbedPane().updateTabInfo(tab);
         }
@@ -114,10 +115,13 @@ public class TabSetData
         public Map<String, String> parameters;
         boolean showParameters = false;
         public String titleTemplate = "%t";
+        public String shortcut;
 
         public TabData(Tool tool)
         {
             titleTemplate = tool.getToolTab().getTitleTemplate();
+            shortcut = tool.getToolTab().getShortcut();
+            
             toolClass = tool.getClass().getName();
             parameters = new HashMap<String, String>();
             for (Parameter parameter : tool.getParameters().getChildren()) {

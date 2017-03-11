@@ -34,7 +34,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public ToolTab getCurrentTab()
     {
         WrkFoo.assertIsEDT();
-        
+
         if (toolTabs.size() == 0) {
             return null;
         }
@@ -84,10 +84,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         insertTab(null, null, panel, null, position);
         toolTabs.add(position, tab);
         setTabComponentAt(position, tabLabel);
-    
+
         tab.setTabbedPane(this);
     }
-
 
     private JPopupMenu createTabPopupMenu(MouseEvent me)
     {
@@ -96,7 +95,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         JPopupMenu menu = new JPopupMenu();
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
-        menu.add(builder.label("Rename Tab").shortcut("ctrl R").action("onRenameTab").buildMenuItem());
+        menu.add(builder.label("Tab Properties").shortcut("ctrl P").action("onTabProperties").buildMenuItem());
         menu.add(builder.label("Close Tab").shortcut("ctrl W").action("onCloseTab").buildMenuItem());
 
         menu.show(me.getComponent(), me.getX(), me.getY());
@@ -111,9 +110,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         return MainWindow.getMainWindow(this);
     }
 
-    public void onRenameTab()
+    public void onTabProperties()
     {
-        new RenameTabTask(getSelectedIndex()).neverExit().promptTask();
+        new TabPropertiesTask(getSelectedIndex()).neverExit().promptTask();
     }
 
     public void onCloseTab()
@@ -121,24 +120,34 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         removeTabAt(getSelectedIndex());
     }
 
-    public class RenameTabTask extends Task
+    private class TabPropertiesTask extends Task
     {
-        public StringParameter name = new StringParameter.Builder("name").parameter();
+        private StringParameter title = new StringParameter.Builder("title")
+            .description("Tab Label (%t is replaced by the normal title)")
+            .parameter();
+
+        private StringParameter shortcut = new StringParameter.Builder("shortcut")
+            .description("Format : [ctrl|shift|alt]* KEY_NAME")
+            .parameter();
+
         private int tabIndex;
 
-        public RenameTabTask(int tabIndex)
+        public TabPropertiesTask(int tabIndex)
         {
             super();
             this.tabIndex = tabIndex;
-            name.setDefaultValue(getToolTab(tabIndex).getTitleTemplate());
-            addParameters(name);
+            ToolTab tab = getToolTab(tabIndex);
+            title.setDefaultValue(tab.getTitleTemplate());
+            shortcut.setDefaultValue(tab.getShortcut());
+            addParameters(title, shortcut);
         }
 
         @Override
         public void body()
         {
             ToolTab tab = getToolTab(tabIndex);
-            tab.setTitleTemplate(name.getValue());
+            tab.setTitleTemplate(title.getValue());
+            tab.setShortcut( shortcut.getValue() );
             MainWindow.getMainWindow(TabbedPane.this).changedTab();
             ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
         }
@@ -165,7 +174,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         WrkFoo.assertIsEDT();
 
         ToolTab tab = toolTabs.get(index);
-        
+
         toolTabs.remove(index);
         super.removeTabAt(index);
 
@@ -228,6 +237,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         for (int i = 0; i < getTabCount(); i++) {
             if (this.toolTabs.get(i) == tab) {
                 setSelectedIndex(i);
+                return;
             }
         }
     }
