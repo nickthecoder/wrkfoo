@@ -189,6 +189,7 @@ public class ToolTab
     private void go(Tool newTool, boolean updateHistory)
     {
         if (newTool != this.tool) {
+            detach();
             attach(newTool);
         }
 

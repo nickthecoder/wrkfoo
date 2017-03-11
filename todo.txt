@@ -1,14 +1,10 @@
 Current Task
 ============
 
-check edt
-
 BUGS
 ====
 
 Boolean Parameter looks naff when hasn't got a description
-
-Having a missing options file throws exception when the tool tries to use it.
 
 RegexParameter doesn't error for empty required values.
 
@@ -16,11 +12,13 @@ ExecTool break the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
 	Need a "builder"
-	
+
 New Features
 ============
 
-Hide the "Error" icon when it is clicked.
+Un-close tab. Useful when you close a tab by mistake.
+
+Editor title is the file being edited.
 
 WrkOptions : New WrkOptionsIncludes
 	Lists the includes, and allows add, remove, work with.
@@ -64,33 +62,32 @@ Popup Menu items :
 RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
 	Should grep then use RegexParameter?
 
-Custom options applied to a tab
+Custom options applied to a tool
 	e.g. WrkF is given more options, suitable only for images.
-	Save names of custom options in tabset
-	Create a global option to add a custom options file	
+	Problem : For this to be useful, it needs to be added to the History, and saved in the tabset. Nasty.
 
 Allow additional packages to be imported from the settings.json into GroovyScriptlet
 
 Code review & Javadoc comments
 
-mmv option
-
-mvlc move lower case
-
-
 Later Features
 ==============
 
-	Tree commands
-		Rewrite wrkftree using a JTree, which gets more results when directories are opened. 
+Allow slow running tasks to update their results periodically.
+	Maybe a new updatePartialResults method???
+		But then updateResults will get called at then end, invalidating the whole table. Hmm.
 
-	Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
-	Implement drag and drop across the commands
+Tree commands
+	Rewrite wrkftree using a JTree, which gets more results when directories are opened. 
+
+Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
+
+Implement drag and drop across the commands
 		Drag a file to "Places", and it will append it to its places file.
 		Copy / Move files
 
-	FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
+FileParameters to have an icon?, which can be dropped onto a directory, which will set the dir name.
 
 Much Later
 ==========
