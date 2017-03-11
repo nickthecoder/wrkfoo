@@ -6,14 +6,37 @@ check edt
 BUGS
 ====
 
+Boolean Parameter looks naff when hasn't got a description
+
 Having a missing options file throws exception when the tool tries to use it.
 
 RegexParameter doesn't error for empty required values.
 
+ExecTool break the convension of being defined by tool's class and parameters
+	Doesn't have a non-arg constructor, so loading the tab will fail.
+	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
+	Need a "builder"
+	
 New Features
 ============
 
+Hide the "Error" icon when it is clicked.
+
+WrkOptions : New WrkOptionsIncludes
+	Lists the includes, and allows add, remove, work with.
+
+Make the MainFrame "toolbar" a flowing panel, which contains a JToolbar, so that other toolbars can be added.
+
+Editor to put a "*" in the tab title when it is dirty.
+
 Grep to open inbuilt editor and seach for the grep expression
+
+Save Tab sets to remember the order and widths of the tabs
+
+Editor to prompt when closing the tab without saving (if dirty)
+
+Task : new prompt method, designed for non-command line usage. Hides the Details button, and does neverExit.
+	Search options
 
 Embed a terminal emulator :
 	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal

@@ -290,7 +290,10 @@ public abstract class AbstractTool<T extends Task> implements Tool
             OptionsGroup og = new OptionsGroup();
             String name = optionsName();
             if (name != null) {
-                og.add(Resources.instance.readOptions(name));
+                File file = Resources.instance.getOptionsFile(name);
+                if ( file.exists()) {
+                    og.add(Resources.instance.readOptions(file));
+                }
             }
             og.add(Resources.instance.globalOptions());
             options = og;
