@@ -128,7 +128,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         private StringParameter shortcut = new StringParameter.Builder("shortcut")
             .description("Format : [ctrl|shift|alt]* KEY_NAME")
-            .parameter();
+            .optional().parameter();
 
         private int tabIndex;
 
