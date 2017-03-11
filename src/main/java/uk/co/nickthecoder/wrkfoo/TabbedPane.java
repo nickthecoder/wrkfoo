@@ -33,6 +33,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public ToolTab getCurrentTab()
     {
+        WrkFoo.assertIsEDT();
+        
         if (toolTabs.size() == 0) {
             return null;
         }
@@ -48,17 +50,23 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void insert(final ToolTab tab)
     {
+        WrkFoo.assertIsEDT();
+
         int index = getSelectedIndex() + 1;
         add(tab, index);
     }
 
     public void add(final ToolTab tab)
     {
+        WrkFoo.assertIsEDT();
+
         add(tab, toolTabs.size());
     }
 
     public void add(final ToolTab tab, int position)
     {
+        WrkFoo.assertIsEDT();
+
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
         tabLabel.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
@@ -83,6 +91,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     private JPopupMenu createTabPopupMenu(MouseEvent me)
     {
+        WrkFoo.assertIsEDT();
+
         JPopupMenu menu = new JPopupMenu();
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
@@ -96,6 +106,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public MainWindow getMainWindow()
     {
+        WrkFoo.assertIsEDT();
+
         return MainWindow.getMainWindow(this);
     }
 
@@ -134,6 +146,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void insert(ToolTab tab, int index)
     {
+        WrkFoo.assertIsEDT();
+
         toolTabs.add(index, tab);
 
         tab.setTabbedPane(this);
@@ -148,6 +162,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     @Override
     public void removeTabAt(int index)
     {
+        WrkFoo.assertIsEDT();
+
         ToolTab tab = toolTabs.get(index);
         
         toolTabs.remove(index);
@@ -165,6 +181,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void removeAllTabs()
     {
+        WrkFoo.assertIsEDT();
+
         for (int i = getTabCount() - 1; i >= 0; i--) {
             removeTabAt(i);
         }
@@ -172,6 +190,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void updateTabInfo(ToolTab tab)
     {
+        WrkFoo.assertIsEDT();
+
         String title = tab.getTitle();
         Icon icon = tab.getTool().getIcon();
         String longTitle = tab.getTool().getLongTitle();
@@ -187,18 +207,24 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public ToolTab getToolTab(int index)
     {
+        WrkFoo.assertIsEDT();
+
         return this.toolTabs.get(index);
     }
 
     @Override
     public void setSelectedIndex(int i)
     {
+        WrkFoo.assertIsEDT();
+
         super.setSelectedIndex(i);
         getComponentAt(i).requestFocus();
     }
 
     public void setSelectedToolTab(ToolTab tab)
     {
+        WrkFoo.assertIsEDT();
+
         for (int i = 0; i < getTabCount(); i++) {
             if (this.toolTabs.get(i) == tab) {
                 setSelectedIndex(i);
@@ -208,6 +234,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public ToolTab getSelectedToolTab()
     {
+        WrkFoo.assertIsEDT();
+
         int index = getSelectedIndex();
         if (index >= 0) {
             return toolTabs.get(index);

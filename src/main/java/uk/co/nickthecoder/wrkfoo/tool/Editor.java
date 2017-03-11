@@ -31,7 +31,7 @@ public class Editor extends AbstractTool<EditorTask>
     {
         return icon;
     }
-    
+
     public Editor(File file)
     {
         this();
@@ -104,7 +104,7 @@ public class Editor extends AbstractTool<EditorTask>
                 mainWindow.getToolbar().repaint();
             }
         } else {
-            if (toolBar.getParent() != null) {
+            if ((toolBar.getParent() != null) && (mainWindow != null)) {
                 mainWindow.getToolbar().remove(toolBar);
                 mainWindow.getToolbar().repaint();
             }

@@ -11,6 +11,13 @@ import uk.co.nickthecoder.jguifier.util.Util;
 
 public class WrkFoo extends Task
 {
+    public static void assertIsEDT()
+    {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            throw new RuntimeException( "Not running in the EDT" );
+        }
+    }
+
     public FileParameter tabSetFile = new FileParameter.Builder("tabSetFile")
         .optional().file().mustExist()
         .parameter();

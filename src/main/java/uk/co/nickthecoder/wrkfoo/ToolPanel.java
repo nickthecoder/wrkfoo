@@ -237,8 +237,10 @@ public class ToolPanel extends JPanel implements ToolListener
     }
 
     @Override
-    public void changedState(Tool tool)
+    public void changedState(final Tool tool)
     {
+        WrkFoo.assertIsEDT();
+
         boolean isRunning = tool.isRunning();
         goButton.setEnabled(!isRunning);
         if (tool.getTask() instanceof Stoppable) {

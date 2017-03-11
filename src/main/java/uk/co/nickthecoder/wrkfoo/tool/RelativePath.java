@@ -35,6 +35,6 @@ public abstract class RelativePath
      */
     public String toString()
     {
-        return this.path;
+        return this.getFile().getPath();
     }
 }

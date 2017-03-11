@@ -1,8 +1,14 @@
 Current Task
 ============
 
+Not repainting.
+
+check edt
+
 BUGS
 ====
+
+
 
 Having a missing options file throws exception when the tool tries to use it.
 
@@ -14,8 +20,6 @@ RegexParameter doesn't error for empty required values.
 
 New Features
 ============
-
-Icon for Editor
 
 Allow tabs to have their own shortcut
 

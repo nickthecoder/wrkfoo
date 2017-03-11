@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
@@ -28,7 +29,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private List<ToolListener> toolListeners = new ArrayList<ToolListener>();
 
     private ToolPanel toolPanel;
-    
+
     private boolean useNewTab;
 
     public AbstractTool(T task)
@@ -148,9 +149,15 @@ public abstract class AbstractTool<T extends Task> implements Tool
         {
             try {
                 task.run();
-                updateResults();
             } finally {
-                end();
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        updateResults();
+                        end();
+                    }
+                });
             }
         }
     }

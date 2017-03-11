@@ -91,11 +91,6 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
         return columns;
     }
 
-    public void updateResults()
-    {
-        super.updateResults();
-    }
-
     @Override
     public Icon getIcon()
     {
