@@ -103,13 +103,13 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
 
         return addTask.neverExit();
     }
-    
+
     public class AddTask extends Task
     {
         public final FileParameter file = new FileParameter.Builder("file").fileOrDirectory()
-            .value( Resources.instance.getHomeDirectory())
+            .value(Resources.instance.getHomeDirectory())
             .parameter();
-        
+
         public final StringParameter placeName = new StringParameter.Builder("placeName").optional().parameter();
 
         public AddTask()
@@ -117,11 +117,12 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
             super();
             addParameters(file, placeName);
         }
-                @Override
+
+        @Override
         public void body()
         {
             try {
-                new Exec( "echo", "file://" + file.getValue().getPath(), placeName.getValue() )
+                new Exec("echo", "file://" + file.getValue().getPath(), placeName.getValue())
                     .stdout(task.store.getValue(), true) // append to the Places file
                     .run();
             } catch (IOException e) {

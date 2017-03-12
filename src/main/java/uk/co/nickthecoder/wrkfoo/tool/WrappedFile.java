@@ -5,25 +5,25 @@ import java.io.File;
 public class WrappedFile
 {
     public final File file;
-    
-    public WrappedFile( File file )
+
+    public WrappedFile(File file)
     {
         this.file = file;
     }
-    
+
     @Override
     public String toString()
     {
         return file.getPath();
     }
-    
+
     public String getChoppedPath()
     {
         File base = getBase();
         if (base == null) {
             return file.getPath();
         }
-        
+
         String path = file.getPath();
         String prefix = base.getPath();
         if ((path.startsWith(prefix)) && (path.length() > prefix.length())) {
@@ -32,7 +32,7 @@ public class WrappedFile
             return path;
         }
     }
-    
+
     public File getBase()
     {
         return null;

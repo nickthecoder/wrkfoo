@@ -10,7 +10,7 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class FileTool extends AbstractListTool<FileTask, RelativePath>
 {
-    public FileTool( FileTask task )
+    public FileTool(FileTask task)
     {
         super(task);
     }
@@ -38,7 +38,6 @@ public class FileTool extends AbstractListTool<FileTask, RelativePath>
                 return new Date(row.getFile().lastModified());
             }
         }.width(120).lock().renderer(DateRenderer.instance));
-
 
         columns.add(new Column<RelativePath>(Long.class, "size")
         {

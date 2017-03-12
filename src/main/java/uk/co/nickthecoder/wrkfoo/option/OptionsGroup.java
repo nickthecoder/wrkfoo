@@ -21,24 +21,24 @@ public class OptionsGroup implements Options
 
         optionsList.add(options);
     }
-    
+
     @Override
     public Option getDefaultRowOption(Object row)
     {
-        return getRowOption( "", row );
+        return getRowOption("", row);
     }
 
     @Override
     public Option getOption(String code, Object row)
     {
         Option result = getRowOption(code, row);
-        if ( result == null) {
+        if (result == null) {
             return getNonRowOption(code);
         } else {
             return result;
         }
     }
-    
+
     @Override
     public Option getRowOption(String code, Object row)
     {
@@ -67,7 +67,7 @@ public class OptionsGroup implements Options
     {
         optionsList.clear();
     }
-    
+
     @Override
     public Iterator<Option> iterator()
     {

@@ -51,7 +51,8 @@ public class TableToolPanel<R> extends ToolPanel
                 }
             });
 
-        MainWindow.putAction("ctrl ENTER", "defaultRowActionNewTab", table, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+        MainWindow.putAction("ctrl ENTER", "defaultRowActionNewTab", table,
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
                 private static final long serialVersionUID = 1L;

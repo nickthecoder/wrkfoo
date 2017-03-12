@@ -17,7 +17,7 @@ public abstract class ExecTask extends Task implements TextResults, Stoppable
     }
 
     public abstract Exec getExec();
-    
+
     @Override
     public void body()
     {

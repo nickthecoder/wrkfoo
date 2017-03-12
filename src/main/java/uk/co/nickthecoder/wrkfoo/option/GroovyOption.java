@@ -21,7 +21,7 @@ public class GroovyOption extends AbstractOption
     {
         super(code, label, isRow, isMulti);
         this.action = new GroovyScriptlet(script);
-        if (Util.empty(ifScript )) {
+        if (Util.empty(ifScript)) {
             ifScriptlet = null;
         } else {
             this.ifScriptlet = new GroovyScriptlet(ifScript);

@@ -37,7 +37,7 @@ public class Home extends AbstractListTool<HomeTask, Tool>
             }
 
         }.width(30).lock());
-        
+
         columns.add(new Column<Tool>(String.class, "Name")
         {
             @Override
@@ -46,7 +46,6 @@ public class Home extends AbstractListTool<HomeTask, Tool>
                 return row.getName();
             }
         }.width(500).sort());
-
 
         return columns;
     }

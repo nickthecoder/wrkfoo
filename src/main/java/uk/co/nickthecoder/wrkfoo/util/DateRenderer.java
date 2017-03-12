@@ -13,15 +13,15 @@ public class DateRenderer extends DefaultTableCellRenderer
 {
     private static final long serialVersionUID = 1L;
 
-    public static final DateRenderer instance = new DateRenderer( CleverDateFormat.instance );
-    
+    public static final DateRenderer instance = new DateRenderer(CleverDateFormat.instance);
+
     private final CleverDateFormat format;
-    
-    public DateRenderer( CleverDateFormat format )
+
+    public DateRenderer(CleverDateFormat format)
     {
         this.format = format;
     }
-    
+
     @Override
     public void setValue(Object value)
     {
@@ -30,7 +30,7 @@ public class DateRenderer extends DefaultTableCellRenderer
             return;
         }
 
-        setText(format.format((Date)value));
+        setText(format.format((Date) value));
     }
 
     @Override

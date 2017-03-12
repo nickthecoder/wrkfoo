@@ -44,7 +44,7 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
         wrkOptions.getTask().optionsFile.setValue(optionsData.file);
         return wrkOptions;
     }
-    
+
     public class WrkOptionsFile extends WrappedFile
     {
         public WrkOptionsFile(File file)

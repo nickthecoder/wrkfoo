@@ -90,7 +90,7 @@ public class SimpleOptions implements Options
         List<Option> options = map.get(code);
         if (options == null) {
             options = new ArrayList<>();
-            map.put(code,  options);
+            map.put(code, options);
         }
         options.add(option);
     }

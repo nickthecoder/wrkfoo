@@ -126,7 +126,7 @@ public class SimpleTable<R> extends JTable
         int row = getSelectedRow();
         int col = getSelectedColumn();
 
-        if ((col < 0) || (row < 0) ) {
+        if ((col < 0) || (row < 0)) {
             return;
         }
 

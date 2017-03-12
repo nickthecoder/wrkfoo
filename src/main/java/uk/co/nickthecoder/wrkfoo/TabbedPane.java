@@ -150,7 +150,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         {
             ToolTab tab = getToolTab(tabIndex);
             tab.setTitleTemplate(title.getValue());
-            tab.setShortcut( shortcut.getValue() );
+            tab.setShortcut(shortcut.getValue());
             MainWindow.getMainWindow(TabbedPane.this).changedTab();
             ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
         }

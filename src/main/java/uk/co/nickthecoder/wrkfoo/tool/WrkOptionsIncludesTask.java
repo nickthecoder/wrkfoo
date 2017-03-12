@@ -20,9 +20,9 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
 
     public WrkOptionsIncludesTask()
     {
-        addParameters( optionsFile );
+        addParameters(optionsFile);
     }
-    
+
     @Override
     public List<String> getResults()
     {

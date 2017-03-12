@@ -5,5 +5,5 @@ import java.util.List;
 public interface ListResults<R>
 {
     public List<R> getResults();
-    
+
 }

@@ -13,7 +13,6 @@ import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsFilesTask.WrkOptionsFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 
-
 public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOptionsFile> implements DirectoryTool
 {
 

@@ -82,7 +82,7 @@ public class Resources
     {
         try {
             SettingsData settings = SettingsData.load(settingsFile);
-            
+
             if (settings.editor != null) {
                 this.editor = settings.editor;
             }

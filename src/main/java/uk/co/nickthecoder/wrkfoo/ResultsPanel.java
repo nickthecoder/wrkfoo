@@ -12,7 +12,7 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
  * For {@link TableTool}s, this will be a {@link TableResultsPanel}, and for text tools, this
  * will be {@link TextResultsPanel}.
  * Each implementation of ResultsPanel has a corresponding interface, which gives access to the data used to populate
- * the GUI. For example, {@link TextResults} and {@link ListResults}. 
+ * the GUI. For example, {@link TextResults} and {@link ListResults}.
  */
 public class ResultsPanel extends JPanel
 {

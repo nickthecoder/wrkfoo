@@ -121,7 +121,7 @@ public class TabSetData
         {
             titleTemplate = tool.getToolTab().getTitleTemplate();
             shortcut = tool.getToolTab().getShortcut();
-            
+
             toolClass = tool.getClass().getName();
             parameters = new HashMap<>();
             for (Parameter parameter : tool.getParameters().getChildren()) {

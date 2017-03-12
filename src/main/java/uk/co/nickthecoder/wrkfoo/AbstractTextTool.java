@@ -15,11 +15,11 @@ public abstract class AbstractTextTool<T extends Task & TextResults> extends Abs
     {
         return new TextResultsPanel(task.getResults());
     }
-    
+
     @Override
     public void updateResults()
     {
         TextResultsPanel trp = (TextResultsPanel) getToolPanel().getResultsPanel();
-        trp.textArea.setText( task.getResults() );
+        trp.textArea.setText(task.getResults());
     }
 }

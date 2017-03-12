@@ -13,7 +13,7 @@ public class TextResultsPanel extends ResultsPanel
     public TextResultsPanel(String text)
     {
         super();
-        this.textArea = new JTextArea( text );
+        this.textArea = new JTextArea(text);
 
         this.add(textArea, BorderLayout.CENTER);
     }

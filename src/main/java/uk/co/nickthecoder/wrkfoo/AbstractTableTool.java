@@ -11,7 +11,6 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
 
     protected Columns<R> columns;
 
-
     @Override
     public Columns<R> getColumns()
     {
@@ -23,8 +22,6 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
 
     protected abstract Columns<R> createColumns();
 
-
-    
     @Override
     public void detach()
     {
@@ -38,14 +35,13 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     {
         return new TableToolPanel<>(this);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public TableToolPanel<R> getToolPanel()
     {
         return (TableToolPanel<R>) super.getToolPanel();
     }
-
 
     @Override
     public TableResultsPanel<R> createResultsComponent()

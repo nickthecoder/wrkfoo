@@ -10,11 +10,11 @@ public class Grep extends FileTool
 {
     public static final Icon icon = Resources.icon("grep.png");
 
-    public Grep( File directory )
+    public Grep(File directory)
     {
-        super( new GrepTask( directory ) );
+        super(new GrepTask(directory));
     }
-    
+
     public Grep()
     {
         super(new GrepTask());

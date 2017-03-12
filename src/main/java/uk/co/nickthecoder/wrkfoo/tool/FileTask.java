@@ -15,7 +15,7 @@ import uk.co.nickthecoder.wrkfoo.ListResults;
 public abstract class FileTask extends Task implements ListResults<RelativePath>, Stoppable
 {
     protected Exec exec;
-    
+
     public FileParameter directory = new FileParameter.Builder("directory").mustExist().directory()
         .description("Starting directory")
         .parameter();
@@ -23,11 +23,11 @@ public abstract class FileTask extends Task implements ListResults<RelativePath>
     public List<RelativePath> results;
 
     public abstract Exec getExec();
-    
+
     public FileTask()
     {
     }
-    
+
     @Override
     public void body()
     {

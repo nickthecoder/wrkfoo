@@ -11,7 +11,7 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
 public class WrkFTask extends FileListerTask implements ListResults<WrkFWrappedFile>
 {
     private List<WrkFWrappedFile> wrappedResults;
-    
+
     @Override
     public List<WrkFWrappedFile> getResults()
     {

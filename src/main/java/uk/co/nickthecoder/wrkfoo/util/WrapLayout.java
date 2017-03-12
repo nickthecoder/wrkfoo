@@ -105,8 +105,7 @@ public class WrapLayout extends FlowLayout
      */
     private Dimension layoutSize(Container target, boolean preferred)
     {
-        synchronized (target.getTreeLock())
-        {
+        synchronized (target.getTreeLock()) {
             // Each row must fit with the width allocated to the containter.
             // When the container width = 0, the preferred width of the container
             // has not yet been calculated so lets ask for the maximum.
@@ -114,8 +113,7 @@ public class WrapLayout extends FlowLayout
             int targetWidth = target.getSize().width;
             Container container = target;
 
-            while (container.getSize().width == 0 && container.getParent() != null)
-            {
+            while (container.getSize().width == 0 && container.getParent() != null) {
                 container = container.getParent();
             }
 
@@ -139,18 +137,15 @@ public class WrapLayout extends FlowLayout
 
             int nmembers = target.getComponentCount();
 
-            for (int i = 0; i < nmembers; i++)
-            {
+            for (int i = 0; i < nmembers; i++) {
                 Component m = target.getComponent(i);
 
-                if (m.isVisible())
-                {
+                if (m.isVisible()) {
                     Dimension d = preferred ? m.getPreferredSize() : m.getMinimumSize();
 
                     // Can't add the component to current row. Start a new row.
 
-                    if (rowWidth + d.width > maxWidth)
-                    {
+                    if (rowWidth + d.width > maxWidth) {
                         addRow(dim, rowWidth, rowHeight);
                         rowWidth = 0;
                         rowHeight = 0;
@@ -158,8 +153,7 @@ public class WrapLayout extends FlowLayout
 
                     // Add a horizontal gap for all components after the first
 
-                    if (rowWidth != 0)
-                    {
+                    if (rowWidth != 0) {
                         rowWidth += hgap;
                     }
 
@@ -180,8 +174,7 @@ public class WrapLayout extends FlowLayout
 
             Container scrollPane = SwingUtilities.getAncestorOfClass(JScrollPane.class, target);
 
-            if (scrollPane != null && target.isValid())
-            {
+            if (scrollPane != null && target.isValid()) {
                 dim.width -= (hgap + 1);
             }
 
@@ -203,8 +196,7 @@ public class WrapLayout extends FlowLayout
     {
         dim.width = Math.max(dim.width, rowWidth);
 
-        if (dim.height > 0)
-        {
+        if (dim.height > 0) {
             dim.height += getVgap();
         }
 

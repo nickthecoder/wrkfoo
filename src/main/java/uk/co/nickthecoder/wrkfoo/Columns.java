@@ -93,20 +93,19 @@ public class Columns<R>
 
         for (int i = getColumnCount() - 1; i >= 0; i--) {
             Column<?> column = columns.get(i);
-            if ( column.comparator != null ) {
+            if (column.comparator != null) {
                 rowSorter.setComparator(i, column.comparator);
             }
         }
-        
+
         if (defaultSortColumnIndex > 0) {
-            
+
             List<SortKey> keys = new ArrayList<>();
             SortKey sortKey = new SortKey(defaultSortColumnIndex,
-                columns.get(defaultSortColumnIndex).reverse ?
-                    SortOrder.DESCENDING: SortOrder.ASCENDING  );
+                columns.get(defaultSortColumnIndex).reverse ? SortOrder.DESCENDING : SortOrder.ASCENDING);
             keys.add(sortKey);
             rowSorter.setSortKeys(keys);
-            
+
         }
     }
 }

@@ -53,7 +53,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar.add(builder.name("editRedo").tooltip("Redo").shortcut("ctrl shift Z").buildButton());
         toolBar.add(builder.name("editCopy").tooltip("Copy").shortcut("ctrl C").buildButton());
         toolBar.add(builder.name("editPaste").tooltip("Paste").shortcut("ctrl V").buildButton());
-        //toolBar.add(builder.name("editFind").tooltip("Find").shortcut("ctrl V").buildButton());
+        // toolBar.add(builder.name("editFind").tooltip("Find").shortcut("ctrl V").buildButton());
     }
 
     public void load(File file)

@@ -173,7 +173,7 @@ public class ActionBuilder
         if (shortcut != null) {
             text += " (" + shortcut.replace(' ', '+') + ")";
         }
-        
+
         JMenuItem result = new JMenuItem(text);
 
         if (method != null) {

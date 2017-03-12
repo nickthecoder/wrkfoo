@@ -19,8 +19,8 @@ import uk.co.nickthecoder.wrkfoo.tool.PlacesTask.PlacesWrappedFile;
 
 public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
 {
-    public FileParameter store = new FileParameter.Builder("store").
-        file().mustExist().description("Text file containing a list of paths")
+    public FileParameter store = new FileParameter.Builder("store").file().mustExist()
+        .description("Text file containing a list of paths")
         .parameter();
 
     private File directory;
@@ -56,7 +56,7 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
 
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("#")) {     
+                if (!line.startsWith("#")) {
                     results.add(createWrappedFile(line));
                 }
             }
@@ -85,7 +85,7 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
             URL url;
             if (space > 0) {
                 url = new URL(line.substring(0, space));
-                name = line.substring(space +1);
+                name = line.substring(space + 1);
             } else {
                 url = new URL(line);
             }

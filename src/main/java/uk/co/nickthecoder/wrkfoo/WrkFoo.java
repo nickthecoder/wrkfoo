@@ -14,7 +14,7 @@ public class WrkFoo extends Task
     public static void assertIsEDT()
     {
         if (!SwingUtilities.isEventDispatchThread()) {
-            throw new RuntimeException( "Not running in the EDT" );
+            throw new RuntimeException("Not running in the EDT");
         }
     }
 

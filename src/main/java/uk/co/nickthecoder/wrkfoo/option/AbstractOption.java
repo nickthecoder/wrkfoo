@@ -1,17 +1,16 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
-
 public abstract class AbstractOption implements Option
 {
     private final String code;
-    
+
     public String label;
-    
+
     private boolean isRow;
 
     private boolean isMultiRow;
-    
-    public AbstractOption( String code, String label, boolean isRow, boolean isMultiRow )
+
+    public AbstractOption(String code, String label, boolean isRow, boolean isMultiRow)
     {
         this.code = code;
         this.label = label;
@@ -24,7 +23,7 @@ public abstract class AbstractOption implements Option
     {
         return code;
     }
-    
+
     @Override
     public String getLabel()
     {

@@ -8,17 +8,17 @@ public class FoldersFirstComparator implements Comparator<File>
     public static final FoldersFirstComparator instance = new FoldersFirstComparator();
 
     private int nullValue = 1;
-    
-    public FoldersFirstComparator( boolean nullsFirst )
+
+    public FoldersFirstComparator(boolean nullsFirst)
     {
         nullValue = nullsFirst ? -1 : 1;
     }
-    
+
     public FoldersFirstComparator()
     {
         this(false);
     }
-    
+
     @Override
     public int compare(File o1, File o2)
     {

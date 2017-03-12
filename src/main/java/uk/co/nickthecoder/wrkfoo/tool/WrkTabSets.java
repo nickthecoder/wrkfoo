@@ -59,7 +59,7 @@ public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile>
         return columns;
     }
 
-    public void load( File file )
+    public void load(File file)
     {
         TabSetData.load(file).openMainWindow();
     }

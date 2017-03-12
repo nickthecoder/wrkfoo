@@ -70,11 +70,12 @@ public class Editor extends AbstractTool<EditorTask>
     {
         if (editorPanel == null) {
             editorPanel = new EditorPanel(this);
-            editorPanel.editorPane.getDocument().addDocumentListener( new DocumentListener() {
+            editorPanel.editorPane.getDocument().addDocumentListener(new DocumentListener()
+            {
 
                 @Override
                 public void insertUpdate(DocumentEvent e)
-                {                  
+                {
                     checkDirty();
                 }
 
@@ -89,22 +90,22 @@ public class Editor extends AbstractTool<EditorTask>
                 {
                     checkDirty();
                 }
-                
+
             });
         }
         return editorPanel;
     }
 
     private boolean wasDirty = false;
-    
+
     public void checkDirty()
     {
-        if ( editorPanel.editorPane.isDirty() != wasDirty ) {
+        if (editorPanel.editorPane.isDirty() != wasDirty) {
             wasDirty = editorPanel.editorPane.isDirty();
             getToolTab().getTabbedPane().updateTabInfo(getToolTab());
         }
     }
-    
+
     private ChangeListener tabbedPaneListener;
 
     @Override
@@ -139,7 +140,7 @@ public class Editor extends AbstractTool<EditorTask>
         getToolTab().getTabbedPane().removeChangeListener(tabbedPaneListener);
         super.detach();
     }
-    
+
     private void setToolBarVisible(boolean show)
     {
         JToolBar tb = editorPanel.toolBar;
@@ -159,7 +160,6 @@ public class Editor extends AbstractTool<EditorTask>
             }
         }
     }
-
 
     public static class EditorTask extends Task
     {

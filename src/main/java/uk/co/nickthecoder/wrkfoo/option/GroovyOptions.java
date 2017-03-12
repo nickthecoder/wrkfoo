@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
-
 public class GroovyOptions extends OptionsGroup
 {
     private SimpleOptions simpleOptions;
@@ -10,10 +9,10 @@ public class GroovyOptions extends OptionsGroup
         simpleOptions = new SimpleOptions();
         add(simpleOptions);
     }
-    
-    public void add( Option option )
+
+    public void add(Option option)
     {
-        simpleOptions.add( option );
+        simpleOptions.add(option);
     }
 
     @Override

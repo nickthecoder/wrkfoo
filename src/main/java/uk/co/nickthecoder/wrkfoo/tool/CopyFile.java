@@ -17,15 +17,15 @@ public class CopyFile extends Task
 
     public CopyFile()
     {
-        addParameters(source,destination);
+        addParameters(source, destination);
     }
-    
-    public CopyFile( File file )
+
+    public CopyFile(File file)
     {
         this();
         source.setDefaultValue(file);
     }
-    
+
     @Override
     public void body()
     {
@@ -36,12 +36,12 @@ public class CopyFile extends Task
     @Override
     public void promptTask()
     {
-        if ( source.getValue() != null) {
+        if (source.getValue() != null) {
             if (destination.getValue() == null) {
                 destination.setDefaultValue(source.getValue().getParentFile());
             }
         }
-        
+
         super.promptTask();
     }
 }

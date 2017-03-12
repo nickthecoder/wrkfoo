@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
-
 public class ScriptletException extends RuntimeException
 {
     private static final long serialVersionUID = 1L;

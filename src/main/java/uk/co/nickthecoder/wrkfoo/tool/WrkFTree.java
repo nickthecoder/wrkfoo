@@ -18,19 +18,17 @@ public class WrkFTree extends WrkFBase
     public WrkFTree()
     {
         super(createTask());
-        
+
         getColumns().find("path").visible = true;
         getColumns().find("name").visible = false;
         getColumns().defaultSortColumnIndex = 2;
     }
-    
 
     @Override
     public String getLongTitle()
     {
         return "WrkFTree " + getTitle();
     }
-    
 
     @Override
     public Icon getIcon()

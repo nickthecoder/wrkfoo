@@ -45,10 +45,10 @@ public class ToolTab
     {
         return shortcut;
     }
-    
+
     public void setShortcut(String value)
     {
-        if ( Util.equals(value,  shortcut)) {
+        if (Util.equals(value, shortcut)) {
             return;
         }
 
@@ -61,7 +61,7 @@ public class ToolTab
             inputMap.remove(keyStroke);
             actionMap.remove(actionMapKey);
         }
-        
+
         shortcut = value;
         String actionMapKey = "selectToolTab-" + shortcut;
 

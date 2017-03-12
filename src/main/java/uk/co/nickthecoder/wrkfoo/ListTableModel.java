@@ -25,7 +25,7 @@ public class ListTableModel<R> extends ToolTableModel<R>
     {
         return list.get(row);
     }
-    
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
@@ -33,7 +33,7 @@ public class ListTableModel<R> extends ToolTableModel<R>
             return super.getValueAt(rowIndex, columnIndex);
         } else {
             R row = list.get(rowIndex);
-            Column<R> column = columns.getColumn(columnIndex);  
+            Column<R> column = columns.getColumn(columnIndex);
             return column.getValue(row);
         }
     }

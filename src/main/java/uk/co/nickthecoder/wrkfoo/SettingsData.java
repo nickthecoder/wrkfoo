@@ -17,10 +17,10 @@ public class SettingsData
     {
         Gson gson = new Gson();
         JsonReader reader;
-        
+
         reader = new JsonReader(new FileReader(file));
         SettingsData data = gson.fromJson(reader, SettingsData.class);
-        
+
         return data;
     }
 
@@ -36,7 +36,7 @@ public class SettingsData
         fileManager = Resources.instance.fileManager;
         globalOptions = Resources.instance.globalOptionsNames;
     }
-    
+
     public void save(File file) throws FileNotFoundException
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();

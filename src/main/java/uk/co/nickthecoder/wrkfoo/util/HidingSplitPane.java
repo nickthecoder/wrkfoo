@@ -25,12 +25,13 @@ public class HidingSplitPane extends JSplitPane
     {
         super(or, con, left, right);
         this.state = State.BOTH;
-        FocusAdapter listener = new FocusAdapter() {
+        FocusAdapter listener = new FocusAdapter()
+        {
 
             @Override
             public void focusGained(FocusEvent e)
             {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();                
+                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
             }
         };
         left.addFocusListener(listener);
@@ -90,20 +91,20 @@ public class HidingSplitPane extends JSplitPane
 
     public void focus()
     {
-        if ( state == State.RIGHT ) {
+        if (state == State.RIGHT) {
             getRightComponent().requestFocus();
         } else {
             getLeftComponent().requestFocus();
         }
     }
-    
+
     public void showLeft()
     {
         if (this.state == State.RIGHT) {
             setState(State.BOTH);
         }
     }
-    
+
     public void showRight()
     {
         if (this.state == State.LEFT) {

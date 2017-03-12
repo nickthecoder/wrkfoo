@@ -297,7 +297,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
             String name = optionsName();
             if (name != null) {
                 File file = Resources.instance.getOptionsFile(name);
-                if ( file.exists()) {
+                if (file.exists()) {
                     og.add(Resources.instance.readOptions(file));
                 }
             }

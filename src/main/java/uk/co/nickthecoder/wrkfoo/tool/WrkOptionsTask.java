@@ -21,9 +21,9 @@ public class WrkOptionsTask extends Task implements ListResults<OptionData>
 
     public WrkOptionsTask()
     {
-        addParameters( optionsFile );
+        addParameters(optionsFile);
     }
-    
+
     @Override
     public List<OptionData> getResults()
     {

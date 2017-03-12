@@ -24,7 +24,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
     {
         super(new WrkOptionsTask());
     }
-    
+
     public WrkOptions(File optionsFile)
     {
         super(createTask(optionsFile));
@@ -39,7 +39,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
             return super.getLongTitle();
         }
     }
-    
+
     @Override
     public String getShortTitle()
     {
@@ -49,7 +49,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
             return super.getShortTitle();
         }
     }
-        
+
     @Override
     protected Columns<OptionData> createColumns()
     {
@@ -90,7 +90,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
                 return row.isRow();
             }
         }.width(70));
-        
+
         columns.add(new Column<OptionData>(Boolean.class, "multi")
         {
             @Override
@@ -99,7 +99,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
                 return row.multi;
             }
         }.width(70));
-        
+
         columns.add(new Column<OptionData>(String.class, "if")
         {
             @Override
@@ -112,26 +112,25 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         return columns;
     }
 
-
     @Override
     public Icon getIcon()
     {
         return Resources.icon("options.png");
     }
-    
-    public Task editOption( OptionData optionData )
+
+    public Task editOption(OptionData optionData)
     {
-        return new EditOption( getTask().optionsData, optionData ).neverExit();
+        return new EditOption(getTask().optionsData, optionData).neverExit();
     }
-    
-    public Task addOption(  )
+
+    public Task addOption()
     {
-        return new EditOption.AddOption( getTask().optionsData ).neverExit();
+        return new EditOption.AddOption(getTask().optionsData).neverExit();
     }
-    
-    public Task deleteOption( OptionData optionData )
+
+    public Task deleteOption(OptionData optionData)
     {
-        return new EditOption.DeleteOption( getTask().optionsData, optionData).neverExit();
+        return new EditOption.DeleteOption(getTask().optionsData, optionData).neverExit();
     }
 
 }
