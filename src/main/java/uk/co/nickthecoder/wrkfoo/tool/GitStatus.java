@@ -21,7 +21,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
     public static Color NOT_UPDATED = new Color(255, 128, 128);
 
     public static Color UPDATED = new Color(128, 255, 128);
-    
+
     public static Color RENAMED = new Color(128, 200, 128);
 
     public GitStatus()
@@ -29,29 +29,32 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
         super(new GitStatusTask());
     }
 
+    @Override
     protected ListTableModel<GitStatusLine> createTableModel()
     {
         ListTableModel<GitStatusLine> tableModel = new ListTableModel<GitStatusLine>(this,
             new ArrayList<GitStatusLine>(), getColumns())
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Color getRowBackground(int row)
             {
                 GitStatusLine line = getRow(row);
 
-                if (line.x == '?') {
+                if (line.index == '?') {
                     return UNTRACKED;
                 }
 
-                if ((line.y == 'M') && (line.x == ' ')) {
+                if ((line.work == 'M') && (line.index == ' ')) {
                     return NOT_UPDATED;
                 }
 
-                if (line.x == 'R') {
+                if (line.index == 'R') {
                     return RENAMED;
                 }
 
-                if (line.x == 'M') {
+                if (line.index == 'M') {
                     return UPDATED;
                 }
 
@@ -65,27 +68,27 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
     @Override
     protected Columns<GitStatusLine> createColumns()
     {
-        Columns<GitStatusLine> columns = new Columns<GitStatusLine>();
+        Columns<GitStatusLine> columns = new Columns<>();
 
-        columns.add(new Column<GitStatusLine>(Character.class, "index")
+        columns.add(new Column<GitStatusLine>(Character.class, "i")
         {
             @Override
             public Character getValue(GitStatusLine row)
             {
-                return row.x;
+                return row.index;
             }
 
-        }.width(10));
+        }.width(30).lock());
 
-        columns.add(new Column<GitStatusLine>(Character.class, "work")
+        columns.add(new Column<GitStatusLine>(Character.class, "w")
         {
             @Override
             public Character getValue(GitStatusLine row)
             {
-                return row.y;
+                return row.work;
             }
 
-        }.width(10));
+        }.width(30).lock());
 
         columns.add(new Column<GitStatusLine>(String.class, "name")
         {
@@ -95,7 +98,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                 return row.name;
             }
 
-        }.tooltip(4).sort().width(500));
+        }.tooltip(4).width(300));
 
         columns.add(new Column<GitStatusLine>(String.class, "path")
         {
@@ -105,7 +108,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                 return row.path;
             }
 
-        }.tooltip(4).hide().width(50));
+        }.tooltip(4).sort().width(500));
 
         columns.add(new Column<GitStatusLine>(File.class, "renamedFrom")
         {
