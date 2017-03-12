@@ -36,7 +36,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     @Override
     protected TableToolPanel<R> createToolPanel()
     {
-        return new TableToolPanel<R>(this);
+        return new TableToolPanel<>(this);
     }
     
     @SuppressWarnings("unchecked")
@@ -51,7 +51,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     public TableResultsPanel<R> createResultsComponent()
     {
         SimpleTable<R> table = getColumns().createTable(getTableModel());
-        return new TableResultsPanel<R>(table);
+        return new TableResultsPanel<>(table);
     }
 
 }

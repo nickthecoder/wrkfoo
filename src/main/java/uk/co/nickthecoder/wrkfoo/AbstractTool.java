@@ -26,7 +26,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     private GoThread goThread;
 
-    private List<ToolListener> toolListeners = new ArrayList<ToolListener>();
+    private List<ToolListener> toolListeners = new ArrayList<>();
 
     private ToolPanel toolPanel;
 
