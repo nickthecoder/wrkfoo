@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,8 +51,9 @@ import uk.co.nickthecoder.wrkfoo.util.WrapLayout;
 
 public class MainWindow extends JFrame implements ExceptionHandler
 {
+    private static final long serialVersionUID = 1L;
 
-    private static final List<MainWindow> windows = new ArrayList<MainWindow>();
+    private static final List<MainWindow> windows = new ArrayList<>();
 
     public JPanel whole;
 
@@ -114,7 +116,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         });
 
         toolBarPanel = new JPanel();
-        toolBarPanel.setLayout(new WrapLayout(WrapLayout.LEFT));
+        toolBarPanel.setLayout(new WrapLayout(FlowLayout.LEFT));
 
         toolBar = new JToolBar();
         statusBar = new JToolBar();
@@ -224,6 +226,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
         inputMap.put(keyStroke, name);
         actionMap.put(name, new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -243,6 +247,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
         putAction("ENTER", "nonRowOption", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
+                private static final long serialVersionUID = 1L;
+
+                @Override
                 public void actionPerformed(ActionEvent e)
                 {
                     processNonRowOption(false);
@@ -252,6 +259,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
         putAction("ctrl ENTER", "nonRowOptionNewTab", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
+                private static final long serialVersionUID = 1L;
+
+                @Override
                 public void actionPerformed(ActionEvent e)
                 {
                     processNonRowOption(true);
@@ -361,6 +371,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return tab;
     }
 
+    @Override
     public void setVisible(boolean show)
     {
         super.setVisible(show);

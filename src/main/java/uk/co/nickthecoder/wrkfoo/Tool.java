@@ -1,9 +1,8 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import groovyjarjarcommonscli.Option;
-
 import javax.swing.Icon;
 
+import groovyjarjarcommonscli.Option;
 import uk.co.nickthecoder.jguifier.GroupParameter;
 import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;

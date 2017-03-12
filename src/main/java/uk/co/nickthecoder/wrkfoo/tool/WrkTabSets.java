@@ -4,9 +4,9 @@ import java.io.File;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabSetData;
@@ -34,9 +34,9 @@ public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile>
     @Override
     public Columns<WrkTabSetsFile> createColumns()
     {
-        Columns<WrkTabSetsFile> columns = new Columns<WrkTabSetsFile>();
+        Columns<WrkTabSetsFile> columns = new Columns<>();
 
-        columns = new Columns<WrkTabSetsFile>();
+        columns = new Columns<>();
 
         columns.add(new Column<WrkTabSetsFile>(String.class, "name")
         {

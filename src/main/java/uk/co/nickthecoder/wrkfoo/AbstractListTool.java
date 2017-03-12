@@ -33,7 +33,7 @@ public abstract class AbstractListTool<T extends Task & ListResults<R>, R> exten
 
     protected ListTableModel<R> createTableModel()
     {
-        return new ListTableModel<R>(this, new ArrayList<R>(), getColumns());
+        return new ListTableModel<>(this, new ArrayList<R>(), getColumns());
     }
 
     @Override

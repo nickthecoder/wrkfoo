@@ -54,9 +54,9 @@ public class Resources
 
     private Resources()
     {
-        globalOptionsNames = new ArrayList<String>();
+        globalOptionsNames = new ArrayList<>();
 
-        optionsDataByFile = new HashMap<File, OptionsData>();
+        optionsDataByFile = new HashMap<>();
 
         homeDirectory = new File(System.getProperty("user.home"));
         globalOptions = new OptionsGroup();
@@ -91,7 +91,7 @@ public class Resources
             }
             if (settings.globalOptions != null) {
                 this.globalOptions.clear();
-                this.globalOptionsNames = new ArrayList<String>(settings.globalOptions);
+                this.globalOptionsNames = new ArrayList<>(settings.globalOptions);
                 for (String name : this.globalOptionsNames) {
                     this.globalOptions.add(this.readOptions(name));
                 }

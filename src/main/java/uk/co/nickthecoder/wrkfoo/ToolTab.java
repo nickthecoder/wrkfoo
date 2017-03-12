@@ -71,6 +71,8 @@ public class ToolTab
             inputMap.put(keyStroke, actionMapKey);
             actionMap.put(actionMapKey, new AbstractAction()
             {
+                private static final long serialVersionUID = 1L;
+
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
@@ -104,6 +106,11 @@ public class ToolTab
     {
         MainWindow.putAction("alt LEFT", "Action.undo", panel, new AbstractAction()
         {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -113,6 +120,8 @@ public class ToolTab
 
         MainWindow.putAction("alt RIGHT", "Action.redo", panel, new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -139,6 +148,7 @@ public class ToolTab
         panel.add(tool.getToolPanel());
         SwingUtilities.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
                 tool.getToolPanel().getSplitPane().focus();

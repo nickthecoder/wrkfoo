@@ -52,6 +52,7 @@ public class WrkFoo extends Task
     {
         SwingUtilities.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
                 Util.defaultLookAndFeel();

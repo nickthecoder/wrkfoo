@@ -34,7 +34,7 @@ public class WrkOptionsTask extends Task implements ListResults<OptionData>
     public void body()
     {
         optionsData = Resources.instance.readOptionsData(optionsFile.getValue());
-        results = new ArrayList<OptionData>(optionsData.options);
+        results = new ArrayList<>(optionsData.options);
     }
 
 }

@@ -4,8 +4,9 @@ import java.util.List;
 
 public class ListTableModel<R> extends ToolTableModel<R>
 {
-    private List<R> list;
+    private static final long serialVersionUID = 1L;
 
+    private List<R> list;
 
     public ListTableModel(TableTool<?> tool, List<R> list, Columns<R> columns)
     {

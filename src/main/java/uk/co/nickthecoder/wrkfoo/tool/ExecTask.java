@@ -18,6 +18,7 @@ public abstract class ExecTask extends Task implements TextResults, Stoppable
 
     public abstract Exec getExec();
     
+    @Override
     public void body()
     {
         exec = getExec();
@@ -27,6 +28,7 @@ public abstract class ExecTask extends Task implements TextResults, Stoppable
         results = exec.getStdout().toString();
     }
 
+    @Override
     public void stop()
     {
         if (exec != null) {

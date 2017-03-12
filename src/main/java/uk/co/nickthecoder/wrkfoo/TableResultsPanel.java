@@ -6,6 +6,8 @@ import javax.swing.JScrollPane;
 
 public class TableResultsPanel<R> extends ResultsPanel
 {
+    private static final long serialVersionUID = 1L;
+
     public SimpleTable<R> table;
 
     public JScrollPane tableScrollPane;

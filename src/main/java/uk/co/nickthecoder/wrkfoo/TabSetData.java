@@ -33,7 +33,7 @@ public class TabSetData
 
     public TabSetData(MainWindow mainWindow)
     {
-        tabs = new ArrayList<TabData>();
+        tabs = new ArrayList<>();
         for (ToolTab toolTab : mainWindow.tabbedPane) {
             Tool tool = toolTab.getTool();
 
@@ -123,7 +123,7 @@ public class TabSetData
             shortcut = tool.getToolTab().getShortcut();
             
             toolClass = tool.getClass().getName();
-            parameters = new HashMap<String, String>();
+            parameters = new HashMap<>();
             for (Parameter parameter : tool.getParameters().getChildren()) {
                 if (parameter instanceof ValueParameter) {
                     ValueParameter<?> vp = (ValueParameter<?>) parameter;

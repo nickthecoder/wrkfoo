@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
@@ -23,11 +24,13 @@ import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 {
+    private static final long serialVersionUID = 1L;
+
     private List<ToolTab> toolTabs;
 
     public TabbedPane()
     {
-        toolTabs = new ArrayList<ToolTab>();
+        toolTabs = new ArrayList<>();
         enableReordering();
     }
 
@@ -69,7 +72,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
-        tabLabel.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
+        tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
 
         JPanel panel = tab.getPanel();
         panel.addFocusListener(new FocusAdapter()
@@ -162,7 +165,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         tab.setTabbedPane(this);
         JLabel label = new JLabel(tab.getTool().getToolTab().getTitle());
         label.setIcon(tab.getTool().getIcon());
-        label.setHorizontalTextPosition(JLabel.TRAILING); // Icon on the left
+        label.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
 
         insertTab("", null, tab.getPanel(), null, index);
         setTabComponentAt(index, label);
@@ -270,6 +273,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             draggedTabIndex = -1;
         }
 
+        @Override
         public void mousePressed(MouseEvent e)
         {
             if (e.isPopupTrigger()) {
@@ -279,6 +283,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             draggedTabIndex = getUI().tabForCoordinate(TabbedPane.this, e.getX(), e.getY());
         }
 
+        @Override
         public void mouseReleased(MouseEvent e)
         {
             if (e.isPopupTrigger()) {
@@ -324,6 +329,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         }
 
+        @Override
         public void mouseDragged(MouseEvent e)
         {
             if (draggedTabIndex == -1) {

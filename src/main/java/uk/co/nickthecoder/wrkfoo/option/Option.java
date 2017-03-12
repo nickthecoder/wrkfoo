@@ -2,8 +2,8 @@ package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.List;
 
-import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.TableTool;
+import uk.co.nickthecoder.wrkfoo.Tool;
 
 public interface Option
 {    

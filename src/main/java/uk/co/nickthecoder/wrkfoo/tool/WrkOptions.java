@@ -53,7 +53,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
     @Override
     protected Columns<OptionData> createColumns()
     {
-        Columns<OptionData> columns = new Columns<OptionData>();
+        Columns<OptionData> columns = new Columns<>();
 
         columns.add(new Column<OptionData>(String.class, "code")
         {

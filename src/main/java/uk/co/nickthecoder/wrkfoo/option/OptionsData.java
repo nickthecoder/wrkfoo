@@ -7,12 +7,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.nickthecoder.wrkfoo.Resources;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
+
+import uk.co.nickthecoder.wrkfoo.Resources;
 
 /**
  * Data-only class for loading/saving options
@@ -44,9 +44,9 @@ public class OptionsData
 
     public transient GroovyOptions groovyOptions;
 
-    public List<String> include = new ArrayList<String>();
+    public List<String> include = new ArrayList<>();
 
-    public List<OptionData> options = new ArrayList<OptionData>();
+    public List<OptionData> options = new ArrayList<>();
 
     public OptionsData(File file)
     {
@@ -116,6 +116,7 @@ public class OptionsData
             return row == Boolean.FALSE ? false : true;
         }
 
+        @Override
         public String toString()
         {
             return code + ":" + label + ":" + action + ":" + ifScript + ":" + row + ":" + multi;

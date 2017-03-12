@@ -29,6 +29,7 @@ public class Editor extends AbstractTool<EditorTask>
         super(new EditorTask());
     }
 
+    @Override
     public Icon getIcon()
     {
         return icon;

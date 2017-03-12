@@ -1,9 +1,8 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
-import groovy.lang.Binding;
-
 import java.util.List;
 
+import groovy.lang.Binding;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;

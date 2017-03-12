@@ -190,10 +190,12 @@ public class ActionBuilder
     {
         JButton result = new JButton();
 
-        if (label != null)
+        if (label != null) {
             result.setText(label);
-        if (icon != null)
+        }
+        if (icon != null) {
             result.setIcon(icon);
+        }
         if (tooltip != null) {
             if (shortcut == null) {
                 result.setToolTipText(tooltip);
@@ -230,6 +232,8 @@ public class ActionBuilder
         final ExceptionHandler handler = this.exceptionHandler;
         Action action = new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent event)
             {

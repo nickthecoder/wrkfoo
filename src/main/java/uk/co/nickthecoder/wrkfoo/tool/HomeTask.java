@@ -5,16 +5,16 @@ import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.Tool;
 
 public class HomeTask extends Task implements ListResults<Tool>
 {
-    public static List<Tool> results = new ArrayList<Tool>();
+    public static List<Tool> results = new ArrayList<>();
 
     {
-        results = new ArrayList<Tool>();
+        results = new ArrayList<>();
 
         WrkF wrkFHome = new WrkF();
         wrkFHome.getTask().directory.setValue(Resources.instance.getHomeDirectory());
@@ -55,6 +55,6 @@ public class HomeTask extends Task implements ListResults<Tool>
     @Override
     public List<Tool> getResults()
     {
-        return new ArrayList<Tool>(results);
+        return new ArrayList<>(results);
     }
 }

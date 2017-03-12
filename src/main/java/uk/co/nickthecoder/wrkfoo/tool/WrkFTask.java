@@ -22,7 +22,7 @@ public class WrkFTask extends FileListerTask implements ListResults<WrkFWrappedF
     public void body()
     {
         super.body();
-        wrappedResults = new ArrayList<WrkFWrappedFile>();
+        wrappedResults = new ArrayList<>();
 
         for (File file : results) {
             wrappedResults.add(new WrkFWrappedFile(file));
@@ -37,6 +37,7 @@ public class WrkFTask extends FileListerTask implements ListResults<WrkFWrappedF
             super(file);
         }
 
+        @Override
         public File getBase()
         {
             return directory.getValue();

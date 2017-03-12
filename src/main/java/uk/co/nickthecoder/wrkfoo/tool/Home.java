@@ -5,8 +5,8 @@ import javax.swing.Icon;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.Tool;
 
 public class Home extends AbstractListTool<HomeTask, Tool>
 {
@@ -26,7 +26,7 @@ public class Home extends AbstractListTool<HomeTask, Tool>
     @Override
     public Columns<Tool> createColumns()
     {
-        Columns<Tool> columns = new Columns<Tool>();
+        Columns<Tool> columns = new Columns<>();
 
         columns.add(new Column<Tool>(Icon.class, "")
         {

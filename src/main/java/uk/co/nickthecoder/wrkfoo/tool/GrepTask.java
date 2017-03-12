@@ -45,6 +45,7 @@ public class GrepTask extends FileTask
         addParameters(regex, directory, type, ignoreCase, matchWords, matchLines, invertResults);
     }
 
+    @Override
     public Exec getExec()
     {
         return new Exec("grep", "-rHs" + type.getValue(),

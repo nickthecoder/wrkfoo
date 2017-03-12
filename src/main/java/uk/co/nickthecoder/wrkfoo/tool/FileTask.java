@@ -32,7 +32,7 @@ public abstract class FileTask extends Task implements ListResults<RelativePath>
     public void body()
     {
         stopping = false;
-        results = new ArrayList<RelativePath>();
+        results = new ArrayList<>();
 
         exec = getExec().dir(directory.getValue());
 
@@ -46,6 +46,7 @@ public abstract class FileTask extends Task implements ListResults<RelativePath>
                 }
                 results.add(new RelativePath(line)
                 {
+                    @Override
                     public File getBase()
                     {
                         return directory.getValue();

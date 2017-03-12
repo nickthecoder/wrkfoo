@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo.util;
 
 import java.util.Date;
 
-import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class DateRenderer extends DefaultTableCellRenderer
 {
+    private static final long serialVersionUID = 1L;
+
     public static final DateRenderer instance = new DateRenderer( CleverDateFormat.instance );
     
     private final CleverDateFormat format;
@@ -34,6 +36,6 @@ public class DateRenderer extends DefaultTableCellRenderer
     @Override
     public int getHorizontalAlignment()
     {
-        return JLabel.CENTER;
+        return SwingConstants.CENTER;
     }
 }

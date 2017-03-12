@@ -24,7 +24,7 @@ public class ScanF extends AbstractListTool<ScanFTask, ScannedDirectory> impleme
     @Override
     protected Columns<ScannedDirectory> createColumns()
     {
-        Columns<ScannedDirectory> columns = new Columns<ScannedDirectory>();
+        Columns<ScannedDirectory> columns = new Columns<>();
 
         columns.add(new Column<ScannedDirectory>(String.class, "path")
         {

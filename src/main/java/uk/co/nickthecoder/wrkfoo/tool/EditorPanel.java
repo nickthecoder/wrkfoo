@@ -17,6 +17,8 @@ import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
 public class EditorPanel extends ResultsPanel implements ExceptionHandler
 {
+    private static final long serialVersionUID = 1L;
+
     private Editor editorTask;
 
     TextEditorPane editorPane;

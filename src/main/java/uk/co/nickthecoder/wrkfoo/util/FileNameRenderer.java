@@ -14,6 +14,8 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkF;
  */
 public class FileNameRenderer extends DefaultTableCellRenderer
 {
+    private static final long serialVersionUID = 1L;
+
     public static final FileNameRenderer instance = new FileNameRenderer();
 
     @Override

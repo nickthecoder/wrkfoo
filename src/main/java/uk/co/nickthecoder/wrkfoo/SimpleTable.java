@@ -12,12 +12,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.TableCellRenderer;
 
 public class SimpleTable<R> extends JTable
 {
+    private static final long serialVersionUID = 1L;
 
     private Color oddRowColor = new Color(247, 247, 247);
 
@@ -27,12 +29,14 @@ public class SimpleTable<R> extends JTable
 
         // setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        InputMap im = this.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        InputMap im = this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = this.getActionMap();
 
         im.put(KeyStroke.getKeyStroke("TAB"), "Action.tab");
         am.put("Action.tab", new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -42,6 +46,8 @@ public class SimpleTable<R> extends JTable
         im.put(KeyStroke.getKeyStroke("shift TAB"), "Action.untab");
         am.put("Action.untab", new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -65,6 +71,7 @@ public class SimpleTable<R> extends JTable
         });
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public ToolTableModel<R> getModel()
     {
@@ -179,6 +186,7 @@ public class SimpleTable<R> extends JTable
     {
         EventQueue.invokeLater(new Runnable()
         {
+            @Override
             public void run()
             {
                 changeSelection(row, col, false, false);

@@ -38,7 +38,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
     public void body()
     {
         stopping = false;
-        results = new ArrayList<ScannedDirectory>();
+        results = new ArrayList<>();
 
         du = new Exec("du", "--bytes", oneFileSystem.getValue() ? "--one-file-system" : null,
             directory.getValue().getPath());
@@ -102,6 +102,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
          * 
          * @return The path
          */
+        @Override
         public String toString()
         {
             return this.path;

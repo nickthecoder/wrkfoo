@@ -19,11 +19,13 @@ public abstract class AbstractOption implements Option
         this.isMultiRow = isMultiRow;
     }
 
+    @Override
     public String getCode()
     {
         return code;
     }
     
+    @Override
     public String getLabel()
     {
         return label;

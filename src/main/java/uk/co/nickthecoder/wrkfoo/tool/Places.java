@@ -30,9 +30,9 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
     @Override
     protected Columns<PlacesWrappedFile> createColumns()
     {
-        Columns<PlacesWrappedFile> columns = new Columns<PlacesWrappedFile>();
+        Columns<PlacesWrappedFile> columns = new Columns<>();
 
-        columns = new Columns<PlacesWrappedFile>();
+        columns = new Columns<>();
 
         columns.add(new Column<PlacesWrappedFile>(Icon.class, "")
         {

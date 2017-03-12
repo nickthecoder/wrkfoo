@@ -32,7 +32,7 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
         FileLister fileLister = new FileLister().extension("json");
         List<File> files = fileLister.listFiles(directory.getValue());
 
-        results = new ArrayList<WrkOptionsFile>();
+        results = new ArrayList<>();
         for (File file : files) {
             results.add(new WrkOptionsFile(file));
         }

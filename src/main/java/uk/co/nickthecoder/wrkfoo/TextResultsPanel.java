@@ -6,6 +6,8 @@ import javax.swing.JTextArea;
 
 public class TextResultsPanel extends ResultsPanel
 {
+    private static final long serialVersionUID = 1L;
+
     public JTextArea textArea;
 
     public TextResultsPanel(String text)

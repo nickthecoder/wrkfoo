@@ -9,13 +9,14 @@ ExecTool break the convension of being defined by tool's class and parameters
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
 	Need a "builder"
 
+Tabs lose their properites when dragged to a different MainWindow.
+
 New Features
 ============
 
-Un-close tab. Useful when you close a tab by mistake.
+Find/Replace etc in Editor
 
-WrkOptions : New WrkOptionsIncludes
-	Lists the includes, and allows add, remove, work with.
+Un-close tab. Useful when you close a tab by mistake.
 
 Grep to open inbuilt editor and seach for the grep expression
 
@@ -25,6 +26,8 @@ Editor to prompt when closing the tab without saving (if dirty)
 
 Task : new prompt method, designed for non-command line usage. Hides the Details button, and does neverExit.
 	Search options
+
+F4 to prompt tasks/tools.
 
 Embed a terminal emulator :
 	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal

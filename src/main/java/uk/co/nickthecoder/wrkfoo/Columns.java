@@ -20,7 +20,7 @@ public class Columns<R>
 
     public Columns()
     {
-        columns = new ArrayList<Column<R>>();
+        columns = new ArrayList<>();
 
         optionColunm = new Column<R>(String.class, "")
         {
@@ -63,7 +63,7 @@ public class Columns<R>
 
     public SimpleTable<R> createTable(ToolTableModel<R> tableModel)
     {
-        SimpleTable<R> table = new SimpleTable<R>(tableModel);
+        SimpleTable<R> table = new SimpleTable<>(tableModel);
         TableColumnModel tcm = table.getColumnModel();
 
         for (int i = 0; i < getColumnCount(); i++) {
@@ -100,7 +100,7 @@ public class Columns<R>
         
         if (defaultSortColumnIndex > 0) {
             
-            List<SortKey> keys = new ArrayList<SortKey>();
+            List<SortKey> keys = new ArrayList<>();
             SortKey sortKey = new SortKey(defaultSortColumnIndex,
                 columns.get(defaultSortColumnIndex).reverse ?
                     SortOrder.DESCENDING: SortOrder.ASCENDING  );

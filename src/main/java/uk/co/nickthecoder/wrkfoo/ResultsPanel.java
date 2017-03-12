@@ -16,6 +16,8 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
  */
 public class ResultsPanel extends JPanel
 {
+    private static final long serialVersionUID = 1L;
+
     public ResultsPanel()
     {
         this.setLayout(new BorderLayout());

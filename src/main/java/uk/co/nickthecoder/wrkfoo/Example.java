@@ -3,8 +3,8 @@ package uk.co.nickthecoder.wrkfoo;
 import java.io.File;
 
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.tool.ScanF;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
+import uk.co.nickthecoder.wrkfoo.tool.ScanF;
 import uk.co.nickthecoder.wrkfoo.tool.WrkF;
 
 public class Example

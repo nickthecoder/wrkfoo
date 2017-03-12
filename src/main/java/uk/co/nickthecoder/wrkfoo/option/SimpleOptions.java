@@ -16,9 +16,9 @@ public class SimpleOptions implements Options
 
     public SimpleOptions()
     {
-        list = new ArrayList<Option>();
-        rowMap = new HashMap<String, List<Option>>();
-        nonRowMap = new HashMap<String, Option>();
+        list = new ArrayList<>();
+        rowMap = new HashMap<>();
+        nonRowMap = new HashMap<>();
     }
 
     public void clear()
@@ -89,7 +89,7 @@ public class SimpleOptions implements Options
     {
         List<Option> options = map.get(code);
         if (options == null) {
-            options = new ArrayList<Option>();
+            options = new ArrayList<>();
             map.put(code,  options);
         }
         options.add(option);

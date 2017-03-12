@@ -18,7 +18,7 @@ public class FileTool extends AbstractListTool<FileTask, RelativePath>
     @Override
     protected Columns<RelativePath> createColumns()
     {
-        Columns<RelativePath> columns = new Columns<RelativePath>();
+        Columns<RelativePath> columns = new Columns<>();
 
         columns.add(new Column<RelativePath>(String.class, "path")
         {

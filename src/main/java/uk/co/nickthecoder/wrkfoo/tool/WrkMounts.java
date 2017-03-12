@@ -4,9 +4,9 @@ import java.io.File;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.WrkMountsTask.MountPoint;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
@@ -23,7 +23,7 @@ public class WrkMounts extends AbstractListTool<WrkMountsTask, MountPoint>
     @Override
     protected Columns<MountPoint> createColumns()
     {
-        Columns<MountPoint> columns = new Columns<MountPoint>();
+        Columns<MountPoint> columns = new Columns<>();
 
         columns.add(new Column<MountPoint>(File.class, "mount point")
         {

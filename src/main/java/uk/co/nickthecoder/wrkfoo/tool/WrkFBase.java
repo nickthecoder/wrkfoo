@@ -78,11 +78,14 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
         return shortTitle;
     }
 
+    @Override
     protected ListTableModel<WrkFWrappedFile> createTableModel()
     {
         ListTableModel<WrkFWrappedFile> tableModel = new ListTableModel<WrkFWrappedFile>(this,
             new ArrayList<WrkFWrappedFile>(), getColumns())
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Color getRowBackground(int row)
             {
@@ -97,9 +100,9 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
     @Override
     public Columns<WrkFWrappedFile> createColumns()
     {
-        Columns<WrkFWrappedFile> columns = new Columns<WrkFWrappedFile>();
+        Columns<WrkFWrappedFile> columns = new Columns<>();
 
-        columns = new Columns<WrkFWrappedFile>();
+        columns = new Columns<>();
 
         columns.add(new Column<WrkFWrappedFile>(Icon.class, "")
         {
@@ -156,6 +159,8 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
 
         MainWindow.putAction("alt UP", "upDirectory", getToolPanel(), new AbstractAction()
         {
+            private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e)
             {

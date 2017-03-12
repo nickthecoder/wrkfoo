@@ -54,7 +54,7 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
     @Override
     protected Columns<String> createColumns()
     {
-        Columns<String> columns = new Columns<String>();
+        Columns<String> columns = new Columns<>();
 
         columns.add(new Column<String>(String.class, "include")
         {

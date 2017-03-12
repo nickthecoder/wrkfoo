@@ -21,7 +21,7 @@ public class History
 
     public History()
     {
-        history = new ArrayList<Moment>();
+        history = new ArrayList<>();
         currentIndex = -1; // We don't have any Moment yet.
     }
 
@@ -118,7 +118,7 @@ public class History
         Moment(Tool tool)
         {
             this.tool = tool;
-            parameterValues = new HashMap<String, Object>();
+            parameterValues = new HashMap<>();
 
             saveParameters(tool.getTask().getParameters());
         }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JTable;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
@@ -18,6 +18,8 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
 
 public class TableToolPanel<R> extends ToolPanel
 {
+    private static final long serialVersionUID = 1L;
+
     protected SimpleTable<R> table;
 
     protected TableTool<R> tableTool;
@@ -28,6 +30,7 @@ public class TableToolPanel<R> extends ToolPanel
         tableTool = tool;
     }
 
+    @Override
     public void postCreate()
     {
         super.postCreate();
@@ -36,18 +39,24 @@ public class TableToolPanel<R> extends ToolPanel
         TableResultsPanel<R> results = (TableResultsPanel<R>) resultsPanel;
         table = results.table;
 
-        MainWindow.putAction("ENTER", "defaultRowAction", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+        MainWindow.putAction("ENTER", "defaultRowAction", table, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
+                private static final long serialVersionUID = 1L;
+
+                @Override
                 public void actionPerformed(ActionEvent e)
                 {
                     processOptions(false);
                 }
             });
 
-        MainWindow.putAction("ctrl ENTER", "defaultRowActionNewTab", table, JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+        MainWindow.putAction("ctrl ENTER", "defaultRowActionNewTab", table, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
+                private static final long serialVersionUID = 1L;
+
+                @Override
                 public void actionPerformed(ActionEvent e)
                 {
                     processOptions(true);
@@ -189,7 +198,7 @@ public class TableToolPanel<R> extends ToolPanel
             public void actionPerformed(ActionEvent e)
             {
                 ToolTableModel<?> model = table.getModel();
-                List<Object> rows = new ArrayList<Object>();
+                List<Object> rows = new ArrayList<>();
 
                 for (int r : table.getSelectedRows()) {
                     // TODO check if I need to convert from view to model
@@ -266,7 +275,7 @@ public class TableToolPanel<R> extends ToolPanel
     {
         ToolTableModel<?> model = table.getModel();
 
-        List<Object> rows = new ArrayList<Object>();
+        List<Object> rows = new ArrayList<>();
         for (int i = 0; i < model.getRowCount(); i++) {
             Object row = model.getRow(i);
             Option otherOption = tableTool.getOptions().getRowOption(model.getCode(i), row);

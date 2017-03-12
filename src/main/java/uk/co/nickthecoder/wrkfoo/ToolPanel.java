@@ -17,6 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
@@ -31,6 +32,8 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class ToolPanel extends JPanel implements ToolListener
 {
+    private static final long serialVersionUID = 1L;
+
     private Tool tool;
 
     private HidingSplitPane splitPane;
@@ -66,8 +69,8 @@ public class ToolPanel extends JPanel implements ToolListener
         scrollablePanel.setLayout(new BoxLayout(scrollablePanel, BoxLayout.Y_AXIS));
         scrollablePanel.add(parametersPanel);
 
-        parametersScrollPane = new JScrollPane(scrollablePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        parametersScrollPane = new JScrollPane(scrollablePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         // parametersScrollPane = new
         // JScrollPane(parametersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         parametersScrollPane.setMinimumSize(new Dimension(0, 0));
@@ -153,6 +156,12 @@ public class ToolPanel extends JPanel implements ToolListener
 
         MainWindow.putAction("F9", "toggleLeftPane", this, new AbstractAction()
         {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
+            @Override
             public void actionPerformed(ActionEvent e)
             {
                 splitPane.toggleLeft();
@@ -160,6 +169,12 @@ public class ToolPanel extends JPanel implements ToolListener
         });
         MainWindow.putAction("ctrl F9", "toggleRightPane", this, new AbstractAction()
         {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
+            @Override
             public void actionPerformed(ActionEvent e)
             {
                 splitPane.toggleRight();

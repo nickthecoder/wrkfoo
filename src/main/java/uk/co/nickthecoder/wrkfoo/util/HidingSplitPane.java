@@ -10,6 +10,8 @@ import javax.swing.UIManager;
 
 public class HidingSplitPane extends JSplitPane
 {
+    private static final long serialVersionUID = 1L;
+
     private int loc = 0;
 
     State state;

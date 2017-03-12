@@ -113,6 +113,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         this.useNewTab = value;
     }
 
+    @Override
     public boolean getUseNewTab()
     {
         return useNewTab;
@@ -152,6 +153,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
             } finally {
                 SwingUtilities.invokeLater(new Runnable()
                 {
+                    @Override
                     public void run()
                     {
                         updateResults();
@@ -162,11 +164,13 @@ public abstract class AbstractTool<T extends Task> implements Tool
         }
     }
 
+    @Override
     public void addToolListener(ToolListener cl)
     {
         toolListeners.add(cl);
     }
 
+    @Override
     public void removeToolListener(ToolListener cl)
     {
         toolListeners.remove(cl);
@@ -246,6 +250,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
      * tool, and then copies the task's parameter values across.
      * In rare cases tools may need to override this method to perform additional logic.
      */
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public AbstractTool<T> duplicate()
     {
@@ -283,6 +288,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return Resources.instance.getOptionsFile(optionsName());
     }
 
+    @Override
     public Options getOptions()
     {
         if (options == null) {

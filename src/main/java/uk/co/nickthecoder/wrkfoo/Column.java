@@ -6,6 +6,7 @@ import javax.swing.table.TableCellRenderer;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
+import uk.co.nickthecoder.wrkfoo.tool.WrkFTask;
 
 /**
  * 

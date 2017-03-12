@@ -12,6 +12,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     protected Columns<R> columns;
 
 
+    @Override
     public Columns<R> getColumns()
     {
         if (columns == null) {
@@ -32,6 +33,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
         this.clearResults();
     }
 
+    @Override
     protected TableToolPanel<R> createToolPanel()
     {
         return new TableToolPanel<R>(this);

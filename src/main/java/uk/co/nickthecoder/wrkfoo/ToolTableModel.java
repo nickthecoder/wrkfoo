@@ -6,6 +6,8 @@ import javax.swing.table.AbstractTableModel;
 
 public abstract class ToolTableModel<R> extends AbstractTableModel
 {
+    private static final long serialVersionUID = 1L;
+
     private TableTool<?> tool;
 
     private String[] codes = new String[] {};

@@ -11,6 +11,7 @@ public class WrappedFile
         this.file = file;
     }
     
+    @Override
     public String toString()
     {
         return file.getPath();

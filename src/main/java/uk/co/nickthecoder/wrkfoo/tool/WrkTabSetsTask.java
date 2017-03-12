@@ -40,7 +40,7 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
     {
         super.body();
 
-        wrappedResults = new ArrayList<WrkTabSetsFile>();
+        wrappedResults = new ArrayList<>();
         for (File file : results) {
             WrkTabSetsFile wrapped = new WrkTabSetsFile(file);
             TabSetData tsd = TabSetData.load(file);

@@ -10,13 +10,14 @@ public class OptionsGroup implements Options
 
     public OptionsGroup()
     {
-        optionsList = new ArrayList<Options>();
+        optionsList = new ArrayList<>();
     }
 
     public void add(Options options)
     {
-        if (options == null)
+        if (options == null) {
             return;
+        }
 
         optionsList.add(options);
     }

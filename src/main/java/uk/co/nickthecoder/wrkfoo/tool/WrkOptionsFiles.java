@@ -31,7 +31,7 @@ public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOp
     @Override
     protected Columns<WrkOptionsFile> createColumns()
     {
-        Columns<WrkOptionsFile> columns = new Columns<WrkOptionsFile>();
+        Columns<WrkOptionsFile> columns = new Columns<>();
         columns.add(new Column<WrkOptionsFile>(File.class, "file")
         {
             @Override

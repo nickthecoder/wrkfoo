@@ -17,6 +17,8 @@ import javax.swing.table.TableCellRenderer;
 
 public class SizeRenderer extends JPanel implements TableCellRenderer, LayoutManager
 {
+    private static final long serialVersionUID = 1L;
+
     private static SizeRenderer instance;
 
     public static final DecimalFormat format = new DecimalFormat("#.#");

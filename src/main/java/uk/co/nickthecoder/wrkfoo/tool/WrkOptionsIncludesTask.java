@@ -33,7 +33,7 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
     public void body()
     {
         optionsData = Resources.instance.readOptionsData(optionsFile.getValue());
-        results = new ArrayList<String>(optionsData.include);
+        results = new ArrayList<>(optionsData.include);
     }
 
 }

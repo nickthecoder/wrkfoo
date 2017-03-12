@@ -48,7 +48,7 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
     public void body()
     {
         directory = store.getValue().getParentFile();
-        results = new ArrayList<PlacesWrappedFile>();
+        results = new ArrayList<>();
 
         BufferedReader reader = null;
         try {

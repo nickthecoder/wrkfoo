@@ -21,7 +21,7 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
     @Override
     public void body()
     {
-        results = new ArrayList<MountPoint>();
+        results = new ArrayList<>();
 
         Iterable<FileStore> stores = FileSystems.getDefault().getFileStores();
         for (FileStore store : stores) {
@@ -86,8 +86,9 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
                     } catch (Exception e) {
                         // Do nothing
                     }
-                    if (field != null)
+                    if (field != null) {
                         break;
+                    }
                     klass = klass.getSuperclass();
                 } while (klass != null);
 
@@ -109,6 +110,7 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
          * 
          * @return The path
          */
+        @Override
         public String toString()
         {
             return file.getPath();
