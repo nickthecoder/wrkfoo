@@ -1,14 +1,19 @@
-package uk.co.nickthecoder.wrkfoo.tool;
+package uk.co.nickthecoder.wrkfoo.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.fife.ui.rsyntaxtextarea.FileLocation;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.SearchContext;
 
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
@@ -27,6 +32,10 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     JToolBar toolBar;
 
+    FindToolBar findToolBar;
+
+    JToggleButton findButton;
+
     public EditorPanel(Editor editorTask)
     {
         this.editorTask = editorTask;
@@ -39,6 +48,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
         toolBar = new JToolBar();
         populateToolBar();
+
+        initSearchDialogs();
     }
 
     private void populateToolBar()
@@ -53,7 +64,14 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar.add(builder.name("editRedo").tooltip("Redo").shortcut("ctrl shift Z").buildButton());
         toolBar.add(builder.name("editCopy").tooltip("Copy").shortcut("ctrl C").buildButton());
         toolBar.add(builder.name("editPaste").tooltip("Paste").shortcut("ctrl V").buildButton());
-        // toolBar.add(builder.name("editFind").tooltip("Find").shortcut("ctrl V").buildButton());
+
+        toolBar.add(
+            findButton = builder.name("editFind").tooltip("Search").shortcut("ctrl F").buildToggleButton());
+
+        toolBar.add(builder.name("editReplace").tooltip("Find and Replace").shortcut("ctrl H").buildButton());
+        toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").shortcut("ctrl L").buildButton());
+
+        builder.name("escape").shortcut("ESCAPE").buildShortcut();
     }
 
     public void load(File file)
@@ -100,6 +118,67 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     public void onEditPaste()
     {
         editorPane.paste();
+    }
+
+    public void onEditFind()
+    {
+        if (replaceDialog.isVisible()) {
+            replaceDialog.setVisible(false);
+        }
+        findToolBar.setVisible(findButton.isSelected());
+    }
+
+    public void onEditReplace()
+    {
+        if (findToolBar.isVisible()) {
+            findToolBar.setVisible(false);
+            findButton.setSelected(false);
+        }
+        replaceDialog.setVisible(true);
+    }
+
+    public void onEditGoToLine()
+    {
+        /*
+         * Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditorPanel.this);
+         * GoToDialog dialog = new GoToDialog(frame);
+         * dialog.setMaxLineNumberAllowed(editorPane.getLineCount());
+         * dialog.setVisible(true);
+         * int line = dialog.getLineNumber();
+         * if (line > 0) {
+         * try {
+         * editorPane.setCaretPosition(editorPane.getLineStartOffset(line - 1));
+         * } catch (BadLocationException ble) { // Never happens
+         * UIManager.getLookAndFeel().provideErrorFeedback(editorPane);
+         * ble.printStackTrace();
+         * }
+         * }
+         */
+    }
+
+    public void onEscape()
+    {
+        findToolBar.setVisible(false);
+        findButton.setSelected(false);
+        replaceDialog.setVisible(false);
+    }
+
+    private ReplaceDialog replaceDialog;
+
+    /**
+     * Creates our Find and Replace dialogs.
+     */
+    public void initSearchDialogs()
+    {
+        findToolBar = new FindToolBar(editorPane);
+        findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        findToolBar.setVisible(false);
+
+        Frame window = (Frame) SwingUtilities.getWindowAncestor(this);
+        replaceDialog = new ReplaceDialog(window, editorPane);
+
+        SearchContext context = findToolBar.getSearchContext();
+        replaceDialog.setSearchContext(context);
     }
 
 }

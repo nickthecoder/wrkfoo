@@ -6,15 +6,18 @@ import java.lang.reflect.Method;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
 public class ActionBuilder
@@ -186,9 +189,72 @@ public class ActionBuilder
         return result;
     }
 
+    public JToggleButton buildToggleButton()
+    {
+        final JToggleButton result = new JToggleButton();
+        buildButton(result);
+
+        if (method != null) {
+            final Action action = createAction();
+            result.addActionListener(action);
+
+            if (shortcut != null) {
+                Action toggleAction = new AbstractAction()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        result.setSelected(!result.isSelected());
+                        action.actionPerformed(e);
+                    }
+                };
+                mapShortcut(toggleAction);
+            }
+        }
+
+        reset();
+        return result;
+    }
+
     public JButton buildButton()
     {
         JButton result = new JButton();
+        buildButton(result);
+
+        if (method != null) {
+            Action action = createAction();
+            result.addActionListener(action);
+            mapShortcut(action);
+        }
+
+        reset();
+        return result;
+    }
+
+    private void buildButton(AbstractButton result)
+    {
+
+        if (label != null) {
+            result.setText(label);
+        }
+        if (icon != null) {
+            result.setIcon(icon);
+        }
+        if (tooltip != null) {
+            if (shortcut == null) {
+                result.setToolTipText(tooltip);
+            } else {
+                result.setToolTipText(tooltip + " (" + shortcut.replace(' ', '+') + ")");
+            }
+        }
+
+        result.setVisible(visible);
+        result.setEnabled(enable);
+    }
+
+    public JCheckBox buildCheckBox()
+    {
+        JCheckBox result = new JCheckBox();
 
         if (label != null) {
             result.setText(label);

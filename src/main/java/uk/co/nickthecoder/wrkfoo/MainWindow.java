@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -63,6 +64,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     private JToolBar toolBar;
 
+    private JPanel statusBarPanel;
+
+    private JToolBar statusBar;
+
     /**
      * remembers the MainWindow that the mouse was last inside (or null if it isn't in
      * a MainWindow). Used when dragging/dropping tabs.
@@ -70,8 +75,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
     private static MainWindow mouseMainWindow;
 
     private JTextField optionsTextField;
-
-    private JToolBar statusBar;
 
     private JLabel message;
 
@@ -118,12 +121,16 @@ public class MainWindow extends JFrame implements ExceptionHandler
         toolBarPanel = new JPanel();
         toolBarPanel.setLayout(new WrapLayout(FlowLayout.LEFT));
 
+        statusBarPanel = new JPanel();
+        statusBarPanel.setLayout(new BoxLayout(statusBarPanel, BoxLayout.Y_AXIS));
+        
         toolBar = new JToolBar();
         statusBar = new JToolBar();
         toolBar.setFloatable(false);
         statusBar.setFloatable(false);
 
         toolBarPanel.add(toolBar);
+        statusBarPanel.add(statusBar);
 
         fillToolbars();
 
@@ -132,7 +139,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         whole.setLayout(new BorderLayout());
         whole.add(tabbedPane, BorderLayout.CENTER);
         whole.add(toolBarPanel, BorderLayout.NORTH);
-        whole.add(statusBar, BorderLayout.SOUTH);
+        whole.add(statusBarPanel, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
 
@@ -155,6 +162,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return toolBarPanel;
     }
 
+    public JPanel getStatusBarPanel()
+    {
+        return statusBarPanel;
+    }
+
     public ToolTab getCurrentTab()
     {
         return tabbedPane.getCurrentTab();
@@ -169,7 +181,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
         toolBar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").buildButton());
-        toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl F5").buildButton());
+        // MainWindow.toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl
+        // F5").buildButton());
         toolBar.addSeparator();
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").buildButton());

@@ -30,6 +30,9 @@ public class ToolTab
 
     public ToolTab(Tool tool)
     {
+        if (tool == null) {
+            System.out.println( "Setting a null tool" );
+        }
         this.tool = tool;
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -106,9 +109,6 @@ public class ToolTab
     {
         MainWindow.putAction("alt LEFT", "Action.undo", panel, new AbstractAction()
         {
-            /**
-             * 
-             */
             private static final long serialVersionUID = 1L;
 
             @Override

@@ -1,4 +1,4 @@
-package uk.co.nickthecoder.wrkfoo.tool;
+package uk.co.nickthecoder.wrkfoo.editor;
 
 import java.io.File;
 
@@ -16,7 +16,7 @@ import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
-import uk.co.nickthecoder.wrkfoo.tool.Editor.EditorTask;
+import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 
 public class Editor extends AbstractTool<EditorTask>
 {
@@ -27,6 +27,7 @@ public class Editor extends AbstractTool<EditorTask>
     public Editor()
     {
         super(new EditorTask());
+        editorPanel = new EditorPanel(this);
     }
 
     @Override
@@ -68,31 +69,29 @@ public class Editor extends AbstractTool<EditorTask>
     @Override
     public ResultsPanel createResultsComponent()
     {
-        if (editorPanel == null) {
-            editorPanel = new EditorPanel(this);
-            editorPanel.editorPane.getDocument().addDocumentListener(new DocumentListener()
+        editorPanel.editorPane.getDocument().addDocumentListener(new DocumentListener()
+        {
+
+            @Override
+            public void insertUpdate(DocumentEvent e)
             {
+                checkDirty();
+            }
 
-                @Override
-                public void insertUpdate(DocumentEvent e)
-                {
-                    checkDirty();
-                }
+            @Override
+            public void removeUpdate(DocumentEvent e)
+            {
+                checkDirty();
+            }
 
-                @Override
-                public void removeUpdate(DocumentEvent e)
-                {
-                    checkDirty();
-                }
+            @Override
+            public void changedUpdate(DocumentEvent e)
+            {
+                checkDirty();
+            }
 
-                @Override
-                public void changedUpdate(DocumentEvent e)
-                {
-                    checkDirty();
-                }
+        });
 
-            });
-        }
         return editorPanel;
     }
 
@@ -144,20 +143,27 @@ public class Editor extends AbstractTool<EditorTask>
     private void setToolBarVisible(boolean show)
     {
         JToolBar tb = editorPanel.toolBar;
+        FindToolBar ftb = editorPanel.findToolBar;
 
+        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
         if (show) {
             if (tb.getParent() == null) {
-                MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
                 mainWindow.getToolbarPanel().add(tb);
-                mainWindow.getToolbarPanel().repaint();
+            }
+            if (ftb.getParent() == null) {
+                mainWindow.getStatusBarPanel().add(ftb, 0);
             }
 
         } else {
             if (tb.getParent() != null) {
-                MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
-                mainWindow.getToolbarPanel().remove(editorPanel.toolBar);
-                mainWindow.getToolbarPanel().repaint();
+                tb.getParent().remove(tb);
             }
+            if (ftb.getParent() == null) {
+                ftb.getParent().remove(ftb);
+            }
+        }
+        if (mainWindow != null) {
+            mainWindow.getToolbarPanel().repaint();
         }
     }
 

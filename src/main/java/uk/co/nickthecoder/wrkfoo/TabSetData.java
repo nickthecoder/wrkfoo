@@ -97,6 +97,9 @@ public class TabSetData
 
         for (TabData tabData : tabs) {
             Tool tool = tabData.createTool();
+            if (tool == null) {
+                continue;
+            }
             mainWindow.addTab(tool);
             String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
             ToolTab tab = tool.getToolTab();
@@ -160,6 +163,7 @@ public class TabSetData
                 return tool;
 
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }

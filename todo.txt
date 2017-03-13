@@ -91,13 +91,4 @@ Much Later
 
 Unresolved bugs
 ===============
-
-I've spent quite on these bugs, but I'm not sure the bug is in my code, I think it may be Gnome screwing up (or maybe java). 
-For now, I'm ignoring them. I'll try on a different window manager some time, and see if the bug goes away.
-
-F4 often doesn't work
-
-Open wrkfoo tb set "te" against a file, then F4 to close gedit sometimes closes the wrkfoo window.
-	Gedit doesn't have keyboard focus, but is infront of wrkfoo window. Surely this is a gnome bug.
-	Try using Swingutils.runlater?? Doesn't help!
 	
