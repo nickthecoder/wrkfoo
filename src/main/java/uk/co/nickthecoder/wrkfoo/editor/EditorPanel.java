@@ -10,10 +10,10 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.FileLocation;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.SearchContext;
 
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
@@ -26,7 +26,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     private Editor editorTask;
 
-    TextEditorPane editorPane;
+    private TextEditorPane editorPane;
 
     private RTextScrollPane scrollPane;
 
@@ -36,6 +36,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     JToggleButton findButton;
 
+    Searcher searcher;
+
     public EditorPanel(Editor editorTask)
     {
         this.editorTask = editorTask;
@@ -43,13 +45,23 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         this.setLayout(new BorderLayout());
 
         editorPane = new TextEditorPane();
+
+        ErrorStrip errorStrip = new ErrorStrip(editorPane);
+        this.add(errorStrip, BorderLayout.EAST);
+
         scrollPane = new RTextScrollPane(editorPane);
         this.add(scrollPane, BorderLayout.CENTER);
+        searcher = new Searcher(editorPane);
 
         toolBar = new JToolBar();
-        populateToolBar();
 
         initSearchDialogs();
+        populateToolBar();
+    }
+
+    public TextEditorPane getEditorPane()
+    {
+        return editorPane;
     }
 
     private void populateToolBar()
@@ -120,20 +132,26 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         editorPane.paste();
     }
 
+    public void onCloseFind()
+    {
+        findButton.setSelected(false);
+        findToolBar.setVisible(false);
+        // TODO Remove highlights
+    }
+
     public void onEditFind()
     {
-        if (replaceDialog.isVisible()) {
-            replaceDialog.setVisible(false);
+        replaceDialog.setVisible(false);
+        if (!findButton.isSelected()) {
+            onCloseFind();
+        } else {
+            findToolBar.setVisible(true);
         }
-        findToolBar.setVisible(findButton.isSelected());
     }
 
     public void onEditReplace()
     {
-        if (findToolBar.isVisible()) {
-            findToolBar.setVisible(false);
-            findButton.setSelected(false);
-        }
+        onCloseFind();
         replaceDialog.setVisible(true);
     }
 
@@ -170,15 +188,15 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
      */
     public void initSearchDialogs()
     {
-        findToolBar = new FindToolBar(editorPane);
-        findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        findToolBar = new FindToolBar(searcher);
+        findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         findToolBar.setVisible(false);
 
         Frame window = (Frame) SwingUtilities.getWindowAncestor(this);
-        replaceDialog = new ReplaceDialog(window, editorPane);
+        replaceDialog = new ReplaceDialog(window, searcher);
 
-        SearchContext context = findToolBar.getSearchContext();
-        replaceDialog.setSearchContext(context);
+        // SearchContext context = findToolBar.getSearchContext();
+        // replaceDialog.setSearchContext(context);
     }
 
 }

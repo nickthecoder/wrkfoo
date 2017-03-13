@@ -9,21 +9,11 @@ import org.fife.ui.rtextarea.SearchContext;
 
 public class ReplaceDialog extends JDialog
 {
-    private SearchContext context;
-
-    public ReplaceDialog( Frame parent, TextEditorPane tep )
+    private Searcher searcher;
+    
+    public ReplaceDialog( Frame parent, Searcher searcher)
     {
-        this.context = new SearchContext();
-    }
-
-    public void setSearchContext(SearchContext value)
-    {
-        this.context = value;
-    }
-
-    public SearchContext getSearchContext()
-    {
-        return this.context;
+        this.searcher = searcher;
     }
     
 }

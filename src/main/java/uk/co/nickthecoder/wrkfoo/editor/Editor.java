@@ -45,7 +45,7 @@ public class Editor extends AbstractTool<EditorTask>
     @Override
     public String getTitle()
     {
-        return task.file.getValue().getName() + (editorPanel.editorPane.isDirty() ? " *" : "");
+        return task.file.getValue().getName() + (editorPanel.getEditorPane().isDirty() ? " *" : "");
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Editor extends AbstractTool<EditorTask>
     @Override
     public ResultsPanel createResultsComponent()
     {
-        editorPanel.editorPane.getDocument().addDocumentListener(new DocumentListener()
+        editorPanel.getEditorPane().getDocument().addDocumentListener(new DocumentListener()
         {
 
             @Override
@@ -99,8 +99,8 @@ public class Editor extends AbstractTool<EditorTask>
 
     public void checkDirty()
     {
-        if (editorPanel.editorPane.isDirty() != wasDirty) {
-            wasDirty = editorPanel.editorPane.isDirty();
+        if (editorPanel.getEditorPane().isDirty() != wasDirty) {
+            wasDirty = editorPanel.getEditorPane().isDirty();
             getToolTab().getTabbedPane().updateTabInfo(getToolTab());
         }
     }
@@ -158,7 +158,7 @@ public class Editor extends AbstractTool<EditorTask>
             if (tb.getParent() != null) {
                 tb.getParent().remove(tb);
             }
-            if (ftb.getParent() == null) {
+            if (ftb.getParent() != null) {
                 ftb.getParent().remove(ftb);
             }
         }

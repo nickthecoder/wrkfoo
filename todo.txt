@@ -4,6 +4,8 @@ Current Task
 BUGS
 ====
 
+Moving tabs throws execptions, and removes tabs.
+
 ExecTool break the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.

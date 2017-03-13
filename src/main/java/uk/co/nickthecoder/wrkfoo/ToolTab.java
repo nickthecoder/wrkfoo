@@ -30,9 +30,6 @@ public class ToolTab
 
     public ToolTab(Tool tool)
     {
-        if (tool == null) {
-            System.out.println( "Setting a null tool" );
-        }
         this.tool = tool;
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
