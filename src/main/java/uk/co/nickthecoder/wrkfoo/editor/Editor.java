@@ -8,8 +8,6 @@ import javax.swing.Icon;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
@@ -21,9 +19,9 @@ import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 
-public class Editor extends AbstractTool<EditorTask> implements WindowFocusListener
+public class Editor extends AbstractTool<EditorTask> implements WindowFocusListener, EditorListener
 {
-    private EditorPanel editorPanel;
+    EditorPanel editorPanel;
 
     public static final Icon icon = Resources.icon("textEditor.png");
 
@@ -31,6 +29,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     {
         super(new EditorTask());
         editorPanel = new EditorPanel(this);
+        editorPanel.addEditorListener( this );
     }
 
     @Override
@@ -63,49 +62,25 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         return task;
     }
 
+    private boolean firstTime = true;
+
     @Override
     public void updateResults()
     {
-        editorPanel.load(task.file.getValue());
+        if (firstTime) {
+            editorPanel.load(task.file.getValue());
+            firstTime = false;
+        } else {
+            editorPanel.onDocumentRevert();
+        }
     }
 
     @Override
     public ResultsPanel createResultsComponent()
     {
-        editorPanel.getEditorPane().getDocument().addDocumentListener(new DocumentListener()
-        {
-
-            @Override
-            public void insertUpdate(DocumentEvent e)
-            {
-                checkDirty();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e)
-            {
-                checkDirty();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e)
-            {
-            }
-
-        });
-
         return editorPanel;
     }
 
-    private boolean wasDirty = false;
-
-    public void checkDirty()
-    {
-        if (editorPanel.getEditorPane().isDirty() != wasDirty) {
-            wasDirty = editorPanel.getEditorPane().isDirty();
-            getToolTab().getTabbedPane().updateTabInfo(getToolTab());
-        }
-    }
 
     private ChangeListener tabbedPaneListener;
 
@@ -123,7 +98,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
                     boolean show = getToolTab().getTabbedPane().getCurrentTab() == getToolTab();
                     activate(show);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    editorPanel.handleException(e);
                 }
             }
         };
@@ -150,7 +125,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
         if (show) {
             WrkFoo.assertIsEDT();
-            
+
             mainWindow.addWindowFocusListener(this);
 
             if (tb.getParent() == null) {
@@ -194,7 +169,6 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         @Override
         public void body()
         {
-
         }
     }
 
@@ -207,6 +181,23 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     @Override
     public void windowLostFocus(WindowEvent e)
     {
+    }
+
+
+    private boolean wasDirty = false;
+
+    public void checkDirty()
+    {
+        if (editorPanel.getEditorPane().isDirty() != wasDirty) {
+            wasDirty = editorPanel.getEditorPane().isDirty();
+            getToolTab().getTabbedPane().updateTabInfo(getToolTab());
+        }
+    }
+    
+    @Override
+    public void documentChanged()
+    {
+        checkDirty();
     }
 
 }

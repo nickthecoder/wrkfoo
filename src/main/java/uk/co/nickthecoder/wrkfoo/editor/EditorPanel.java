@@ -4,11 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.FileLocation;
@@ -17,14 +23,15 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
-public class EditorPanel extends ResultsPanel implements ExceptionHandler
+public class EditorPanel extends ResultsPanel implements ExceptionHandler, DocumentListener
 {
     private static final long serialVersionUID = 1L;
 
-    Editor editorTask;
+    Editor editorTool;
 
     TextEditorPane editorPane;
 
@@ -40,9 +47,11 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     ReplaceDialog replaceDialog;
 
-    public EditorPanel(Editor editorTask)
+    List<EditorListener> listeners = new ArrayList<>();
+
+    public EditorPanel(Editor editorTool)
     {
-        this.editorTask = editorTask;
+        this.editorTool = editorTool;
 
         this.setLayout(new BorderLayout());
 
@@ -59,6 +68,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
         initSearchDialogs();
         populateToolBar();
+        editorPane.getDocument().addDocumentListener(this);
     }
 
     public TextEditorPane getEditorPane()
@@ -72,7 +82,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
         toolBar.add(builder.name("documentSave").tooltip("Save Document").shortcut("ctrl S").buildButton());
         // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").shortcut("ctrl S").buildButton());
-        toolBar.add(builder.name("documentRevert").tooltip("Revert").shortcut("ctrl F5").buildButton());
+        toolBar.add(builder.name("documentRevert").tooltip("Revert (F5)").buildButton());
         toolBar.addSeparator();
         toolBar.add(builder.name("editUndo").tooltip("Undo").shortcut("ctrl Z").buildButton());
         toolBar.add(builder.name("editRedo").tooltip("Redo").shortcut("ctrl shift Z").buildButton());
@@ -111,18 +121,13 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     @Override
     public void handleException(Throwable e)
     {
-        MainWindow.getMainWindow(editorTask.getToolPanel()).handleException(e);
+        MainWindow.getMainWindow(editorTool.getToolPanel()).handleException(e);
     }
 
     public void onDocumentSave() throws IOException
     {
         editorPane.save();
-        editorTask.checkDirty();
-    }
-
-    public void onDocumentRevert() throws IOException
-    {
-        editorPane.reload();
+        fireChange();
     }
 
     public void onEditUndo()
@@ -175,12 +180,72 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         new GoToLineTask(editorPane).neverExit().promptTask();
     }
 
+    public void onDocumentRevert()
+    {
+        WrkFoo.assertIsEDT();
+
+        int result = JOptionPane.showConfirmDialog(this, "Revert file?", "Revert", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+
+            try {
+                int line = editorPane.getCaretLineNumber();
+                editorPane.reload();
+                try {
+                    editorPane.setCaretPosition(editorPane.getLineStartOffset(line));
+                } catch (BadLocationException e) {
+                    // Tried to got to a line number too high for the reverted document, so go to EOF
+                    editorPane.setCaretPosition(editorPane.getDocument().getLength());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        fireChange();
+
+        editorPane.requestFocus();
+    }
+
     public void onEscape()
     {
         findToolBar.setVisible(false);
         findButton.setSelected(false);
         replaceDialog.setVisible(false);
         editorPane.requestFocus();
+    }
+
+    public void addEditorListener(EditorListener listener)
+    {
+        listeners.add(listener);
+    }
+
+    public void removeEditorListener(EditorListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    private void fireChange()
+    {
+        for (EditorListener listener : listeners) {
+            listener.documentChanged();
+        }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e)
+    {
+        fireChange();
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e)
+    {
+        fireChange();
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e)
+    {
     }
 
 }
