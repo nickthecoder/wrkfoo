@@ -19,7 +19,7 @@ public class GrepTask extends FileTask
         .choice("P", "P", "Perl")
         .parameter();
 
-    public BooleanParameter ignoreCase = new BooleanParameter.Builder("ignoreCase")
+    public BooleanParameter matchCase = new BooleanParameter.Builder("matchCase")
         .parameter();
 
     public BooleanParameter matchWords = new BooleanParameter.Builder("matchWords")
@@ -42,7 +42,7 @@ public class GrepTask extends FileTask
 
     public GrepTask()
     {
-        addParameters(regex, directory, type, ignoreCase, matchWords, matchLines, invertResults);
+        addParameters(regex, directory, type, matchCase, matchWords, matchLines, invertResults);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class GrepTask extends FileTask
     {
         return new Exec("grep", "-rHs" + type.getValue(),
             invertResults.getValue() ? "-L" : "-l",
-            ignoreCase.getValue() ? "-i" : null,
+            matchCase.getValue() ? null : "-i",
             matchWords.getValue() ? "-w" : null,
             matchLines.getValue() ? "-x" : null,
             regex.getRegex(), ".");
