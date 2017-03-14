@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.util;
 
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Method;
@@ -15,6 +16,7 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
@@ -52,10 +54,21 @@ public class ActionBuilder
         this.resourceClass = receiver.getClass();
 
         if (receiver instanceof JFrame) {
-            component((JFrame) receiver);
+            Component content = ((JFrame) receiver).getContentPane();
+            if (content instanceof JComponent) {
+                component((JComponent) content);
+            }
+
+        } else if (receiver instanceof JDialog) {
+            Component content = ((JDialog) receiver).getContentPane();
+            if (content instanceof JComponent) {
+                component((JComponent) content);
+            }
+
         } else if (receiver instanceof JComponent) {
             component((JComponent) receiver);
         }
+
         if (receiver instanceof ExceptionHandler) {
             exceptionHandler = (ExceptionHandler) receiver;
         }
@@ -64,12 +77,6 @@ public class ActionBuilder
     public ActionBuilder exceptionHandler(ExceptionHandler handler)
     {
         this.exceptionHandler = handler;
-        return this;
-    }
-
-    public ActionBuilder component(JFrame frame)
-    {
-        this.component = frame.getRootPane();
         return this;
     }
 

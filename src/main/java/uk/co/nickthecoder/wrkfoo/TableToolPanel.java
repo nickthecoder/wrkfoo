@@ -244,7 +244,7 @@ public class TableToolPanel<R> extends ToolPanel
                         }
 
                         if (!newTab) {
-                            // TODO Should the remaining options be ignore? (if results were replaced).
+                            // TODO Should the remaining options be ignore? (if message were replaced).
                             // For now, lets be safe, and only apply a single option.
                             break;
                             // Note, this is bad, because we are NOT doing this in the order as seen in the GUI

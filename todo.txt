@@ -1,10 +1,12 @@
 Current Task
 ============
 
+Replace dialog
+
 BUGS
 ====
 
-Moving tabs throws execptions, and removes tabs.
+Moving editor tabs throws execptions, and removes tabs.
 
 ExecTool break the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
@@ -15,6 +17,33 @@ Tabs lose their properites when dragged to a different MainWindow.
 
 New Features
 ============
+
+Ctrl+O in the editor to start a new Editor with parent filename
+
+BooleanParameter
+	hint attribute, which goes on the right
+	Use a null label to have the tick boxes left aligned in the ParametersPanel
+	use a "" label and a hint to have them aligned as usual, but with no label to the left.
+	Maybe make the label "" or null by default.
+
+Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
+
+Editor saveAs changes the file to getParent then does check() to force parameter to appear?
+	Nah, just run a saveAs Task.
+
+Exec runWhenCompleted( Runnable )
+
+Settings Task to edit the Settings data
+
+Non-row option field in the status bar
+	Settings allow the toolbars to be shown/hidden
+		Non-row option field, Regular toolbar, Editor toolbar
+	Global option to show the Settings Task.
+
+MegaTabSet
+	Tabs down the left edge, or a pulldown list in the toolbar
+	Each MegaTab has its own tabset (and must know the filename of the tabset).
+	This way, I can have multiple projects in a single window.
 
 Find/Replace etc in Editor
 

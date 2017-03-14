@@ -87,7 +87,6 @@ public class Editor extends AbstractTool<EditorTask>
             @Override
             public void changedUpdate(DocumentEvent e)
             {
-                checkDirty();
             }
 
         });
@@ -161,6 +160,8 @@ public class Editor extends AbstractTool<EditorTask>
             if (ftb.getParent() != null) {
                 ftb.getParent().remove(ftb);
             }
+            editorPanel.replaceDialog.setVisible(false);
+            editorPanel.replaceDialog.dispose();
         }
         if (mainWindow != null) {
             mainWindow.getToolbarPanel().repaint();

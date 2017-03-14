@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class FindToolBar extends JPanel implements SearcherListener
@@ -32,6 +31,8 @@ public class FindToolBar extends JPanel implements SearcherListener
     private JCheckBox matchRegex;
 
     private JCheckBox matchCase;
+
+    public JPanel rightPanel;
 
     public FindToolBar(Searcher s)
     {
@@ -81,17 +82,17 @@ public class FindToolBar extends JPanel implements SearcherListener
         label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
         this.add(label);
 
-        JPanel right = new JPanel();
-        this.add(right, BorderLayout.EAST);
+        rightPanel = new JPanel();
+        this.add(rightPanel, BorderLayout.EAST);
 
         matchCase = builder.name("matchCase").label("Match Case").buildCheckBox();
-        right.add(matchCase);
+        rightPanel.add(matchCase);
 
         matchWholeWord = builder.name("matchWholeWord").label("Whole Whole Word").buildCheckBox();
-        right.add(matchWholeWord);
+        rightPanel.add(matchWholeWord);
 
         matchRegex = builder.name("matchRegex").label("Regex").buildCheckBox();
-        right.add(matchRegex);
+        rightPanel.add(matchRegex);
 
         searcher.addSearcherListener(this);
     }
@@ -122,19 +123,14 @@ public class FindToolBar extends JPanel implements SearcherListener
             matchWholeWord.setSelected(searcher.context.getWholeWord());
             textField.selectAll();
             textField.requestFocus();
+            searcher.setSearchText(textField.getText());
         }
     }
 
     @Override
-    public void searched()
+    public void searched(SearcherEvent event)
     {
-        int currentMatchNumber = searcher.getCurrentMatchNumber();
-        int count = searcher.getMatchCount();
-        if (count > 0) {
-            label.setText("" + currentMatchNumber + " of " + count);
-        } else {
-            label.setText(Util.empty(textField.getText()) ? "" : "no matches");
-        }
+        label.setText(event.message);
     }
 
 }

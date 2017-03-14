@@ -10,6 +10,8 @@ import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
 
+import uk.co.nickthecoder.jguifier.util.Util;
+
 public class Searcher
 {
     public SearchContext context;
@@ -17,8 +19,6 @@ public class Searcher
     private RSyntaxTextArea textEditorPane;
 
     private SearchResult searchResult;
-
-    private int currentMatchNumber;
 
     private List<SearcherListener> listeners = new ArrayList<>();
 
@@ -52,10 +52,19 @@ public class Searcher
     {
         context.setSearchForward(false);
         if (searchResult.getMarkedCount() > 0) {
-            if (currentMatchNumber == 1) {
+
+            // Already on the first match, start from the end
+            if (getCurrentMatchNumber() == 1) {
                 textEditorPane.setCaretPosition(textEditorPane.getDocument().getLength());
             }
+
             performSearch();
+
+            // Didn't find anything, lets wrap round and try again.
+            if (getCurrentMatchNumber() == 0) {
+                textEditorPane.setCaretPosition(textEditorPane.getDocument().getLength());
+                performSearch();
+            }
         }
     }
 
@@ -63,77 +72,109 @@ public class Searcher
     {
         context.setSearchForward(true);
         if (searchResult.getMarkedCount() > 0) {
-            if (currentMatchNumber == searchResult.getMarkedCount()) {
+
+            // Already on the last match, start from the beginning
+            if (getCurrentMatchNumber() == searchResult.getMarkedCount()) {
                 textEditorPane.setCaretPosition(0);
             }
 
             performSearch();
+
+            // Didn't find anything, lets wrap round and try again.
+            if (getCurrentMatchNumber() == 0) {
+                textEditorPane.setCaretPosition(0);
+                performSearch();
+            }
         }
     }
 
-    private String searchText = "";
-
     public void setSearchText(String text)
     {
-        searchText = text;
-        performSearch();
+        context.setSearchFor(text);
+        markMatches();
+    }
 
-        if ((currentMatchNumber == 0) && (searchResult.getMarkedCount() > 0)) {
-            context.setSearchForward(true);
-            textEditorPane.setCaretPosition(0);
-            performSearch();
-        }
+    public void markMatches()
+    {
+        searchResult = SearchEngine.markAll(textEditorPane, context);
 
+        fire(SearcherEvent.Type.MARK, getFindResultsMessage());
     }
 
     public void performSearch()
     {
-        context.setSearchFor(searchText);
-        SearchEngine.markAll(textEditorPane, context);
-
         searchResult = SearchEngine.find(textEditorPane, context);
 
-        currentMatchNumber = getMatchNumber();
-
-        fire();
+        fire(SearcherEvent.Type.FIND, getFindResultsMessage());
     }
 
-    private void fire()
+    public void replace(String searchString, String replace)
     {
+        context.setReplaceWith(replace);
+        context.setSearchFor(searchString);
+        searchResult = SearchEngine.replace(textEditorPane, context);
+    }
+
+    public void replaceAll(String searchString, String replace)
+    {
+        context.setReplaceWith(replace);
+        context.setSearchFor(searchString);
+        searchResult = SearchEngine.replaceAll(textEditorPane, context);
+
+        String message = "Found and replaced " + searchResult.getCount() + " occurrences";
+        fire(SearcherEvent.Type.REPLACEALL, message);
+    }
+
+    private void fire(SearcherEvent.Type type, String string)
+    {
+        SearcherEvent event = new SearcherEvent(this, type, string);
         for (SearcherListener sl : listeners) {
-            sl.searched();
+            sl.searched(event);
         }
     }
 
     // This seams to be the easiest way to find which match number we are on. Grr.
-    private int getMatchNumber()
+    public int getCurrentMatchNumber()
     {
         RSyntaxTextAreaHighlighter highlighter = (RSyntaxTextAreaHighlighter) textEditorPane.getHighlighter();
 
         if (searchResult.getMarkedCount() > 0) {
-            DocumentRange currentRange = searchResult.getMatchRange();
+            int caretPos = textEditorPane.getCaretPosition();
 
             List<DocumentRange> ranges = highlighter.getMarkAllHighlightRanges();
-            int i = 0;
-            if (currentRange != null) {
-                for (DocumentRange range : ranges) {
-                    if (range.getStartOffset() == currentRange.getStartOffset()) {
-                        return i + 1;
-                    }
-                    i++;
+            int i = 1;
+            for (DocumentRange range : ranges) {
+                if (range.getEndOffset() == caretPos) {
+                    return i;
                 }
+                i++;
             }
         }
         return 0;
     }
 
-    public int getCurrentMatchNumber()
-    {
-        return currentMatchNumber;
-    }
-
     public int getMatchCount()
     {
         return searchResult.getMarkedCount();
+    }
+
+    private String getFindResultsMessage()
+    {
+        int currentMatchNumber = getCurrentMatchNumber();
+        int count = getMatchCount();
+
+        if (Util.empty(context.getSearchFor())) {
+            return "";
+        } else {
+            String prefix = currentMatchNumber > 0 ? "" + currentMatchNumber + " of " : "";
+            String suffix = count > 0 ? "" + count + " matches" : "no matches";
+            return prefix + suffix;
+        }
+    }
+
+    public void clearMarks()
+    {
+        context.setSearchFor("");
+        SearchEngine.markAll(textEditorPane, context);
     }
 }

@@ -37,6 +37,9 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     JToggleButton findButton;
 
     Searcher searcher;
+    
+    ReplaceDialog replaceDialog;
+
 
     public EditorPanel(Editor editorTask)
     {
@@ -83,7 +86,19 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar.add(builder.name("editReplace").tooltip("Find and Replace").shortcut("ctrl H").buildButton());
         toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").shortcut("ctrl L").buildButton());
 
+        findToolBar.rightPanel.add( builder.name("editReplace").label("Replace...").buildButton());
         builder.name("escape").shortcut("ESCAPE").buildShortcut();
+    }
+
+
+    private void initSearchDialogs()
+    {
+        findToolBar = new FindToolBar(searcher);
+        findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
+        findToolBar.setVisible(false);
+
+        Frame window = (Frame) SwingUtilities.getWindowAncestor(this);
+        replaceDialog = new ReplaceDialog(window, searcher);
     }
 
     public void load(File file)
@@ -136,7 +151,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     {
         findButton.setSelected(false);
         findToolBar.setVisible(false);
-        // TODO Remove highlights
+        searcher.clearMarks();
     }
 
     public void onEditFind()
@@ -152,6 +167,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     public void onEditReplace()
     {
         onCloseFind();
+        replaceDialog.pack();
+        replaceDialog.setLocationRelativeTo(null);
         replaceDialog.setVisible(true);
     }
 
@@ -181,22 +198,5 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         replaceDialog.setVisible(false);
     }
 
-    private ReplaceDialog replaceDialog;
-
-    /**
-     * Creates our Find and Replace dialogs.
-     */
-    public void initSearchDialogs()
-    {
-        findToolBar = new FindToolBar(searcher);
-        findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
-        findToolBar.setVisible(false);
-
-        Frame window = (Frame) SwingUtilities.getWindowAncestor(this);
-        replaceDialog = new ReplaceDialog(window, searcher);
-
-        // SearchContext context = findToolBar.getSearchContext();
-        // replaceDialog.setSearchContext(context);
-    }
 
 }

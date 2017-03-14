@@ -12,10 +12,10 @@ import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 /**
  * A Tool performs some work via a {@link Task}. The Task is defined as usual by a set of {@link Parameter}s.
- * The results of the task are a list of objects (of generic type R).
+ * The message of the task are a list of objects (of generic type R).
  * Typically these are held in a List, and use a {@link ListTableModel}.
  * 
- * Tools also have the meta-data needed to display these results in a GUI table,
+ * Tools also have the meta-data needed to display these message in a GUI table,
  * i.e. it defines the columns, and any special cell renderers etc.
  * 
  */
