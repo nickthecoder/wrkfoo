@@ -5,9 +5,11 @@ Current Task
 BUGS
 ====
 
-Editor->ctrl+O doens't focus on the file parameter
+Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 
-Moving editor tabs throws execptions, and removes tabs.
+Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
+
+Editor->ctrl+O doens't focus on the file parameter
 
 ExecTool break the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
@@ -19,11 +21,12 @@ Tabs lose their properites when dragged to a different MainWindow.
 New Features
 ============
 
-BooleanParameter
-	hint attribute, which goes on the right
-	Use a null label to have the tick boxes left aligned in the ParametersPanel
-	use a "" label and a hint to have them aligned as usual, but with no label to the left.
-	Maybe make the label "" or null by default.
+Grep do match case, not ignore case.
+
+Grep tool to show the matching line(s).
+	New option, only show the line# and text if the option is chosen.
+	Maybe a choice of "Don't Show", "Show All", "Show First".
+	Tooltip for the text or itself.
 
 Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
 
@@ -43,8 +46,6 @@ MegaTabSet
 	Tabs down the left edge, or a pulldown list in the toolbar
 	Each MegaTab has its own tabset (and must know the filename of the tabset).
 	This way, I can have multiple projects in a single window.
-
-Find/Replace etc in Editor
 
 Un-close tab. Useful when you close a tab by mistake.
 

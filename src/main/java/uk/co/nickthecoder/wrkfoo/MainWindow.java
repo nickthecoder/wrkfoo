@@ -388,7 +388,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void setVisible(boolean show)
     {
         super.setVisible(show);
-
+        
         if (show) {
             windows.add(this);
 
@@ -583,7 +583,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void onSaveTabSet()
     {
         SaveTabSet sts = new SaveTabSet(this);
-        sts.neverExit();
         sts.promptTask();
     }
 
@@ -593,7 +592,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
             Tool tool = getCurrentTab().getTool();
             if (tool instanceof TableTool<?>) {
                 ExportTableData std = new ExportTableData((TableTool<?>) tool);
-                std.neverExit();
                 std.promptTask();
             }
         }

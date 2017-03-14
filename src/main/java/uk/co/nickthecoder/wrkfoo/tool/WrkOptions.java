@@ -120,17 +120,17 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
 
     public Task editOption(OptionData optionData)
     {
-        return new EditOption(getTask().optionsData, optionData).neverExit();
+        return new EditOption(getTask().optionsData, optionData);
     }
 
     public Task addOption()
     {
-        return new EditOption.AddOption(getTask().optionsData).neverExit();
+        return new EditOption.AddOption(getTask().optionsData);
     }
 
     public Task deleteOption(OptionData optionData)
     {
-        return new EditOption.DeleteOption(getTask().optionsData, optionData).neverExit();
+        return new EditOption.DeleteOption(getTask().optionsData, optionData);
     }
 
 }

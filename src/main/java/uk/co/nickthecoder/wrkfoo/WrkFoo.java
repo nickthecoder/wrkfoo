@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.TaskCommand;
 import uk.co.nickthecoder.jguifier.util.Util;
 
 public class WrkFoo extends Task
@@ -42,6 +43,7 @@ public class WrkFoo extends Task
             TabSetData.load(file).openMainWindow();
 
         } else {
+
             MainWindow mainWindow = new MainWindow();
             mainWindow.onWorkTabSets();
             mainWindow.setVisible(true);
@@ -50,17 +52,25 @@ public class WrkFoo extends Task
 
     public static void main(final String[] argv)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
+        try {
+            SwingUtilities.invokeAndWait(new Runnable()
             {
-                Util.defaultLookAndFeel();
+                @Override
+                public void run()
+                {
+                    Util.defaultLookAndFeel();
 
-                WrkFoo wrkFoo = new WrkFoo();
-                wrkFoo.go(argv);
-            }
-        });
+                    WrkFoo wrkFoo = new WrkFoo();
+                    try {
+                        new TaskCommand(wrkFoo).neverExit().go(argv);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

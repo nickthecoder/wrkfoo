@@ -81,12 +81,12 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
 
     public Task addInclude()
     {
-        return new AddInclude().neverExit();
+        return new AddInclude();
     }
 
     public Task removeInclude(String name)
     {
-        return new RemoveInclude(name).neverExit();
+        return new RemoveInclude(name);
     }
 
     class AddInclude extends Task

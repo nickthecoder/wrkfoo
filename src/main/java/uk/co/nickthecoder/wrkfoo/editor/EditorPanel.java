@@ -177,7 +177,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
 
     public void onEditGoToLine()
     {
-        new GoToLineTask(editorPane).neverExit().promptTask();
+        new GoToLineTask(editorPane).promptTask();
     }
 
     public void onDocumentRevert()

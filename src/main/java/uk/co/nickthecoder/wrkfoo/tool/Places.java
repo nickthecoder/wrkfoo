@@ -101,7 +101,7 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
     {
         Task addTask = new AddTask();
 
-        return addTask.neverExit();
+        return addTask;
     }
 
     public class AddTask extends Task

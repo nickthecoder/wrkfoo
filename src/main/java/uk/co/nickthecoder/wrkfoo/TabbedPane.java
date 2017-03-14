@@ -115,7 +115,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void onTabProperties()
     {
-        new TabPropertiesTask(getSelectedIndex()).neverExit().promptTask();
+        new TabPropertiesTask(getSelectedIndex()).promptTask();
     }
 
     public void onCloseTab()
