@@ -24,11 +24,11 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 {
     private static final long serialVersionUID = 1L;
 
-    private Editor editorTask;
+    Editor editorTask;
 
-    private TextEditorPane editorPane;
+    TextEditorPane editorPane;
 
-    private RTextScrollPane scrollPane;
+    RTextScrollPane scrollPane;
 
     JToolBar toolBar;
 

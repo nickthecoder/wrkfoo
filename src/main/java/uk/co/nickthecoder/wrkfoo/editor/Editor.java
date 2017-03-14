@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.editor;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 
 import javax.swing.Icon;
@@ -16,9 +18,10 @@ import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 
-public class Editor extends AbstractTool<EditorTask>
+public class Editor extends AbstractTool<EditorTask> implements WindowFocusListener
 {
     private EditorPanel editorPanel;
 
@@ -118,7 +121,7 @@ public class Editor extends AbstractTool<EditorTask>
             {
                 try {
                     boolean show = getToolTab().getTabbedPane().getCurrentTab() == getToolTab();
-                    setToolBarVisible(show);
+                    activate(show);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,24 +131,28 @@ public class Editor extends AbstractTool<EditorTask>
         getToolTab().getTabbedPane().addChangeListener(tabbedPaneListener);
 
         createResultsComponent();
-        setToolBarVisible(true);
+        activate(true);
     }
 
     @Override
     public void detach()
     {
-        setToolBarVisible(false);
+        activate(false);
         getToolTab().getTabbedPane().removeChangeListener(tabbedPaneListener);
         super.detach();
     }
 
-    private void setToolBarVisible(boolean show)
+    private void activate(boolean show)
     {
         JToolBar tb = editorPanel.toolBar;
         FindToolBar ftb = editorPanel.findToolBar;
 
         MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
         if (show) {
+            WrkFoo.assertIsEDT();
+            
+            mainWindow.addWindowFocusListener(this);
+
             if (tb.getParent() == null) {
                 mainWindow.getToolbarPanel().add(tb);
             }
@@ -154,6 +161,7 @@ public class Editor extends AbstractTool<EditorTask>
             }
 
         } else {
+
             if (tb.getParent() != null) {
                 tb.getParent().remove(tb);
             }
@@ -162,7 +170,12 @@ public class Editor extends AbstractTool<EditorTask>
             }
             editorPanel.replaceDialog.setVisible(false);
             editorPanel.replaceDialog.dispose();
+
+            if (mainWindow != null) {
+                mainWindow.removeWindowFocusListener(this);
+            }
         }
+
         if (mainWindow != null) {
             mainWindow.getToolbarPanel().repaint();
         }
@@ -183,6 +196,17 @@ public class Editor extends AbstractTool<EditorTask>
         {
 
         }
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e)
+    {
+        this.editorPanel.editorPane.requestFocus();
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e)
+    {
     }
 
 }

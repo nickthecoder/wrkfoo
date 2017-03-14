@@ -407,10 +407,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 }
             };
 
-            // When I add the listener to this, or "whole", no events are detected, this is the next I could do.
-            toolBar.addMouseListener(listener);
+            // When I add the listener to this, or "whole", no events are detected, this is the best I could do.
+            toolBarPanel.addMouseListener(listener);
             tabbedPane.addMouseListener(listener);
-            statusBar.addMouseListener(listener);
+            statusBarPanel.addMouseListener(listener);
+
         } else {
             windows.remove(this);
             tabbedPane.removeAllTabs();
@@ -703,4 +704,5 @@ public class MainWindow extends JFrame implements ExceptionHandler
     }
 
     private String stackTrace;
+
 }
