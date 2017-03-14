@@ -23,7 +23,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.codehaus.groovy:groovy-all:2.4.9'
     compile 'com.fifesoft:rsyntaxtextarea:2.6.1'
-    compile group: 'com.fifesoft', name: 'rstaui', version: '2.6.1'
 }
 
 /*
