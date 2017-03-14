@@ -18,6 +18,7 @@ import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class Editor extends AbstractTool<EditorTask> implements WindowFocusListener, EditorListener
 {
@@ -30,6 +31,9 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         super(new EditorTask());
         editorPanel = new EditorPanel(this);
         editorPanel.addEditorListener( this );
+        
+        ActionBuilder builder = new ActionBuilder(this).component(editorPanel);
+        builder.name("documentOpen").shortcut("ctrl O").buildShortcut();
     }
 
     @Override
@@ -198,6 +202,16 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     public void documentChanged()
     {
         checkDirty();
+    }
+    
+    public void onDocumentOpen()
+    {
+        Editor newEditor = new Editor();
+        newEditor.task.file.setDefaultValue( this.task.file.getValue().getParentFile() );
+
+        MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel());
+        ToolTab newTab = mainWindow.insertTab(newEditor);
+        mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
     }
 
 }
