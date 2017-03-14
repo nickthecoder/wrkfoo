@@ -133,7 +133,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
             mainWindow.addWindowFocusListener(this);
 
             if (tb.getParent() == null) {
-                mainWindow.getToolbarPanel().add(tb);
+                mainWindow.getToolBarPanel().add(tb);
             }
             if (ftb.getParent() == null) {
                 mainWindow.getStatusBarPanel().add(ftb, 0);
@@ -156,7 +156,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         }
 
         if (mainWindow != null) {
-            mainWindow.getToolbarPanel().repaint();
+            mainWindow.getToolBarPanel().repaint();
         }
     }
 

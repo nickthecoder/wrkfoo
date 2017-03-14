@@ -132,7 +132,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         toolBarPanel.add(toolBar);
         statusBarPanel.add(statusBar);
 
-        fillToolbars();
+        fillToolBars();
 
         getContentPane().add(whole);
 
@@ -157,7 +157,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return new Dimension(1000, 600);
     }
 
-    public JPanel getToolbarPanel()
+    public JPanel getToolBarPanel()
     {
         return toolBarPanel;
     }
@@ -172,11 +172,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return tabbedPane.getCurrentTab();
     }
 
-    private void fillToolbars()
+    private void fillToolBars()
     {
         ActionBuilder builder = new ActionBuilder(this).component(this.rootPane);
 
-        toolBar.add(createToolbarOption());
+        toolBar.add(createToolBarOption());
 
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
@@ -209,7 +209,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
         builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
-        builder.name("jumpToToolbar").shortcut("F10").buildShortcut();
+        builder.name("jumpToToolBar").shortcut("F10").buildShortcut();
         builder.name("jumpToResults").shortcut("F11").buildShortcut();
         builder.name("jumpToParameters").shortcut("F12").buildShortcut();
 
@@ -251,7 +251,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         });
     }
 
-    private JComponent createToolbarOption()
+    private JComponent createToolBarOption()
     {
         optionsTextField = new JTextField();
         optionsTextField.setToolTipText("Enter non-row Options (F10)");
@@ -612,7 +612,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         setVisible(false);
     }
 
-    public void onJumpToToolbar()
+    public void onJumpToToolBar()
     {
         optionsTextField.requestFocusInWindow();
     }
