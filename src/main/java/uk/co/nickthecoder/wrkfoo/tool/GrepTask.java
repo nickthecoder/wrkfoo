@@ -2,9 +2,9 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
-import uk.co.nickthecoder.jguifier.BooleanParameter;
-import uk.co.nickthecoder.jguifier.PatternParameter;
-import uk.co.nickthecoder.jguifier.StringChoiceParameter;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
+import uk.co.nickthecoder.jguifier.parameter.PatternParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringChoiceParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 
 public class GrepTask extends FileTask

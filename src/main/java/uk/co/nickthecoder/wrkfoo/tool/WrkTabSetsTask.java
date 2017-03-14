@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.nickthecoder.jguifier.Parameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;

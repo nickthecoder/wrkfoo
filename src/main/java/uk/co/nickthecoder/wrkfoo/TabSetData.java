@@ -13,10 +13,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
-import uk.co.nickthecoder.jguifier.GroupParameter;
-import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class TabSetData

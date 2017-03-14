@@ -2,8 +2,8 @@ package uk.co.nickthecoder.wrkfoo.editor;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
-import uk.co.nickthecoder.jguifier.IntegerParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.IntegerParameter;
 
 public class GoToLineTask extends Task
 {

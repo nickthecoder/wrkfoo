@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.nickthecoder.jguifier.BooleanParameter;
-import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;

@@ -2,8 +2,8 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 
 /**

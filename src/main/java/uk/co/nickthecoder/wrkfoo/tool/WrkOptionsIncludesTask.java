@@ -3,8 +3,8 @@ package uk.co.nickthecoder.wrkfoo.tool;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;

@@ -4,10 +4,10 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskCommand;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 
 public class WrkFoo extends Task

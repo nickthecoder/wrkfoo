@@ -6,9 +6,9 @@ import java.util.Date;
 
 import javax.swing.Icon;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;

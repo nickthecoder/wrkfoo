@@ -2,9 +2,9 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.FileNotFoundException;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabSetData;

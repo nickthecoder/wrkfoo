@@ -6,6 +6,8 @@ BUGS
 ====
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
+	Shouldn't have a list of tools passed to MainFrame constructor.
+	Probably MainWindow.getMainWindow(component) is returning null
 
 Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
 
@@ -18,10 +20,10 @@ ExecTool break the convension of being defined by tool's class and parameters
 
 Tabs lose their properites when dragged to a different MainWindow.
 
+When Editor dirty changes the tab's label, the window title isn't correctly set. (Misses the "WrkFoo : " prefix)
+
 New Features
 ============
-
-Grep do match case, not ignore case.
 
 Grep tool to show the matching line(s).
 	New option, only show the line# and text if the option is chosen.
@@ -32,20 +34,28 @@ Editor to have syntax highlighter choice, which is guessed based on extension wh
 
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.
+	Fire a change event so Editor can change the parameter accordingly
 
 Exec runWhenCompleted( Runnable )
 
-Settings Task to edit the Settings data
 
+Settings Task to edit the Settings data
+	Settings to show/hide toolbars. Either toolbar,statusbar or hide.
+	Use EnumParameter
+		EnumParameter to format the labels cleverly FOO -> Foo, FOO_BAR -> Foo Bar
+	Settings to show/hide each tool bar item
+		Put them into GroupParameters - a good way to force me to get this right!
+	
 Non-row option field in the status bar
 	Settings allow the toolbars to be shown/hidden
 		Non-row option field, Regular toolbar, Editor toolbar
 	Global option to show the Settings Task.
 
-MegaTabSet
+MegaTabSet aka TabGroups
 	Tabs down the left edge, or a pulldown list in the toolbar
 	Each MegaTab has its own tabset (and must know the filename of the tabset).
 	This way, I can have multiple projects in a single window.
+	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
 
 Un-close tab. Useful when you close a tab by mistake.
 

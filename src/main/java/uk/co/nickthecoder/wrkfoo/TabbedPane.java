@@ -18,8 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>

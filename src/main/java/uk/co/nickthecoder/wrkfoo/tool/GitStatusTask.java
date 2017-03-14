@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import uk.co.nickthecoder.jguifier.FileParameter;
-import uk.co.nickthecoder.jguifier.PatternParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.PatternParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.FileLister;
 import uk.co.nickthecoder.wrkfoo.ListResults;

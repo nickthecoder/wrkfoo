@@ -7,12 +7,12 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
-import uk.co.nickthecoder.jguifier.GroupParameter;
-import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;

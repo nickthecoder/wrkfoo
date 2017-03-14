@@ -2,9 +2,9 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.FileNotFoundException;
 
-import uk.co.nickthecoder.jguifier.StringChoiceParameter;
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.StringChoiceParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 

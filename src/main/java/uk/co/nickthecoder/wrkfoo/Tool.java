@@ -3,10 +3,10 @@ package uk.co.nickthecoder.wrkfoo;
 import javax.swing.Icon;
 
 import groovyjarjarcommonscli.Option;
-import uk.co.nickthecoder.jguifier.GroupParameter;
-import uk.co.nickthecoder.jguifier.Parameter;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 

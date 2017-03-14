@@ -11,12 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import uk.co.nickthecoder.jguifier.BooleanParameter;
-import uk.co.nickthecoder.jguifier.GroupParameter;
-import uk.co.nickthecoder.jguifier.Parameter;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
+import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
-import uk.co.nickthecoder.jguifier.StringParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class ReplaceDialog extends JDialog implements ParameterListener, SearcherListener

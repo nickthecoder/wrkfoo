@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 
 import javax.swing.Icon;
 
-import uk.co.nickthecoder.jguifier.StringParameter;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
