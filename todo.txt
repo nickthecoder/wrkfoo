@@ -1,7 +1,6 @@
 Current Task
 ============
 
-Replace dialog
 
 BUGS
 ====

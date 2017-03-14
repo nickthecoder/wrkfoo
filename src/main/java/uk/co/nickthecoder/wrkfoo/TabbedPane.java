@@ -90,7 +90,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         tab.setTabbedPane(this);
     }
-
+    
     private JPopupMenu createTabPopupMenu(MouseEvent me)
     {
         WrkFoo.assertIsEDT();
@@ -156,20 +156,6 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
-    public void insert(ToolTab tab, int index)
-    {
-        WrkFoo.assertIsEDT();
-
-        toolTabs.add(index, tab);
-
-        tab.setTabbedPane(this);
-        JLabel label = new JLabel(tab.getTool().getToolTab().getTitle());
-        label.setIcon(tab.getTool().getIcon());
-        label.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
-
-        insertTab("", null, tab.getPanel(), null, index);
-        setTabComponentAt(index, label);
-    }
 
     @Override
     public void removeTabAt(int index)
@@ -344,7 +330,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
                 ToolTab tab = getToolTab(draggedTabIndex);
                 removeTabAt(draggedTabIndex);
-                insert(tab, draggedTabIndex + (isForwardDrag ? 1 : -1));
+                add(tab, draggedTabIndex + (isForwardDrag ? 1 : -1));
 
                 draggedTabIndex = targetTabIndex;
                 setSelectedIndex(draggedTabIndex);
