@@ -37,9 +37,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
     JToggleButton findButton;
 
     Searcher searcher;
-    
-    ReplaceDialog replaceDialog;
 
+    ReplaceDialog replaceDialog;
 
     public EditorPanel(Editor editorTask)
     {
@@ -86,10 +85,9 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         toolBar.add(builder.name("editReplace").tooltip("Find and Replace").shortcut("ctrl H").buildButton());
         toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").shortcut("ctrl L").buildButton());
 
-        findToolBar.rightPanel.add( builder.name("editReplace").label("Replace...").buildButton());
+        findToolBar.rightPanel.add(builder.name("editReplace").label("Replace...").buildButton());
         builder.name("escape").shortcut("ESCAPE").buildShortcut();
     }
-
 
     private void initSearchDialogs()
     {
@@ -174,21 +172,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
 
     public void onEditGoToLine()
     {
-        /*
-         * Frame frame = (Frame) SwingUtilities.getWindowAncestor(EditorPanel.this);
-         * GoToDialog dialog = new GoToDialog(frame);
-         * dialog.setMaxLineNumberAllowed(editorPane.getLineCount());
-         * dialog.setVisible(true);
-         * int line = dialog.getLineNumber();
-         * if (line > 0) {
-         * try {
-         * editorPane.setCaretPosition(editorPane.getLineStartOffset(line - 1));
-         * } catch (BadLocationException ble) { // Never happens
-         * UIManager.getLookAndFeel().provideErrorFeedback(editorPane);
-         * ble.printStackTrace();
-         * }
-         * }
-         */
+        new GoToLineTask(editorPane).neverExit().promptTask();
     }
 
     public void onEscape()
@@ -196,7 +180,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler
         findToolBar.setVisible(false);
         findButton.setSelected(false);
         replaceDialog.setVisible(false);
+        editorPane.requestFocus();
     }
-
 
 }
