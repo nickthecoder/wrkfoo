@@ -69,17 +69,10 @@ public class GroovyOption extends AbstractOption
 
         openNewTab |= this.getNewTab();
 
-        // The new tab cannot share the same Tool as the current tab, so create a copy first
-        // just in case the option reuses the tool.
-        if (openNewTab) {
-            currentTool = currentTool.duplicate();
-        }
-
         Object result = runScript(action, currentTool, isMultiRow(), rowOrRows);
 
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
-
 
             if (openNewTab || newTool.getUseNewTab()) {
 
@@ -106,12 +99,9 @@ public class GroovyOption extends AbstractOption
 
         } else if (result instanceof Runnable) {
 
-            System.out.println( "Is runnable" );
             if (getRefreshResults()) {
-                System.out.println( "Yes.listening" );
                 listen(currentTool, (Runnable) result);
             } else {
-                System.out.println( "No running normally" );
                 Thread thread = new Thread((Runnable) result);
                 thread.start();
             }
@@ -138,20 +128,16 @@ public class GroovyOption extends AbstractOption
      */
     private void listen(final Tool currentTool, final Runnable runnable)
     {
-        System.out.println("Groovy listen to runnable");
         Thread thread = new Thread()
         {
             @Override
             public void run()
             {
-                System.out.println("Groovy listen running runnable");
                 runnable.run();
-                System.out.println("Groovy listen runnable finished");
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run()
                     {
-                        System.out.println("Groovy listen refreshing tool");
                         currentTool.go();
                     }
                 });

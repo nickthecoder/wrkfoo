@@ -57,7 +57,6 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                 if (line.index == 'M') {
                     return UPDATED;
                 }
-
                 return Color.black;
             }
         };
