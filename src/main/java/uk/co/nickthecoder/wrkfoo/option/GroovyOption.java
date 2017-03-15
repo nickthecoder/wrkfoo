@@ -133,18 +133,21 @@ public class GroovyOption extends AbstractOption
      */
     private void listen(final Tool currentTool, final Runnable runnable)
     {
+        System.out.println("Groovy listen to runnable");
         Thread thread = new Thread()
         {
             @Override
             public void run()
             {
+                System.out.println("Groovy listen running runnable");
                 runnable.run();
+                System.out.println("Groovy listen runnable finished");
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     public void run()
                     {
+                        System.out.println("Groovy listen refreshing tool");
                         currentTool.go();
-
                     }
                 });
             }
