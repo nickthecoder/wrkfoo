@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Options to have a "new Tab" attribute. Tools are opened in a new tab regardless of whether ctrl was pressed.
+	Use it as default for all inbuilt editor options.
 
 BUGS
 ====
@@ -24,11 +26,6 @@ When Editor dirty changes the tab's label, the window title isn't correctly set.
 
 New Features
 ============
-
-Grep tool to show the matching line(s).
-	New option, only show the line# and text if the option is chosen.
-	Maybe a choice of "Don't Show", "Show All", "Show First".
-	Tooltip for the text or itself.
 
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.
@@ -56,8 +53,6 @@ MegaTabSet aka TabGroups
 	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
 
 Un-close tab. Useful when you close a tab by mistake.
-
-Grep to open inbuilt editor and seach for the grep expression
 
 Save Tab sets to remember the order and widths of the columns
 

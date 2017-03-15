@@ -9,13 +9,16 @@ public abstract class AbstractOption implements Option
     private boolean isRow;
 
     private boolean isMultiRow;
+    
+    private boolean newTab;
 
-    public AbstractOption(String code, String label, boolean isRow, boolean isMultiRow)
+    public AbstractOption(String code, String label, boolean isRow, boolean isMultiRow, boolean newTab)
     {
         this.code = code;
         this.label = label;
         this.isRow = isRow;
         this.isMultiRow = isMultiRow;
+        this.newTab = newTab;
     }
 
     @Override
@@ -41,4 +44,10 @@ public abstract class AbstractOption implements Option
     {
         return isMultiRow;
     }
+    
+    public boolean getNewTab()
+    {
+        return newTab;
+    }
+    
 }

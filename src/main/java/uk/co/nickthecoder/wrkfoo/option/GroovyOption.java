@@ -17,9 +17,10 @@ public class GroovyOption extends AbstractOption
 
     private final GroovyScriptlet action;
 
-    public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti)
+    public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti,
+        boolean newTab)
     {
-        super(code, label, isRow, isMulti);
+        super(code, label, isRow, isMulti, newTab);
         this.action = new GroovyScriptlet(script);
         if (Util.empty(ifScript)) {
             ifScriptlet = null;
@@ -61,6 +62,8 @@ public class GroovyOption extends AbstractOption
     private void privateRunOption(Tool tool, Object rowOrRows, boolean openNewTab)
     {
         ToolTab tab = tool.getToolTab();
+
+        openNewTab |= this.getNewTab();
 
         // The new tab cannot share the same Tool as the current tab, so create a copy first
         // just in case the option reuses the tool.

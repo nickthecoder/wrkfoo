@@ -3,6 +3,7 @@ package uk.co.nickthecoder.wrkfoo.tool;
 import java.io.FileNotFoundException;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
@@ -28,6 +29,9 @@ public class EditOption extends Task
         .choice("row", "row", "Row").choice("multi", "multi", "Multi-Row").choice("non-row", "non-row", "Non-Row")
         .parameter();
 
+    public BooleanParameter newTab = new BooleanParameter.Builder("newTab") 
+        .parameter();
+
     public StringParameter ifScript = new StringParameter.Builder("if")
         .multiLine().size(300, 80)
         .description("Groovy script. Is the row applicable to this option?")
@@ -48,8 +52,10 @@ public class EditOption extends Task
             type.setDefaultValue(optionData.isRow() ? "row" : "non-row");
         }
         ifScript.setDefaultValue(optionData.ifScript);
+        
+        newTab.setDefaultValue(optionData.newTab);
 
-        addParameters(code, label, action, type, ifScript);
+        addParameters(code, label, action, type, newTab, ifScript);
     }
 
     @Override
@@ -61,6 +67,7 @@ public class EditOption extends Task
         optionData.row = !type.getValue().equals("non-row");
         optionData.multi = type.getValue().equals("multi");
         optionData.ifScript = ifScript.getValue();
+        optionData.newTab = newTab.getValue();
     }
 
     @Override

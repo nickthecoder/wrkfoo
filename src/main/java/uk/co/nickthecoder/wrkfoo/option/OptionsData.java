@@ -105,10 +105,11 @@ public class OptionsData
 
         public Boolean row;
         public boolean multi;
+        public boolean newTab;
 
         public GroovyOption createOption()
         {
-            return new GroovyOption(code, label, action, ifScript, isRow(), multi);
+            return new GroovyOption(code, label, action, ifScript, isRow(), multi, newTab);
         }
 
         public boolean isRow()
@@ -119,7 +120,7 @@ public class OptionsData
         @Override
         public String toString()
         {
-            return code + ":" + label + ":" + action + ":" + ifScript + ":" + row + ":" + multi;
+            return code + ":" + label + ":" + action + ":" + ifScript + ":" + row + ":" + multi + ":" + newTab;
         }
     }
 }
