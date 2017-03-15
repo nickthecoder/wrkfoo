@@ -118,6 +118,24 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         }
     }
 
+    public void goToLine( int lineNumber )
+    {
+        try {
+            editorPane.setCaretPosition(editorPane.getLineStartOffset(lineNumber+1));
+        } catch (Exception e) {
+            // We must have asked for a line number too large, so just go to the end of the document
+            editorPane.setCaretPosition(editorPane.getDocument().getLength());
+        }    
+    }
+    
+    public void find( String search, boolean regex )
+    {
+        searcher.setSearchText(search);
+        searcher.context.setRegularExpression(regex);
+        searcher.markMatches();
+        searcher.onFindNext();
+    }
+    
     @Override
     public void handleException(Throwable e)
     {

@@ -26,26 +26,42 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
 
     public static final Icon icon = Resources.icon("textEditor.png");
 
+    private int jumpToLine = -1;
+
+    private String highlightRegex = null;
+
     public Editor()
     {
         super(new EditorTask());
         editorPanel = new EditorPanel(this);
-        editorPanel.addEditorListener( this );
-        
+        editorPanel.addEditorListener(this);
+
         ActionBuilder builder = new ActionBuilder(this).component(editorPanel);
         builder.name("documentOpen").shortcut("ctrl O").buildShortcut();
-    }
-
-    @Override
-    public Icon getIcon()
-    {
-        return icon;
     }
 
     public Editor(File file)
     {
         this();
         task.file.setDefaultValue(file);
+    }
+
+    public Editor(File file, int lineNumber)
+    {
+        this(file);
+        jumpToLine = lineNumber;
+    }
+
+    public Editor(File file, String regex)
+    {
+        this(file);
+        highlightRegex = regex;
+    }
+
+    @Override
+    public Icon getIcon()
+    {
+        return icon;
     }
 
     @Override
@@ -73,6 +89,12 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     {
         if (firstTime) {
             editorPanel.load(task.file.getValue());
+            if (jumpToLine > 0) {
+                editorPanel.goToLine(jumpToLine);
+            }
+            if (highlightRegex != null) {
+                editorPanel.find(highlightRegex, true);
+            }
             firstTime = false;
         } else {
             editorPanel.onDocumentRevert();
@@ -84,7 +106,6 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     {
         return editorPanel;
     }
-
 
     private ChangeListener tabbedPaneListener;
 
@@ -187,7 +208,6 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     {
     }
 
-
     private boolean wasDirty = false;
 
     public void checkDirty()
@@ -197,17 +217,17 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
             getToolTab().getTabbedPane().updateTabInfo(getToolTab());
         }
     }
-    
+
     @Override
     public void documentChanged()
     {
         checkDirty();
     }
-    
+
     public void onDocumentOpen()
     {
         Editor newEditor = new Editor();
-        newEditor.task.file.setDefaultValue( this.task.file.getValue().getParentFile() );
+        newEditor.task.file.setDefaultValue(this.task.file.getValue().getParentFile());
 
         MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel());
         ToolTab newTab = mainWindow.insertTab(newEditor);
