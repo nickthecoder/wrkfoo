@@ -100,6 +100,24 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
             }
         }.width(70));
 
+        columns.add(new Column<OptionData>(Boolean.class, "newTab")
+        {
+            @Override
+            public Boolean getValue(OptionData row)
+            {
+                return row.newTab;
+            }
+        }.width(70));
+
+        columns.add(new Column<OptionData>(Boolean.class, "refresh")
+        {
+            @Override
+            public Boolean getValue(OptionData row)
+            {
+                return row.refreshResults;
+            }
+        }.width(70));
+
         columns.add(new Column<OptionData>(String.class, "if")
         {
             @Override

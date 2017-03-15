@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Tool.getNewTab - is this needed any more?
+
 Options to have a "new Tab" attribute. Tools are opened in a new tab regardless of whether ctrl was pressed.
 	Use it as default for all inbuilt editor options.
 

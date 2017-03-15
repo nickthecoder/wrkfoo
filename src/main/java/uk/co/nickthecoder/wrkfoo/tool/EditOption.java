@@ -32,6 +32,9 @@ public class EditOption extends Task
     public BooleanParameter newTab = new BooleanParameter.Builder("newTab") 
         .parameter();
 
+    public BooleanParameter refreshResults = new BooleanParameter.Builder("refreshResults") 
+        .parameter();
+
     public StringParameter ifScript = new StringParameter.Builder("if")
         .multiLine().size(300, 80)
         .description("Groovy script. Is the row applicable to this option?")
@@ -54,8 +57,9 @@ public class EditOption extends Task
         ifScript.setDefaultValue(optionData.ifScript);
         
         newTab.setDefaultValue(optionData.newTab);
+        refreshResults.setDefaultValue(optionData.refreshResults);
 
-        addParameters(code, label, action, type, newTab, ifScript);
+        addParameters(code, label, action, type, newTab, refreshResults, ifScript);
     }
 
     @Override
@@ -68,6 +72,7 @@ public class EditOption extends Task
         optionData.multi = type.getValue().equals("multi");
         optionData.ifScript = ifScript.getValue();
         optionData.newTab = newTab.getValue();
+        optionData.refreshResults = refreshResults.getValue();
     }
 
     @Override

@@ -24,4 +24,7 @@ public interface Option
     public boolean isMultiRow();
     
     public boolean getNewTab();
+    
+    public boolean getRefreshResults();
+
 }

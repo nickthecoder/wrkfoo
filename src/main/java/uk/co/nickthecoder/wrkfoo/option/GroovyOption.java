@@ -2,7 +2,11 @@ package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import groovy.lang.Binding;
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
@@ -18,9 +22,9 @@ public class GroovyOption extends AbstractOption
     private final GroovyScriptlet action;
 
     public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti,
-        boolean newTab)
+        boolean newTab, boolean refreshResults)
     {
-        super(code, label, isRow, isMulti, newTab);
+        super(code, label, isRow, isMulti, newTab, refreshResults);
         this.action = new GroovyScriptlet(script);
         if (Util.empty(ifScript)) {
             ifScriptlet = null;
@@ -59,22 +63,27 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Tool tool, Object rowOrRows, boolean openNewTab)
+    private void privateRunOption(Tool currentTool, Object rowOrRows, boolean openNewTab)
     {
-        ToolTab tab = tool.getToolTab();
+        ToolTab tab = currentTool.getToolTab();
 
         openNewTab |= this.getNewTab();
 
         // The new tab cannot share the same Tool as the current tab, so create a copy first
         // just in case the option reuses the tool.
         if (openNewTab) {
-            tool = tool.duplicate();
+            currentTool = currentTool.duplicate();
         }
 
-        Object result = runScript(action, tool, isMultiRow(), rowOrRows);
+        Object result = runScript(action, currentTool, isMultiRow(), rowOrRows);
 
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
+
+            if (getRefreshResults() && openNewTab) {
+                listen(currentTool, newTool.getTask());
+            }
+
             if (openNewTab || newTool.getUseNewTab()) {
                 MainWindow mainWindow = MainWindow.getMainWindow(tab.getPanel());
                 ToolTab newTab = mainWindow.insertTab(newTool);
@@ -84,9 +93,23 @@ public class GroovyOption extends AbstractOption
                 tab.go(newTool);
             }
 
-        } else if (result instanceof Runnable) {
+        } else if (result instanceof Task) {
+
+            Task task = (Task) result;
+            if (getRefreshResults()) {
+                listen(currentTool, task);
+            }
             Thread thread = new Thread((Runnable) result);
             thread.start();
+
+        } else if (result instanceof Runnable) {
+
+            if (getRefreshResults()) {
+                listen(currentTool, (Runnable) result);
+            } else {
+                Thread thread = new Thread((Runnable) result);
+                thread.start();
+            }
 
         } else if (result == null) {
             // Do nothing
@@ -96,6 +119,60 @@ public class GroovyOption extends AbstractOption
             // System.out.println(result);
         }
 
+    }
+
+    /**
+     * Run the Runnable, and then refresh the current tool.
+     * We do this by wrapping making another runnable, which run the first Runnable, and then
+     * refreshes the current tool.
+     * 
+     * @param currentTool
+     *            The tool that will be refreshed.
+     * @param runnable
+     *            The action to be performed.
+     */
+    private void listen(final Tool currentTool, final Runnable runnable)
+    {
+        Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                runnable.run();
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        currentTool.go();
+
+                    }
+                });
+            }
+        };
+        thread.start();
+    }
+
+    private void listen(final Tool currentTool, Task task)
+    {
+        task.addTaskListener(new TaskListener()
+        {
+            @Override
+            public void aborted(Task task)
+            {
+            }
+
+            @Override
+            public void ended(Task task, boolean normally)
+            {
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        currentTool.go();
+                    }
+                });
+            }
+        });
     }
 
     private Object runScript(GroovyScriptlet scriplet, Tool tool, boolean isMulti, Object rowOrRows)
