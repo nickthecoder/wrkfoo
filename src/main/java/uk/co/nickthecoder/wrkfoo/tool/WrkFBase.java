@@ -24,7 +24,7 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implements DirectoryTool
 {
-    public static final Color directoryColor = new Color(255, 255, 230);
+    public static final Color directoryColor = new Color(80,80,0);
 
     public static final Icon fileManagerIcon = Resources.icon("fileManager.png");
     public static final Icon directoryIcon = Resources.icon("folder.png");
@@ -87,10 +87,10 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
             private static final long serialVersionUID = 1L;
 
             @Override
-            public Color getRowBackground(int row)
+            public Color getRowForeground(int row)
             {
                 File file = getRow(row).file;
-                return file.isFile() ? null : WrkFBase.directoryColor;
+                return file.isFile() ? super.getRowForeground(row) : WrkFBase.directoryColor;
             }
         };
 

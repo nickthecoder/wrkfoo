@@ -30,8 +30,6 @@ Grep tool to show the matching line(s).
 	Maybe a choice of "Don't Show", "Show All", "Show First".
 	Tooltip for the text or itself.
 
-Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
-
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.
 	Fire a change event so Editor can change the parameter accordingly
@@ -61,7 +59,7 @@ Un-close tab. Useful when you close a tab by mistake.
 
 Grep to open inbuilt editor and seach for the grep expression
 
-Save Tab sets to remember the order and widths of the tabs
+Save Tab sets to remember the order and widths of the columns
 
 Editor to prompt when closing the tab without saving (if dirty)
 
@@ -73,12 +71,8 @@ F4 to prompt tasks/tools.
 Embed a terminal emulator :
 	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
 
-Go back/forward through History into a new tab (copies the entire history). ctrl+alt+left / right.
-
 Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
 	Add another column.
-
-WrkOption doesn't say which option file it is for
 
 TabbedTool
 	A tool, which has TWO or more tasks, and therefore many results.
@@ -106,6 +100,9 @@ Code review & Javadoc comments
 
 Later Features
 ==============
+
+
+Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
 
 Allow slow running tasks to update their results periodically.
 	Maybe a new updatePartialResults method???

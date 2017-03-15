@@ -81,9 +81,9 @@ public abstract class ToolTableModel<R> extends AbstractTableModel
         return columns.getColumn(col).klass;
     }
 
-    public Color getRowBackground(int row)
+    public Color getRowForeground(int row)
     {
-        return null;
+        return Color.black;
     }
 
     public void update(int rowCount)

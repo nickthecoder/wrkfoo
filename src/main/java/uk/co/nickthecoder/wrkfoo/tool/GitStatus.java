@@ -16,13 +16,13 @@ import uk.co.nickthecoder.wrkfoo.tool.GitStatusTask.GitStatusLine;
 
 public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> implements DirectoryTool
 {
-    public static Color UNTRACKED = new Color(255, 255, 128);
+    public static Color UNTRACKED = new Color(16, 16, 160);
 
-    public static Color NOT_UPDATED = new Color(255, 128, 128);
+    public static Color NOT_UPDATED = new Color(160, 16, 16);
 
-    public static Color UPDATED = new Color(128, 255, 128);
+    public static Color UPDATED = new Color(16, 160, 16);
 
-    public static Color RENAMED = new Color(128, 200, 128);
+    public static Color RENAMED = new Color(16, 160, 16);
 
     public GitStatus()
     {
@@ -38,7 +38,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
             private static final long serialVersionUID = 1L;
 
             @Override
-            public Color getRowBackground(int row)
+            public Color getRowForeground(int row)
             {
                 GitStatusLine line = getRow(row);
 
@@ -58,7 +58,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                     return UPDATED;
                 }
 
-                return Color.white;
+                return Color.black;
             }
         };
 

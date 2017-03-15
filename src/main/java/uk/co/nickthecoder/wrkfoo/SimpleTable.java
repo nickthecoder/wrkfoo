@@ -21,7 +21,11 @@ public class SimpleTable<R> extends JTable
 {
     private static final long serialVersionUID = 1L;
 
-    private Color oddRowColor = new Color(247, 247, 247);
+    public Color oddRowColor = new Color(247, 247, 247);
+
+    public Color selectedRowColor = new Color(255, 255, 180);
+
+    public Color selectedCellColor = new Color(210, 210, 255);
 
     public SimpleTable(ToolTableModel<R> model)
     {
@@ -92,26 +96,30 @@ public class SimpleTable<R> extends JTable
     {
         Component comp = super.prepareRenderer(renderer, row, column);
 
+        Color foreground = getModel().getRowForeground(convertRowIndexToModel(row));
+        if (foreground != null) {
+            comp.setForeground(foreground);
+        }
+
         if (isRowSelected(row)) {
 
-            if (getSelectedColumn() == column) {
-                return comp;
-            } else {
+            if (comp.getForeground() == null) {
                 comp.setForeground(Color.black);
             }
 
-        }
+            if ((getSelectedRow() == row) && (getSelectedColumn() == column)) {
+                comp.setBackground(selectedCellColor);
+            } else {
+                comp.setBackground(selectedRowColor);
+            }
 
-        Color bg = getModel().getRowBackground(convertRowIndexToModel(row));
-        if (bg == null) {
+        } else {
 
             if (row % 2 == 0) {
                 comp.setBackground(this.getBackground());
             } else {
                 comp.setBackground(oddRowColor);
             }
-        } else {
-            comp.setBackground(bg);
         }
 
         return comp;
