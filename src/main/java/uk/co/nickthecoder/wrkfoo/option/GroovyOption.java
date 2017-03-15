@@ -80,11 +80,13 @@ public class GroovyOption extends AbstractOption
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
 
-            if (getRefreshResults() && openNewTab) {
-                listen(currentTool, newTool.getTask());
-            }
 
             if (openNewTab || newTool.getUseNewTab()) {
+
+                if (getRefreshResults()) {
+                    listen(currentTool, newTool.getTask());
+                }
+
                 MainWindow mainWindow = MainWindow.getMainWindow(tab.getPanel());
                 ToolTab newTab = mainWindow.insertTab(newTool);
                 mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
@@ -104,9 +106,12 @@ public class GroovyOption extends AbstractOption
 
         } else if (result instanceof Runnable) {
 
+            System.out.println( "Is runnable" );
             if (getRefreshResults()) {
+                System.out.println( "Yes.listening" );
                 listen(currentTool, (Runnable) result);
             } else {
+                System.out.println( "No running normally" );
                 Thread thread = new Thread((Runnable) result);
                 thread.start();
             }
