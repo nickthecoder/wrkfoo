@@ -9,9 +9,11 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
+import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.OptionRow;
 
-public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
+public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
 {
     public static WrkOptionsTask createTask(File file)
     {
@@ -51,79 +53,97 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
     }
 
     @Override
-    protected Columns<OptionData> createColumns()
+    protected Columns<OptionRow> createColumns()
     {
-        Columns<OptionData> columns = new Columns<>();
+        Columns<OptionRow> columns = new Columns<>();
 
-        columns.add(new Column<OptionData>(String.class, "code")
+        columns.add(new Column<OptionRow>(String.class, "code")
         {
             @Override
-            public String getValue(OptionData row)
+            public String getValue(OptionRow row)
             {
-                return row.code;
+                return row.option.code;
             }
         }.width(50));
 
-        columns.add(new Column<OptionData>(String.class, "label")
+        columns.add(new Column<OptionRow>(String.class, "label")
         {
             @Override
-            public String getValue(OptionData row)
+            public String getValue(OptionRow row)
             {
-                return row.label;
+                return row.option.label;
             }
         }.width(200));
 
-        columns.add(new Column<OptionData>(String.class, "action")
+        columns.add(new Column<OptionRow>(String.class, "definedIn")
         {
             @Override
-            public String getValue(OptionData row)
+            public String getValue(OptionRow row)
             {
-                return row.action;
+                return row.file.getName();
+            }
+        }.width(200).tooltip(2));
+
+        columns.add(new Column<OptionRow>(File.class, "inFile")
+        {
+            @Override
+            public File getValue(OptionRow row)
+            {
+                return row.file;
+            }
+        }.width(200).hide());
+
+        columns.add(new Column<OptionRow>(String.class, "action")
+        {
+            @Override
+            public String getValue(OptionRow row)
+            {
+                return row.option.action;
             }
         }.width(300).tooltip(3));
 
-        columns.add(new Column<OptionData>(Boolean.class, "row")
+        columns.add(new Column<OptionRow>(Boolean.class, "row")
         {
             @Override
-            public Boolean getValue(OptionData row)
+            public Boolean getValue(OptionRow row)
             {
-                return row.isRow();
+                return row.option.isRow();
             }
         }.width(70));
 
-        columns.add(new Column<OptionData>(Boolean.class, "multi")
+        columns.add(new Column<OptionRow>(Boolean.class, "multi")
         {
             @Override
-            public Boolean getValue(OptionData row)
+            public Boolean getValue(OptionRow row)
             {
-                return row.multi;
+                return row.option.multi;
             }
         }.width(70));
 
-        columns.add(new Column<OptionData>(Boolean.class, "newTab")
+        columns.add(new Column<OptionRow>(Boolean.class, "newTab")
         {
             @Override
-            public Boolean getValue(OptionData row)
+            public Boolean getValue(OptionRow row)
             {
-                return row.newTab;
+                return row.option.newTab;
             }
         }.width(70));
 
-        columns.add(new Column<OptionData>(Boolean.class, "refresh")
+        columns.add(new Column<OptionRow>(Boolean.class, "refresh")
         {
             @Override
-            public Boolean getValue(OptionData row)
+            public Boolean getValue(OptionRow row)
             {
-                return row.refreshResults;
+                return row.option.refreshResults;
             }
         }.width(70));
 
-        columns.add(new Column<OptionData>(String.class, "if")
+        columns.add(new Column<OptionRow>(String.class, "if")
         {
             @Override
-            public String getValue(OptionData row)
+            public String getValue(OptionRow row)
             {
-                return row.ifScript;
+                return row.option.ifScript;
             }
         }.width(300));
 
@@ -146,9 +166,36 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionData>
         return new EditOption.AddOption(getTask().optionsData);
     }
 
+    public Task copyOption(OptionData from)
+    {
+        EditOption.AddOption add = new EditOption.AddOption(getTask().optionsData);
+
+        add.action.setValue(from.action);
+        add.code.setValue(from.code);
+        add.ifScript.setValue(from.ifScript);
+        add.label.setValue(from.label);
+        add.newTab.setValue(from.newTab);
+        add.refreshResults.setValue(from.refreshResults);
+        add.type.setValue(from.multi ? "multi" : from.row ? "row" : "non-row");
+
+        return add;
+    }
+
     public Task deleteOption(OptionData optionData)
     {
         return new EditOption.DeleteOption(getTask().optionsData, optionData);
+    }
+
+    public static class OptionRow
+    {
+        public OptionsData.OptionData option;
+        public File file;
+
+        public OptionRow(OptionsData.OptionData data, File file)
+        {
+            this.option = data;
+            this.file = file;
+        }
     }
 
 }

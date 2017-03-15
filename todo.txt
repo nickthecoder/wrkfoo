@@ -1,9 +1,7 @@
 Current Task
 ============
 
-Tool.getNewTab - is this needed any more?
-
-Check all options for "; tool" and replace with "refreshResults"
+Places to handle ~
 
 BUGS
 ====
@@ -25,14 +23,71 @@ Tabs lose their properites when dragged to a different MainWindow.
 
 When Editor dirty changes the tab's label, the window title isn't correctly set. (Misses the "WrkFoo : " prefix)
 
+Options to have a new "prompt" attribute, similar to "newTab" option.
+	Works for Tools and Tasks
+
+	F4 to prompt tasks/tools.
+		Pass into Option.run in the same was as newTab currently is.
+		
+	Refactor the running of options in to a new class, as it is getting complex, and shouldn't be in AbstractTableTool
+
 New Features
 ============
 
-Edit Options : Show all options
-	Show ALL options, not only the current Tools options.
-		New column showing where they are defined.
-		Make this an BooleanParameter of the wrkoptions tool.
+OptionData doesn't handle aliases
+	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
 
+Add "description" to Option?
+
+TaskPrompter should be JDialog, not JFrame.
+
+action and ifScript to use Editor
+	default to 3/4 lines JTextArea, but with a button to popup a full editor.
+	EditorPane interacts with new EditorWindow instead of Editor.
+	Maybe rename Editor to EditorTool.
+
+Create a code line count Task in groovy to demonstrate a user defined task
+	Can count a single file, or recurse a whole tree.
+	Place it in .config/wrkfoo/tasks directory? (No. When Tasks are groovyfied, then it makes sense to keep them together).
+		So, put them in ~/bin
+	We need to define a PATH to search for groovy code. (Resources)
+	Option to show total or individual count for each file.
+	
+	Then create a Tool written in Groovy, which takes the individual count lines, and produces a Table (using WrappedFile).
+		The groovy task can have a "main", which creates a MainWindow for the tool when run directly from the command line.
+	It is going to be common for a Task to produce plain text AND OO results (e.g. FileLister)
+		Is there a good way to do both in one class?
+			Could ALWAYS create OO results, and then use toString on the row to produce the plain text results.
+
+Would like to launch a browser window for javadocs from the gitstatus Tool
+	Plus run the rsync and launch the published version too (specific to my setup).
+		Put this in a "Custom" place (see below)
+
+Resources to have only ONE "globals", rather than a list, which is hard-coded to the name "globals" (once OPTIONS_PATH) has been implmented.
+	WrkOptions to have a "showGlobals" parameter.
+	And/or a "Wrk Global Options" global option "ego" (as "eo" is "Edit Options")
+
+Custom/Standard Options
+	I'd like to split options into "standard" and "customised".
+	The standard ones are defined by wrkfoo, and generally not edited by end users.
+	The customised ones ARE edited by end users, and not part of wrkfoo
+	When loading a named option, it loads in both together.
+	Resources knows about TWO directories "standardOptionsDirectory" and "customOptionsDirectory"
+		Maybe URLs rather than Files, so that the standard ones can be in the jar file.
+		file:: options can be edited, others cannot.
+		During development I can have both as file::, so that I can edit them easily
+		Maybe a PATH of places, and look in all places when loading a named option.
+			That way, wrkfoo has "standard" options, a team can have "team" options, and an individual can define their own.
+		When adding/copying an option, need to specify which place to put the new option.
+		Note a new option may end up creating a new file if it is the first option in that place.
+	From Eclipse F11, specify a settings file which has an OPTIONS_PATH of ~/projects/wrkfoo/src/resources/... and ~/.config/wrkfoo/options
+	From the command line use a settings file which has jar://... and ~/.config/wrkfoo/options
+		WrkFoo Task has a settings parameter
+	Colour code based on the index of which OPTIONS_PATH entry.
+		1st path entry is black, second is red, third green etc.
+	Default wrkfoo directory is the parent of the settings file.
+		i.e. loading a NAMED tabset looks in settingsFile.getParent()/"tabs"
+		When using NAMES, do not include the ".json" as part of the name (if that isn't already the case), for both tabsets and options.
 
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.
@@ -64,11 +119,6 @@ Un-close tab. Useful when you close a tab by mistake.
 Save Tab sets to remember the order and widths of the columns
 
 Editor to prompt when closing the tab without saving (if dirty)
-
-Task : new prompt method, designed for non-command line usage. Hides the Details button, and does neverExit.
-	Search options
-
-F4 to prompt tasks/tools.
 
 Embed a terminal emulator :
 	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
