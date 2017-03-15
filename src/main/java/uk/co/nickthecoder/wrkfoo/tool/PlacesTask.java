@@ -95,7 +95,13 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
                 file = new File(url.getPath());
             }
         } else {
-            file = new File(line);
+            if (line.equals("~") ) {
+                file = Resources.instance.getHomeDirectory();
+            } else if (line.startsWith("~" + File.separatorChar)) {
+                file = new File( Resources.instance.getHomeDirectory(), line.substring(2));
+            } else {
+                file = new File(line);
+            }
         }
         if (name == null) {
             name = file.getName();
