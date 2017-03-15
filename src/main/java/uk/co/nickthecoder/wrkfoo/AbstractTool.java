@@ -30,8 +30,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     private ToolPanel toolPanel;
 
-    private boolean useNewTab;
-
     public AbstractTool(T task)
     {
         this.task = task;
@@ -107,29 +105,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
         this.toolTab = tab;
     }
-
-    public void setUseNewTab(boolean value)
-    {
-        this.useNewTab = value;
-    }
-
-    @Override
-    public boolean getUseNewTab()
-    {
-        return useNewTab;
-    }
-
-    /**
-     * A fluent API verison of {@link #setUsenewTab(boolean)}.
-     * 
-     * @return this
-     */
-    public Tool newTab()
-    {
-        setUseNewTab(true);
-        return this;
-    }
-
+    
     @Override
     public void detach()
     {

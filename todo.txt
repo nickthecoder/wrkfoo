@@ -28,6 +28,12 @@ When Editor dirty changes the tab's label, the window title isn't correctly set.
 New Features
 ============
 
+Edit Options : Show all options
+	Show ALL options, not only the current Tools options.
+		New column showing where they are defined.
+		Make this an BooleanParameter of the wrkoptions tool.
+
+
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.
 	Fire a change event so Editor can change the parameter accordingly

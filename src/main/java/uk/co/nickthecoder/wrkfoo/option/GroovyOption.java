@@ -74,7 +74,7 @@ public class GroovyOption extends AbstractOption
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
 
-            if (openNewTab || newTool.getUseNewTab()) {
+            if (openNewTab) {
 
                 if (getRefreshResults()) {
                     listen(currentTool, newTool.getTask());

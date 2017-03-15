@@ -2,13 +2,11 @@ package uk.co.nickthecoder.wrkfoo;
 
 import javax.swing.Icon;
 
-import groovyjarjarcommonscli.Option;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.option.Options;
-import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 /**
  * A Tool performs some work via a {@link Task}. The Task is defined as usual by a set of {@link Parameter}s.
@@ -40,12 +38,6 @@ public interface Tool
     public void detach();
 
     public ToolTab getToolTab();
-
-    /**
-     * If this tool is created by an {@link Option}, should it cause a new tab to be created?
-     * Useful for {@link ExecTool}s.
-     */
-    public boolean getUseNewTab();
 
     public void updateResults();
 
