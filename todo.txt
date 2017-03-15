@@ -1,7 +1,7 @@
 Current Task
 ============
 
-Tool.getNewTab - is this needed any more?
+ Tool.getNewTab - is this needed any more?
 
 Check all options for "; tool" and replace with "refreshResults"
 
