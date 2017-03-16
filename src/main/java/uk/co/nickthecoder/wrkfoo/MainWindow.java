@@ -308,7 +308,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
-            new OptionsRunner(tab.getTool()).createNonRowOptionsMenu(me);
+            new OptionsRunner(tab.getTool()).popupNonRowMenu(me);
         }
     }
 

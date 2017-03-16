@@ -3,13 +3,10 @@ package uk.co.nickthecoder.wrkfoo;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 
-import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 
 public class TableToolPanel<R> extends ToolPanel
@@ -46,7 +43,7 @@ public class TableToolPanel<R> extends ToolPanel
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    processOptions(false);
+                    optionsRunner.processTableOptions(false);
                 }
             });
 
@@ -59,7 +56,7 @@ public class TableToolPanel<R> extends ToolPanel
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    processOptions(true);
+                    optionsRunner.processTableOptions(true);
                 }
             });
 
@@ -70,7 +67,7 @@ public class TableToolPanel<R> extends ToolPanel
             public void mouseReleased(MouseEvent me)
             {
                 if (me.isPopupTrigger()) {
-                    optionsRunner.createOptionsMenu(me);
+                    optionsRunner.popupRowMenu(me);
                 }
             }
 
@@ -78,7 +75,7 @@ public class TableToolPanel<R> extends ToolPanel
             public void mousePressed(MouseEvent me)
             {
                 if (me.isPopupTrigger()) {
-                    optionsRunner.createOptionsMenu(me);
+                    optionsRunner.popupRowMenu(me);
                 }
             }
 
@@ -98,77 +95,6 @@ public class TableToolPanel<R> extends ToolPanel
             }
         });
 
-    }
-
-    private void processOptions(boolean newTab)
-    {
-        ToolTableModel<?> model = table.getModel();
-        table.stopEditing();
-
-        // Apply the options on all rows.
-        boolean foundOne = false;
-
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String code = model.getCode(i);
-            if (!Util.empty(code)) {
-                foundOne = true;
-
-                Object row = model.getRow(i);
-                Option option = tableTool.getOptions().getOption(code, row);
-                if (option != null) {
-                    if (option.isMultiRow()) {
-                        processMultiRowOptions(tableTool, option, newTab);
-                    } else {
-                        model.setCode(i, "");
-                        if (!optionsRunner.runOption(option, row, newTab)) {
-                            model.setCode(i, code); // Put back the code
-                            // TODO Should I stop on error?
-                            break;
-                        }
-
-                        if (!newTab) {
-                            // TODO Should the remaining options be ignore? (if message were replaced).
-                            // For now, lets be safe, and only apply a single option.
-                            break;
-                            // Note, this is bad, because we are NOT doing this in the order as seen in the GUI
-                            // we are doing based on the UNSORTED rows.
-                        }
-                    }
-                }
-            }
-        }
-
-        // Run the default option on the current row if no options have been entered.
-        if (!foundOne) {
-            int r = table.getSelectedRow();
-
-            if (r >= 0) {
-                int rowIndex = table.convertRowIndexToModel(r);
-                if (Util.empty(model.getCode(rowIndex))) {
-                    R row = table.getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getDefaultRowOption(row);
-                    optionsRunner.runOption(option, row, newTab);
-
-                    return;
-                }
-            }
-        }
-    }
-
-    private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab)
-    {
-        ToolTableModel<?> model = table.getModel();
-
-        List<Object> rows = new ArrayList<>();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            Object row = model.getRow(i);
-            Option otherOption = tableTool.getOptions().getRowOption(model.getCode(i), row);
-            if (otherOption == option) {
-                model.setCode(i, "");
-                rows.add(model.getRow(i));
-            }
-        }
-        optionsRunner.runMultipleOption(option, rows, newTab);
     }
 
     public void stopEditing()
