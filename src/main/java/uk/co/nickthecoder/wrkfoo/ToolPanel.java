@@ -7,13 +7,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -21,13 +19,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
-import uk.co.nickthecoder.jguifier.guiutil.FilteredPopupMenu;
-import uk.co.nickthecoder.jguifier.guiutil.MenuItemFilter;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
-import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.option.Option;
-import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class ToolPanel extends JPanel implements ToolListener
@@ -181,59 +174,6 @@ public class ToolPanel extends JPanel implements ToolListener
             }
         });
 
-    }
-
-    public static final MenuItemFilter menuItemFilter = new MenuItemFilter()
-    {
-        @Override
-        public boolean accept(JMenuItem menuItem, String filterText)
-        {
-            if (!menuItem.isEnabled()) {
-                // Keep information items, such as "Non-Row Options"
-                return true;
-            }
-            return menuItem.getText().toLowerCase().contains(filterText.toLowerCase());
-        }
-    };
-
-    protected FilteredPopupMenu createPopupMenu()
-    {
-
-        FilteredPopupMenu menu = FilteredPopupMenu.create(menuItemFilter);
-        return menu;
-    }
-
-    public void createNonRowOptionsMenu(MouseEvent me)
-    {
-        boolean useNewTab = me.isControlDown();
-
-        FilteredPopupMenu menu = createPopupMenu();
-        Options options = tool.getOptions();
-        for (Option option : options) {
-            if (!option.isRow()) {
-                menu.add(createOptionsMenuItem(option, useNewTab));
-            }
-        }
-
-        menu.show(me.getComponent(), me.getX(), me.getY());
-    }
-
-    protected JMenuItem createOptionsMenuItem(final Option option, final boolean useNewTab)
-    {
-        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
-        JMenuItem item = new JMenuItem(option.getLabel() + extra);
-        item.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (option != null) {
-                    getMainWindow().runOption(option, tool, useNewTab);
-                }
-            }
-        });
-
-        return item;
     }
 
     public boolean check()

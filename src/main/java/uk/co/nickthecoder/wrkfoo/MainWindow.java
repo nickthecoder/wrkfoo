@@ -39,7 +39,6 @@ import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
-import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
@@ -74,7 +73,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
      */
     private static MainWindow mouseMainWindow;
 
-    private JTextField optionsTextField;
+    private JTextField optionTextField;
 
     private JLabel message;
 
@@ -123,7 +122,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         statusBarPanel = new JPanel();
         statusBarPanel.setLayout(new BoxLayout(statusBarPanel, BoxLayout.Y_AXIS));
-        
+
         toolBar = new JToolBar();
         statusBar = new JToolBar();
         toolBar.setFloatable(false);
@@ -176,7 +175,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         ActionBuilder builder = new ActionBuilder(this).component(this.rootPane);
 
-        toolBar.add(createToolBarOption());
+        optionTextField = createOptionTextField();
+        toolBar.add(optionTextField);
 
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
@@ -251,13 +251,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
         });
     }
 
-    private JComponent createToolBarOption()
+    private JTextField createOptionTextField()
     {
-        optionsTextField = new JTextField();
-        optionsTextField.setToolTipText("Enter non-row Options (F10)");
-        optionsTextField.setColumns(6);
+        JTextField textField = new JTextField();
+        textField.setToolTipText("Enter non-row Options (F10)");
+        textField.setColumns(6);
 
-        putAction("ENTER", "nonRowOption", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+        putAction("ENTER", "nonRowOption", textField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
                 private static final long serialVersionUID = 1L;
@@ -265,11 +265,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    processNonRowOption(false);
+                    processOptionField(false);
                 }
             });
 
-        putAction("ctrl ENTER", "nonRowOptionNewTab", optionsTextField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
+        putAction("ctrl ENTER", "nonRowOptionNewTab", textField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
             new AbstractAction()
             {
                 private static final long serialVersionUID = 1L;
@@ -277,11 +277,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    processNonRowOption(true);
+                    processOptionField(true);
                 }
             });
 
-        optionsTextField.addMouseListener(new MouseAdapter()
+        textField.addMouseListener(new MouseAdapter()
         {
 
             @Override
@@ -301,62 +301,26 @@ public class MainWindow extends JFrame implements ExceptionHandler
             }
         });
 
-        return optionsTextField;
+        return textField;
     }
 
     private void createOptionsMenu(MouseEvent me)
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
-            tab.getTool().getToolPanel().createNonRowOptionsMenu(me);
+            new OptionsRunner(tab.getTool()).createNonRowOptionsMenu(me);
         }
     }
 
-    public void processNonRowOption(boolean newTab)
+    private void processOptionField(boolean newTab)
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             Tool tool = tab.getTool();
 
-            Option option = tool.getOptions().getNonRowOption(optionsTextField.getText());
-            if (option != null) {
-                if (runOption(option, tool, newTab)) {
-                    optionsTextField.setText("");
-                }
+            if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab)) {
+                optionTextField.setText("");
             }
-        }
-    }
-
-    public boolean runOption(Option option, Tool tool, boolean newTab)
-    {
-        try {
-            option.runOption(tool, newTab);
-            return true;
-        } catch (Throwable e) {
-            handleException(e);
-            return false;
-        }
-    }
-
-    public boolean runOption(Option option, TableTool<?> tool, Object row, boolean newTab)
-    {
-        try {
-            option.runOption(tool, row, newTab);
-            return true;
-        } catch (Throwable e) {
-            handleException(e);
-            return false;
-        }
-    }
-
-    public boolean runMultipleOption(Option option, TableTool<?> tool, List<Object> rows, boolean newTab)
-    {
-        try {
-            option.runMultiOption(tool, rows, newTab);
-            return true;
-        } catch (Throwable e) {
-            handleException(e);
-            return false;
         }
     }
 
@@ -388,7 +352,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void setVisible(boolean show)
     {
         super.setVisible(show);
-        
+
         if (show) {
             windows.add(this);
 
@@ -608,7 +572,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onJumpToToolBar()
     {
-        optionsTextField.requestFocusInWindow();
+        optionTextField.requestFocusInWindow();
     }
 
     public void onJumpToResults()

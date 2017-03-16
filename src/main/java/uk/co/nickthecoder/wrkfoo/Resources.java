@@ -209,9 +209,6 @@ public class Resources
         for (OptionsData optionsData : readOptionsData(name)) {
             result.add(optionsData.optionsGroup);
         }
-        if (globalOptions != null) {
-            result.add(globalOptions);
-        }
         return result;
     }
 

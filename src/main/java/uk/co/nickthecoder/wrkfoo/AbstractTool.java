@@ -15,6 +15,7 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
+import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public abstract class AbstractTool<T extends Task> implements Tool
 {
@@ -28,7 +29,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     private ToolPanel toolPanel;
 
-    private Options options;
+    private OptionsGroup options;
 
     public AbstractTool(T task)
     {
@@ -257,12 +258,13 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     }
 
-
     @Override
     public Options getOptions()
     {
         if (options == null) {
-            options = Resources.getInstance().readOptions(getOptionsName());
+            options = new OptionsGroup();
+            options.add(Resources.getInstance().readOptions(getOptionsName()));
+            options.add(Resources.getInstance().globalOptions());
         }
         return options;
     }
