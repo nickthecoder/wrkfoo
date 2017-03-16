@@ -19,21 +19,21 @@ public class WrkFoo extends Task
         }
     }
 
-    public FileParameter settings = new FileParameter.Builder("settings").directory()
+    public FileParameter settings = new FileParameter.Builder("settings").file().mustExist()
         .description("Default is ~/.config/wrkfoo/settings.json")
-        .parameter();
+        .optional().parameter();
 
-    public FileParameter tabSetFile = new FileParameter.Builder("tabSetFile")
+    public FileParameter tabsFile = new FileParameter.Builder("tabsFile")
         .optional().file().mustExist()
         .parameter();
 
-    public StringParameter tabSetName = new StringParameter.Builder("tabSetName")
+    public StringParameter tabsName = new StringParameter.Builder("tabsName")
         .optional()
         .parameter();
 
     public WrkFoo()
     {
-        addParameters(tabSetFile, tabSetName);
+        addParameters(settings, tabsFile, tabsName);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class WrkFoo extends Task
         if (settings.getValue() != null) {
             Resources.settingsFile = settings.getValue();
         }
-        
-        if (tabSetFile.getValue() != null) {
-            TabSetData.load(tabSetFile.getValue()).openMainWindow();
 
-        } else if (tabSetName.getValue() != null) {
-            File file = new File(Resources.getInstance().getTabsDirectory(), tabSetName.getValue());
+        if (tabsFile.getValue() != null) {
+            TabSetData.load(tabsFile.getValue()).openMainWindow();
+
+        } else if (tabsName.getValue() != null) {
+            File file = new File(Resources.getInstance().getTabsDirectory(), tabsName.getValue() + ".json");
             TabSetData.load(file).openMainWindow();
 
         } else {

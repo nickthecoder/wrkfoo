@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.io.File;
+import java.net.URL;
 
 import javax.swing.Icon;
 
@@ -13,48 +13,21 @@ import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask, String>
 {
-    public static WrkOptionsIncludesTask createTask(File file)
+    public WrkOptionsIncludes(URL path, String name)
     {
-        WrkOptionsIncludesTask task = new WrkOptionsIncludesTask();
-        // TODO This class no longer works
-        // task.optionsFile.setDefaultValue(file);
-        return task;
-    }
-
-    public WrkOptionsIncludes()
-    {
-        super(new WrkOptionsIncludesTask());
-    }
-
-    public WrkOptionsIncludes(File optionsFile)
-    {
-        super(createTask(optionsFile));
+        super(new WrkOptionsIncludesTask(path, name));
     }
 
     @Override
     public String getLongTitle()
     {
-        try {
-            // TODO This class no longer works
-            // return "Includes : " + task.optionsFile.getValue().getName();
-            return "???";
-
-        } catch (Exception e) {
-            return super.getLongTitle();
-        }
+        return task.path.getValue() + " : " + task.optionsName.getValue();
     }
 
     @Override
     public String getShortTitle()
     {
-        try {
-            // TODO This class no longer works
-            // return task.optionsFile.getValue().getName();
-            return "???";
-
-        } catch (Exception e) {
-            return super.getShortTitle();
-        }
+        return task.optionsName.getValue();
     }
 
     @Override

@@ -1,18 +1,35 @@
 {
-  "include": ["files", "directory"],
+  "include": [
+    "files",
+    "directory"
+  ],
   "options": [
     {
       "code": "",
       "label": "Work with Options",
-      "action": "new WrkOptions(row.file)",
-      "multi": false
+      "action": "tool.wrkOptions(row.file)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
     },
     {
       "code": "+",
       "label": "New Options File",
       "action": "new NewOptionsFile().promptTask()",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "wi",
+      "label": "Work with Includes",
+      "action": "tool.wrkOptionsIncludes(row.file)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
     }
   ]
 }

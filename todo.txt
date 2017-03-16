@@ -1,13 +1,6 @@
 Current Task
 ============
 
-Add/Copy need to create a file if it doesn't exist.
-
-Add "jar://..." to the default options path in Resources.
-
-Check if the uri is a file:// uri before trying to save the options.
-	Check if the option IS editable before allowing it to be edited. ifScript?.
-
 NewOptionsFile - currently comment out. Which options path to put it in?
 	Won't need this. Add/Copy can create files when needed.
 
@@ -16,21 +9,13 @@ WrkOptionsInclude doesn't do the right thing.
 	I've commented out broken code.
 	Pass the uri of the option (or maybe the File from the uri)
 
-Custom/Standard Options
-
-	From Eclipse F11, specify a settings file which has an OPTIONS_PATH of ~/projects/wrkfoo/src/resources/... and ~/.config/wrkfoo/options
-	From the command line use a settings file which has jar://... and ~/.config/wrkfoo/options
-		WrkFoo Task has a settings parameter
-	Colour code based on the index of which OPTIONS_PATH entry.
-		1st path entry is black, second is red, third green etc.
-	Default wrkfoo directory is the parent of the settings file.
-		i.e. loading a NAMED tabset looks in settingsFile.getParent()/"tabs"
-
-When loading a tabset by NAME, append the ".json" to be consistant with options?
-	Yes, when specified by a command line, that makes sense
-
 BUGS
 ====
+
+Double click when there is no default option throws an exception
+
+GitStatus
+	When a file has been added, then changed again, it only shows once, but shows in green. Should be red. M,M
 
 WrkOptions not updating the list when adding/deleting options.
 

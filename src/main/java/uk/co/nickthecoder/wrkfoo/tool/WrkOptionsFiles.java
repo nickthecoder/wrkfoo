@@ -1,10 +1,13 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
@@ -25,6 +28,12 @@ public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOp
     public Icon getIcon()
     {
         return Resources.icon("options.png");
+    }
+
+    @Override
+    public String getLongTitle()
+    {
+        return super.getLongTitle() + " " + task.directory.getValue();
     }
 
     @Override
@@ -59,6 +68,31 @@ public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOp
         }.width(120).lock().renderer(DateRenderer.instance));
 
         return columns;
+    }
+
+    public WrkOptionsIncludes wrkOptionsIncludes(File file)
+    {
+        URL path;
+        try {
+            path = file.getParentFile().toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        String name = Util.removeExtension(file);
+        return new WrkOptionsIncludes(path, name);
+    }
+
+    public WrkOptions wrkOptions(File file)
+    {
+        URL path;
+        try {
+            path = file.getParentFile().toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        String name = Util.removeExtension(file);
+
+        return new WrkOptions(path, name);
     }
 
     @Override

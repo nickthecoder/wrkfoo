@@ -1,11 +1,15 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -17,12 +21,17 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
 
     public OptionsData optionsData;
 
+    public ChoiceParameter<URL> path = Resources.getInstance().createOptionsPathChoice(false);
+
     public StringParameter optionsName = new StringParameter.Builder("optionsName")
         .parameter();
 
-    public WrkOptionsIncludesTask()
+    public WrkOptionsIncludesTask(URL path, String optionsName)
     {
-        addParameters(optionsName);
+        addParameters(this.path, this.optionsName);
+
+        this.path.setDefaultValue(path);
+        this.optionsName.setDefaultValue(optionsName);
     }
 
     @Override
@@ -36,13 +45,16 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
     {
         Set<String> names = new HashSet<>();
 
-        List<OptionsData> list = Resources.getInstance().readOptionsData(optionsName.getValue());
-        for (OptionsData od : list ) {
-            for ( String name : od.include ) {
-                names.add( name );
-            }
+        OptionsData optionsData;
+        try {
+            optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
         }
-        
+        for (String name : optionsData.include) {
+            names.add(name);
+        }
+
         results = new ArrayList<>(names);
     }
 

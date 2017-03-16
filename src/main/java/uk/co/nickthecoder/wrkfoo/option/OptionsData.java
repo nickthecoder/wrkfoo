@@ -24,7 +24,6 @@ public class OptionsData
 
     public static OptionsData load(URL url) throws MalformedURLException, IOException
     {
-        System.out.println("OptionsData.load " + url);
         Gson gson = new Gson();
 
         JsonReader reader;

@@ -1,7 +1,8 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.io.File;
+import java.awt.Color;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 
@@ -9,13 +10,18 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
-import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.OptionRow;
+import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
 public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
 {
+    public static Color EDITABLE_COLOR = Color.black;
+
+    public static Color FIXED_COLOR = Color.red;
+
     public WrkOptions()
     {
         super(new WrkOptionsTask());
@@ -26,29 +32,9 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
         super(new WrkOptionsTask(optionsName));
     }
 
-    public WrkOptions(File file)
+    public WrkOptions(URL path, String name)
     {
-        super(new WrkOptionsTask(file));
-    }
-
-    @Override
-    public String getLongTitle()
-    {
-        try {
-            return "Options : " + task.optionsName.getValue();
-        } catch (Exception e) {
-            return super.getLongTitle();
-        }
-    }
-
-    @Override
-    public String getShortTitle()
-    {
-        try {
-            return task.optionsName.getValue();
-        } catch (Exception e) {
-            return super.getShortTitle();
-        }
+        super(new WrkOptionsTask(path, name));
     }
 
     @Override
@@ -156,9 +142,49 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
     }
 
     @Override
+    protected ListTableModel<OptionRow> createTableModel()
+    {
+        ListTableModel<OptionRow> tableModel = new ListTableModel<OptionRow>(this,
+            new ArrayList<OptionRow>(), getColumns())
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Color getRowForeground(int row)
+            {
+                OptionRow line = getRow(row);
+
+                if (line.url.getProtocol().equals("file")) {
+                    return EDITABLE_COLOR;
+                } else {
+                    return FIXED_COLOR;
+                }
+            }
+        };
+
+        return tableModel;
+    }
+    
+    @Override
     public Icon getIcon()
     {
-        return Resources.icon("optionData.png");
+        return Resources.icon("options.png");
+    }
+
+    @Override
+    public String getShortTitle()
+    {
+        return task.optionsName.getValue();
+    }
+
+    @Override
+    public String getLongTitle()
+    {
+        if (task.path.getValue() == null ) {
+            return "<all> " + task.optionsName.getValue();
+        } else {
+            return task.path.getValue() + " " + task.optionsName.getValue();
+        }
     }
 
     public Task editOption(OptionsData optionsData, OptionData optionData)
@@ -191,23 +217,9 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
         return new EditOption.DeleteOption(optionsData, optionData);
     }
 
-    public static class OptionRow
+    public WrkOptionsIncludes wrkOptionsIncludes()
     {
-        public OptionsData options;
-        public OptionsData.OptionData option;
-        public URL url;
-
-        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url)
-        {
-            this.options = optionsData;
-            this.option = data;
-            this.url = url;
-        }
-
-        public boolean canEdit()
-        {
-            return url.getProtocol().equals("file");
-        }
+        return new WrkOptionsIncludes(task.path.getValue(), task.optionsName.getValue());
     }
 
 }

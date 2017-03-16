@@ -105,8 +105,6 @@ public class Resources
 
     public void readSettings()
     {
-        System.out.println("Loading settings from " + settingsFile);
-
         try {
             SettingsData settings = SettingsData.load(settingsFile);
 
@@ -166,14 +164,11 @@ public class Resources
     {
         OptionsData cached = optionsDataByURL.get(url);
         if (cached != null) {
-            System.out.println("Using cached version of : " + url + " (" + cached.optionData.size() + ")");
             return cached;
         }
 
         OptionsData optionsData = OptionsData.load(url);
         optionsDataByURL.put(optionsData.url, optionsData);
-
-        // System.out.println( "Loaded optionData : " + url + " (" + optionsData.options.size() + ")" );
 
         return optionsData;
     }
@@ -191,21 +186,15 @@ public class Resources
 
     public List<OptionsData> readOptionsData(String name)
     {
-        System.out.println("Loading optionData named " + name);
-        System.out.println("Options path length " + optionsPath.size());
         List<OptionsData> result = new ArrayList<>();
 
         int count = 0;
         for (URL url : optionsPath) {
             try {
-                System.out.println("Going to try " + url + ", " + name);
                 result.add(readOptionsData(url, name));
-                System.out.println("Yep did that");
                 count++;
             } catch (URISyntaxException | IOException e) {
-                System.out.println("Failed to load " + url + " + " + name);
                 // Do nothing
-                //e.printStackTrace();
             }
         }
         if (count == 0) {

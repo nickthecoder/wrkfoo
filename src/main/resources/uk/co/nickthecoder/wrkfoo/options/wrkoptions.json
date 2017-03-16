@@ -5,6 +5,7 @@
       "code": "",
       "label": "Edit Option",
       "action": "tool.editOption(row.options, row.option).promptTask()",
+      "if": "row.canEdit()",
       "row": true,
       "multi": false,
       "newTab": false,
@@ -23,6 +24,7 @@
       "code": "-",
       "label": "Delete Option",
       "action": "tool.deleteOption(row.options, row.option).promptTask()",
+      "if": "row.canEdit()",
       "row": true,
       "multi": false,
       "newTab": false,
@@ -36,15 +38,6 @@
       "multi": false,
       "newTab": false,
       "refreshResults": true
-    },
-    {
-      "code": "wi",
-      "label": "Work with Includes",
-      "action": "new WrkOptionsIncludes( tool.task.optionsFile.value )",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false
     }
   ]
 }

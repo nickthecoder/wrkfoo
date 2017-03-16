@@ -1,8 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,12 +12,11 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
-import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
-import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.OptionRow;
+import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
 public class WrkOptionsTask extends Task implements ListResults<OptionRow>
 {
@@ -47,15 +44,11 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         optionsName.setDefaultValue(name);
     }
 
-    public WrkOptionsTask(File file)
+    public WrkOptionsTask(URL path, String name)
     {
         this();
-        optionsName.setDefaultValue(Util.removeExtension(file));
-        try {
-            path.setDefaultValue(file.toURI().toURL());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        this.path.setDefaultValue(path);
+        this.optionsName.setDefaultValue(name);
     }
 
     @Override
@@ -117,4 +110,22 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         }
     }
 
+    public static class OptionRow
+    {
+        public OptionsData options;
+        public OptionsData.OptionData option;
+        public URL url;
+
+        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url)
+        {
+            this.options = optionsData;
+            this.option = data;
+            this.url = url;
+        }
+
+        public boolean canEdit()
+        {
+            return url.getProtocol().equals("file");
+        }
+    }
 }
