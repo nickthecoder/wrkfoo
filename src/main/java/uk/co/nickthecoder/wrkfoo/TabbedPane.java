@@ -216,7 +216,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         WrkFoo.assertIsEDT();
 
         super.setSelectedIndex(i);
-        getComponentAt(i).requestFocus();
+        //getComponentAt(i).requestFocus();
     }
 
     public void setSelectedToolTab(ToolTab tab)

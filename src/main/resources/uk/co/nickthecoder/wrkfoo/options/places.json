@@ -8,49 +8,70 @@
       "label": "Work with Directory",
       "action": "new WrkF().parameter('directory',row.file)",
       "if": "row.file.isDirectory()",
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "",
       "label": "Open File",
       "action": "os.exec('gnome-open', row.file)",
       "if": "!row.file.isDirectory()",
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "ep",
       "label": "Edit Places",
       "action": "os.edit(task.store.value)",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "+",
       "label": "Add Place",
-      "action": "tool.add().promptTask()",
+      "action": "tool.add()",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "test",
       "label": "Test",
       "action": "println( os.fileLines(task.store.value).findAll( { ! it.contains(row.line) } ) )",
       "row": true,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "-",
       "label": "Remove a Place",
       "action": "task.store.value.write (task.store.value.readLines() .findAll( { ! it.contains(row.line) } ).join('\\n') + '\\n') ; tool",
       "row": true,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "++",
       "label": "Duplicate Place",
-      "action": "def add = tool.add(); add.placeName.value = row.name; add.file.value = row.file; add.promptTask()",
+      "action": "def add = tool.add();\nadd.placeName.value = row.name;\nadd.file.value = row.file;\nadd",
       "row": true,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": true
     }
   ]
 }

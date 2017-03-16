@@ -236,7 +236,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         newEditor.task.file.setDefaultValue(this.task.file.getValue().getParentFile());
 
         MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel());
-        ToolTab newTab = mainWindow.insertTab(newEditor);
+        ToolTab newTab = mainWindow.insertTab(newEditor, true);
         mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
     }
 

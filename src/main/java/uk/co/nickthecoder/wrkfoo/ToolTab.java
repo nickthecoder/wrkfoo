@@ -9,7 +9,6 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -143,16 +142,7 @@ public class ToolTab
         this.tool = tool;
         panel.removeAll();
         panel.add(tool.getToolPanel());
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                tool.getToolPanel().getSplitPane().focus();
-            }
-        });
         tool.attachTo(this);
-
     }
 
     private void detach()
@@ -177,23 +167,28 @@ public class ToolTab
     public void undo()
     {
         if (history.canUndo()) {
-            go(history.undo(), false);
+            goPrivate(history.undo(), false, false);
         }
     }
 
     public void redo()
     {
         if (history.canRedo()) {
-            go(history.redo(), false);
+            goPrivate(history.redo(), false, false);
         }
     }
 
     public void go(Tool newTool)
     {
-        go(newTool, true);
+        goPrivate(newTool, false, true);
     }
 
-    private void go(Tool newTool, boolean updateHistory)
+    public void goPrompt(Tool newTool, boolean prompt)
+    {
+        goPrivate(newTool, prompt, true);
+    }
+
+    private void goPrivate(Tool newTool, boolean prompt, boolean updateHistory)
     {
         if (newTool != this.tool) {
             detach();
@@ -204,14 +199,20 @@ public class ToolTab
             history.add(tool);
         }
 
-        if (getTool().getToolPanel().check()) {
-            // All parameters are ok, run the tool.
+        if (prompt) {
 
-            newTool.go();
+            tool.getToolPanel().getSplitPane().focusRight();
 
         } else {
-            // Missing/incorrect parameters. Show the parameters panel.
-            getTool().getToolPanel().getSplitPane().showRight();
+            if (getTool().getToolPanel().check()) {
+                // All parameters are ok, run the tool.
+
+                newTool.go();
+
+            } else {
+                // Missing/incorrect parameters. Show the parameters panel.
+                getTool().getToolPanel().getSplitPane().showRight();
+            }
         }
 
         if (tabbedPane != null) {

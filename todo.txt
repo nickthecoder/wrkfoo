@@ -6,6 +6,8 @@ Refactor the running of options in to a new class, as it is getting complex, and
 BUGS
 ====
 
+Table show blue cell, even when the table itself doesn't have focus
+
 Double click when there is no default option throws an exception
 
 WrkOptions not updating the list when adding/deleting options.

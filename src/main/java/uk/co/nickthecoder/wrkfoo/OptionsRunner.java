@@ -371,7 +371,7 @@ public class OptionsRunner
     {
         Option option = tool.getOptions().getNonRowOption(code);
         if (option != null) {
-            return runOption(option, tool, newTab);
+            return runOption(option, newTab);
         }
         return false;
     }

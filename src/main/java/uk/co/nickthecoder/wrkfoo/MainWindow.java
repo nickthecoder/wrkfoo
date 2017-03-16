@@ -324,14 +324,18 @@ public class MainWindow extends JFrame implements ExceptionHandler
         }
     }
 
-    public ToolTab insertTab(Tool tool)
+    public ToolTab insertTab(final Tool tool, boolean prompt)
     {
         ToolTab tab = new ToolTab(tool);
 
         tabbedPane.insert(tab);
 
         tab.postCreate();
-        tab.go(tool);
+        if (prompt) {
+            tool.getToolPanel().getSplitPane().focusRight();
+        } else {
+            tab.go(tool);
+        }
 
         return tab;
     }

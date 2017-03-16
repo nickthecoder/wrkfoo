@@ -149,9 +149,6 @@ public class ToolPanel extends JPanel implements ToolListener
 
         MainWindow.putAction("F9", "toggleLeftPane", this, new AbstractAction()
         {
-            /**
-             * 
-             */
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -162,9 +159,6 @@ public class ToolPanel extends JPanel implements ToolListener
         });
         MainWindow.putAction("ctrl F9", "toggleRightPane", this, new AbstractAction()
         {
-            /**
-             * 
-             */
             private static final long serialVersionUID = 1L;
 
             @Override

@@ -1,18 +1,25 @@
 {
+  "include": [],
   "options": [
     {
       "code": "+",
       "label": "Add Include",
-      "action": "tool.addInclude().promptTask()",
+      "action": "tool.addInclude()",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "-",
       "label": "Remove Include",
-      "action": "tool.removeInclude( row ).promptTask()",
+      "action": "tool.removeInclude( row )",
       "row": true,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": true
     }
   ]
 }

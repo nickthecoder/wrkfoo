@@ -8,7 +8,8 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "eo",
@@ -17,7 +18,8 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "oof",
@@ -26,7 +28,8 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "df",
@@ -35,7 +38,8 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "=",
@@ -44,7 +48,8 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "+tab",
@@ -53,7 +58,8 @@
       "row": false,
       "multi": false,
       "newTab": true,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": true
     }
   ]
 }

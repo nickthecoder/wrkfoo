@@ -168,7 +168,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
      * Routed through toolTab, so that it can record the history.
      */
     @Override
-    public synchronized void go()
+    public void go()
     {
         if (goThread == null) {
             goThread = new GoThread();
@@ -184,21 +184,39 @@ public abstract class AbstractTool<T extends Task> implements Tool
     }
 
     @Override
-    public synchronized void stop()
+    public void stop()
     {
         if (task instanceof Stoppable) {
             ((Stoppable) task).stop();
         }
     }
 
-    private synchronized void end()
+    private void end()
     {
         goThread = null;
+        focusOnEnd();
         fireChangedState();
     }
 
+    /**
+     * Focus on the results panel when the tool completes.
+     * Called from {@link #end()}, and is here so that different tools can choose to focus where they see best.
+     * Note. TableTools overrides this so that it can focus on {@link MainWindow}'s option text field when there are no
+     * rows.
+     */
+    protected void focusOnEnd()
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                getToolPanel().getSplitPane().focusLeft();
+            }
+        });
+    }
+
     @Override
-    public synchronized boolean isRunning()
+    public boolean isRunning()
     {
         return goThread != null;
     }
@@ -255,7 +273,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
         ParametersPanel pp = new ParametersPanel();
         pp.addParameters(getTask().getParameters());
         return pp;
-
     }
 
     @Override

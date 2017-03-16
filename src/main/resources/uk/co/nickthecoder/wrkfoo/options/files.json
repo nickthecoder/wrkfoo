@@ -8,7 +8,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "te",
@@ -17,7 +18,8 @@
       "if": "!row.file.isDirectory()",
       "multi": true,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "rm",
@@ -27,7 +29,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "rm-r",
@@ -37,7 +40,8 @@
       "row": true,
       "multi": true,
       "newTab": true,
-      "refreshResults": true
+      "refreshResults": true,
+      "prompt": false
     },
     {
       "code": "rm",
@@ -47,7 +51,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     },
     {
       "code": "grep",
@@ -57,16 +62,18 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "cp",
       "label": "Copy File",
-      "action": "new CopyFile( row.file ).promptTask()",
+      "action": "new CopyFile( row.file )",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "e",
@@ -76,7 +83,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false
+      "refreshResults": false,
+      "prompt": false
     }
   ]
 }

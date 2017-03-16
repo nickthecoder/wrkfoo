@@ -16,15 +16,15 @@ import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class GroovyOption extends AbstractOption
 {
-
     private final GroovyScriptlet ifScriptlet;
 
     private final GroovyScriptlet action;
 
     public GroovyOption(String code, String label, String script, String ifScript, boolean isRow, boolean isMulti,
-        boolean newTab, boolean refreshResults)
+        boolean newTab, boolean refreshResults, boolean prompt)
     {
-        super(code, label, isRow, isMulti, newTab, refreshResults);
+        super(code, label, isRow, isMulti, newTab, refreshResults, prompt);
+
         this.action = new GroovyScriptlet(script);
         if (Util.empty(ifScript)) {
             ifScriptlet = null;
@@ -81,11 +81,11 @@ public class GroovyOption extends AbstractOption
                 }
 
                 MainWindow mainWindow = MainWindow.getMainWindow(tab.getPanel());
-                ToolTab newTab = mainWindow.insertTab(newTool);
+                ToolTab newTab = mainWindow.insertTab(newTool, getPrompt());
                 mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
 
             } else {
-                tab.go(newTool);
+                tab.goPrompt(newTool, getPrompt());
             }
 
         } else if (result instanceof Task) {
@@ -94,8 +94,13 @@ public class GroovyOption extends AbstractOption
             if (getRefreshResults()) {
                 listen(currentTool, task);
             }
-            Thread thread = new Thread((Runnable) result);
-            thread.start();
+            // Either prompt the Task, or run it straight away
+            if ( getPrompt() ) {
+                task.promptTask();
+            } else {
+                Thread thread = new Thread(task);
+                thread.start();
+            }
 
         } else if (result instanceof Runnable) {
 

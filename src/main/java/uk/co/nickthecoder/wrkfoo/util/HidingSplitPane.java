@@ -6,6 +6,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class HidingSplitPane extends JSplitPane
@@ -27,7 +28,6 @@ public class HidingSplitPane extends JSplitPane
         this.state = State.BOTH;
         FocusAdapter listener = new FocusAdapter()
         {
-
             @Override
             public void focusGained(FocusEvent e)
             {
@@ -38,6 +38,15 @@ public class HidingSplitPane extends JSplitPane
         right.addFocusListener(listener);
     }
 
+    public static void focusLater( final Component component ) 
+    {
+        SwingUtilities.invokeLater( new Runnable() {
+            public void run() {
+                component.requestFocusInWindow();
+            }
+        });
+    }
+    
     public void setState(State newState)
     {
         if (this.state == newState) {
@@ -48,10 +57,9 @@ public class HidingSplitPane extends JSplitPane
             // Show the hidden component, resetting the divider position and size.
             Component makeVisibleComponent = this.state == State.LEFT ? getRightComponent() : getLeftComponent();
             makeVisibleComponent.setVisible(true);
-            makeVisibleComponent.requestFocusInWindow();
             setDividerLocation(loc);
             setDividerSize((Integer) UIManager.get("SplitPane.dividerSize"));
-
+            
         } else {
             if (this.state == State.BOTH) {
                 // From BOTH to LEFT or RIGHT
@@ -60,8 +68,6 @@ public class HidingSplitPane extends JSplitPane
                 setDividerSize(0);
                 Component makeInvisibleComponent = newState == State.LEFT ? getRightComponent() : getLeftComponent();
                 makeInvisibleComponent.setVisible(false);
-                Component stillVisibleComponent = newState == State.LEFT ? getLeftComponent() : getRightComponent();
-                stillVisibleComponent.requestFocusInWindow();
 
             } else {
                 // From LEFT to RIGHT or from RIGHT to LEFT.
@@ -70,7 +76,6 @@ public class HidingSplitPane extends JSplitPane
                 Component makeVisibleComponent = this.state == State.LEFT ? getRightComponent() : getLeftComponent();
                 makeInvisibleComponent.setVisible(true);
                 makeVisibleComponent.setVisible(false);
-                makeVisibleComponent.requestFocusInWindow();
             }
         }
 
@@ -80,21 +85,21 @@ public class HidingSplitPane extends JSplitPane
     public void focusLeft()
     {
         showLeft();
-        getLeftComponent().requestFocusInWindow();
+        focusLater(getLeftComponent());
     }
 
     public void focusRight()
     {
         showRight();
-        getRightComponent().requestFocusInWindow();
+        focusLater(getRightComponent());
     }
 
     public void focus()
     {
         if (state == State.RIGHT) {
-            getRightComponent().requestFocus();
+            focusLater(getRightComponent());
         } else {
-            getLeftComponent().requestFocus();
+            focusLater(getLeftComponent());
         }
     }
 
@@ -118,6 +123,7 @@ public class HidingSplitPane extends JSplitPane
     public void toggleLeft()
     {
         setState(this.state == State.BOTH ? State.LEFT : State.BOTH);
+        focusLater(state == State.BOTH ? getRightComponent() : getLeftComponent());
     }
 
     /**
@@ -126,6 +132,7 @@ public class HidingSplitPane extends JSplitPane
     public void toggleRight()
     {
         setState(this.state == State.BOTH ? State.RIGHT : State.BOTH);
+        focusLater(state == State.BOTH ? getLeftComponent() : getRightComponent());
     }
 
     public State getState()

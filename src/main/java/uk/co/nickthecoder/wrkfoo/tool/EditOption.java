@@ -40,6 +40,10 @@ public class EditOption extends Task
     public BooleanParameter refreshResults = new BooleanParameter.Builder("refreshResults")
         .parameter();
 
+    public BooleanParameter prompt = new BooleanParameter.Builder("prompt")
+        .description( "Should options be prompted, rather than running straight away")
+        .parameter();
+
     public StringParameter ifScript = new StringParameter.Builder("if")
         .multiLine().size(300, 80)
         .description("Groovy script. Is the row applicable to this option?")
@@ -63,8 +67,9 @@ public class EditOption extends Task
 
         newTab.setDefaultValue(optionData.newTab);
         refreshResults.setDefaultValue(optionData.refreshResults);
+        prompt.setDefaultValue(optionData.prompt);
 
-        addParameters(code, label, action, type, newTab, refreshResults, ifScript);
+        addParameters(code, label, action, type, newTab, refreshResults, prompt, ifScript);
     }
 
     @Override
@@ -78,6 +83,7 @@ public class EditOption extends Task
         optionData.ifScript = ifScript.getValue();
         optionData.newTab = newTab.getValue();
         optionData.refreshResults = refreshResults.getValue();
+        optionData.prompt = prompt.getValue();
     }
 
     @Override

@@ -97,6 +97,11 @@ public class TableToolPanel<R> extends ToolPanel
 
     }
 
+    public SimpleTable<R> getTable()
+    {
+        return table;
+    }
+    
     public void stopEditing()
     {
         if (table.isEditing()) {

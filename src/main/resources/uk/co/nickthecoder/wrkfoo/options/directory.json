@@ -7,14 +7,20 @@
       "action": "new Grep( tool.directory )",
       "if": "tool instanceof DirectoryTool",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "fm",
       "label": "File Manager",
       "action": "os.openFolder( tool.directory )",
       "row": false,
-      "multi": false
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
     }
   ]
 }

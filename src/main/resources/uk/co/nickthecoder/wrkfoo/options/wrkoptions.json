@@ -4,40 +4,44 @@
     {
       "code": "",
       "label": "Edit Option",
-      "action": "tool.editOption(row.options, row.option).promptTask()",
+      "action": "tool.editOption(row.options, row.option)",
       "if": "row.canEdit()",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": true
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "+",
       "label": "Add Option",
-      "action": "tool.addOption().promptTask()",
+      "action": "tool.addOption()",
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": true
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "-",
       "label": "Delete Option",
-      "action": "tool.deleteOption(row.options, row.option).promptTask()",
+      "action": "tool.deleteOption(row.options, row.option)",
       "if": "row.canEdit()",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": true
+      "refreshResults": false,
+      "prompt": true
     },
     {
       "code": "++",
       "label": "Copy Option",
-      "action": "tool.copyOption(row.option).promptTask()",
+      "action": "tool.copyOption(row.option)",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": true
+      "refreshResults": false,
+      "prompt": false
     }
   ]
 }
