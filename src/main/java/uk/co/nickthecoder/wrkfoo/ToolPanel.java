@@ -8,7 +8,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +20,7 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class ToolPanel extends JPanel implements ToolListener
@@ -147,27 +147,20 @@ public class ToolPanel extends JPanel implements ToolListener
     {
         tool.postCreate();
 
-        MainWindow.putAction("F9", "toggleLeftPane", this, new AbstractAction()
-        {
-            private static final long serialVersionUID = 1L;
+        ActionBuilder builder = new ActionBuilder(this);
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                splitPane.toggleLeft();
-            }
-        });
-        MainWindow.putAction("ctrl F9", "toggleRightPane", this, new AbstractAction()
-        {
-            private static final long serialVersionUID = 1L;
+        builder.name("toggleLeftPane").shortcut("F9").buildShortcut();
+        builder.name("toggleRightPane").shortcut("ctrl F9").buildShortcut();
+    }
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                splitPane.toggleRight();
-            }
-        });
+    public void onToggleLeftPane()
+    {
+        splitPane.toggleLeft();
+    }
 
+    public void onToggleRightPane()
+    {
+        splitPane.toggleRight();
     }
 
     public boolean check()

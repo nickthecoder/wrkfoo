@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.BoxLayout;
 import javax.swing.InputMap;
@@ -257,29 +256,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
         textField.setToolTipText("Enter non-row Options (F10)");
         textField.setColumns(6);
 
-        putAction("ENTER", "nonRowOption", textField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
-            new AbstractAction()
-            {
-                private static final long serialVersionUID = 1L;
+        ActionBuilder builder = new ActionBuilder(this).component(textField);
 
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    processOptionField(false);
-                }
-            });
-
-        putAction("ctrl ENTER", "nonRowOptionNewTab", textField, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
-            new AbstractAction()
-            {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void actionPerformed(ActionEvent e)
-                {
-                    processOptionField(true);
-                }
-            });
+        builder.name("runNonRowOption").shortcut("ENTER").buildShortcut();
+        builder.name("runNonRowOptionInNewTab").shortcut("ctrl ENTER").buildShortcut();
 
         textField.addMouseListener(new MouseAdapter()
         {
@@ -389,26 +369,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
         AutoExit.setVisible(show);
     }
 
-    public void putAction(String keyStroke, String name, Action action)
-    {
-        putAction(keyStroke, name, this.getRootPane(), action);
-    }
-
-    public static void putAction(String keyStroke, String name, JComponent component, Action action)
-    {
-        putAction(keyStroke, name, component, JComponent.WHEN_IN_FOCUSED_WINDOW, action);
-    }
-
-    public static void putAction(String key, String name, JComponent component, int condition, Action action)
-    {
-        InputMap inputMap = component.getInputMap(condition);
-        ActionMap actionMap = component.getActionMap();
-
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(key);
-        inputMap.put(keyStroke, name);
-        actionMap.put(name, action);
-    }
-
     public void changedTab()
     {
         String title = "wrkfoo";
@@ -511,14 +471,14 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void onBack()
     {
         if (getCurrentTab() != null) {
-            getCurrentTab().undo();
+            getCurrentTab().onUndoTool();
         }
     }
 
     public void onForward()
     {
         if (getCurrentTab() != null) {
-            getCurrentTab().redo();
+            getCurrentTab().onRedoTool();
         }
     }
 
@@ -665,4 +625,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     private String stackTrace;
 
+    public void onRunNonRowOption()
+    {
+        processOptionField(false);
+    }
+
+    public void onRunNonRowOptionInNewTab()
+    {
+        processOptionField(true);
+    }
 }

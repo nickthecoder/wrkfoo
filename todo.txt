@@ -1,7 +1,8 @@
 Current Task
 ============
 
-Refactor the running of options in to a new class, as it is getting complex, and shouldn't be in AbstractTableTool
+F4 to prompt tasks/tools.
+	Pass into Option.run in the same was as newTab currently is.
 
 BUGS
 ====
@@ -33,12 +34,6 @@ When Editor dirty changes the tab's label, the window title isn't correctly set.
 
 New Features
 ============
-
-Options to have a new "prompt" attribute, similar to "newTab" option.
-	Works for Tools and Tasks
-
-	F4 to prompt tasks/tools.
-		Pass into Option.run in the same was as newTab currently is.
 		
 action and ifScript to use Editor
 	default to 3/4 lines JTextArea, but with a button to popup a full editor.

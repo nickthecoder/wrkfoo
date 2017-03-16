@@ -12,6 +12,7 @@ import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class ToolTab
 {
@@ -103,27 +104,10 @@ public class ToolTab
 
     public void postCreate()
     {
-        MainWindow.putAction("alt LEFT", "Action.undo", panel, new AbstractAction()
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                undo();
-            }
-        });
-
-        MainWindow.putAction("alt RIGHT", "Action.redo", panel, new AbstractAction()
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                redo();
-            }
-        });
+        ActionBuilder builder = new ActionBuilder( this ).component(panel);
+        
+        builder.name("undoTool").shortcut("alt LEFT").buildShortcut();
+        builder.name("redoTool").shortcut("alt RIGHT").buildShortcut();
     }
 
     void setTabbedPane(TabbedPane value)
@@ -164,14 +148,14 @@ public class ToolTab
         return tool.getTask();
     }
 
-    public void undo()
+    public void onUndoTool()
     {
         if (history.canUndo()) {
             goPrivate(history.undo(), false, false);
         }
     }
 
-    public void redo()
+    public void onRedoTool()
     {
         if (history.canRedo()) {
             goPrivate(history.redo(), false, false);

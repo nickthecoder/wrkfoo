@@ -30,6 +30,8 @@ public class ActionBuilder
 
     private JComponent component;
 
+    private int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+
     private ExceptionHandler exceptionHandler;
 
     private String label;
@@ -83,6 +85,12 @@ public class ActionBuilder
     public ActionBuilder component(JComponent component)
     {
         this.component = component;
+        return this;
+    }
+
+    public ActionBuilder condition(int condition)
+    {
+        this.condition = condition;
         return this;
     }
 
@@ -325,7 +333,7 @@ public class ActionBuilder
     private void mapShortcut(Action action)
     {
         if (shortcut != null) {
-            InputMap inputMap = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            InputMap inputMap = component.getInputMap(condition);
             ActionMap actionMap = component.getActionMap();
 
             KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);

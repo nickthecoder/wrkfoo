@@ -1,12 +1,10 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
@@ -14,9 +12,9 @@ import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
+import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
@@ -24,7 +22,7 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implements DirectoryTool
 {
-    public static final Color directoryColor = new Color(80,80,0);
+    public static final Color directoryColor = new Color(80, 80, 0);
 
     public static final Icon fileManagerIcon = Resources.icon("fileManager.png");
     public static final Icon directoryIcon = Resources.icon("folder.png");
@@ -157,20 +155,17 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
     {
         super.postCreate();
 
-        MainWindow.putAction("alt UP", "upDirectory", getToolPanel(), new AbstractAction()
-        {
-            private static final long serialVersionUID = 1L;
+        ActionBuilder builder = new ActionBuilder(this).component(getToolPanel());
+        builder.name("upDirectory").shortcut("alt UP").buildShortcut();
+    }
 
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                File parent = getTask().directory.getValue().getParentFile();
-                if (parent != null) {
-                    getTask().directory.setValue(parent);
-                }
-                go();
-            }
-        });
+    public void onUpDirectory()
+    {
+        File parent = getTask().directory.getValue().getParentFile();
+        if (parent != null) {
+            getTask().directory.setValue(parent);
+        }
+        getToolPanel().go();
     }
 
     @Override
