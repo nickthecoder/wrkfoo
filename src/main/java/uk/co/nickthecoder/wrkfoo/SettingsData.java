@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -27,14 +29,17 @@ public class SettingsData
     public String editor;
 
     public String fileManager;
-
-    public List<String> globalOptions;
+    
+    public List<String> optionsPath = new ArrayList<>();
 
     public SettingsData()
     {
-        editor = Resources.instance.editor;
-        fileManager = Resources.instance.fileManager;
-        globalOptions = Resources.instance.globalOptionsNames;
+        editor = Resources.getInstance().editor;
+        fileManager = Resources.getInstance().fileManager;
+        optionsPath = new ArrayList<>();
+        for ( URL url : Resources.getInstance().optionsPath ) {
+            optionsPath.add( url.toString());
+        }
     }
 
     public void save(File file) throws FileNotFoundException
@@ -47,7 +52,9 @@ public class SettingsData
             out = new PrintWriter(file);
             out.println(json);
         } finally {
-            out.close();
+            if ( out != null) {
+                out.close();
+            }
         }
     }
 }

@@ -1,0 +1,56 @@
+{
+  "include": [
+    "files"
+  ],
+  "options": [
+    {
+      "code": "",
+      "label": "Work with Directory",
+      "action": "new WrkF().parameter('directory',row.file)",
+      "if": "row.file.isDirectory()",
+      "multi": false
+    },
+    {
+      "code": "",
+      "label": "Open File",
+      "action": "os.exec('gnome-open', row.file)",
+      "if": "!row.file.isDirectory()",
+      "multi": false
+    },
+    {
+      "code": "ep",
+      "label": "Edit Places",
+      "action": "os.edit(task.store.value)",
+      "row": false,
+      "multi": false
+    },
+    {
+      "code": "+",
+      "label": "Add Place",
+      "action": "tool.add().promptTask()",
+      "row": false,
+      "multi": false
+    },
+    {
+      "code": "test",
+      "label": "Test",
+      "action": "println( os.fileLines(task.store.value).findAll( { ! it.contains(row.line) } ) )",
+      "row": true,
+      "multi": false
+    },
+    {
+      "code": "-",
+      "label": "Remove a Place",
+      "action": "task.store.value.write (task.store.value.readLines() .findAll( { ! it.contains(row.line) } ).join('\\n') + '\\n') ; tool",
+      "row": true,
+      "multi": false
+    },
+    {
+      "code": "++",
+      "label": "Duplicate Place",
+      "action": "def add = tool.add(); add.placeName.value = row.name; add.file.value = row.file; add.promptTask()",
+      "row": true,
+      "multi": false
+    }
+  ]
+}

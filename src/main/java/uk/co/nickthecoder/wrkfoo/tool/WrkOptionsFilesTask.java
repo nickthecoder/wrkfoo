@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.util.FileLister;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -14,12 +14,15 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsFilesTask.WrkOptionsFile;
 
 public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsFile>
 {
-    FileParameter directory = new FileParameter.Builder("directory").directory().mustExist()
-        .value(Resources.instance.getOptionsDirectory())
-        .parameter();
+    ChoiceParameter<File> directory = Resources.getInstance().createOptionsDirectoryChoice();
 
     private List<WrkOptionsFile> results;
 
+    public WrkOptionsFilesTask()
+    {
+        addParameters( directory );
+    }
+    
     @Override
     public List<WrkOptionsFile> getResults()
     {
@@ -41,7 +44,8 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
     public WrkOptions wrkOptions(OptionsData optionsData)
     {
         WrkOptions wrkOptions = new WrkOptions();
-        wrkOptions.getTask().optionsFile.setValue(optionsData.file);
+        //TODO This class no longer works!
+        // wrkOptions.getTask().optionsFile.setValue(optionsData.uri);
         return wrkOptions;
     }
 

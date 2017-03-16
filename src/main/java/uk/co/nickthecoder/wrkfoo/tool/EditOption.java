@@ -1,11 +1,16 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
+import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 
@@ -29,10 +34,10 @@ public class EditOption extends Task
         .choice("row", "row", "Row").choice("multi", "multi", "Multi-Row").choice("non-row", "non-row", "Non-Row")
         .parameter();
 
-    public BooleanParameter newTab = new BooleanParameter.Builder("newTab") 
+    public BooleanParameter newTab = new BooleanParameter.Builder("newTab")
         .parameter();
 
-    public BooleanParameter refreshResults = new BooleanParameter.Builder("refreshResults") 
+    public BooleanParameter refreshResults = new BooleanParameter.Builder("refreshResults")
         .parameter();
 
     public StringParameter ifScript = new StringParameter.Builder("if")
@@ -42,8 +47,8 @@ public class EditOption extends Task
 
     public EditOption(OptionsData optionsData, OptionData optionData)
     {
-        this.optionData = optionData;
         this.optionsData = optionsData;
+        this.optionData = optionData;
 
         code.setDefaultValue(optionData.code);
         label.setDefaultValue(optionData.label);
@@ -55,7 +60,7 @@ public class EditOption extends Task
             type.setDefaultValue(optionData.isRow() ? "row" : "non-row");
         }
         ifScript.setDefaultValue(optionData.ifScript);
-        
+
         newTab.setDefaultValue(optionData.newTab);
         refreshResults.setDefaultValue(optionData.refreshResults);
 
@@ -78,27 +83,46 @@ public class EditOption extends Task
     @Override
     public void post()
     {
-        try {
-            optionsData.save();
-            optionsData.reload();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        optionsData.save();
+        optionsData.reload();
     }
 
     public static class AddOption extends EditOption
     {
+        public ChoiceParameter<File> path = Resources.getInstance().createOptionsDirectoryChoice();
 
-        public AddOption(OptionsData optionsData)
+        public StringParameter name = new StringParameter.Builder("name")
+            .parameter();
+
+        public AddOption(String optionsName)
         {
-            super(optionsData, new OptionData());
+            super(null, new OptionData());
+            name.setDefaultValue(optionsName);
+
+            insertParameters(0, path, name);
         }
 
         @Override
-        public void post()
+        public void pre()
         {
-            optionsData.options.add(optionData);
-            super.post();
+            super.pre();
+            try {
+                optionsData = Resources.getInstance().readOptionsData(path.getValue(), name.getValue());
+            } catch (URISyntaxException | IOException e) {
+                // The file may not exist yet, in which case, we should try to create it.
+                try {
+                    optionsData = new OptionsData(path.getValue(), name.getValue());
+                } catch (MalformedURLException e1) {
+                    throw new RuntimeException(e1);
+                }
+            }
+        }
+
+        @Override
+        public void body()
+        {
+            super.body();
+            optionsData.optionData.add(optionData);
         }
 
     }
@@ -118,14 +142,9 @@ public class EditOption extends Task
         @Override
         public void body()
         {
-            optionsData.options.remove(optionData);
-
-            try {
-                optionsData.save();
-                optionsData.reload();
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            optionsData.optionData.remove(optionData);
+            optionsData.save();
+            optionsData.reload();
         }
 
     }

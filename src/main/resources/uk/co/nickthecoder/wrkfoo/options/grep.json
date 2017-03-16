@@ -1,0 +1,17 @@
+{
+  "include": [
+    "files",
+    "directory"
+  ],
+  "options": [
+    {
+      "code": "",
+      "label": "Open File in Text Editor",
+      "action": "new Editor( row.file, task.regex.regex )",
+      "if": "",
+      "row": true,
+      "multi": false,
+      "newTab": true
+    }
+  ]
+}

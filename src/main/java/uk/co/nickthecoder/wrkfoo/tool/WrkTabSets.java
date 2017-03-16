@@ -67,6 +67,6 @@ public class WrkTabSets extends AbstractListTool<WrkTabSetsTask, WrkTabSetsFile>
     @Override
     public File getDirectory()
     {
-        return Resources.instance.getTabsDirectory();
+        return Resources.getInstance().getTabsDirectory();
     }
 }

@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
-import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public abstract class AbstractTool<T extends Task> implements Tool
 {
@@ -29,6 +27,8 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private List<ToolListener> toolListeners = new ArrayList<>();
 
     private ToolPanel toolPanel;
+
+    private Options options;
 
     public AbstractTool(T task)
     {
@@ -75,9 +75,9 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return this.getClass().getSimpleName();
     }
 
-    public String optionsName()
+    public String getOptionsName()
     {
-        return getClass().getSimpleName().toLowerCase() + ".json";
+        return getClass().getSimpleName().toLowerCase();
     }
 
     @Override
@@ -105,7 +105,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
         this.toolTab = tab;
     }
-    
+
     @Override
     public void detach()
     {
@@ -257,28 +257,12 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     }
 
-    private Options options;
-
-    public File getOptionsFile()
-    {
-        return Resources.instance.getOptionsFile(optionsName());
-    }
 
     @Override
     public Options getOptions()
     {
         if (options == null) {
-
-            OptionsGroup og = new OptionsGroup();
-            String name = optionsName();
-            if (name != null) {
-                File file = Resources.instance.getOptionsFile(name);
-                if (file.exists()) {
-                    og.add(Resources.instance.readOptions(file));
-                }
-            }
-            og.add(Resources.instance.globalOptions());
-            options = og;
+            options = Resources.getInstance().readOptions(getOptionsName());
         }
         return options;
     }

@@ -22,7 +22,7 @@ public class ExportTableData extends Task
 
     public FileParameter saveAs = new FileParameter.Builder("saveAs")
         .writable().mayExist().file()
-        .value(Resources.instance.getHomeDirectory())
+        .value(Resources.getInstance().getHomeDirectory())
         .description("Save location - Should end in .csv .html or .txt")
         .parameter();
 

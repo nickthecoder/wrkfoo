@@ -1,0 +1,18 @@
+{
+  "include": ["files", "directory"],
+  "options": [
+    {
+      "code": "",
+      "label": "Work with Options",
+      "action": "new WrkOptions(row.file)",
+      "multi": false
+    },
+    {
+      "code": "+",
+      "label": "New Options File",
+      "action": "new NewOptionsFile().promptTask()",
+      "row": false,
+      "multi": false
+    }
+  ]
+}

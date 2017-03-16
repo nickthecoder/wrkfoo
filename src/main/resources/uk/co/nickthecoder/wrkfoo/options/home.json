@@ -1,0 +1,26 @@
+{
+  "options": [
+    {
+      "code": "",
+      "label": "Run",
+      "action": "row",
+      "multi": false,
+      "newTab": false
+    },
+    {
+      "code": "te",
+      "label": "Edit the Tools's Options",
+      "action": "os.edit( rows.collect {it.optionsFile} )",
+      "multi": true,
+      "newTab": false
+    },
+    {
+      "code": "nt",
+      "label": "Run in New Tab",
+      "action": "row",
+      "row": true,
+      "multi": false,
+      "newTab": false
+    }
+  ]
+}

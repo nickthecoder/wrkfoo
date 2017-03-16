@@ -1,0 +1,16 @@
+{
+  "include": [
+    "files"
+  ],
+  "options": [
+    {
+      "code": "",
+      "label": "Load Tab Set",
+      "action": "tool.load(row.file)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    }
+  ]
+}

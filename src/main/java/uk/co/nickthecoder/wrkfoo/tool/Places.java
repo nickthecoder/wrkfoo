@@ -107,7 +107,7 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
     public class AddTask extends Task
     {
         public final FileParameter file = new FileParameter.Builder("file").fileOrDirectory()
-            .value(Resources.instance.getHomeDirectory())
+            .value(Resources.getInstance().getHomeDirectory())
             .parameter();
 
         public final StringParameter placeName = new StringParameter.Builder("placeName").optional().parameter();

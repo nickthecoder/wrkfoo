@@ -1,0 +1,59 @@
+{
+  "include": [],
+  "options": [
+    {
+      "code": "wof",
+      "label": "Work with Options Files",
+      "action": "new WrkOptionsFiles()",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "eo",
+      "label": "Work with Tool's Options",
+      "action": "new WrkOptions(tool.optionsName)",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "oof",
+      "label": "Open Options Folder",
+      "action": "os.openFolder(Resources.instance.optionsDirectory)",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "df",
+      "label": "Work Mount Points",
+      "action": "new WrkMounts()",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "=",
+      "label": "Calculator",
+      "action": "os.exec('gnome-calculator')",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "+tab",
+      "label": "Duplicate Tab",
+      "action": "tool.duplicate()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
+import java.net.URL;
 
 import javax.swing.Icon;
 
@@ -15,28 +16,26 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.OptionRow;
 
 public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
 {
-    public static WrkOptionsTask createTask(File file)
-    {
-        WrkOptionsTask task = new WrkOptionsTask();
-        task.optionsFile.setDefaultValue(file);
-        return task;
-    }
-
     public WrkOptions()
     {
         super(new WrkOptionsTask());
     }
 
-    public WrkOptions(File optionsFile)
+    public WrkOptions(String optionsName)
     {
-        super(createTask(optionsFile));
+        super(new WrkOptionsTask(optionsName));
+    }
+
+    public WrkOptions(File file)
+    {
+        super(new WrkOptionsTask(file));
     }
 
     @Override
     public String getLongTitle()
     {
         try {
-            return "Options : " + task.optionsFile.getValue().getName();
+            return "Options : " + task.optionsName.getValue();
         } catch (Exception e) {
             return super.getLongTitle();
         }
@@ -46,7 +45,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
     public String getShortTitle()
     {
         try {
-            return task.optionsFile.getValue().getName();
+            return task.optionsName.getValue();
         } catch (Exception e) {
             return super.getShortTitle();
         }
@@ -80,18 +79,24 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
             @Override
             public String getValue(OptionRow row)
             {
-                return row.file.getName();
+                String path = row.url.getPath();
+                int slash = path.lastIndexOf("/");
+                if (slash > 0) {
+                    return path.substring(slash + 1);
+                } else {
+                    return path;
+                }
             }
-        }.width(200).tooltip(2));
+        }.width(200).tooltip(4));
 
-        columns.add(new Column<OptionRow>(File.class, "inFile")
+        columns.add(new Column<OptionRow>(URL.class, "URL")
         {
             @Override
-            public File getValue(OptionRow row)
+            public URL getValue(OptionRow row)
             {
-                return row.file;
+                return row.url;
             }
-        }.width(200).hide());
+        }.width(200).tooltip(4).hide());
 
         columns.add(new Column<OptionRow>(String.class, "action")
         {
@@ -153,22 +158,22 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
     @Override
     public Icon getIcon()
     {
-        return Resources.icon("options.png");
+        return Resources.icon("optionData.png");
     }
 
-    public Task editOption(OptionData optionData)
+    public Task editOption(OptionsData optionsData, OptionData optionData)
     {
-        return new EditOption(getTask().optionsData, optionData);
+        return new EditOption(optionsData, optionData);
     }
 
     public Task addOption()
     {
-        return new EditOption.AddOption(getTask().optionsData);
+        return new EditOption.AddOption(task.optionsName.getValue());
     }
 
     public Task copyOption(OptionData from)
     {
-        EditOption.AddOption add = new EditOption.AddOption(getTask().optionsData);
+        EditOption.AddOption add = new EditOption.AddOption(task.optionsName.getValue());
 
         add.action.setValue(from.action);
         add.code.setValue(from.code);
@@ -181,20 +186,27 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
         return add;
     }
 
-    public Task deleteOption(OptionData optionData)
+    public Task deleteOption(OptionsData optionsData, OptionData optionData)
     {
-        return new EditOption.DeleteOption(getTask().optionsData, optionData);
+        return new EditOption.DeleteOption(optionsData, optionData);
     }
 
     public static class OptionRow
     {
+        public OptionsData options;
         public OptionsData.OptionData option;
-        public File file;
+        public URL url;
 
-        public OptionRow(OptionsData.OptionData data, File file)
+        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url)
         {
+            this.options = optionsData;
             this.option = data;
-            this.file = file;
+            this.url = url;
+        }
+
+        public boolean canEdit()
+        {
+            return url.getProtocol().equals("file");
         }
     }
 

@@ -1,0 +1,132 @@
+{
+  "include": [
+    "files",
+    "directory"
+  ],
+  "options": [
+    {
+      "code": "",
+      "label": "Open",
+      "action": "os.exec('gnome-open', row.file)",
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "a",
+      "label": "Git Add",
+      "action": "os.exec('git', 'add', rows.collect {it.path} ).dir(task.directory.value)",
+      "row": true,
+      "multi": true,
+      "newTab": false,
+      "refreshResults": true
+    },
+    {
+      "code": "d",
+      "label": "Git Diff",
+      "action": "os.exec('git', 'diff', row.path).dir(task.directory.value)",
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "c",
+      "label": "Git Commit",
+      "action": "os.show('git', 'commit').dir(task.directory.value).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": true
+    },
+    {
+      "code": "all",
+      "label": "Git Commit All",
+      "action": "os.show('git', 'commit', '-a').dir(task.directory.value).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": true
+    },
+    {
+      "code": "push",
+      "label": "Git Push to Origin",
+      "action": "os.show('git', 'push', '-u', 'origin').dir(task.directory.value).once()",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "ignore",
+      "label": "Git Ignore",
+      "action": "os.exec('echo',row.path).stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": true
+    },
+    {
+      "code": "co",
+      "label": "Git Check Out",
+      "action": "os.exec( 'git', 'checkout', row.path ).dir(task.directory.value).run()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": true
+    },
+    {
+      "code": "gi",
+      "label": "Gradle Install",
+      "action": "os.show( 'gradle', 'install' ).dir( task.directory.value ).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    },
+    {
+      "code": "gb",
+      "label": "Gradle Build",
+      "action": "os.show( 'gradle', 'build' ).dir( task.directory.value ).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    },
+    {
+      "code": "gj",
+      "label": "Gradle Javadoc",
+      "action": "os.show( 'gradle', 'javadoc' ).dir( task.directory.value ).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    },
+    {
+      "code": "gia",
+      "label": "Gradle Install Application",
+      "action": "os.show( 'gradle', 'installApp' ).dir( task.directory.value ).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    },
+    {
+      "code": "clean",
+      "label": "Gradle Clean",
+      "action": "os.show( 'gradle', 'clean' ).dir( task.directory.value ).once()",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false
+    },
+    {
+      "code": "eg",
+      "label": "Edit Gradle Build File",
+      "action": "new Editor( new File(tool.directory, 'build.gradle' ) )",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    }
+  ]
+}

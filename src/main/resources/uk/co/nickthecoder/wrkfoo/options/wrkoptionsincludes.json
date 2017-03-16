@@ -1,0 +1,18 @@
+{
+  "options": [
+    {
+      "code": "+",
+      "label": "Add Include",
+      "action": "tool.addInclude().promptTask()",
+      "row": false,
+      "multi": false
+    },
+    {
+      "code": "-",
+      "label": "Remove Include",
+      "action": "tool.removeInclude( row ).promptTask()",
+      "row": true,
+      "multi": false
+    }
+  ]
+}

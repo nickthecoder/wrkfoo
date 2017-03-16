@@ -1,10 +1,40 @@
 Current Task
 ============
 
-Places to handle ~
+Add/Copy need to create a file if it doesn't exist.
+
+Add "jar://..." to the default options path in Resources.
+
+Check if the uri is a file:// uri before trying to save the options.
+	Check if the option IS editable before allowing it to be edited. ifScript?.
+
+NewOptionsFile - currently comment out. Which options path to put it in?
+	Won't need this. Add/Copy can create files when needed.
+
+WrkOptionsInclude doesn't do the right thing.
+	It's supposed to list the includes for a SINGLE file, but lists the includes for ALL files with the given name.
+	I've commented out broken code.
+	Pass the uri of the option (or maybe the File from the uri)
+
+Custom/Standard Options
+
+	From Eclipse F11, specify a settings file which has an OPTIONS_PATH of ~/projects/wrkfoo/src/resources/... and ~/.config/wrkfoo/options
+	From the command line use a settings file which has jar://... and ~/.config/wrkfoo/options
+		WrkFoo Task has a settings parameter
+	Colour code based on the index of which OPTIONS_PATH entry.
+		1st path entry is black, second is red, third green etc.
+	Default wrkfoo directory is the parent of the settings file.
+		i.e. loading a NAMED tabset looks in settingsFile.getParent()/"tabs"
+
+When loading a tabset by NAME, append the ".json" to be consistant with options?
+	Yes, when specified by a command line, that makes sense
 
 BUGS
 ====
+
+WrkOptions not updating the list when adding/deleting options.
+
+Using an invalide option doesn't give a message
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 	Shouldn't have a list of tools passed to MainFrame constructor.
@@ -23,6 +53,9 @@ Tabs lose their properites when dragged to a different MainWindow.
 
 When Editor dirty changes the tab's label, the window title isn't correctly set. (Misses the "WrkFoo : " prefix)
 
+New Features
+============
+
 Options to have a new "prompt" attribute, similar to "newTab" option.
 	Works for Tools and Tasks
 
@@ -30,16 +63,6 @@ Options to have a new "prompt" attribute, similar to "newTab" option.
 		Pass into Option.run in the same was as newTab currently is.
 		
 	Refactor the running of options in to a new class, as it is getting complex, and shouldn't be in AbstractTableTool
-
-New Features
-============
-
-OptionData doesn't handle aliases
-	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
-
-Add "description" to Option?
-
-TaskPrompter should be JDialog, not JFrame.
 
 action and ifScript to use Editor
 	default to 3/4 lines JTextArea, but with a button to popup a full editor.
@@ -59,6 +82,13 @@ Create a code line count Task in groovy to demonstrate a user defined task
 		Is there a good way to do both in one class?
 			Could ALWAYS create OO results, and then use toString on the row to produce the plain text results.
 
+
+OptionData doesn't handle aliases
+	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
+
+Add "description" to Option?
+
+
 Would like to launch a browser window for javadocs from the gitstatus Tool
 	Plus run the rsync and launch the published version too (specific to my setup).
 		Put this in a "Custom" place (see below)
@@ -66,28 +96,6 @@ Would like to launch a browser window for javadocs from the gitstatus Tool
 Resources to have only ONE "globals", rather than a list, which is hard-coded to the name "globals" (once OPTIONS_PATH) has been implmented.
 	WrkOptions to have a "showGlobals" parameter.
 	And/or a "Wrk Global Options" global option "ego" (as "eo" is "Edit Options")
-
-Custom/Standard Options
-	I'd like to split options into "standard" and "customised".
-	The standard ones are defined by wrkfoo, and generally not edited by end users.
-	The customised ones ARE edited by end users, and not part of wrkfoo
-	When loading a named option, it loads in both together.
-	Resources knows about TWO directories "standardOptionsDirectory" and "customOptionsDirectory"
-		Maybe URLs rather than Files, so that the standard ones can be in the jar file.
-		file:: options can be edited, others cannot.
-		During development I can have both as file::, so that I can edit them easily
-		Maybe a PATH of places, and look in all places when loading a named option.
-			That way, wrkfoo has "standard" options, a team can have "team" options, and an individual can define their own.
-		When adding/copying an option, need to specify which place to put the new option.
-		Note a new option may end up creating a new file if it is the first option in that place.
-	From Eclipse F11, specify a settings file which has an OPTIONS_PATH of ~/projects/wrkfoo/src/resources/... and ~/.config/wrkfoo/options
-	From the command line use a settings file which has jar://... and ~/.config/wrkfoo/options
-		WrkFoo Task has a settings parameter
-	Colour code based on the index of which OPTIONS_PATH entry.
-		1st path entry is black, second is red, third green etc.
-	Default wrkfoo directory is the parent of the settings file.
-		i.e. loading a NAMED tabset looks in settingsFile.getParent()/"tabs"
-		When using NAMES, do not include the ".json" as part of the name (if that isn't already the case), for both tabsets and options.
 
 Editor saveAs changes the file to getParent then does check() to force parameter to appear?
 	Nah, just run a saveAs Task.

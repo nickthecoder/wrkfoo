@@ -1,10 +1,12 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
@@ -15,12 +17,12 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
 
     public OptionsData optionsData;
 
-    public FileParameter optionsFile = new FileParameter.Builder("optionsFile").mustExist()
+    public StringParameter optionsName = new StringParameter.Builder("optionsName")
         .parameter();
 
     public WrkOptionsIncludesTask()
     {
-        addParameters(optionsFile);
+        addParameters(optionsName);
     }
 
     @Override
@@ -32,8 +34,16 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
     @Override
     public void body()
     {
-        optionsData = Resources.instance.readOptionsData(optionsFile.getValue());
-        results = new ArrayList<>(optionsData.include);
+        Set<String> names = new HashSet<>();
+
+        List<OptionsData> list = Resources.getInstance().readOptionsData(optionsName.getValue());
+        for (OptionsData od : list ) {
+            for ( String name : od.include ) {
+                names.add( name );
+            }
+        }
+        
+        results = new ArrayList<>(names);
     }
 
 }

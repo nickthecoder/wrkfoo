@@ -1,0 +1,82 @@
+{
+  "include": [],
+  "options": [
+    {
+      "code": "fm",
+      "label": "Open Folder",
+      "action": "os.openFolder(row)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "te",
+      "label": "Text Editor",
+      "action": "os.edit(rows)",
+      "if": "!row.file.isDirectory()",
+      "multi": true,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "rm",
+      "label": "Delete File",
+      "action": "os.exec( 'rm', row.file )",
+      "if": "row.file.isFile()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "rm-r",
+      "label": "Delete All",
+      "action": "os.show( 'rm', '-rv', rows )",
+      "if": "",
+      "row": true,
+      "multi": true,
+      "newTab": true,
+      "refreshResults": true
+    },
+    {
+      "code": "rm",
+      "label": "Delete Directory",
+      "action": "os.exec( 'rmdir', row.file )",
+      "if": "row.file.isDirectory()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "grep",
+      "label": "Recursive Grep",
+      "action": "new Grep( row.file )",
+      "if": "row.file.isDirectory()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "cp",
+      "label": "Copy File",
+      "action": "new CopyFile( row.file ).promptTask()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    },
+    {
+      "code": "e",
+      "label": "Edit Text",
+      "action": "new Editor( row.file )",
+      "if": "row.file.isFile()\n",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false
+    }
+  ]
+}

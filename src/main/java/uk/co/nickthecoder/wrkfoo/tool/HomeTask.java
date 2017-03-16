@@ -17,11 +17,11 @@ public class HomeTask extends Task implements ListResults<Tool>
         results = new ArrayList<>();
 
         WrkF wrkFHome = new WrkF();
-        wrkFHome.getTask().directory.setValue(Resources.instance.getHomeDirectory());
+        wrkFHome.getTask().directory.setValue(Resources.getInstance().getHomeDirectory());
         results.add(wrkFHome);
 
         WrkFTree wrkFTreeHome = new WrkFTree();
-        wrkFTreeHome.getTask().directory.setValue(Resources.instance.getHomeDirectory());
+        wrkFTreeHome.getTask().directory.setValue(Resources.getInstance().getHomeDirectory());
         wrkFTreeHome.getTask().depth.setValue(1);
         results.add(wrkFTreeHome);
 
@@ -38,7 +38,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(wrkTabSets);
 
         Places places = new Places();
-        places.task.store.setValue(Util.createFile(Resources.instance.getHomeDirectory(), ".config", "gtk-3.0",
+        places.task.store.setValue(Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0",
             "bookmarks"));
         results.add(places);
 

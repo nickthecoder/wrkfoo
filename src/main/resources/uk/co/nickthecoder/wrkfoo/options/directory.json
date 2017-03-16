@@ -1,0 +1,20 @@
+{
+  "include": [],
+  "options": [
+    {
+      "code": "grep",
+      "label": "Recursive Grep",
+      "action": "new Grep( tool.directory )",
+      "if": "tool instanceof DirectoryTool",
+      "row": false,
+      "multi": false
+    },
+    {
+      "code": "fm",
+      "label": "File Manager",
+      "action": "os.openFolder( tool.directory )",
+      "row": false,
+      "multi": false
+    }
+  ]
+}

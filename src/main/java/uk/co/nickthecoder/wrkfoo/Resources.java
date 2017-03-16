@@ -2,6 +2,10 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,75 +15,98 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.option.GroovyOptions;
+import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
 public class Resources
 {
-    public static final Resources instance = new Resources();
+    private static Resources instance;
 
-    static {
-        Resources.instance.readSettings();
+    public static File settingsFile = Util.createFile(
+        new File(System.getProperty("user.home")),
+        ".config", "wrkfoo", "settings.json");
+
+    public static Resources getInstance()
+    {
+        if (instance == null) {
+            instance = new Resources();
+            instance.readSettings();
+            instance.globalOptions = instance.readOptions("global");
+        }
+        return instance;
     }
 
     /**
      * The name of your preferred text editor. Defaults to <code>gedit</code>
      */
-    public String editor = "gedit";
+    String editor = "gedit";
 
     /**
-     * The name of the program used as a file manager. For example <code>nautilus</code>. If you are running Gnome, then
-     * you can also use <code>gnome-open</code>, and this will use gnome's default file manager (which is usually
+     * The name of the program used as a url manager. For example <code>nautilus</code>. If you are running Gnome, then
+     * you can also use <code>gnome-open</code>, and this will use gnome's default url manager (which is usually
      * nautilus).
      */
-    public String fileManager = "nautilus";
+    String fileManager = "nautilus";
 
-    public List<String> globalOptionsNames;
+    List<URL> optionsPath = new ArrayList<>();;
 
     private File homeDirectory;
 
     private File settingsDirectory;
 
-    private File optionsDirectory;
-
     private File tabsDirectory;
 
-    private File settingsFile;
+    private File customOptionsDirectory;
 
-    private OptionsGroup globalOptions;
+    private Options globalOptions;
 
-    private Map<File, OptionsData> optionsDataByFile;
+    private Map<URL, OptionsData> optionsDataByURL;
 
     private Resources()
     {
-        globalOptionsNames = new ArrayList<>();
-
-        optionsDataByFile = new HashMap<>();
-
         homeDirectory = new File(System.getProperty("user.home"));
-        globalOptions = new OptionsGroup();
 
         settingsDirectory = Util.createFile(homeDirectory, ".config", "wrkfoo");
-        settingsDirectory.mkdirs();
+        customOptionsDirectory = new File(settingsDirectory, "optionData");
+
+        optionsDataByURL = new HashMap<>();
 
         tabsDirectory = new File(settingsDirectory, "tabs");
         tabsDirectory.mkdirs();
-
-        optionsDirectory = Util.createFile(settingsDirectory, "options");
-        optionsDirectory.mkdirs();
-
-        settingsFile = new File(settingsDirectory, "settings.json");
     }
 
-    public OptionsGroup globalOptions()
+    public String getEditor()
+    {
+        return editor;
+    }
+
+    public String getFileManager()
+    {
+        return fileManager;
+    }
+
+    public Iterable<URL> optionsPath()
+    {
+        return optionsPath;
+    }
+
+    public File getCustomOptionsDirectory()
+    {
+        return customOptionsDirectory;
+    }
+
+    public Options globalOptions()
     {
         return globalOptions;
     }
 
     public void readSettings()
     {
+        System.out.println("Loading settings from " + settingsFile);
+
         try {
             SettingsData settings = SettingsData.load(settingsFile);
 
@@ -89,16 +116,30 @@ public class Resources
             if (settings.fileManager != null) {
                 this.fileManager = settings.fileManager;
             }
-            if (settings.globalOptions != null) {
-                this.globalOptions.clear();
-                this.globalOptionsNames = new ArrayList<>(settings.globalOptions);
-                for (String name : this.globalOptionsNames) {
-                    this.globalOptions.add(this.readOptions(name));
+
+            if (settings.optionsPath != null) {
+                for (String urlString : settings.optionsPath) {
+                    try {
+                        this.optionsPath.add(new URL(urlString));
+                    } catch (MalformedURLException e) {
+                        System.err.println("Ignoring illegal optionData path  : " + urlString);
+                    }
                 }
+            }
+            if (settings.optionsPath.size() == 0) {
+                // Add default optionData path
+                File file = new File(settingsDirectory, "options");
+                try {
+                    optionsPath.add(file.toURI().toURL());
+                } catch (MalformedURLException e) {
+                    // Really shouldn't get here unless the settings directory has been set incorrectly.
+                    e.printStackTrace();
+                }
+                optionsPath.add(getClass().getResource("options/"));
             }
 
         } catch (FileNotFoundException e) {
-            System.err.println("Settings file : " + settingsFile + " not found. Using defaults.");
+            System.err.println("Settings url : " + settingsFile + " not found. Using defaults.");
         }
     }
 
@@ -112,16 +153,6 @@ public class Resources
         return tabsDirectory;
     }
 
-    public File getOptionsDirectory()
-    {
-        return optionsDirectory;
-    }
-
-    public File getOptionsFile(String name)
-    {
-        return new File(optionsDirectory, name);
-    }
-
     public static Icon icon(String name)
     {
         try {
@@ -131,37 +162,114 @@ public class Resources
         }
     }
 
-    public OptionsData readOptionsData(File file)
+    public OptionsData readOptionsData(URL url) throws MalformedURLException, IOException
     {
-        OptionsData cached = optionsDataByFile.get(file);
+        OptionsData cached = optionsDataByURL.get(url);
         if (cached != null) {
-            // System.out.println( "Using cached version of : " + file + " (" + cached.options.size() +")" );
+            System.out.println("Using cached version of : " + url + " (" + cached.optionData.size() + ")");
             return cached;
         }
 
-        OptionsData optionsData = OptionsData.load(file);
-        optionsDataByFile.put(optionsData.file, optionsData);
+        OptionsData optionsData = OptionsData.load(url);
+        optionsDataByURL.put(optionsData.url, optionsData);
 
-        // System.out.println( "Loaded options : " + file + " (" + optionsData.options.size() + ")" );
+        // System.out.println( "Loaded optionData : " + url + " (" + optionsData.options.size() + ")" );
 
         return optionsData;
     }
 
-    public GroovyOptions readOptions(String name)
+    public OptionsData readOptionsData(File directory, String name) throws URISyntaxException, IOException
     {
-        return readOptions(getOptionsFile(name));
+        return readOptionsData(directory.toURI().toURL(), name);
     }
 
-    public GroovyOptions readOptions(File file)
+    public OptionsData readOptionsData(URL parent, String name) throws URISyntaxException, IOException
     {
-        return readOptionsData(file).groovyOptions;
+        URL url = new URL(parent, name + ".json");
+        return readOptionsData(url);
     }
 
-    public void reloadOptions()
+    public List<OptionsData> readOptionsData(String name)
     {
-        for (OptionsData optionsData : optionsDataByFile.values()) {
-            // System.out.println( "Reloading options : " + optionsData.file );
-            optionsData.reload();
+        System.out.println("Loading optionData named " + name);
+        System.out.println("Options path length " + optionsPath.size());
+        List<OptionsData> result = new ArrayList<>();
+
+        int count = 0;
+        for (URL url : optionsPath) {
+            try {
+                System.out.println("Going to try " + url + ", " + name);
+                result.add(readOptionsData(url, name));
+                System.out.println("Yep did that");
+                count++;
+            } catch (URISyntaxException | IOException e) {
+                System.out.println("Failed to load " + url + " + " + name);
+                // Do nothing
+                //e.printStackTrace();
+            }
         }
+        if (count == 0) {
+            System.err.println("Failed to find any optionData called " + name);
+        }
+        return result;
+    }
+
+    public Options readOptions(String name)
+    {
+        OptionsGroup result = new OptionsGroup();
+        for (OptionsData optionsData : readOptionsData(name)) {
+            result.add(optionsData.optionsGroup);
+        }
+        if (globalOptions != null) {
+            result.add(globalOptions);
+        }
+        return result;
+    }
+
+    public ChoiceParameter<URL> createOptionsPathChoice(boolean includeAll)
+    {
+        ChoiceParameter<URL> result = new ChoiceParameter.Builder<URL>("optionsPath")
+            .stretchy(true).parameter();
+
+        if (includeAll) {
+            result.setRequired(false);
+            result.addChoice("<all>", null, "< all paths >");
+        }
+
+        for (URL url : Resources.getInstance().optionsPath()) {
+            String label = url.toString();
+            if (url.getProtocol().equals("file")) {
+                try {
+                    label = new File(url.toURI()).toString();
+                } catch (URISyntaxException e) {
+                }
+            } else if (url.getProtocol().equals("jar")) {
+                String s = url.toString();
+                int pling = s.indexOf("!");
+                if (pling > 0) {
+                    label = "jar(" + s.substring(pling+1) + ")";
+                }
+            }
+            result.addChoice(label, url, label);
+        }
+
+        return result;
+    }
+
+    public ChoiceParameter<File> createOptionsDirectoryChoice()
+    {
+        ChoiceParameter<File> result = new ChoiceParameter.Builder<File>("optionsDirectory")
+            .stretchy(true).parameter();
+
+        for (URL url : Resources.getInstance().optionsPath()) {
+            if (url.getProtocol().equals("file")) {
+                try {
+                    File file = new File(url.toURI());
+                    result.addChoice(file);
+                } catch (URISyntaxException e) {
+                }
+            }
+        }
+        return result;
     }
 }

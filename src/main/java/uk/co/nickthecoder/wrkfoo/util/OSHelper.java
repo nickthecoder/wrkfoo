@@ -75,7 +75,7 @@ public class OSHelper
      */
     public Exec edit(Object... args)
     {
-        return exec(Resources.instance.editor, args);
+        return exec(Resources.getInstance().getEditor(), args);
     }
 
     /**
@@ -88,6 +88,6 @@ public class OSHelper
      */
     public Exec openFolder(Object arg)
     {
-        return exec(Resources.instance.fileManager, arg);
+        return exec(Resources.getInstance().getFileManager(), arg);
     }
 }

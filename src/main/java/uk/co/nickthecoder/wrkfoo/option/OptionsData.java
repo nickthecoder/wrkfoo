@@ -1,9 +1,11 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,69 +17,88 @@ import com.google.gson.stream.JsonReader;
 import uk.co.nickthecoder.wrkfoo.Resources;
 
 /**
- * Data-only class for loading/saving options
+ * Data-only class for loading/saving optionData
  */
 public class OptionsData
 {
 
-    public static OptionsData load(File file)
+    public static OptionsData load(URL url) throws MalformedURLException, IOException
     {
+        System.out.println("OptionsData.load " + url);
         Gson gson = new Gson();
 
         JsonReader reader;
-        try {
-            reader = new JsonReader(new FileReader(file));
-            OptionsData optionsData = gson.fromJson(reader, OptionsData.class);
-            optionsData.file = file;
+        InputStreamReader isr = new InputStreamReader(url.openStream());
+        reader = new JsonReader(isr);
+        OptionsData optionsData = gson.fromJson(reader, OptionsData.class);
+        optionsData.url = url;
 
-            optionsData.groovyOptions = new GroovyOptions();
-            optionsData.createOptions();
-
-            return optionsData;
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        if (optionsData.include == null) {
+            optionsData.include = new ArrayList<>();
         }
+        if (optionsData.optionData == null) {
+            optionsData.optionData = new ArrayList<>();
+        }
+
+        optionsData.optionsGroup = new OptionsGroup();
+        optionsData.createOptions();
+
+        return optionsData;
     }
 
-    public transient File file;
+    public transient URL url;
 
-    public transient GroovyOptions groovyOptions;
+    /**
+     * A group of optionData. The first will be the optionData of the given name.
+     * This will be a OptionsGroup, with a SimpleOptions for each set of optionData found within the path.
+     * the remainder will be included optionData.
+     */
+    public transient OptionsGroup optionsGroup;
 
     public List<String> include = new ArrayList<>();
 
-    public List<OptionData> options = new ArrayList<>();
+    @SerializedName("options")
+    public List<OptionData> optionData = new ArrayList<>();
 
-    public OptionsData(File file)
+    public OptionsData(File directory, String name) throws MalformedURLException
     {
-        this.file = file;
-        groovyOptions = new GroovyOptions();
+        this( new File(directory, name + ".json").toURI().toURL() );
+    }
+
+    public OptionsData(URL url)
+    {
+        this.url = url;
+        optionsGroup = new OptionsGroup();
     }
 
     private void createOptions()
     {
+        if (this.optionData != null) {
+            SimpleOptions simple = new SimpleOptions();
+            for (OptionData optionData : optionData) {
+                GroovyOption groovyOption = optionData.createOption();
+                simple.add(groovyOption);
+            }
+            optionsGroup.add(simple);
+        }
+
         if (this.include != null) {
             for (String include : this.include) {
-                Options includedOptions = Resources.instance.readOptions(include);
-                groovyOptions.add(includedOptions);
+                Options includedOptions;
+                includedOptions = Resources.getInstance().readOptions(include);
+                optionsGroup.add(includedOptions);
             }
         }
 
-        if (this.options != null) {
-            for (OptionData optionData : options) {
-                GroovyOption groovyOption = optionData.createOption();
-                groovyOptions.add(groovyOption);
-            }
-        }
     }
 
     public void reload()
     {
-        groovyOptions.clear();
+        optionsGroup.clear();
         createOptions();
     }
 
-    public void save() throws FileNotFoundException
+    public void save()
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
@@ -85,8 +106,12 @@ public class OptionsData
 
         PrintWriter out = null;
         try {
+            // TODO Check if it IS a file:// url
+            File file = new File(url.toURI());
             out = new PrintWriter(file);
             out.println(json);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             out.close();
         }
@@ -121,7 +146,8 @@ public class OptionsData
         @Override
         public String toString()
         {
-            return code + ":" + label + ":" + action + ":" + ifScript + ":" + row + ":" + multi + ":" + newTab + ":" + refreshResults;
+            return code + ":" + label + ":" + action + ":" + ifScript + ":" + row + ":" + multi + ":" + newTab + ":"
+                + refreshResults;
         }
     }
 }

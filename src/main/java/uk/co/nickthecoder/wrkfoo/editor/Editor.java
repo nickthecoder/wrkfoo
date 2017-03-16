@@ -67,12 +67,18 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
     @Override
     public String getTitle()
     {
+        if (task.file.getValue() == null) {
+            return "New";
+        }
         return task.file.getValue().getName() + (editorPanel.getEditorPane().isDirty() ? " *" : "");
     }
 
     @Override
     public String getLongTitle()
     {
+        if (task.file.getValue() == null) {
+            return "New";
+        }
         return task.file.getValue().getName();
     }
 

@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import javax.swing.Icon;
 
@@ -17,7 +16,8 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
     public static WrkOptionsIncludesTask createTask(File file)
     {
         WrkOptionsIncludesTask task = new WrkOptionsIncludesTask();
-        task.optionsFile.setDefaultValue(file);
+        // TODO This class no longer works
+        // task.optionsFile.setDefaultValue(file);
         return task;
     }
 
@@ -35,7 +35,10 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
     public String getLongTitle()
     {
         try {
-            return "Includes : " + task.optionsFile.getValue().getName();
+            // TODO This class no longer works
+            // return "Includes : " + task.optionsFile.getValue().getName();
+            return "???";
+
         } catch (Exception e) {
             return super.getLongTitle();
         }
@@ -45,7 +48,10 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
     public String getShortTitle()
     {
         try {
-            return task.optionsFile.getValue().getName();
+            // TODO This class no longer works
+            // return task.optionsFile.getValue().getName();
+            return "???";
+
         } catch (Exception e) {
             return super.getShortTitle();
         }
@@ -68,7 +74,7 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
         return columns;
     }
 
-    public void save() throws FileNotFoundException
+    public void save()
     {
         task.optionsData.save();
     }
@@ -103,11 +109,7 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
         public void body()
         {
             WrkOptionsIncludes.this.task.optionsData.include.add(include.getValue());
-            try {
-                save();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            save();
         }
     }
 
@@ -126,11 +128,7 @@ public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask,
         public void body()
         {
             WrkOptionsIncludes.this.task.optionsData.include.remove(remove.getValue());
-            try {
-                save();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            save();
         }
     }
 }

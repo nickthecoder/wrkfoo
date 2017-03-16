@@ -22,7 +22,7 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
             parameter.visible = false;
         }
 
-        directory.setValue(Resources.instance.getTabsDirectory());
+        directory.setValue(Resources.getInstance().getTabsDirectory());
         directory.visible = true;
 
         fileExtensions.setValue("json");

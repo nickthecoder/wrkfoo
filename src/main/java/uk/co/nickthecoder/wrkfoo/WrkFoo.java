@@ -19,6 +19,10 @@ public class WrkFoo extends Task
         }
     }
 
+    public FileParameter settings = new FileParameter.Builder("settings").directory()
+        .description("Default is ~/.config/wrkfoo/settings.json")
+        .parameter();
+
     public FileParameter tabSetFile = new FileParameter.Builder("tabSetFile")
         .optional().file().mustExist()
         .parameter();
@@ -35,11 +39,15 @@ public class WrkFoo extends Task
     @Override
     public void body()
     {
+        if (settings.getValue() != null) {
+            Resources.settingsFile = settings.getValue();
+        }
+        
         if (tabSetFile.getValue() != null) {
             TabSetData.load(tabSetFile.getValue()).openMainWindow();
 
         } else if (tabSetName.getValue() != null) {
-            File file = new File(Resources.instance.getTabsDirectory(), tabSetName.getValue());
+            File file = new File(Resources.getInstance().getTabsDirectory(), tabSetName.getValue());
             TabSetData.load(file).openMainWindow();
 
         } else {

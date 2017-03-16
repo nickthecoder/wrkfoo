@@ -1,12 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
-import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 
 public class NewOptionsFile extends Task
 {
@@ -21,13 +16,16 @@ public class NewOptionsFile extends Task
     @Override
     public void body()
     {
-        File file = Resources.instance.getOptionsFile(name.getValue());
-        OptionsData od = new OptionsData(file);
+        // TODO Cannot create a new optionData file, because we don't know which path to put it in.
+        /*
+        File file = Resources.getInstance().getOptionsFile(name.getValue());
+        OptionsData od = new OptionsData(file.toURI());
         try {
             od.save();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        */
     }
 
 }

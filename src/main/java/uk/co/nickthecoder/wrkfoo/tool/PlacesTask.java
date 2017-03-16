@@ -32,7 +32,7 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
         super();
         addParameters(store);
         try {
-            store.setValue(new File(Resources.instance.getHomeDirectory(), ".places"));
+            store.setValue(new File(Resources.getInstance().getHomeDirectory(), ".places"));
         } catch (Exception e) {
             // Do nothing.
         }
@@ -96,9 +96,9 @@ public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
             }
         } else {
             if (line.equals("~") ) {
-                file = Resources.instance.getHomeDirectory();
+                file = Resources.getInstance().getHomeDirectory();
             } else if (line.startsWith("~" + File.separatorChar)) {
-                file = new File( Resources.instance.getHomeDirectory(), line.substring(2));
+                file = new File( Resources.getInstance().getHomeDirectory(), line.substring(2));
             } else {
                 file = new File(line);
             }

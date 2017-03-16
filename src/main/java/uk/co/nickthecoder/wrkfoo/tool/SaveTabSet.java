@@ -28,7 +28,7 @@ public class SaveTabSet extends Task
         addParameters(saveAs, description);
 
         if (mainWindow.tabSetFile == null) {
-            saveAs.setDefaultValue(Resources.instance.getTabsDirectory());
+            saveAs.setDefaultValue(Resources.getInstance().getTabsDirectory());
         } else {
             saveAs.setDefaultValue(mainWindow.tabSetFile);
         }

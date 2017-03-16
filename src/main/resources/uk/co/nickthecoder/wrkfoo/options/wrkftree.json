@@ -1,0 +1,7 @@
+{
+    include:["files","directory"],
+    options:[
+        {code:"", label: "Work with Directory", if:"row.file.isDirectory()", action: "new WrkF().parameter('directory',row.file)"},
+        {code:"", label: "Open File", if:"!row.file.isDirectory()", action: "os.openFolder(row.file)"}
+    ]
+}
