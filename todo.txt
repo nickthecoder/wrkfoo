@@ -1,21 +1,10 @@
 Current Task
 ============
 
-NewOptionsFile - currently comment out. Which options path to put it in?
-	Won't need this. Add/Copy can create files when needed.
-
-WrkOptionsInclude doesn't do the right thing.
-	It's supposed to list the includes for a SINGLE file, but lists the includes for ALL files with the given name.
-	I've commented out broken code.
-	Pass the uri of the option (or maybe the File from the uri)
-
 BUGS
 ====
 
 Double click when there is no default option throws an exception
-
-GitStatus
-	When a file has been added, then changed again, it only shows once, but shows in green. Should be red. M,M
 
 WrkOptions not updating the list when adding/deleting options.
 

@@ -46,7 +46,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
                     return UNTRACKED;
                 }
 
-                if ((line.work == 'M') && (line.index == ' ')) {
+                if (line.work == 'M') {
                     return NOT_UPDATED;
                 }
 
