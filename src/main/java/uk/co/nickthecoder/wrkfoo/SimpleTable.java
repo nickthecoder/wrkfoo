@@ -107,7 +107,7 @@ public class SimpleTable<R> extends JTable
                 comp.setForeground(Color.black);
             }
 
-            if ((getSelectedRow() == row) && (getSelectedColumn() == column)) {
+            if ((getSelectedRow() == row) && (getSelectedColumn() == column) && (this.hasFocus())) {
                 comp.setBackground(selectedCellColor);
             } else {
                 comp.setBackground(selectedRowColor);

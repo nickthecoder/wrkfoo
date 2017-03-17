@@ -112,12 +112,6 @@ public class GroovyOption extends AbstractOption
                 thread.start();
             }
 
-        } else if (result == null) {
-            // Do nothing
-
-        } else {
-            // TODO Do something with groovy output
-            // System.out.println(result);
         }
 
     }
