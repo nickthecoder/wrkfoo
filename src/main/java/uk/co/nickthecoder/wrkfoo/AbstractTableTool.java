@@ -53,7 +53,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     }
 
     @Override
-    protected void focusOnEnd()
+    public void focus()
     {
         if (getToolPanel().getTable().getModel().getRowCount() == 0) {
             SwingUtilities.invokeLater(new Runnable()
@@ -65,7 +65,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
             });
 
         } else {
-            super.focusOnEnd();
+            super.focus();
         }
     }
 }

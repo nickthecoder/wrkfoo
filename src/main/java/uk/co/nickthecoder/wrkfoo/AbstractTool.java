@@ -194,7 +194,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private void end()
     {
         goThread = null;
-        focusOnEnd();
+        focus();
         fireChangedState();
     }
 
@@ -204,7 +204,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
      * Note. TableTools overrides this so that it can focus on {@link MainWindow}'s option text field when there are no
      * rows.
      */
-    protected void focusOnEnd()
+    public void focus()
     {
         SwingUtilities.invokeLater(new Runnable()
         {
