@@ -187,12 +187,10 @@ public class ActionBuilder
 
     public JMenuItem buildMenuItem()
     {
-        String text = label;
+        JMenuItem result = new JMenuItem(label);
         if (shortcut != null) {
-            text += " (" + shortcut.replace(' ', '+') + ")";
+            result.setAccelerator(KeyStroke.getKeyStroke(shortcut.replace('+', ' ')));
         }
-
-        JMenuItem result = new JMenuItem(text);
 
         if (method != null) {
             Action action = createAction();

@@ -30,11 +30,14 @@ public class OptionsRunner
         @Override
         public boolean accept(JMenuItem menuItem, String filterText)
         {
-            if (!menuItem.isEnabled()) {
-                // Keep information items, such as "Non-Row Options"
-                return true;
+            if (menuItem instanceof OptionMenuItem) {
+                Option option = ((OptionMenuItem) menuItem).option;
+                filterText = filterText.toLowerCase();
+
+                return option.getLabel().toLowerCase().contains(filterText) ||
+                    option.getCode().toLowerCase().contains(filterText);
             }
-            return menuItem.getText().toLowerCase().contains(filterText.toLowerCase());
+            return true;
         }
     };
 
@@ -199,11 +202,9 @@ public class OptionsRunner
      * @param option
      * @return A new JMenuItem, which will do nothing when activated.
      */
-    private JMenuItem createPlainMenuItem(Option option)
+    private OptionMenuItem createPlainMenuItem(Option option)
     {
-        String extra = Util.empty(option.getCode()) ? "" : " (" + option.getCode() + ")";
-        String text = option.getLabel() + extra;
-        return new JMenuItem(text);
+        return new OptionMenuItem(option);
     }
 
     /**
@@ -213,9 +214,9 @@ public class OptionsRunner
      * @param useNewTab
      * @return A new JMenuItem
      */
-    private JMenuItem createMenuItem(final Option option, final boolean useNewTab)
+    private OptionMenuItem createMenuItem(final Option option, final boolean useNewTab)
     {
-        JMenuItem item = createPlainMenuItem(option);
+        OptionMenuItem item = createPlainMenuItem(option);
         item.addActionListener(new ActionListener()
         {
             @Override
@@ -238,9 +239,9 @@ public class OptionsRunner
      * @param useNewTab
      * @return A new JMenuItem
      */
-    private JMenuItem createMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
+    private OptionMenuItem createMenuItem(final Option option, final int rowIndex, final boolean useNewTab)
     {
-        JMenuItem item = createPlainMenuItem(option);
+        OptionMenuItem item = createPlainMenuItem(option);
         item.addActionListener(new ActionListener()
         {
             @Override
@@ -264,9 +265,9 @@ public class OptionsRunner
      * @param newTab
      * @return
      */
-    private JMenuItem createMultiMenuItem(final Option option, final boolean newTab)
+    private OptionMenuItem createMultiMenuItem(final Option option, final boolean newTab)
     {
-        JMenuItem item = createPlainMenuItem(option);
+        OptionMenuItem item = createPlainMenuItem(option);
         item.addActionListener(new ActionListener()
         {
             @Override

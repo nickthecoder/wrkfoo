@@ -1,10 +1,6 @@
 Current Task
 ============
 
-++ in wrkoptions throws an exception
-
-WrkOptions not updating the list when adding/deleting options.
-
 BUGS
 ====
 
@@ -31,9 +27,11 @@ When Editor dirty changes the tab's label, the window title isn't correctly set.
 
 New Features
 ============
+
+Put all ActionBuilder stuff into one class, so that I can see at a glance ll of the shortcuts.
 		
 action and ifScript to use Editor
-	default to 3/4 lines JTextArea, but with a button to popup a full editor.
+	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.
 	EditorPane interacts with new EditorWindow instead of Editor.
 	Maybe rename Editor to EditorTool.
 
