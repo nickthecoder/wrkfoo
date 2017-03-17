@@ -70,7 +70,9 @@ public class TableToolPanel<R> extends ToolPanel
 
                     R row = table.getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getRowOption(OptionsRunner.DEFAULT_CODE, row);
-                    optionsRunner.runOption(option, row, newTab, false);
+                    if (option != null) {
+                        optionsRunner.runOption(option, row, newTab, false);
+                    }
                 }
 
             }

@@ -207,7 +207,8 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
         add.label.setValue(from.label);
         add.newTab.setValue(from.newTab);
         add.refreshResults.setValue(from.refreshResults);
-        add.type.setValue(from.multi ? "multi" : from.row ? "row" : "non-row");
+        String val = from.multi ? "multi" : from.isRow() ? "row" : "non-row";
+        add.type.setStringValue(val);
 
         return add;
     }

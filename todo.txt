@@ -1,8 +1,11 @@
 Current Task
 ============
 
+
 BUGS
 ====
+
+New Options aren't avilable till you restart the app.
 
 Double click when there is no default option throws an exception
 

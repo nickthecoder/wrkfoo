@@ -7,7 +7,9 @@
     {
       "code": ".",
       "label": "Open",
-      "action": "os.exec('gnome-open', row.file)",
+      "action": "os.open(row.file)",
+      "if": "row.work != 'M'",
+      "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,

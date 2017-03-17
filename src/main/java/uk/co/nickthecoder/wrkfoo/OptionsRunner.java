@@ -334,10 +334,10 @@ public class OptionsRunner
                 int rowIndex = getTable().convertRowIndexToModel(r);
                 if (Util.empty(model.getCode(rowIndex))) {
                     Object row = getTable().getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getRowOption(DEFAULT_CODE, row);
-                    runOption(option, row, newTab, prompt);
-
-                    return;
+                    Option option = tableTool.getOptions().getOption(DEFAULT_CODE, row);
+                    if (option != null) {
+                        runOption(option, row, newTab, prompt);
+                    }
                 }
             }
         }
