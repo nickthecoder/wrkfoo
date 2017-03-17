@@ -311,7 +311,10 @@ public class OptionsRunner
 
                 Object row = model.getRow(i);
                 Option option = tableTool.getOptions().getOption(code, row);
-                if (option != null) {
+                
+                if (option == null) {
+                    message("Unknown Option Code : '" + code + "'");
+                } else {
                     if (option.isMultiRow()) {
                         processMultiRowOptions(tableTool, option, newTab, prompt);
                     } else {
@@ -335,7 +338,9 @@ public class OptionsRunner
                 if (Util.empty(model.getCode(rowIndex))) {
                     Object row = getTable().getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getOption(DEFAULT_CODE, row);
-                    if (option != null) {
+                    if (option == null) {
+                        message("No default Option");
+                    } else {
                         runOption(option, row, newTab, prompt);
                     }
                 }
@@ -375,8 +380,11 @@ public class OptionsRunner
         Option option = tool.getOptions().getNonRowOption(code);
         if (option != null) {
             return runOption(option, newTab, prompt);
+        } else {
+            message("Unknown Option Code : '" + code + "'");
+            return false;
+
         }
-        return false;
     }
 
     /**
@@ -441,6 +449,11 @@ public class OptionsRunner
             handleException(e);
             return false;
         }
+    }
+
+    private void message(String message)
+    {
+        getMainWindow().setMessage(message);
     }
 
     /**

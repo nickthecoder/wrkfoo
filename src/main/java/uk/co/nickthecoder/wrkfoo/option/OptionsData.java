@@ -48,9 +48,9 @@ public class OptionsData
     public transient URL url;
 
     /**
-     * A group of optionData. The first will be the optionData of the given name.
-     * This will be a OptionsGroup, with a SimpleOptions for each set of optionData found within the path.
-     * the remainder will be included optionData.
+     * When loading a single .json file, we end up with a complex structure, with this being the top-level.
+     * The first Options in optionsGroup will be a SimpleOptions, containing the options loaded directly from the .json file.
+     * The remaining items are the INCLUDES. These are currently handled badly, because there will end up being repetition.
      */
     public transient OptionsGroup optionsGroup;
 
@@ -114,6 +114,7 @@ public class OptionsData
         } finally {
             out.close();
         }
+        
     }
 
     public static class OptionData

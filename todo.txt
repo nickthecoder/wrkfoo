@@ -5,12 +5,6 @@ Current Task
 BUGS
 ====
 
-New Options aren't avilable till you restart the app.
-
-Double click when there is no default option throws an exception
-
-Using an invalide option doesn't give a message
-
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 	Shouldn't have a list of tools passed to MainFrame constructor.
 	Probably MainWindow.getMainWindow(component) is returning null
