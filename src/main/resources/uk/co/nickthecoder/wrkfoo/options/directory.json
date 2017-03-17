@@ -14,8 +14,8 @@
     },
     {
       "code": "fm",
-      "label": "File Manager",
-      "action": "os.openFolder( tool.directory )",
+      "label": "Open Folder",
+      "action": "os.open( tool.directory )",
       "row": false,
       "multi": false,
       "newTab": false,

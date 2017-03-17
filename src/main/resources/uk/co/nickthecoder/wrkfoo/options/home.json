@@ -1,7 +1,7 @@
 {
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Run",
       "action": "row",
       "multi": false,

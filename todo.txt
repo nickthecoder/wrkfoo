@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Make "." the default option (so that default options can be prompted when F4 is implemented)
+
 F4 to prompt tasks/tools.
 	Pass into Option.run in the same was as newTab currently is.
 

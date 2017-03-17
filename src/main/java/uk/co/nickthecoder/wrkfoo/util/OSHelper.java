@@ -1,6 +1,8 @@
 package uk.co.nickthecoder.wrkfoo.util;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -16,6 +18,11 @@ import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 public class OSHelper
 {
     public static OSHelper instance = new OSHelper();
+
+    public void open(File file) throws IOException
+    {
+        Desktop.getDesktop().open(file);
+    }
 
     /**
      * Prepares (but does not run) an {@link Exec}, with the given tool and arguments.
@@ -46,6 +53,7 @@ public class OSHelper
                 }
             }
         }
+        System.out.println("exec " + result);
         return result;
     }
 
@@ -78,16 +86,4 @@ public class OSHelper
         return exec(Resources.getInstance().getEditor(), args);
     }
 
-    /**
-     * Opens the a directory in a file manager. You can choose which file manager to use in wrkfoo's settings.json. See
-     * {@link Resources#fileManager}.
-     * 
-     * @param arg
-     *            The file to open (can be a {@link File}, or a String path. See {@link #exec(String, Object...)}.
-     * @return An Exec which GroovyOption will run.
-     */
-    public Exec openFolder(Object arg)
-    {
-        return exec(Resources.getInstance().getFileManager(), arg);
-    }
 }

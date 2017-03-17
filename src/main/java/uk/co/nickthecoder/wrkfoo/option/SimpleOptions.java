@@ -40,12 +40,6 @@ public class SimpleOptions implements Options
     }
 
     @Override
-    public Option getDefaultRowOption(Object row)
-    {
-        return getRowOption("", row);
-    }
-
-    @Override
     public Option getRowOption(String code, Object row)
     {
         List<Option> options = rowMap.get(code);

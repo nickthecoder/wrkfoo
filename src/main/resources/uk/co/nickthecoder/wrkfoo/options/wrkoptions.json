@@ -2,7 +2,7 @@
   "include": [],
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Edit Option",
       "action": "tool.editOption(row.options, row.option)",
       "if": "row.canEdit()",

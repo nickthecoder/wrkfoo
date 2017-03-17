@@ -95,7 +95,7 @@ public class GroovyOption extends AbstractOption
                 listen(currentTool, task);
             }
             // Either prompt the Task, or run it straight away
-            if ( getPrompt() ) {
+            if (getPrompt()) {
                 task.promptTask();
             } else {
                 Thread thread = new Thread(task);
@@ -108,6 +108,7 @@ public class GroovyOption extends AbstractOption
                 listen(currentTool, (Runnable) result);
             } else {
                 Thread thread = new Thread((Runnable) result);
+                System.out.println( "Started thread" );
                 thread.start();
             }
 
@@ -194,4 +195,8 @@ public class GroovyOption extends AbstractOption
         return scriplet.run(bindings);
     }
 
+    public String toString()
+    {
+        return getCode() + " : " + this.label+ " -> "+ this.action.source;
+    }
 }

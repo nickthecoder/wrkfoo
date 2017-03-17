@@ -44,13 +44,6 @@ public class Resources
      */
     String editor = "gedit";
 
-    /**
-     * The name of the program used as a url manager. For example <code>nautilus</code>. If you are running Gnome, then
-     * you can also use <code>gnome-open</code>, and this will use gnome's default url manager (which is usually
-     * nautilus).
-     */
-    String fileManager = "nautilus";
-
     List<URL> optionsPath = new ArrayList<>();;
 
     private File homeDirectory;
@@ -83,11 +76,6 @@ public class Resources
         return editor;
     }
 
-    public String getFileManager()
-    {
-        return fileManager;
-    }
-
     public Iterable<URL> optionsPath()
     {
         return optionsPath;
@@ -110,9 +98,6 @@ public class Resources
 
             if (settings.editor != null) {
                 this.editor = settings.editor;
-            }
-            if (settings.fileManager != null) {
-                this.fileManager = settings.fileManager;
             }
 
             if (settings.optionsPath != null) {

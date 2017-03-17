@@ -67,7 +67,7 @@ public class TableToolPanel<R> extends ToolPanel
                     int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
 
                     R row = table.getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getDefaultRowOption(row);
+                    Option option = tableTool.getOptions().getRowOption(OptionsRunner.DEFAULT_CODE, row);
                     optionsRunner.runOption(option, row, newTab);
                 }
 

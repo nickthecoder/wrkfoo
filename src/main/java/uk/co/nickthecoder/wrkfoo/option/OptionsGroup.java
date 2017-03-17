@@ -23,12 +23,6 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public Option getDefaultRowOption(Object row)
-    {
-        return getRowOption("", row);
-    }
-
-    @Override
     public Option getOption(String code, Object row)
     {
         Option result = getRowOption(code, row);

@@ -5,7 +5,7 @@
   ],
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Open File in Text Editor",
       "action": "new Editor( row.file, task.regex.regex )",
       "if": "",

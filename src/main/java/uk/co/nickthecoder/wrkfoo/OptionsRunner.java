@@ -23,6 +23,8 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  */
 public class OptionsRunner
 {
+    public static final String DEFAULT_CODE = ".";
+
     public static final MenuItemFilter menuItemFilter = new MenuItemFilter()
     {
         @Override
@@ -308,6 +310,7 @@ public class OptionsRunner
 
                 Object row = model.getRow(i);
                 Option option = tableTool.getOptions().getOption(code, row);
+                System.out.println( "Found option " + option);
                 if (option != null) {
                     if (option.isMultiRow()) {
                         processMultiRowOptions(tableTool, option, newTab);
@@ -331,7 +334,7 @@ public class OptionsRunner
                 int rowIndex = getTable().convertRowIndexToModel(r);
                 if (Util.empty(model.getCode(rowIndex))) {
                     Object row = getTable().getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getDefaultRowOption(row);
+                    Option option = tableTool.getOptions().getRowOption(DEFAULT_CODE, row);
                     runOption(option, row, newTab);
 
                     return;
@@ -349,7 +352,7 @@ public class OptionsRunner
             Object row = model.getRow(i);
             Option otherOption = tableTool.getOptions().getRowOption(model.getCode(i), row);
             if (otherOption == option) {
-                if ( option.isApplicable(row)) {
+                if (option.isApplicable(row)) {
                     model.setCode(i, "");
                     rows.add(model.getRow(i));
                 }

@@ -4,7 +4,8 @@
     {
       "code": "fm",
       "label": "Open Folder",
-      "action": "os.openFolder(row)",
+      "action": "os.open(row.file)",
+      "if": "row.file.isDirectory()",
       "row": true,
       "multi": false,
       "newTab": false,

@@ -4,7 +4,7 @@
   ],
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Work with Directory",
       "action": "new WrkF().parameter('directory',row.file)",
       "if": "row.file.isDirectory()",

@@ -1,8 +1,40 @@
 {
-    include:["files","directory"],
-    options:[
-        {code:"", label: "Work with Directory", if:"row.file.isDirectory()", action: "new WrkF().parameter('directory',row.file)"},
-        {code:"", label: "Open File", if:"!row.file.isDirectory()", action: "os.exec('gnome-open', row.file)"},
-        {code:"ls", label:"Work with Directory", if: "row.file.isDirectory()", groovy:"tool.parameter('directory',row.file)"}
-    ]
+  "include": [
+    "files",
+    "directory"
+  ],
+  "options": [
+    {
+      "code": ".",
+      "label": "Work with Directory",
+      "action": "new WrkF().parameter('directory',row.file)",
+      "if": "row.file.isDirectory()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
+    },
+    {
+      "code": ".",
+      "label": "Open File",
+      "action": "os.open(row.file)",
+      "if": "!row.file.isDirectory()",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
+    },
+    {
+      "code": "ls",
+      "label": "Work with Directory",
+      "action": "tool.parameter('directory',row.file)",
+      "if": "row.file.isDirectory()",
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
+    }
+  ]
 }

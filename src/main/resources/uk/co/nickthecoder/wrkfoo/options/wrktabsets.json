@@ -4,7 +4,7 @@
   ],
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Load Tab Set",
       "action": "tool.load(row.file)",
       "row": true,

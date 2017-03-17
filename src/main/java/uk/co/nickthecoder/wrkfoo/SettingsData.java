@@ -27,15 +27,12 @@ public class SettingsData
     }
 
     public String editor;
-
-    public String fileManager;
     
     public List<String> optionsPath = new ArrayList<>();
 
     public SettingsData()
     {
         editor = Resources.getInstance().editor;
-        fileManager = Resources.getInstance().fileManager;
         optionsPath = new ArrayList<>();
         for ( URL url : Resources.getInstance().optionsPath ) {
             optionsPath.add( url.toString());

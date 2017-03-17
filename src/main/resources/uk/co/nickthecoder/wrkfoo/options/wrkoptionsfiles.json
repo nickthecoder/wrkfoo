@@ -5,7 +5,7 @@
   ],
   "options": [
     {
-      "code": "",
+      "code": ".",
       "label": "Work with Options",
       "action": "tool.wrkOptions(row.file)",
       "row": true,
