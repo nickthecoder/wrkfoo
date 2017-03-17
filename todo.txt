@@ -1,12 +1,14 @@
 Current Task
 ============
 
+++ in wrkoptions throws an exception
+
+WrkOptions not updating the list when adding/deleting options.
+
 BUGS
 ====
 
 Double click when there is no default option throws an exception
-
-WrkOptions not updating the list when adding/deleting options.
 
 Using an invalide option doesn't give a message
 

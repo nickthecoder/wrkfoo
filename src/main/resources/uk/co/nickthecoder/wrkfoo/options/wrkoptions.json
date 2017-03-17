@@ -9,7 +9,7 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true
     },
     {
@@ -19,7 +19,7 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true
     },
     {
@@ -30,7 +30,7 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true
     },
     {
@@ -40,8 +40,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "refreshResults": true,
+      "prompt": true
     }
   ]
 }

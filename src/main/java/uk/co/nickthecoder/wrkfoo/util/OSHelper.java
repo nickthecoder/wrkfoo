@@ -53,7 +53,6 @@ public class OSHelper
                 }
             }
         }
-        System.out.println("exec " + result);
         return result;
     }
 

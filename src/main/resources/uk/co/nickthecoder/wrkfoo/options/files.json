@@ -30,8 +30,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "refreshResults": true,
+      "prompt": true
     },
     {
       "code": "rm-r",
@@ -42,7 +42,7 @@
       "multi": true,
       "newTab": true,
       "refreshResults": true,
-      "prompt": false
+      "prompt": true
     },
     {
       "code": "rm",
@@ -52,8 +52,8 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "refreshResults": true,
+      "prompt": true
     },
     {
       "code": "grep",
