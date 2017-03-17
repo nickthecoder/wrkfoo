@@ -222,7 +222,7 @@ public class OptionsRunner
             public void actionPerformed(ActionEvent e)
             {
                 if (option != null) {
-                    runOption(option, useNewTab);
+                    runOption(option, useNewTab, false);
                 }
             }
         });
@@ -248,7 +248,7 @@ public class OptionsRunner
             {
                 Object row = rowIndex >= 0 ? getTable().getModel().getRow(rowIndex) : null;
                 if (option != null) {
-                    runOption(option, row, useNewTab);
+                    runOption(option, row, useNewTab, false);
                 }
             }
         });
@@ -283,7 +283,7 @@ public class OptionsRunner
                         getTable().removeRowSelectionInterval(r, r);
                     }
                 }
-                runMultipleOption(option, rows, newTab);
+                runMultipleOption(option, rows, newTab, false);
             }
         });
 
@@ -295,7 +295,7 @@ public class OptionsRunner
      * 
      * @param newTab
      */
-    public void processTableOptions(boolean newTab)
+    public void processTableOptions(boolean newTab, boolean prompt)
     {
         ToolTableModel<?> model = getTable().getModel();
         getTable().stopEditing();
@@ -310,13 +310,12 @@ public class OptionsRunner
 
                 Object row = model.getRow(i);
                 Option option = tableTool.getOptions().getOption(code, row);
-                System.out.println( "Found option " + option);
                 if (option != null) {
                     if (option.isMultiRow()) {
-                        processMultiRowOptions(tableTool, option, newTab);
+                        processMultiRowOptions(tableTool, option, newTab, prompt);
                     } else {
                         model.setCode(i, "");
-                        if (!runOption(option, row, newTab)) {
+                        if (!runOption(option, row, newTab, prompt)) {
                             model.setCode(i, code); // Put back the code, to indicate this code did not run.
                             break;
                         }
@@ -335,7 +334,7 @@ public class OptionsRunner
                 if (Util.empty(model.getCode(rowIndex))) {
                     Object row = getTable().getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getRowOption(DEFAULT_CODE, row);
-                    runOption(option, row, newTab);
+                    runOption(option, row, newTab, prompt);
 
                     return;
                 }
@@ -343,7 +342,7 @@ public class OptionsRunner
         }
     }
 
-    private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab)
+    private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab, boolean prompt)
     {
         ToolTableModel<?> model = getTable().getModel();
 
@@ -358,7 +357,7 @@ public class OptionsRunner
                 }
             }
         }
-        runMultipleOption(option, rows, newTab);
+        runMultipleOption(option, rows, newTab, prompt);
     }
 
     /**
@@ -370,11 +369,11 @@ public class OptionsRunner
      * @return true iff the option run ok. Note, this does NOT wait for {@link Task}s, or other {@link Runnable}s
      *         to finish.
      */
-    public boolean runOption(String code, boolean newTab)
+    public boolean runOption(String code, boolean newTab, boolean prompt)
     {
         Option option = tool.getOptions().getNonRowOption(code);
         if (option != null) {
-            return runOption(option, newTab);
+            return runOption(option, newTab, prompt);
         }
         return false;
     }
@@ -388,10 +387,10 @@ public class OptionsRunner
      * @return true iff the option run ok. Note, this does NOT wait for {@link Task}s, or other {@link Runnable}s
      *         to finish.
      */
-    public boolean runOption(Option option, boolean newTab)
+    public boolean runOption(Option option, boolean newTab, boolean prompt)
     {
         try {
-            option.runOption(tool, newTab);
+            option.runOption(tool, newTab, prompt);
             return true;
         } catch (Throwable e) {
             handleException(e);
@@ -410,10 +409,10 @@ public class OptionsRunner
      * @return true iff the option run ok. Note, this does NOT wait for {@link Task}s, or other {@link Runnable}s
      *         to finish.
      */
-    public boolean runOption(Option option, Object row, boolean newTab)
+    public boolean runOption(Option option, Object row, boolean newTab, boolean prompt)
     {
         try {
-            option.runOption(tableTool, row, newTab);
+            option.runOption(tableTool, row, newTab, prompt);
             return true;
         } catch (Throwable e) {
             handleException(e);
@@ -432,10 +431,10 @@ public class OptionsRunner
      * @return true iff the option run ok. Note, this does NOT wait for {@link Task}s, or other {@link Runnable}s
      *         to finish.
      */
-    public boolean runMultipleOption(Option option, List<Object> rows, boolean newTab)
+    public boolean runMultipleOption(Option option, List<Object> rows, boolean newTab, boolean prompt)
     {
         try {
-            option.runMultiOption(tableTool, rows, newTab);
+            option.runMultiOption(tableTool, rows, newTab, prompt);
             return true;
         } catch (Throwable e) {
             handleException(e);

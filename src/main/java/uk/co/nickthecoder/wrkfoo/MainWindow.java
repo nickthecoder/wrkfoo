@@ -212,10 +212,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
         builder.name("jumpToResults").shortcut("F11").buildShortcut();
         builder.name("jumpToParameters").shortcut("F12").buildShortcut();
 
-        // There's an illusive bug, which causes alt F4 not to work, so I've added a different shortcut.
-        // I've not spent too long hunting the bug, because I think it may be a bug in Gnome (or maybe Java).
-        builder.name("closeWindow").shortcut("ctrl F4").buildShortcut();
-
         // Keyboard shortcuts alt+1 .. alt+9 switches to that tab number.
         for (int i = 1; i <= 9; i++) {
             switchTabMapping(i);
@@ -261,6 +257,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
         builder.name("runNonRowOption").shortcut("ENTER").buildShortcut();
         builder.name("runNonRowOptionInNewTab").shortcut("ctrl ENTER").buildShortcut();
 
+        builder.name("promptNonRowOption").shortcut("F2").buildShortcut();
+        builder.name("promptNonRowOptionInNewTab").shortcut("ctrl F2").buildShortcut();
+
         textField.addMouseListener(new MouseAdapter()
         {
 
@@ -292,13 +291,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
         }
     }
 
-    private void processOptionField(boolean newTab)
+    private void processOptionField(boolean newTab, boolean prompt)
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             Tool tool = tab.getTool();
 
-            if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab)) {
+            if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
                 optionTextField.setText("");
             }
         }
@@ -627,11 +626,21 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onRunNonRowOption()
     {
-        processOptionField(false);
+        processOptionField(false, false);
     }
 
     public void onRunNonRowOptionInNewTab()
     {
-        processOptionField(true);
+        processOptionField(true, false);
+    }
+
+    public void onPromptNonRowOption()
+    {
+        processOptionField(false, true);
+    }
+
+    public void onPromptNonRowOptionInNewTab()
+    {
+        processOptionField(true, true);
     }
 }

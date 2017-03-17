@@ -39,6 +39,8 @@ public class TableToolPanel<R> extends ToolPanel
 
         builder.name("runOptions").shortcut("ENTER").buildShortcut();
         builder.name("runOptionsInNewTab").shortcut("ctrl ENTER").buildShortcut();
+        builder.name("promptOptions").shortcut("F2").buildShortcut();
+        builder.name("promptOptionsInNewTab").shortcut("ctrl F2").buildShortcut();
 
         table.addMouseListener(new MouseAdapter()
         {
@@ -68,7 +70,7 @@ public class TableToolPanel<R> extends ToolPanel
 
                     R row = table.getModel().getRow(rowIndex);
                     Option option = tableTool.getOptions().getRowOption(OptionsRunner.DEFAULT_CODE, row);
-                    optionsRunner.runOption(option, row, newTab);
+                    optionsRunner.runOption(option, row, newTab, false);
                 }
 
             }
@@ -77,12 +79,22 @@ public class TableToolPanel<R> extends ToolPanel
 
     public void onRunOptions()
     {
-        optionsRunner.processTableOptions(false);
+        optionsRunner.processTableOptions(false, false);
     }
 
     public void onRunOptionsInNewTab()
     {
-        optionsRunner.processTableOptions(true);
+        optionsRunner.processTableOptions(true, false);
+    }
+
+    public void onPromptOptions()
+    {
+        optionsRunner.processTableOptions(false, true);
+    }
+
+    public void onPromptOptionsInNewTab()
+    {
+        optionsRunner.processTableOptions(true, true);
     }
 
     public SimpleTable<R> getTable()

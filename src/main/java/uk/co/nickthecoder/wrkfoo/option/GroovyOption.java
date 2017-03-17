@@ -34,21 +34,21 @@ public class GroovyOption extends AbstractOption
     }
 
     @Override
-    public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab)
+    public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab, boolean prompt)
     {
-        privateRunOption(tool, rows, openNewTab);
+        privateRunOption(tool, rows, openNewTab, prompt);
     }
 
     @Override
-    public void runOption(Tool tool, boolean openNewTab)
+    public void runOption(Tool tool, boolean openNewTab, boolean prompt)
     {
-        privateRunOption(tool, null, openNewTab);
+        privateRunOption(tool, null, openNewTab, prompt);
     }
 
     @Override
-    public void runOption(TableTool<?> tool, Object row, boolean openNewTab)
+    public void runOption(TableTool<?> tool, Object row, boolean openNewTab, boolean prompt)
     {
-        privateRunOption(tool, row, openNewTab);
+        privateRunOption(tool, row, openNewTab, prompt);
     }
 
     @Override
@@ -63,11 +63,12 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Tool currentTool, Object rowOrRows, boolean openNewTab)
+    private void privateRunOption(Tool currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)
     {
         ToolTab tab = currentTool.getToolTab();
 
         openNewTab |= this.getNewTab();
+        prompt |= this.getPrompt();
 
         Object result = runScript(action, currentTool, isMultiRow(), rowOrRows);
 
@@ -81,11 +82,11 @@ public class GroovyOption extends AbstractOption
                 }
 
                 MainWindow mainWindow = MainWindow.getMainWindow(tab.getPanel());
-                ToolTab newTab = mainWindow.insertTab(newTool, getPrompt());
+                ToolTab newTab = mainWindow.insertTab(newTool, prompt);
                 mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
 
             } else {
-                tab.goPrompt(newTool, getPrompt());
+                tab.goPrompt(newTool, prompt);
             }
 
         } else if (result instanceof Task) {
@@ -95,7 +96,7 @@ public class GroovyOption extends AbstractOption
                 listen(currentTool, task);
             }
             // Either prompt the Task, or run it straight away
-            if (getPrompt()) {
+            if (prompt) {
                 task.promptTask();
             } else {
                 Thread thread = new Thread(task);
@@ -108,7 +109,6 @@ public class GroovyOption extends AbstractOption
                 listen(currentTool, (Runnable) result);
             } else {
                 Thread thread = new Thread((Runnable) result);
-                System.out.println( "Started thread" );
                 thread.start();
             }
 
@@ -197,6 +197,6 @@ public class GroovyOption extends AbstractOption
 
     public String toString()
     {
-        return getCode() + " : " + this.label+ " -> "+ this.action.source;
+        return getCode() + " : " + this.label + " -> " + this.action.source;
     }
 }
