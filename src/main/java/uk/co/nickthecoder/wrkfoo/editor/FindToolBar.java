@@ -67,11 +67,10 @@ public class FindToolBar extends JPanel implements SearcherListener
             }
 
         });
-        // TODO Listen for ENTER key
 
         ActionBuilder builder = new ActionBuilder(searcher).component(this);
-        prevButton = builder.name("findPrev").buildButton();
-        nextButton = builder.name("findNext").buildButton();
+        prevButton = builder.name("find.findPrev").buildButton();
+        nextButton = builder.name("find.findNext").buildButton();
 
         builder = new ActionBuilder(this);
 
@@ -85,13 +84,13 @@ public class FindToolBar extends JPanel implements SearcherListener
         rightPanel = new JPanel();
         this.add(rightPanel, BorderLayout.EAST);
 
-        matchCase = builder.name("matchCase").label("Match Case").buildCheckBox();
+        matchCase = builder.name("find.matchCase").label("Match Case").buildCheckBox();
         rightPanel.add(matchCase);
 
-        matchWholeWord = builder.name("matchWholeWord").label("Whole Whole Word").buildCheckBox();
+        matchWholeWord = builder.name("find.matchWholeWord").label("Whole Whole Word").buildCheckBox();
         rightPanel.add(matchWholeWord);
 
-        matchRegex = builder.name("matchRegex").label("Regex").buildCheckBox();
+        matchRegex = builder.name("find.matchRegex").label("Regex").buildCheckBox();
         rightPanel.add(matchRegex);
 
         searcher.addSearcherListener(this);

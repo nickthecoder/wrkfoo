@@ -63,31 +63,9 @@ public final class ActionShortcuts
         put("tabProperties", "ctrl+P");
         put("tabClose", "");
 
-        // Editor
-        put("documentOpen", "ctrl+O");
-
-        // EditorPanel
-        put("documentSave", "ctrl+S");
-        put("documentRevert", "F5");
-        put("editUndo", "ctrl+Z");
-        put("editRedo", "ctrl+shift+Z");
-        put("editCopy", "ctrl+C");
-        put("editPaste", "ctrl+V");
-        put("editFind", "ctrl+F");
-        put("editReplace", "ctrl+H");
-        put("editGoToLine", "ctrl+L");
-        put("escape", "ESCAPE");
-
-        // FindToolBar
-        put("findPrev", "ctrl+shift+G");
-        put("findNext", "ctrl+G");
-
-        // ReplaceDialog
-        put("escape", "ESCAPE");
-
         // TabbedPane
-        put("tabProperties", "ctrl+P");
-        put("tabClose", "ctrl+W");
+        put("tab.properties", "ctrl+P");
+        put("tab.close", "ctrl+W");
 
         // TableToolPanel
         put("runOptions", "ENTER");
@@ -104,7 +82,36 @@ public final class ActionShortcuts
         put("redoTool", "alt RIGHT");
 
         // WrkFBase
-        put("upDirectory", "alt UP");
+        put("wrkf.upDirectory", "alt UP");
+
+        // Editor
+        put("documentOpen", "ctrl+O");
+
+        // EditorPanel
+        put("documentSave", "ctrl+S");
+        put("documentRevert", "F5");
+        put("editUndo", "ctrl+Z");
+        put("editRedo", "ctrl+shift+Z");
+        put("editCopy", "ctrl+C");
+        put("editPaste", "ctrl+V");
+        put("editFind", "ctrl+F");
+        put("editReplace", "ctrl+H");
+        put("editGoToLine", "ctrl+L");
+        put("escape", "ESCAPE");
+
+        // FindToolBar
+        put("find.findPrev", "ctrl+shift+G");
+        put("find.findNext", "ctrl+G");
+        put("find.matchCase", "");
+        put("find.matchWholeWord", "");
+        put("find.matchRegex", "");
+
+        // ReplaceDialog
+        put("replace.closeDialog", "ESCAPE");
+        put("replace.replaceAll", "");
+        put("replace.replace", "");
+        put("replace.replaceFind", "");
+        put("replace.find", "");
 
     }
 

@@ -97,11 +97,11 @@ public class ReplaceDialog extends JDialog implements ParameterListener, Searche
 
         ActionBuilder builder = new ActionBuilder(this);
 
-        closeButton = builder.name("close").label("Close").icon("close.png").buildButton();
-        replaceAllButton = builder.name("replaceAll").label("Replace All").buildButton();
-        replaceButton = builder.name("replace").label("Replace").icon("editReplace.png").buildButton();
-        replaceFindButton = builder.name("replaceFind").label("Replace/Find").buildButton();
-        findButton = builder.name("find").label("Find").icon("editFind.png").buildButton();
+        closeButton = builder.name("replace.closeDialog").label("Close").icon("close.png").buildButton();
+        replaceAllButton = builder.name("replace.replaceAll").label("Replace All").buildButton();
+        replaceButton = builder.name("replace.replace").label("Replace").icon("editReplace.png").buildButton();
+        replaceFindButton = builder.name("replace.replaceFind").label("Replace/Find").buildButton();
+        findButton = builder.name("replace.find").label("Find").icon("editFind.png").buildButton();
 
         buttons.add(closeButton);
         buttons.add(replaceAllButton);
@@ -109,13 +109,11 @@ public class ReplaceDialog extends JDialog implements ParameterListener, Searche
         buttons.add(replaceFindButton);
         buttons.add(findButton);
 
-        builder.name("escape").buildShortcut();
-
         this.add(buttons, BorderLayout.SOUTH);
 
     }
 
-    public void onClose()
+    public void onCloseDialog()
     {
         setVisible(false);
     }

@@ -156,7 +156,7 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
         super.postCreate();
 
         ActionBuilder builder = new ActionBuilder(this).component(getToolPanel());
-        builder.name("upDirectory").buildShortcut();
+        builder.name("wrkf.upDirectory").buildShortcut();
     }
 
     public void onUpDirectory()

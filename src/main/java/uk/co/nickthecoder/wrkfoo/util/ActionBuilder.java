@@ -173,8 +173,13 @@ public class ActionBuilder
     public ActionBuilder name(String name)
     {
         actionName = name;
-        icon(name + ".png");
-        method("on" + name.substring(0, 1).toUpperCase() + name.substring(1));
+        String lastPart = actionName;
+        int dot = lastPart.lastIndexOf('.');
+        if (dot >= 0) {
+            lastPart = lastPart.substring(dot +1);
+        }
+        icon(lastPart + ".png");
+        method("on" + lastPart.substring(0, 1).toUpperCase() + lastPart.substring(1));
 
         return this;
     }
