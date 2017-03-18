@@ -70,8 +70,8 @@ public class FindToolBar extends JPanel implements SearcherListener
         // TODO Listen for ENTER key
 
         ActionBuilder builder = new ActionBuilder(searcher).component(this);
-        prevButton = builder.name("findPrev").shortcut("ctrl shift G").buildButton();
-        nextButton = builder.name("findNext").shortcut("ctrl G").buildButton();
+        prevButton = builder.name("findPrev").buildButton();
+        nextButton = builder.name("findNext").buildButton();
 
         builder = new ActionBuilder(this);
 

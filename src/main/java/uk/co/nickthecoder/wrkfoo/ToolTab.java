@@ -106,8 +106,8 @@ public class ToolTab
     {
         ActionBuilder builder = new ActionBuilder(this).component(panel);
 
-        builder.name("undoTool").shortcut("alt LEFT").buildShortcut();
-        builder.name("redoTool").shortcut("alt RIGHT").buildShortcut();
+        builder.name("undoTool").buildShortcut();
+        builder.name("redoTool").buildShortcut();
     }
 
     void setTabbedPane(TabbedPane value)

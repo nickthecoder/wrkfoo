@@ -109,7 +109,7 @@ public class ReplaceDialog extends JDialog implements ParameterListener, Searche
         buttons.add(replaceFindButton);
         buttons.add(findButton);
 
-        builder.name("escape").shortcut("ESCAPE").buildShortcut();
+        builder.name("escape").buildShortcut();
 
         this.add(buttons, BorderLayout.SOUTH);
 

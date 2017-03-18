@@ -1,6 +1,8 @@
 Current Task
 ============
 
+Put all ActionBuilder stuff into one class, so that I can see at a glance all of the shortcuts.
+	Allow customisation, and multiple shortcuts for a single action.
 
 BUGS
 ====
@@ -25,7 +27,6 @@ When Editor dirty changes the tab's label, the window title isn't correctly set.
 New Features
 ============
 
-Put all ActionBuilder stuff into one class, so that I can see at a glance ll of the shortcuts.
 		
 action and ifScript to use Editor
 	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.

@@ -22,6 +22,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 
+import uk.co.nickthecoder.wrkfoo.util.ActionShortcuts.Shortcuts;
+
 public class ActionBuilder
 {
     private final Object receiver;
@@ -44,9 +46,7 @@ public class ActionBuilder
 
     private String tooltip;
 
-    private String shortcut;
-
-    private String methodName;
+    private String actionName;
 
     private Method method;
 
@@ -149,18 +149,11 @@ public class ActionBuilder
         return this;
     }
 
-    public ActionBuilder shortcut(String shortcut)
-    {
-        this.shortcut = shortcut;
-        return this;
-    }
-
     private static final Class<?>[] EMPTY_SIGNATURE = {};
     private static final Object[] EMPTY_VALUES = {};
 
-    public ActionBuilder action(String methodName)
+    public ActionBuilder method(String methodName)
     {
-        this.methodName = methodName;
         try {
             method = receiver.getClass().getMethod(methodName, EMPTY_SIGNATURE);
         } catch (Exception e) {
@@ -179,8 +172,9 @@ public class ActionBuilder
      */
     public ActionBuilder name(String name)
     {
+        actionName = name;
         icon(name + ".png");
-        action("on" + name.substring(0, 1).toUpperCase() + name.substring(1));
+        method("on" + name.substring(0, 1).toUpperCase() + name.substring(1));
 
         return this;
     }
@@ -188,8 +182,15 @@ public class ActionBuilder
     public JMenuItem buildMenuItem()
     {
         JMenuItem result = new JMenuItem(label);
-        if (shortcut != null) {
-            result.setAccelerator(KeyStroke.getKeyStroke(shortcut.replace('+', ' ')));
+
+        // Set the menu accelerator to the first keystroke found.
+        Shortcuts shortcuts = ActionShortcuts.instance.get(actionName);
+        if (shortcuts != null) {
+
+            for (KeyStroke keyStroke : shortcuts.keyStrokes) {
+                result.setAccelerator(keyStroke);
+                break;
+            }
         }
 
         if (method != null) {
@@ -211,18 +212,16 @@ public class ActionBuilder
             final Action action = createAction();
             result.addActionListener(action);
 
-            if (shortcut != null) {
-                Action toggleAction = new AbstractAction()
+            Action toggleAction = new AbstractAction()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
                 {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        result.setSelected(!result.isSelected());
-                        action.actionPerformed(e);
-                    }
-                };
-                mapShortcut(toggleAction);
-            }
+                    result.setSelected(!result.isSelected());
+                    action.actionPerformed(e);
+                }
+            };
+            mapShortcut(toggleAction);
         }
 
         reset();
@@ -253,12 +252,9 @@ public class ActionBuilder
         if (icon != null) {
             result.setIcon(icon);
         }
+
         if (tooltip != null) {
-            if (shortcut == null) {
-                result.setToolTipText(tooltip);
-            } else {
-                result.setToolTipText(tooltip + " (" + shortcut.replace(' ', '+') + ")");
-            }
+            result.setToolTipText(tooltip + ActionShortcuts.instance.tooltipSuffix(actionName));
         }
 
         result.setVisible(visible);
@@ -275,12 +271,9 @@ public class ActionBuilder
         if (icon != null) {
             result.setIcon(icon);
         }
+
         if (tooltip != null) {
-            if (shortcut == null) {
-                result.setToolTipText(tooltip);
-            } else {
-                result.setToolTipText(tooltip + " (" + shortcut.replace(' ', '+') + ")");
-            }
+            result.setToolTipText(tooltip + ActionShortcuts.instance.tooltipSuffix(actionName));
         }
 
         if (method != null) {
@@ -330,13 +323,19 @@ public class ActionBuilder
 
     private void mapShortcut(Action action)
     {
-        if (shortcut != null) {
-            InputMap inputMap = component.getInputMap(condition);
-            ActionMap actionMap = component.getActionMap();
+        Shortcuts shortcuts = ActionShortcuts.instance.get(actionName);
+        if (shortcuts == null) {
+            System.err.println("Warning no shortcuts found for " + actionName);
+            return;
+        }
 
-            KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
-            inputMap.put(keyStroke, methodName);
-            actionMap.put(methodName, action);
+        ActionMap actionMap = component.getActionMap();
+        actionMap.put(actionName, action);
+
+        InputMap inputMap = component.getInputMap(condition);
+
+        for (KeyStroke keyStroke : shortcuts.keyStrokes) {
+            inputMap.put(keyStroke, actionName);
         }
     }
 
@@ -345,10 +344,9 @@ public class ActionBuilder
         // Reset the builder, so that it can be used again.
         this.label = null;
         this.icon = null;
-        this.shortcut = null;
         this.tooltip = null;
         this.method = null;
-        this.methodName = null;
+        this.actionName = null;
         this.visible = true;
         this.enable = true;
     }

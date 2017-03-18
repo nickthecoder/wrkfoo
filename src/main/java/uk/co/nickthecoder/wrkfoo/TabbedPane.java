@@ -87,8 +87,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         JPopupMenu menu = new JPopupMenu();
 
         ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
-        menu.add(builder.name("tabProperties").label("Tab Promperties").shortcut("ctrl P").buildMenuItem());
-        menu.add(builder.name("tabClose").label("Close Tab").shortcut("ctrl W").buildMenuItem());
+        menu.add(builder.name("tabProperties").label("Tab Promperties").buildMenuItem());
+        menu.add(builder.name("tabClose").label("Close Tab").buildMenuItem());
 
         menu.show(me.getComponent(), me.getX(), me.getY());
 

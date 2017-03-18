@@ -177,40 +177,37 @@ public class MainWindow extends JFrame implements ExceptionHandler
         optionTextField = createOptionTextField();
         toolBar.add(optionTextField);
 
-        toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").shortcut("ctrl Q").buildButton());
-        toolBar.add(builder.name("newWindow").tooltip("Open a new Window").shortcut("ctrl N").buildButton());
-        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").shortcut("ctrl HOME").buildButton());
-        // MainWindow.toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").shortcut("ctrl
-        // F5").buildButton());
+        toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").buildButton());
+        toolBar.add(builder.name("newWindow").tooltip("Open a new Window").buildButton());
+        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").buildButton());
+        // MainWindow.toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").buildButton());
         toolBar.addSeparator();
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
-        toolBar.add(builder.name("newTab").tooltip("Open a new tab").shortcut("ctrl T").buildButton());
-        toolBar.add(builder.name("closeTab").tooltip("Close tab").shortcut("ctrl W").buildButton());
+        toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
+        toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
         toolBar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").buildButton());
         toolBar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").buildButton());
         toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
         toolBar.addSeparator();
-        toolBar
-            .add(builder.name("back").tooltip("Go back through the tool history").shortcut("alt Left").buildButton());
-        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").shortcut("alt RIGHT")
-            .buildButton());
+        toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
+        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
 
-        goButton = builder.name("run").tooltip("Re-Run the current tool").shortcut("F5").disable().buildButton();
-        stopButton = builder.name("stop").tooltip("Stop current tool").shortcut("ctrl ESCAPE").hide().buildButton();
+        goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
+        stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
         statusBar.add(goButton);
         statusBar.add(stopButton);
 
-        errorButton = builder.name("showError").tooltip("Show stack trace").shortcut("ctrl E").hide().buildButton();
+        errorButton = builder.name("showError").tooltip("Show stack trace").hide().buildButton();
         statusBar.add(errorButton);
 
         message = new JLabel("");
         statusBar.add(message);
 
-        builder.name("previousTab").shortcut("alt PAGE_UP").buildShortcut();
-        builder.name("nextTab").shortcut("alt PAGE_DOWN").buildShortcut();
-        builder.name("jumpToToolBar").shortcut("F10").buildShortcut();
-        builder.name("jumpToResults").shortcut("F11").buildShortcut();
-        builder.name("jumpToParameters").shortcut("F12").buildShortcut();
+        builder.name("previousTab").buildShortcut();
+        builder.name("nextTab").buildShortcut();
+        builder.name("jumpToToolBar").buildShortcut();
+        builder.name("jumpToResults").buildShortcut();
+        builder.name("jumpToParameters").buildShortcut();
 
         // Keyboard shortcuts alt+1 .. alt+9 switches to that tab number.
         for (int i = 1; i <= 9; i++) {
@@ -254,11 +251,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         ActionBuilder builder = new ActionBuilder(this).component(textField);
 
-        builder.name("runNonRowOption").shortcut("ENTER").buildShortcut();
-        builder.name("runNonRowOptionInNewTab").shortcut("ctrl ENTER").buildShortcut();
+        builder.name("runNonRowOption").buildShortcut();
+        builder.name("runNonRowOptionInNewTab").buildShortcut();
 
-        builder.name("promptNonRowOption").shortcut("F2").buildShortcut();
-        builder.name("promptNonRowOptionInNewTab").shortcut("ctrl F2").buildShortcut();
+        builder.name("promptNonRowOption").buildShortcut();
+        builder.name("promptNonRowOptionInNewTab").buildShortcut();
 
         textField.addMouseListener(new MouseAdapter()
         {

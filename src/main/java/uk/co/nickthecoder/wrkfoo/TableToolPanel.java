@@ -37,10 +37,10 @@ public class TableToolPanel<R> extends ToolPanel
         ActionBuilder builder = new ActionBuilder(this).component(table)
             .condition(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        builder.name("runOptions").shortcut("ENTER").buildShortcut();
-        builder.name("runOptionsInNewTab").shortcut("ctrl ENTER").buildShortcut();
-        builder.name("promptOptions").shortcut("F2").buildShortcut();
-        builder.name("promptOptionsInNewTab").shortcut("ctrl F2").buildShortcut();
+        builder.name("runOptions").buildShortcut();
+        builder.name("runOptionsInNewTab").buildShortcut();
+        builder.name("promptOptions").buildShortcut();
+        builder.name("promptOptionsInNewTab").buildShortcut();
 
         table.addMouseListener(new MouseAdapter()
         {

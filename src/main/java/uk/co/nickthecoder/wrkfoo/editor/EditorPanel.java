@@ -80,23 +80,23 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
     {
         ActionBuilder builder = new ActionBuilder(this);
 
-        toolBar.add(builder.name("documentSave").tooltip("Save Document").shortcut("ctrl S").buildButton());
-        // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").shortcut("ctrl S").buildButton());
+        toolBar.add(builder.name("documentSave").tooltip("Save Document").buildButton());
+        // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").buildButton());
         toolBar.add(builder.name("documentRevert").tooltip("Revert (F5)").buildButton());
         toolBar.addSeparator();
-        toolBar.add(builder.name("editUndo").tooltip("Undo").shortcut("ctrl Z").buildButton());
-        toolBar.add(builder.name("editRedo").tooltip("Redo").shortcut("ctrl shift Z").buildButton());
-        toolBar.add(builder.name("editCopy").tooltip("Copy").shortcut("ctrl C").buildButton());
-        toolBar.add(builder.name("editPaste").tooltip("Paste").shortcut("ctrl V").buildButton());
+        toolBar.add(builder.name("editUndo").tooltip("Undo").buildButton());
+        toolBar.add(builder.name("editRedo").tooltip("Redo").buildButton());
+        toolBar.add(builder.name("editCopy").tooltip("Copy").buildButton());
+        toolBar.add(builder.name("editPaste").tooltip("Paste").buildButton());
 
         toolBar.add(
-            findButton = builder.name("editFind").tooltip("Search").shortcut("ctrl F").buildToggleButton());
+            findButton = builder.name("editFind").tooltip("Search").buildToggleButton());
 
-        toolBar.add(builder.name("editReplace").tooltip("Find and Replace").shortcut("ctrl H").buildButton());
-        toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").shortcut("ctrl L").buildButton());
+        toolBar.add(builder.name("editReplace").tooltip("Find and Replace").buildButton());
+        toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").buildButton());
 
         findToolBar.rightPanel.add(builder.name("editReplace").label("Replace...").buildButton());
-        builder.name("escape").shortcut("ESCAPE").buildShortcut();
+        builder.name("escape").buildShortcut();
     }
 
     private void initSearchDialogs()

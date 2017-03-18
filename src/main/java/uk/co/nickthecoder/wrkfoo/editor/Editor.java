@@ -37,7 +37,7 @@ public class Editor extends AbstractTool<EditorTask> implements WindowFocusListe
         editorPanel.addEditorListener(this);
 
         ActionBuilder builder = new ActionBuilder(this).component(editorPanel);
-        builder.name("documentOpen").shortcut("ctrl O").buildShortcut();
+        builder.name("documentOpen").buildShortcut();
     }
 
     public Editor(File file)

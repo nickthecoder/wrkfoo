@@ -149,8 +149,8 @@ public class ToolPanel extends JPanel implements ToolListener
 
         ActionBuilder builder = new ActionBuilder(this);
 
-        builder.name("toggleLeftPane").shortcut("F9").buildShortcut();
-        builder.name("toggleRightPane").shortcut("ctrl F9").buildShortcut();
+        builder.name("toggleLeftPane").buildShortcut();
+        builder.name("toggleRightPane").buildShortcut();
     }
 
     public void onToggleLeftPane()
