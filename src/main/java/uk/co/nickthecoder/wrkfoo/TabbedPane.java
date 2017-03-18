@@ -240,6 +240,36 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         addMouseMotionListener(handler);
     }
 
+    @Override
+    public Iterator<ToolTab> iterator()
+    {
+        return toolTabs.iterator();
+    }
+
+    public void nextTab()
+    {
+        int newIndex = getSelectedIndex() + 1;
+        if (newIndex <= 0) {
+            return;
+        }
+        if (newIndex >= getTabCount()) {
+            newIndex = 0;
+        }
+        setSelectedIndex(newIndex);
+    }
+
+    public void previousTab()
+    {
+        int newIndex = getSelectedIndex() - 1;
+        if (newIndex < -1) {
+            return;
+        }
+        if (newIndex == -1) {
+            newIndex = getTabCount() - 1;
+        }
+        setSelectedIndex(newIndex);
+    }
+
     private class TabReorderHandler extends MouseInputAdapter
     {
         private int draggedTabIndex;
@@ -285,8 +315,14 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 if (toolTabs.size() > 1) {
                     removeTabAt(draggedTabIndex);
 
-                    MainWindow newWindow = new MainWindow(tool);
+                    MainWindow newWindow = new MainWindow();
                     tool.go();
+                    
+                    ToolTab newTab = newWindow.addTab(tool);
+
+                    newTab.setTitleTemplate(tab.getTitleTemplate());
+                    newTab.setShortcut(tab.getShortcut());
+                    
                     newWindow.setVisible(true);
                 }
 
@@ -294,7 +330,10 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 // Move the tab to a different MainWindow
                 MainWindow currentMainWindow = MainWindow.getMainWindow(tab.getPanel());
                 removeTabAt(draggedTabIndex);
-                destinationWindow.addTab(tool);
+                ToolTab newTab = destinationWindow.addTab(tool);
+                
+                newTab.setTitleTemplate(tab.getTitleTemplate());
+                newTab.setShortcut(tab.getShortcut());
 
                 // Current window has no more tabs, so close it.
                 if (toolTabs.size() == 0) {
@@ -328,33 +367,4 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
-    @Override
-    public Iterator<ToolTab> iterator()
-    {
-        return toolTabs.iterator();
-    }
-
-    public void nextTab()
-    {
-        int newIndex = getSelectedIndex() + 1;
-        if (newIndex <= 0) {
-            return;
-        }
-        if (newIndex >= getTabCount()) {
-            newIndex = 0;
-        }
-        setSelectedIndex(newIndex);
-    }
-
-    public void previousTab()
-    {
-        int newIndex = getSelectedIndex() - 1;
-        if (newIndex < -1) {
-            return;
-        }
-        if (newIndex == -1) {
-            newIndex = getTabCount() - 1;
-        }
-        setSelectedIndex(newIndex);
-    }
 }

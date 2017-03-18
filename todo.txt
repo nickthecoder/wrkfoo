@@ -1,9 +1,6 @@
 Current Task
 ============
 
-Put all ActionBuilder stuff into one class, so that I can see at a glance all of the shortcuts.
-	Allow customisation, and multiple shortcuts for a single action.
-
 BUGS
 ====
 
@@ -13,25 +10,27 @@ Editor toolbar appears when tabset is loaded, even though it isn't on the select
 
 Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
 
-Editor->ctrl+O doens't focus on the file parameter
-
-ExecTool break the convension of being defined by tool's class and parameters
+ExecTool breaks the convension of being defined by tool's class and parameters
 	Doesn't have a non-arg constructor, so loading the tab will fail.
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
 	Need a "builder"
-
-Tabs lose their properites when dragged to a different MainWindow.
 
 When Editor dirty changes the tab's label, the window title isn't correctly set. (Misses the "WrkFoo : " prefix)
 
 New Features
 ============
 
-		
-action and ifScript to use Editor
-	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.
-	EditorPane interacts with new EditorWindow instead of Editor.
-	Maybe rename Editor to EditorTool.
+OptionData doesn't handle aliases
+	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
+
+Add "description" to Option
+	Us it (or the first sentence) as tooltips for the popup menus.
+
+MegaTabSet aka TabGroups
+	Tabs down the left edge, or a pulldown list in the toolbar
+	Each MegaTab has its own tabset (and must know the filename of the tabset).
+	This way, I can have multiple projects in a single window.
+	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
 
 Create a code line count Task in groovy to demonstrate a user defined task
 	Can count a single file, or recurse a whole tree.
@@ -46,27 +45,9 @@ Create a code line count Task in groovy to demonstrate a user defined task
 		Is there a good way to do both in one class?
 			Could ALWAYS create OO results, and then use toString on the row to produce the plain text results.
 
+Editor saveAs 
 
-OptionData doesn't handle aliases
-	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
-
-Add "description" to Option?
-
-
-Would like to launch a browser window for javadocs from the gitstatus Tool
-	Plus run the rsync and launch the published version too (specific to my setup).
-		Put this in a "Custom" place (see below)
-
-Resources to have only ONE "globals", rather than a list, which is hard-coded to the name "globals" (once OPTIONS_PATH) has been implmented.
-	WrkOptions to have a "showGlobals" parameter.
-	And/or a "Wrk Global Options" global option "ego" (as "eo" is "Edit Options")
-
-Editor saveAs changes the file to getParent then does check() to force parameter to appear?
-	Nah, just run a saveAs Task.
-	Fire a change event so Editor can change the parameter accordingly
-
-Exec runWhenCompleted( Runnable )
-
+Editor to prompt when closing the tab without saving (if dirty)
 
 Settings Task to edit the Settings data
 	Settings to show/hide toolbars. Either toolbar,statusbar or hide.
@@ -74,57 +55,49 @@ Settings Task to edit the Settings data
 		EnumParameter to format the labels cleverly FOO -> Foo, FOO_BAR -> Foo Bar
 	Settings to show/hide each tool bar item
 		Put them into GroupParameters - a good way to force me to get this right!
-	
-Non-row option field in the status bar
-	Settings allow the toolbars to be shown/hidden
-		Non-row option field, Regular toolbar, Editor toolbar
-	Global option to show the Settings Task.
 
-MegaTabSet aka TabGroups
-	Tabs down the left edge, or a pulldown list in the toolbar
-	Each MegaTab has its own tabset (and must know the filename of the tabset).
-	This way, I can have multiple projects in a single window.
-	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
+
+Embed a terminal emulator :
+	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
+
+
+Nice-to-Haves
+=============
+
+action and ifScript to use Editor
+	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.
+	EditorPane interacts with new EditorWindow instead of Editor.
+	Maybe rename Editor to EditorTool.
 
 Un-close tab. Useful when you close a tab by mistake.
 
 Save Tab sets to remember the order and widths of the columns
 
-Editor to prompt when closing the tab without saving (if dirty)
+RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
+	Should grep then use RegexParameter?
 
-Embed a terminal emulator :
-	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
+Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
-Add/Edit/New/Copy options doesn't support aliases. (Needs Multi-value parameter).
-	Add another column.
+Undecided
+=========
+
+Would like to launch a browser window for javadocs from the gitstatus Tool
+	Plus run the rsync and launch the published version too (specific to my setup).
+		Put this in a "Custom" place (see below)
+
+Later Features
+==============
+The following features may taks some time, for little benefit, so don't have a high priority.
 
 TabbedTool
 	A tool, which has TWO or more tasks, and therefore many results.
 	Useful when one item is made up of two different types of list.
 	e.g. A wiki page has a set of versions, a set of back links, a set of forward links etc.
 		So the WrkWikiPage, will have multiple tabs.
-	
-Popup Menu items :
-	Merge the different options files together and sort by their code??? by Label???
-	Maybe make the top-level ones bold (if that is possible).
-		Global options aren't bold, but included ones are?
-		Use background colors? Could specify a bg colour for each options file.
-		Special menuitemfilter e.g. "*" to show everything, but it usually excludes globals. "-" to only show top level options.
-
-RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
-	Should grep then use RegexParameter?
 
 Custom options applied to a tool
 	e.g. WrkF is given more options, suitable only for images.
 	Problem : For this to be useful, it needs to be added to the History, and saved in the tabset. Nasty.
-
-Allow additional packages to be imported from the settings.json into GroovyScriptlet
-
-Code review & Javadoc comments
-
-Later Features
-==============
-
 
 Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
 
@@ -132,11 +105,8 @@ Allow slow running tasks to update their results periodically.
 	Maybe a new updatePartialResults method???
 		But then updateResults will get called at then end, invalidating the whole table. Hmm.
 
-
 Tree commands
 	Rewrite wrkftree using a JTree, which gets more results when directories are opened. 
-
-Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 
 Implement drag and drop across the commands
 		Drag a file to "Places", and it will append it to its places file.
@@ -150,7 +120,3 @@ Much Later
 	ncurses option, so that wrkfoo can work quickly over ssh.
 		Tools and Tasks don't interact with Swing, and this was a deliberate design decision, so that an ncurses-like
 		frontend could be developed.
-
-Unresolved bugs
-===============
-	
