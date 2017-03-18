@@ -6,13 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 
 import uk.co.nickthecoder.jguifier.Task;
@@ -180,15 +178,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         String title = tab.getTitle();
         Icon icon = tab.getTool().getIcon();
-        String longTitle = tab.getTool().getLongTitle();
 
         int index = toolTabs.indexOf(tab);
         JLabel label = (JLabel) getTabComponentAt(index);
         label.setText(title);
         label.setIcon(icon);
-        if (getSelectedIndex() == index) {
-            ((JFrame) SwingUtilities.getRoot(this)).setTitle(longTitle);
-        }
+        
+        getMainWindow().changedTab();
     }
 
     public ToolTab getToolTab(int index)
