@@ -1,8 +1,5 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.awt.KeyboardFocusManager;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -75,14 +72,6 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
 
         JPanel panel = tab.getPanel();
-        panel.addFocusListener(new FocusAdapter()
-        {
-            @Override
-            public void focusGained(FocusEvent e)
-            {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
-            }
-        });
 
         insertTab(null, null, panel, null, position);
         toolTabs.add(position, tab);
@@ -216,7 +205,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         super.setSelectedIndex(i);
         if (i < toolTabs.size()) {
-            this.toolTabs.get(i).getTool().focus();
+            this.toolTabs.get(i).getTool().focus(2);
         }
     }
 

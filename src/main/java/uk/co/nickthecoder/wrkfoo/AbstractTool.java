@@ -16,6 +16,7 @@ import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
+import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public abstract class AbstractTool<T extends Task> implements Tool
 {
@@ -194,7 +195,15 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private void end()
     {
         goThread = null;
-        focus();
+
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                getToolPanel().getSplitPane().showLeft();
+                focusOnResults(7);
+            }
+        });
         fireChangedState();
     }
 
@@ -204,15 +213,20 @@ public abstract class AbstractTool<T extends Task> implements Tool
      * Note. TableTools overrides this so that it can focus on {@link MainWindow}'s option text field when there are no
      * rows.
      */
-    public void focus()
+    protected void focusOnResults(int importance)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                getToolPanel().getSplitPane().focusLeft();
-            }
-        });
+        MainWindow.focusLater("Results. Left.", getToolPanel().getSplitPane().getLeftComponent(), importance);
+    }
+
+    @Override
+    public void focus(final int importance)
+    {
+        HidingSplitPane hsp = getToolPanel().getSplitPane();
+        if (hsp.getRightComponent().isVisible()) {
+            MainWindow.focusLater("Tool's parameters as they are showing", hsp.getRightComponent(), importance);
+        } else {
+            focusOnResults(importance);
+        }
     }
 
     @Override

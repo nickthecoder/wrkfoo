@@ -59,7 +59,7 @@ public interface Tool
      * Set the keyboard focus somewhere suitable. For Table tools this will be the non-row option field when there are
      * no rows. In other cases, it is usually the results panel (such as the table).
      */
-    public void focus();
+    public void focus(int importance);
 
     public Options getOptions();
 

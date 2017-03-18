@@ -6,7 +6,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import javax.swing.JSplitPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class HidingSplitPane extends JSplitPane
@@ -38,20 +37,12 @@ public class HidingSplitPane extends JSplitPane
         right.addFocusListener(listener);
     }
 
-    public static void focusLater( final Component component ) 
-    {
-        SwingUtilities.invokeLater( new Runnable() {
-            public void run() {
-                component.requestFocusInWindow();
-            }
-        });
-    }
-    
     public void setState(State newState)
     {
         if (this.state == newState) {
             return;
         }
+
         if (newState == State.BOTH) {
             // From LEFT or RIGHT to BOTH
             // Show the hidden component, resetting the divider position and size.
@@ -59,7 +50,7 @@ public class HidingSplitPane extends JSplitPane
             makeVisibleComponent.setVisible(true);
             setDividerLocation(loc);
             setDividerSize((Integer) UIManager.get("SplitPane.dividerSize"));
-            
+
         } else {
             if (this.state == State.BOTH) {
                 // From BOTH to LEFT or RIGHT
@@ -82,27 +73,6 @@ public class HidingSplitPane extends JSplitPane
         this.state = newState;
     }
 
-    public void focusLeft()
-    {
-        showLeft();
-        focusLater(getLeftComponent());
-    }
-
-    public void focusRight()
-    {
-        showRight();
-        focusLater(getRightComponent());
-    }
-
-    public void focus()
-    {
-        if (state == State.RIGHT) {
-            focusLater(getRightComponent());
-        } else {
-            focusLater(getLeftComponent());
-        }
-    }
-
     public void showLeft()
     {
         if (this.state == State.RIGHT) {
@@ -119,20 +89,24 @@ public class HidingSplitPane extends JSplitPane
 
     /**
      * Toggles the visibility of the left component.
+     * 
+     * @return The component which just became visible
      */
-    public void toggleLeft()
+    public Component toggleLeft()
     {
         setState(this.state == State.BOTH ? State.LEFT : State.BOTH);
-        focusLater(state == State.BOTH ? getRightComponent() : getLeftComponent());
+
+        return this.state == State.LEFT ? getLeftComponent() : getRightComponent();
     }
 
     /**
      * Toggles the visibility of the left component.
      */
-    public void toggleRight()
+    public Component toggleRight()
     {
         setState(this.state == State.BOTH ? State.RIGHT : State.BOTH);
-        focusLater(state == State.BOTH ? getLeftComponent() : getRightComponent());
+
+        return this.state == State.RIGHT ? getRightComponent() : getLeftComponent();
     }
 
     public State getState()

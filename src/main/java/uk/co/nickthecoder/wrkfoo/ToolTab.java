@@ -104,8 +104,8 @@ public class ToolTab
 
     public void postCreate()
     {
-        ActionBuilder builder = new ActionBuilder( this ).component(panel);
-        
+        ActionBuilder builder = new ActionBuilder(this).component(panel);
+
         builder.name("undoTool").shortcut("alt LEFT").buildShortcut();
         builder.name("redoTool").shortcut("alt RIGHT").buildShortcut();
     }
@@ -180,12 +180,14 @@ public class ToolTab
         }
 
         if (updateHistory) {
-            history.add(tool);
+            history.add(newTool);
         }
 
         if (prompt) {
 
-            tool.getToolPanel().getSplitPane().focusRight();
+            newTool.getToolPanel().getSplitPane().showRight();
+            MainWindow.focusLater("Right - prompting new Tool",
+                newTool.getToolPanel().getSplitPane().getRightComponent(), 8);
 
         } else {
             if (getTool().getToolPanel().check()) {
@@ -195,7 +197,9 @@ public class ToolTab
 
             } else {
                 // Missing/incorrect parameters. Show the parameters panel.
-                getTool().getToolPanel().getSplitPane().showRight();
+                newTool.getToolPanel().getSplitPane().showRight();
+                MainWindow.focusLater("Right - new tool has invalid parameters",
+                    newTool.getToolPanel().getSplitPane().getRightComponent(), 8);
             }
         }
 

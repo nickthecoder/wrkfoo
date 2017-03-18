@@ -1,7 +1,5 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import javax.swing.SwingUtilities;
-
 import uk.co.nickthecoder.jguifier.Task;
 
 public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<T> implements TableTool<R>
@@ -53,19 +51,15 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<
     }
 
     @Override
-    public void focus()
+    public void focusOnResults(int importance)
     {
         if (getToolPanel().getTable().getModel().getRowCount() == 0) {
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    MainWindow.getMainWindow(getToolPanel()).onJumpToToolBar();
-                }
-            });
+
+            MainWindow.focusLater("Results. No rows", MainWindow.getMainWindow(getToolPanel()).getOptionField(),
+                importance);
 
         } else {
-            super.focus();
+            super.focusOnResults(importance);
         }
     }
 }

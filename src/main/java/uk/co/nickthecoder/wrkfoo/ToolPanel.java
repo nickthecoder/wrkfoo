@@ -155,12 +155,12 @@ public class ToolPanel extends JPanel implements ToolListener
 
     public void onToggleLeftPane()
     {
-        splitPane.toggleLeft();
+        MainWindow.focusLater("toogle left",  splitPane.toggleLeft(), 10);
     }
 
     public void onToggleRightPane()
     {
-        splitPane.toggleRight();
+        MainWindow.focusLater("toogle right",  splitPane.toggleRight(), 10);
     }
 
     public boolean check()
