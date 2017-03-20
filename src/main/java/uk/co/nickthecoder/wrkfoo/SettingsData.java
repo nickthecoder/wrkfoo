@@ -30,6 +30,8 @@ public class SettingsData
     
     public List<String> optionsPath = new ArrayList<>();
 
+    public List<String> groovyPath = new ArrayList<>();
+    
     public SettingsData()
     {
         editor = Resources.getInstance().editor;

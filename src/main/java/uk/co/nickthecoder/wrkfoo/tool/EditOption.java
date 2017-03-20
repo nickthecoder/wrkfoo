@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
@@ -41,7 +42,7 @@ public class EditOption extends Task
         .parameter();
 
     public BooleanParameter prompt = new BooleanParameter.Builder("prompt")
-        .description( "Should options be prompted, rather than running straight away")
+        .description("Should options be prompted, rather than running straight away")
         .parameter();
 
     public StringParameter ifScript = new StringParameter.Builder("if")
@@ -108,6 +109,17 @@ public class EditOption extends Task
             insertParameters(0, path, name);
         }
 
+        public AddOption(URL path, String optionsName)
+        {
+            this(optionsName);
+            try {
+                File directory = new File(path.toURI());
+                this.path.setValue(directory);
+            } catch (Exception e) {
+                // Do nothing
+            }
+        }
+
         @Override
         public void pre()
         {
@@ -122,13 +134,14 @@ public class EditOption extends Task
                     throw new RuntimeException(e1);
                 }
             }
+            optionData = new OptionData();
         }
 
         @Override
         public void body()
         {
-            super.body();
             optionsData.optionData.add(optionData);
+            super.body();
         }
 
     }

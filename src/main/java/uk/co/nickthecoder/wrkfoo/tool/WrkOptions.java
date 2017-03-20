@@ -1,6 +1,9 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -164,7 +167,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
 
         return tableModel;
     }
-    
+
     @Override
     public Icon getIcon()
     {
@@ -180,7 +183,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
     @Override
     public String getLongTitle()
     {
-        if (task.path.getValue() == null ) {
+        if (task.path.getValue() == null) {
             return "<all> " + task.optionsName.getValue();
         } else {
             return task.path.getValue() + " " + task.optionsName.getValue();
@@ -192,9 +195,13 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
         return new EditOption(optionsData, optionData);
     }
 
-    public Task addOption()
+    public Task addOption() throws MalformedURLException, IOException, URISyntaxException
     {
-        return new EditOption.AddOption(task.optionsName.getValue());
+        if (task.path.getValue() == null) {
+            return new EditOption.AddOption(task.optionsName.getValue());
+        } else {
+            return new EditOption.AddOption(task.path.getValue(), task.optionsName.getValue());
+        }
     }
 
     public Task copyOption(OptionData from)

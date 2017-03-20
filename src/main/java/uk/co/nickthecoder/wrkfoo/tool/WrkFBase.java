@@ -20,7 +20,7 @@ import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implements DirectoryTool
+public abstract class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implements DirectoryTool
 {
     public static final Color directoryColor = new Color(80, 80, 0);
 
@@ -28,9 +28,9 @@ public class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile> implem
     public static final Icon directoryIcon = Resources.icon("folder.png");
     public static final Icon fileIcon = Resources.icon("file.png");
 
-    public WrkFBase(WrkFTask task)
+    public WrkFBase()
     {
-        super(task);
+        super(new WrkFTask());
     }
 
     public static Icon getIconForFile(File file)

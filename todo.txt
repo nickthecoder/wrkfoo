@@ -1,8 +1,16 @@
 Current Task
 ============
 
+Add Groovy Tool
+	Add it to the "Home" page
+	Prompts for a .groovy file, and creates a Tool from it (see GroovyScriplet and TabSetData)
+
+Add a CodeCounter tool to myw wrkfoo tabset, and ensure it can be saved/restored.
+
 BUGS
 ====
+
+Places doesn't allow hidden files in the pull down???
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 	Shouldn't have a list of tools passed to MainFrame constructor.
@@ -15,10 +23,11 @@ ExecTool breaks the convension of being defined by tool's class and parameters
 	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
 	Need a "builder"
 
-When Editor dirty changes the tab's label, the window title isn't correctly set. (Misses the "WrkFoo : " prefix)
-
 New Features
 ============
+
+Embed a terminal emulator :
+	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
 
 OptionData doesn't handle aliases
 	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
@@ -32,19 +41,6 @@ MegaTabSet aka TabGroups
 	This way, I can have multiple projects in a single window.
 	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
 
-Create a code line count Task in groovy to demonstrate a user defined task
-	Can count a single file, or recurse a whole tree.
-	Place it in .config/wrkfoo/tasks directory? (No. When Tasks are groovyfied, then it makes sense to keep them together).
-		So, put them in ~/bin
-	We need to define a PATH to search for groovy code. (Resources)
-	Option to show total or individual count for each file.
-	
-	Then create a Tool written in Groovy, which takes the individual count lines, and produces a Table (using WrappedFile).
-		The groovy task can have a "main", which creates a MainWindow for the tool when run directly from the command line.
-	It is going to be common for a Task to produce plain text AND OO results (e.g. FileLister)
-		Is there a good way to do both in one class?
-			Could ALWAYS create OO results, and then use toString on the row to produce the plain text results.
-
 Editor saveAs 
 
 Editor to prompt when closing the tab without saving (if dirty)
@@ -56,9 +52,6 @@ Settings Task to edit the Settings data
 	Settings to show/hide each tool bar item
 		Put them into GroupParameters - a good way to force me to get this right!
 
-
-Embed a terminal emulator :
-	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
 
 
 Nice-to-Haves

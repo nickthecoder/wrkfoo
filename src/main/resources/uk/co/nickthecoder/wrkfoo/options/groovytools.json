@@ -1,0 +1,18 @@
+{
+  "include": [
+    "files",
+    "directory"
+  ],
+  "options": [
+    {
+      "code": ".",
+      "label": "Run Groovy Tool",
+      "action": "tool.openGroovyTool( row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false
+    }
+  ]
+}

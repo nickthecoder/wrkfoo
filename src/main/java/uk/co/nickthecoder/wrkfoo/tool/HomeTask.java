@@ -44,6 +44,9 @@ public class HomeTask extends Task implements ListResults<Tool>
 
         WrkOptionsFiles wrkOptionFiles = new WrkOptionsFiles();
         results.add(wrkOptionFiles);
+
+        GroovyTools groovyTools = new GroovyTools();
+        results.add(groovyTools);
     }
 
     @Override

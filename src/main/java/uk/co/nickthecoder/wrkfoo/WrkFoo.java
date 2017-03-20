@@ -58,6 +58,22 @@ public class WrkFoo extends Task
         }
     }
 
+    public static void newWindow( final Tool tool )
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Util.defaultLookAndFeel();
+
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.addTab( tool );
+                mainWindow.setVisible(true);
+            }
+        });
+    }
+     
     public static void main(final String[] argv)
     {
         try {

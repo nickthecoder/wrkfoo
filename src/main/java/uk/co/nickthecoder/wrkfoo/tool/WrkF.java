@@ -2,9 +2,10 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 public class WrkF extends WrkFBase
 {
-    public static WrkFTask createTask()
+
+    public WrkF()
     {
-        WrkFTask task = new WrkFTask();
+        super();
 
         task.sort.visible = false;
         task.reverse.visible = false;
@@ -14,13 +15,6 @@ public class WrkF extends WrkFBase
         task.enterHidden.visible = false;
 
         task.includeDirectories.setValue(true);
-
-        return task;
-    }
-
-    public WrkF()
-    {
-        super(createTask());
     }
 
     @Override

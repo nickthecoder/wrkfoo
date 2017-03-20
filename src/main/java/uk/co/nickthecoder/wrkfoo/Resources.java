@@ -15,6 +15,9 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.codehaus.groovy.control.CompilationFailedException;
+
+import groovy.lang.GroovyClassLoader;
 import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.Options;
@@ -58,6 +61,8 @@ public class Resources
 
     private Map<URL, OptionsData> optionsDataByURL;
 
+    private List<File> groovyPath;
+
     private Resources()
     {
         homeDirectory = new File(System.getProperty("user.home"));
@@ -69,6 +74,9 @@ public class Resources
 
         tabsDirectory = new File(settingsDirectory, "tabs");
         tabsDirectory.mkdirs();
+
+        groovyClassLoader = new GroovyClassLoader();
+        groovyPath = new ArrayList<>();
     }
 
     public String getEditor()
@@ -119,6 +127,22 @@ public class Resources
                     e.printStackTrace();
                 }
                 optionsPath.add(getClass().getResource("options/"));
+            }
+
+            // Add the user's bin directory if no groovy path was specified.
+            if (settings.groovyPath == null) {
+                settings.groovyPath = new ArrayList<>();
+            }
+            if (settings.groovyPath.size() == 0) {
+                settings.groovyPath.add(new File(getHomeDirectory(), "bin").getPath());
+            }
+
+            // Add directories to the groovy class loader's classpath.
+            groovyClassLoader = new GroovyClassLoader();
+            groovyPath = new ArrayList<>();
+            for (String directory : settings.groovyPath) {
+                groovyPath.add(new File(directory));
+                groovyClassLoader.addClasspath(directory);
             }
 
         } catch (FileNotFoundException e) {
@@ -218,7 +242,7 @@ public class Resources
                 String s = url.toString();
                 int pling = s.indexOf("!");
                 if (pling > 0) {
-                    label = "jar(" + s.substring(pling+1) + ")";
+                    label = "jar(" + s.substring(pling + 1) + ")";
                 }
             }
             result.addChoice(label, url, label);
@@ -243,4 +267,57 @@ public class Resources
         }
         return result;
     }
+
+    public ChoiceParameter<File> createGroovyDirectoryChoice()
+    {
+        ChoiceParameter<File> result = new ChoiceParameter.Builder<File>("directory")
+            .stretchy(true).parameter();
+
+        for (File file : groovyPath) {
+            result.addChoice(file);
+        }
+
+        return result;
+    }
+
+    /**
+     * A cache of loaded groovy classes, so that they are not loaded multiple times.
+     */
+    private Map<File, Class<?>> groovyClasses = new HashMap<>();
+
+    /**
+     * All loaded groovy classes share the same classloader.
+     */
+    private GroovyClassLoader groovyClassLoader;
+
+    public Class<?> loadGroovyClass(File script)
+        throws CompilationFailedException, IOException
+    {
+        Class<?> klass = groovyClasses.get(script);
+        if (klass != null) {
+            return klass;
+        }
+
+        try {
+            klass = groovyClassLoader.parseClass(script);
+            groovyClasses.put(script, klass);
+            return klass;
+
+        } finally {
+            try {
+                groovyClassLoader.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    public Tool createGroovyTool(File file)
+        throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException
+    {
+        @SuppressWarnings("unchecked")
+        Class<Tool> klass = (Class<Tool>) loadGroovyClass(file);
+        Tool tool = klass.newInstance();
+        return tool;
+    }
+
 }

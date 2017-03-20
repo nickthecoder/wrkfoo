@@ -17,7 +17,11 @@ public class WrkFTree extends WrkFBase
 
     public WrkFTree()
     {
-        super(createTask());
+        super();
+
+        task.depth.setValue(1);
+
+        task.includeDirectories.setValue(true);
 
         getColumns().find("path").visible = true;
         getColumns().find("name").visible = false;

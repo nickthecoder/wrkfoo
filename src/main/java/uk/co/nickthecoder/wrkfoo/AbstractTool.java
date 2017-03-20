@@ -44,6 +44,12 @@ public abstract class AbstractTool<T extends Task> implements Tool
     }
 
     @Override
+    public String getCreationString()
+    {
+        return getClass().getName();
+    }
+
+    @Override
     public T getTask()
     {
         return task;

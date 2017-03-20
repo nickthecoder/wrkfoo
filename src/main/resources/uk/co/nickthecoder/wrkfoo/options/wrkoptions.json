@@ -16,6 +16,7 @@
       "code": "+",
       "label": "Add Option",
       "action": "tool.addOption()",
+      "if": "true",
       "row": false,
       "multi": false,
       "newTab": false,

@@ -464,6 +464,10 @@ public class OptionsRunner
      */
     private void handleException(Throwable e)
     {
+        if ( getMainWindow() == null ) {
+            e.printStackTrace();
+            return;
+        }
         getMainWindow().handleException(e);
     }
 }

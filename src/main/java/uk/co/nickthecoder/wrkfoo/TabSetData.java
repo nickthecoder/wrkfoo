@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 
 import uk.co.nickthecoder.jguifier.ParameterException;
@@ -114,7 +115,9 @@ public class TabSetData
 
     public static class TabData
     {
-        public String toolClass;
+        @SerializedName(value = "creationString", alternate = { "toolClass" })
+        public String creationString;
+
         public Map<String, String> parameters;
         boolean showParameters = false;
         public String titleTemplate = "%t";
@@ -125,7 +128,7 @@ public class TabSetData
             titleTemplate = tool.getToolTab().getTitleTemplate();
             shortcut = tool.getToolTab().getShortcut();
 
-            toolClass = tool.getClass().getName();
+            creationString = tool.getCreationString();
             parameters = new HashMap<>();
             for (Parameter parameter : tool.getParameters().getChildren()) {
                 if (parameter instanceof ValueParameter) {
@@ -136,11 +139,18 @@ public class TabSetData
             showParameters = tool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
         }
 
+        @SuppressWarnings("unchecked")
         public Tool createTool()
         {
             try {
-                @SuppressWarnings("unchecked")
-                Class<Tool> klass = (Class<Tool>) Class.forName(toolClass);
+                Class<Tool> klass;
+
+                if (creationString.endsWith(".groovy")) {
+                    klass = (Class<Tool>) Resources.getInstance().loadGroovyClass(new File(creationString));
+                    
+                } else {
+                    klass = (Class<Tool>) Class.forName(creationString);
+                }
                 Tool tool = klass.newInstance();
 
                 GroupParameter gp = tool.getParameters();
