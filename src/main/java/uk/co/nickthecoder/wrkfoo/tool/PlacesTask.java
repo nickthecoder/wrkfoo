@@ -19,7 +19,7 @@ import uk.co.nickthecoder.wrkfoo.tool.PlacesTask.PlacesWrappedFile;
 
 public class PlacesTask extends Task implements ListResults<PlacesWrappedFile>
 {
-    public FileParameter store = new FileParameter.Builder("store").file().mustExist()
+    public FileParameter store = new FileParameter.Builder("store").file().includeHidden().mustExist()
         .description("Text file containing a list of paths")
         .parameter();
 

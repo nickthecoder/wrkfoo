@@ -1,12 +1,6 @@
 Current Task
 ============
 
-Add Groovy Tool
-	Add it to the "Home" page
-	Prompts for a .groovy file, and creates a Tool from it (see GroovyScriplet and TabSetData)
-
-Add a CodeCounter tool to myw wrkfoo tabset, and ensure it can be saved/restored.
-
 BUGS
 ====
 
