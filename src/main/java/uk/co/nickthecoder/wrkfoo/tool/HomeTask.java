@@ -47,6 +47,9 @@ public class HomeTask extends Task implements ListResults<Tool>
 
         GroovyTools groovyTools = new GroovyTools();
         results.add(groovyTools);
+        
+        TerminalTool terminal= new TerminalTool();
+        results.add(terminal);
     }
 
     @Override

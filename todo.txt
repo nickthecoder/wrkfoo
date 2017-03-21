@@ -1,10 +1,16 @@
 Current Task
 ============
 
+
+	Remove ExecTool, and replace it with TerminalTool
+	TerminalTool should fall back to a JTextField streamed from an Exec's stdout.
+
+	Parameter to copy the current env?
+
+	Go back to using nano for git editor?
+
 BUGS
 ====
-
-Places doesn't allow hidden files in the pull down???
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 	Shouldn't have a list of tools passed to MainFrame constructor.
@@ -20,22 +26,13 @@ ExecTool breaks the convension of being defined by tool's class and parameters
 New Features
 ============
 
-Embed a terminal emulator :
-	https://github.com/JetBrains/jediterm/tree/master/terminal/src/com/jediterm/terminal
-
 OptionData doesn't handle aliases
 	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
 
 Add "description" to Option
 	Us it (or the first sentence) as tooltips for the popup menus.
 
-MegaTabSet aka TabGroups
-	Tabs down the left edge, or a pulldown list in the toolbar
-	Each MegaTab has its own tabset (and must know the filename of the tabset).
-	This way, I can have multiple projects in a single window.
-	Ensure tab shortcuts are applied to the tabbedpane, so that they still work when a shortcut is shared by tabs in different mega-tabs.
-
-Editor saveAs 
+Editor saveAs , rename
 
 Editor to prompt when closing the tab without saving (if dirty)
 
