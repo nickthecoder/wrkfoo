@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 import groovy.lang.Binding;
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.TaskListener;
+import uk.co.nickthecoder.jguifier.TaskAdaptor;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
@@ -154,13 +154,8 @@ public class GroovyOption extends AbstractOption
 
     private void listen(final Tool currentTool, Task task)
     {
-        task.addTaskListener(new TaskListener()
+        task.addTaskListener(new TaskAdaptor()
         {
-            @Override
-            public void aborted(Task task)
-            {
-            }
-
             @Override
             public void ended(Task task, boolean normally)
             {

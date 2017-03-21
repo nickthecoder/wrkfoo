@@ -1,16 +1,19 @@
 Current Task
 ============
 
+ToolPanel convert from toollistener to tasklistener.
 
-	Remove ExecTool, and replace it with TerminalTool
-	TerminalTool should fall back to a JTextField streamed from an Exec's stdout.
+Shortcut to get out of the Terminal
 
-	Parameter to copy the current env?
-
-	Go back to using nano for git editor?
+Move focus automatically when the process finishes (useful for git).
+	Process.isRunning?
+	
+	
+Go back to using nano for git editor?
 
 BUGS
 ====
+
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
 	Shouldn't have a list of tools passed to MainFrame constructor.
