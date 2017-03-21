@@ -8,10 +8,12 @@ import groovy.lang.Binding;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.tool.Terminal;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class GroovyOption extends AbstractOption
@@ -72,6 +74,10 @@ public class GroovyOption extends AbstractOption
 
         Object result = runScript(action, currentTool, isMultiRow(), rowOrRows);
 
+        if ( result instanceof Command ) {
+            result = new Terminal( (Command) result );
+        }
+        
         if (result instanceof Tool) {
             Tool newTool = (Tool) result;
 
@@ -101,8 +107,8 @@ public class GroovyOption extends AbstractOption
             } else {
                 Thread thread = new Thread(task);
                 thread.start();
-            }
-
+            }            
+            
         } else if (result instanceof Runnable) {
 
             if (getRefreshResults()) {

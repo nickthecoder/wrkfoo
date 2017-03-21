@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.Collection;
 
 import uk.co.nickthecoder.jguifier.util.Exec;
+import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
-import uk.co.nickthecoder.wrkfoo.tool.ExecTool;
 
 /**
  * A convenient way to run operating system commands from a {@link GroovyOption}.
@@ -66,10 +66,14 @@ public class OSHelper
      *            The set of command line argument passes to <code>command</code>. See {@link #exec(String, Object...)}.
      * @return An ExecTool which GroovyOption will run.
      */
-    public ExecTool show(String command, Object... args)
+    public Command show(String exe, Object... args)
     {
-        Exec exec = exec(command, args);
-        return new ExecTool(exec);
+        Command command = new Command(exe);
+
+        for (Object arg : args) {
+            command.addArg(arg);
+        }
+        return command;
     }
 
     /**

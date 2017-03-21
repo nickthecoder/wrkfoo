@@ -37,7 +37,7 @@
     {
       "code": "c",
       "label": "Git Commit",
-      "action": "os.show('git', 'commit').dir(task.directory.value).once()",
+      "action": "os.show('git', 'commit').dir(task.directory.value)",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -47,7 +47,7 @@
     {
       "code": "all",
       "label": "Git Commit All",
-      "action": "os.show('git', 'commit', '-a').dir(task.directory.value).once()",
+      "action": "os.show('git', 'commit', '-a').dir(task.directory.value)",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -57,7 +57,7 @@
     {
       "code": "push",
       "label": "Git Push to Origin",
-      "action": "os.show('git', 'push', '-u', 'origin').dir(task.directory.value).once()",
+      "action": "os.show('git', 'push', '-u', 'origin').dir(task.directory.value)",
       "row": false,
       "multi": false,
       "newTab": false,
@@ -87,7 +87,7 @@
     {
       "code": "gi",
       "label": "Gradle Install",
-      "action": "os.show( 'gradle', 'install' ).dir( task.directory.value ).once()",
+      "action": "os.show( 'gradle', 'install' ).dir( task.directory.value )",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -97,7 +97,7 @@
     {
       "code": "gb",
       "label": "Gradle Build",
-      "action": "os.show( 'gradle', 'build' ).dir( task.directory.value ).once()",
+      "action": "os.show( 'gradle', 'build' ).dir( task.directory.value )",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -107,7 +107,7 @@
     {
       "code": "gj",
       "label": "Gradle Javadoc",
-      "action": "os.show( 'gradle', 'javadoc' ).dir( task.directory.value ).once()",
+      "action": "os.show( 'gradle', 'javadoc' ).dir( task.directory.value )",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -117,7 +117,7 @@
     {
       "code": "gia",
       "label": "Gradle Install Application",
-      "action": "os.show( 'gradle', 'installApp' ).dir( task.directory.value ).once()",
+      "action": "os.show( 'gradle', 'installApp' ).dir( task.directory.value )",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -127,7 +127,7 @@
     {
       "code": "clean",
       "label": "Gradle Clean",
-      "action": "os.show( 'gradle', 'clean' ).dir( task.directory.value ).once()",
+      "action": "os.show( 'gradle', 'clean' ).dir( task.directory.value )",
       "row": false,
       "multi": false,
       "newTab": true,

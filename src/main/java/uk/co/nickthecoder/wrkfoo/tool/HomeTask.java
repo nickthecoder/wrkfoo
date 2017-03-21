@@ -48,7 +48,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         GroovyTools groovyTools = new GroovyTools();
         results.add(groovyTools);
         
-        TerminalTool terminal= new TerminalTool();
+        Terminal terminal= new Terminal();
         results.add(terminal);
     }
 
