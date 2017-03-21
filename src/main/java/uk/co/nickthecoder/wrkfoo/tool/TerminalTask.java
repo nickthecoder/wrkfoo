@@ -37,6 +37,10 @@ public class TerminalTask extends Task
 
     public Command cmd;
 
+    private JPanel terminal;
+
+    private JTextArea textArea;
+
     public TerminalTask()
     {
         super();
@@ -76,12 +80,12 @@ public class TerminalTask extends Task
             directoryString = cmd.directory;
             env = cmd.env;
         }
-        
+
         try {
             boolean console = false;
             env.put("TERM", "xterm");
             Charset charset = Charset.forName("UTF-8");
-            JPanel terminal = createTerminal(commandArray, env, directoryString, charset, console);
+            terminal = createTerminal(commandArray, env, directoryString, charset, console);
             panel.removeAll();
             panel.add(terminal);
 
@@ -94,8 +98,6 @@ public class TerminalTask extends Task
         }
 
     }
-
-    private JTextArea textArea;
 
     public void createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
     {
@@ -207,4 +209,21 @@ public class TerminalTask extends Task
         return panel;
     }
 
+    private void endTerminal()
+    {
+        Binding bindings = new Binding();
+        bindings.setProperty("terminal", terminal);
+
+        GroovyScriptlet script = new GroovyScriptlet("terminal.close();");
+        script.run(bindings);
+    }
+
+    void detach()
+    {
+        if (terminal != null) {
+            endTerminal();
+            terminal = null;
+        }
+        panel.removeAll();
+    }
 }

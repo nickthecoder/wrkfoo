@@ -41,4 +41,11 @@ public class Terminal extends AbstractTool<TerminalTask>
         return task.createResultsComponent();
     }
 
+
+    @Override
+    public void detach()
+    {
+        super.detach();
+        task.detach();
+    }
 }
