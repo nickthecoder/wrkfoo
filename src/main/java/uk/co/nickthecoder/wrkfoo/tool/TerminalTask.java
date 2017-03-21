@@ -24,6 +24,7 @@ import uk.co.nickthecoder.jguifier.util.Sink;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
+import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
 public class TerminalTask extends Task
 {
@@ -37,36 +38,47 @@ public class TerminalTask extends Task
 
     public Command cmd;
 
+    ResultsPanel panel;
+
     private JPanel terminal;
 
     private JTextArea textArea;
+
+    private Process process;
+
+    private ProcessPoller processPoller;
 
     public TerminalTask()
     {
         super();
 
         addParameters(command);
+        init();
     }
 
     public TerminalTask(Command c)
     {
         super();
         cmd = c;
+        init();
     }
 
-    private ResultsPanel panel;
-
-    public ResultsPanel createResultsComponent()
+    private final void init()
     {
         panel = new ResultsPanel();
         panel.setLayout(new BorderLayout());
+    }
 
+    public ResultsPanel createResultsComponent()
+    {
         return panel;
     }
 
     @Override
     public void body()
     {
+        panel.removeAll();
+
         String[] commandArray;
         String directoryString;
         Map<String, String> env;
@@ -86,17 +98,19 @@ public class TerminalTask extends Task
             env.put("TERM", "xterm");
             Charset charset = Charset.forName("UTF-8");
             terminal = createTerminal(commandArray, env, directoryString, charset, console);
-            panel.removeAll();
             panel.add(terminal);
+            // TODO Bodge?
+            panel.doLayout();
+            terminal.repaint();
 
         } catch (Exception e) {
 
             System.err.println("Failed to start JeditTerm, falling back to a display-only terminal.");
+            e.printStackTrace();
+
             createExecPanel(commandArray, env, directoryString);
-            panel.removeAll();
             panel.add(textArea);
         }
-
     }
 
     public void createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
@@ -111,6 +125,7 @@ public class TerminalTask extends Task
         }
         exec.combineStdoutStderr();
         exec.runStreaming();
+        process = exec.getProcess();
 
         exec.stdout(new TerminalSink());
 
@@ -163,7 +178,7 @@ public class TerminalTask extends Task
 
     }
 
-    private static JPanel createTerminal(String[] cmd, Map<String, String> envs, String dir, Charset charset,
+    private JPanel createTerminal(String[] cmd, Map<String, String> envs, String dir, Charset charset,
         boolean console) throws IOException
     {
         // Create the terminal widget dynamically using Groovy, so that the WrkFoo is not strongly tied
@@ -190,9 +205,15 @@ public class TerminalTask extends Task
         bindings.setProperty("charset", charset);
         bindings.setProperty("console", console);
 
-        GroovyScriptlet script = new GroovyScriptlet("" +
-            "com.pty4j.PtyProcess process = com.pty4j.PtyProcess.exec(cmd, envs, dir, console);"
-            +
+        GroovyScriptlet script1 = new GroovyScriptlet(
+            "com.pty4j.PtyProcess process = com.pty4j.PtyProcess.exec(cmd, envs, dir, console);");
+        process = (Process) script1.run(bindings);
+
+        System.out.println("Set TerminalTask.process");
+
+        bindings.setProperty("process", process);
+
+        GroovyScriptlet script2 = new GroovyScriptlet("" +
             "com.jediterm.pty.PtyProcessTtyConnector connector = new com.jediterm.pty.PtyProcessTtyConnector(process, charset);"
             +
             "com.jediterm.terminal.ui.settings.DefaultSettingsProvider settings = new com.jediterm.terminal.ui.settings.DefaultSettingsProvider();"
@@ -204,12 +225,22 @@ public class TerminalTask extends Task
             "session.start();" +
             "result");
 
-        JPanel panel = (JPanel) script.run(bindings);
+        JPanel panel = (JPanel) script2.run(bindings);
 
         return panel;
     }
 
-    private void endTerminal()
+    public ProcessPoller getProcessPoller()
+    {
+        if (processPoller == null) {
+            System.out.println("Created poller");
+            processPoller = new ProcessPoller(process);
+            processPoller.start();
+        }
+        return processPoller;
+    }
+
+    private void closeTerminal()
     {
         Binding bindings = new Binding();
         bindings.setProperty("terminal", terminal);
@@ -221,7 +252,7 @@ public class TerminalTask extends Task
     void detach()
     {
         if (terminal != null) {
-            endTerminal();
+            closeTerminal();
             terminal = null;
         }
         panel.removeAll();

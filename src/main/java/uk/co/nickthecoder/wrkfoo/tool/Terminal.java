@@ -1,11 +1,17 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import javax.swing.SwingUtilities;
+
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
+import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
-public class Terminal extends AbstractTool<TerminalTask>
+public class Terminal extends AbstractTool<TerminalTask> implements TaskListener, ProcessListener
 {
     public BooleanParameter autoClose = new BooleanParameter.Builder("autoClose")
         .parameter();
@@ -34,7 +40,7 @@ public class Terminal extends AbstractTool<TerminalTask>
     private final void init()
     {
         task.addParameter(autoClose);
-        //task.addTaskListener(this);
+        task.addTaskListener(this);
         System.out.println("Added task Terminal listener");
     }
 
@@ -60,5 +66,48 @@ public class Terminal extends AbstractTool<TerminalTask>
     {
         super.detach();
         task.detach();
+    }
+    @Override
+    public void started(Task tsk)
+    {
+    }
+
+    @Override
+    public void ended(Task tsk, boolean normally)
+    {
+        ProcessPoller pp = task.getProcessPoller();
+        System.out.println("listening to the process poller");
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // TODO Bodge?
+                task.panel.doLayout();
+                task.panel.repaint();
+            }
+        });
+        pp.addProcessListener(this);
+        focus(5);
+    }
+
+    @Override
+    public void aborted(Task tsk)
+    {
+    }
+
+    @Override
+    public void finished(Process process)
+    {
+        System.out.println("Terminal's process has finished");
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                if (autoClose.getValue()) {
+                    getToolTab().getTabbedPane().removeTab(getToolTab());
+                }
+            }
+        });
     }
 }

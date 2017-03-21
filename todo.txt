@@ -1,6 +1,6 @@
 Current Task
 ============
-Fixing Terminal redraw issue. Part 1
+Fixing Terminal redraw issue. Part 2
 
 ToolPanel convert from toollistener to tasklistener.
 
