@@ -1,14 +1,12 @@
 Current Task
 ============
-Fixing Terminal redraw issue. Part 2
-
-ToolPanel convert from toollistener to tasklistener.
-
-Shortcut to get out of the Terminal
 
 Move focus automatically when the process finishes (useful for git).
-	Process.isRunning?
-	
+
+ToolPanel convert from toollistener to tasklistener.
+	Then delete ToolListener
+
+Shortcut to get out of the Terminal
 	
 Go back to using nano for git editor?
 
@@ -29,6 +27,9 @@ ExecTool breaks the convension of being defined by tool's class and parameters
 
 New Features
 ============
+
+Git stash features
+	http://stackoverflow.com/questions/1105253/how-would-i-extract-a-single-file-or-changes-to-a-file-from-a-git-stash
 
 OptionData doesn't handle aliases
 	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.

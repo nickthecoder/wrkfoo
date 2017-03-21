@@ -7,7 +7,9 @@ import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractTool;
 import uk.co.nickthecoder.wrkfoo.Command;
+import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
@@ -15,6 +17,12 @@ public class Terminal extends AbstractTool<TerminalTask> implements TaskListener
 {
     public BooleanParameter autoClose = new BooleanParameter.Builder("autoClose")
         .parameter();
+
+    public BooleanParameter killOnClose = new BooleanParameter.Builder("killOnClose")
+        .value(true)
+        .description("Kill the process when the tab is closed")
+        .parameter();
+
 
     /**
      * Can we re-run this command? If it is a user-defined command, set using the TerminalTask's
@@ -39,7 +47,7 @@ public class Terminal extends AbstractTool<TerminalTask> implements TaskListener
 
     private final void init()
     {
-        task.addParameter(autoClose);
+        task.addParameters(autoClose, killOnClose);
         task.addTaskListener(this);
         System.out.println("Added task Terminal listener");
     }
@@ -60,13 +68,16 @@ public class Terminal extends AbstractTool<TerminalTask> implements TaskListener
         return task.createResultsComponent();
     }
 
-
     @Override
     public void detach()
     {
         super.detach();
         task.detach();
+        if (killOnClose.getValue()) {
+            task.killProcess();
+        }
     }
+
     @Override
     public void started(Task tsk)
     {
@@ -104,8 +115,18 @@ public class Terminal extends AbstractTool<TerminalTask> implements TaskListener
         {
             public void run()
             {
+                ToolTab tab =  getToolTab();
+                if (tab == null) {
+                    return;
+                }
+                
+                if (tab.getTabbedPane().getSelectedToolTab() == tab) {
+                    MainWindow.focusLater("Terminal process finished",
+                        MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 5);
+                }
+                
                 if (autoClose.getValue()) {
-                    getToolTab().getTabbedPane().removeTab(getToolTab());
+                    tab.getTabbedPane().removeTab(getToolTab());
                 }
             }
         });

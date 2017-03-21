@@ -77,6 +77,8 @@ public class TerminalTask extends Task
     @Override
     public void body()
     {
+        // When re-running this task, we need to reset
+        processPoller = null;
         panel.removeAll();
 
         String[] commandArray;
@@ -110,6 +112,13 @@ public class TerminalTask extends Task
 
             createExecPanel(commandArray, env, directoryString);
             panel.add(textArea);
+        }
+    }
+    
+    public void killProcess()
+    {
+        if ( process != null) {
+            process.destroy();
         }
     }
 
