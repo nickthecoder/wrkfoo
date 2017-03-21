@@ -143,6 +143,14 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
+    public void removeTab(ToolTab tab)
+    {
+        int index = toolTabs.indexOf(tab);
+        if (index >= 0) {
+            removeTabAt(index);
+        }
+    }
+
     @Override
     public void removeTabAt(int index)
     {
@@ -183,7 +191,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         JLabel label = (JLabel) getTabComponentAt(index);
         label.setText(title);
         label.setIcon(icon);
-        
+
         getMainWindow().changedTab();
     }
 
@@ -313,12 +321,12 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
                     MainWindow newWindow = new MainWindow();
                     tool.go();
-                    
+
                     ToolTab newTab = newWindow.addTab(tool);
 
                     newTab.setTitleTemplate(tab.getTitleTemplate());
                     newTab.setShortcut(tab.getShortcut());
-                    
+
                     newWindow.setVisible(true);
                 }
 
@@ -327,7 +335,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 MainWindow currentMainWindow = MainWindow.getMainWindow(tab.getPanel());
                 removeTabAt(draggedTabIndex);
                 ToolTab newTab = destinationWindow.addTab(tool);
-                
+
                 newTab.setTitleTemplate(tab.getTitleTemplate());
                 newTab.setShortcut(tab.getShortcut());
 

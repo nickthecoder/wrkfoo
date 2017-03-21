@@ -49,6 +49,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(groovyTools);
         
         Terminal terminal= new Terminal();
+        terminal.autoClose.setValue(true);
         results.add(terminal);
     }
 
