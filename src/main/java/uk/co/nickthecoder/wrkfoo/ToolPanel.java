@@ -191,9 +191,9 @@ public class ToolPanel extends JPanel implements TaskListener
         {
             public void run()
             {
-                goButton.setEnabled(running);
+                goButton.setEnabled(!running);
                 if (tool.getTask() instanceof Stoppable) {
-                    goButton.setVisible(running);
+                    goButton.setVisible(!running);
                     stopButton.setVisible(running);
                 }
 

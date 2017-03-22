@@ -133,7 +133,7 @@ public class ToolTab
     {
         this.tool.detach();
         Tool tool = getTool();
-        if (tool.isRunning()) {
+        if (tool.getTask().isRunning()) {
             tool.stop();
         }
     }

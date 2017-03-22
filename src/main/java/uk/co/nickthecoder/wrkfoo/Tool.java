@@ -53,8 +53,6 @@ public interface Tool
 
     public void stop();
 
-    public boolean isRunning();
-
     /**
      * Set the keyboard focus somewhere suitable. For Table tools this will be the non-row option field when there are
      * no rows. In other cases, it is usually the results panel (such as the table).

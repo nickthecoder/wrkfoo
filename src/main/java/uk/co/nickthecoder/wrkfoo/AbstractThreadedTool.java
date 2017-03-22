@@ -15,12 +15,6 @@ public abstract class AbstractThreadedTool<T extends Task> extends AbstractTool<
     private GoThread goThread;
 
     @Override
-    public boolean isRunning()
-    {
-        return goThread != null;
-    }
-
-    @Override
     public void go()
     {
         if (goThread == null) {

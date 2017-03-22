@@ -378,7 +378,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         } else {
             Tool tool = tab.getTool();
             title = tool.getLongTitle();
-            stopGoButtons(tool.isRunning());
+            stopGoButtons(tool.getTask().isRunning());
         }
 
         if (description != null) {
