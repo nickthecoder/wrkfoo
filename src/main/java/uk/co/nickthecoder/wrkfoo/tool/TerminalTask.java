@@ -80,9 +80,10 @@ public class TerminalTask extends Task
     public void body()
     {
         WrkFoo.assertIsEDT();
-        
+
         // When re-running this task, we need to reset
         processPoller = null;
+        panel.removeAll();
 
         String[] commandArray;
         String directoryString;
@@ -98,27 +99,31 @@ public class TerminalTask extends Task
             env = cmd.env;
         }
 
+        boolean useFallback = true;
         try {
+            Class.forName("com.jediterm.terminal.ui.JediTermWidget");
+            useFallback = false;
+        } catch (ClassNotFoundException e1) {
+        }
+
+        if (useFallback) {
+            
+            System.err.println("Failed to start JeditTerm, falling back to a display-only terminal.");
+            createExecPanel(commandArray, env, directoryString);
+            panel.add(textArea);
+       
+        } else {
+            
             boolean console = false;
             env.put("TERM", "xterm");
             Charset charset = Charset.forName("UTF-8");
-            terminal = createTerminal(commandArray, env, directoryString, charset, console);
-
-        } catch (Exception e) {
-
-            System.err.println("Failed to start JeditTerm, falling back to a display-only terminal.");
-            e.printStackTrace();
-
-            createExecPanel(commandArray, env, directoryString);
-        }
-
-        panel.removeAll();
-        if (terminal == null) {
-            panel.add(textArea);
-        } else {
+            try {
+                terminal = createTerminal(commandArray, env, directoryString, charset, console);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             panel.add(terminal);
         }
-
     }
 
     public void killProcess()
@@ -145,9 +150,6 @@ public class TerminalTask extends Task
         exec.stdout(new TerminalSink());
 
         textArea = new JTextArea();
-
-        Thread thread = new Thread(exec);
-        thread.start();
     }
 
     private class TerminalSink implements Sink
