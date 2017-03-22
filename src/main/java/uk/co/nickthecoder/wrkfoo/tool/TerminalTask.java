@@ -150,6 +150,7 @@ public class TerminalTask extends Task
         exec.stdout(new TerminalSink());
 
         textArea = new JTextArea();
+        textArea.setEnabled(false);
     }
 
     private class TerminalSink implements Sink
