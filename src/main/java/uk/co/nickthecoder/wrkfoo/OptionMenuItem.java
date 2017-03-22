@@ -35,14 +35,16 @@ public class OptionMenuItem extends JMenuItem
 
     public Dimension getPreferredSize()
     {
+        WrkFoo.assertIsEDT();
+
         if (isPreferredSizeSet()) {
             return super.getPreferredSize();
         }
-        if (! isVisible()) {
-            return new Dimension(0,0);
+        if (!isVisible()) {
+            return new Dimension(0, 0);
         }
 
-        FontMetrics fm = getGraphics().getFontMetrics();
+        FontMetrics fm = getFontMetrics(getFont());
         // 10 is an arbitrary gap between the label and the code.
         int width = fm.stringWidth(option.getLabel()) + fm.stringWidth(option.getCode()) + 10;
         int height = fm.getHeight();
