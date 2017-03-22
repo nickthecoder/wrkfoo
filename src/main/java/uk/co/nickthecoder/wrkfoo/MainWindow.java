@@ -379,6 +379,12 @@ public class MainWindow extends JFrame implements ExceptionHandler
             Tool tool = tab.getTool();
             title = tool.getLongTitle();
             stopGoButtons(tool.getTask().isRunning());
+
+            if (tool.getTask().isRunning()) {
+                setMessage("Running");
+            } else {
+                setMessage("");
+            }
         }
 
         if (description != null) {
@@ -396,7 +402,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         if (running && (tab != null) && (tab.getTool().getTask() instanceof Stoppable)) {
             goState = 1;
         }
-        
+
         goButton.setVisible(goState != 1);
         stopButton.setVisible(goState == 1);
         goButton.setEnabled(goState >= 0);
@@ -415,16 +421,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
             }
         }
         stopGoButtons(running);
-    }
-
-    // TODO Check callers
-    public void changedState(Tool changedTool)
-    {
-        WrkFoo.assertIsEDT();
-        ToolTab tab = getCurrentTab();
-        if ((tab != null) && (tab.getTool() == changedTool)) {
-            changedTab();
-        }
     }
 
     private ToolTab getCurrentOrNewTab()

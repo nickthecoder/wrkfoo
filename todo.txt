@@ -1,11 +1,5 @@
 Current Task
 ============
-
-Tool.isRunning - would prefer it to be in Task.
-
-MainWindow
-    // TODO Check callers
-    public void changedState(Tool changedTool)
     
 Shortcut to get out of the Terminal
 	
