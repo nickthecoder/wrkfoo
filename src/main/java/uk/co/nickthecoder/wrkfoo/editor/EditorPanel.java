@@ -56,6 +56,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         this.setLayout(new BorderLayout());
 
         editorPane = new TextEditorPane();
+        editorPane.setTabsEmulated(true);
+        editorPane.setTabSize(4);
 
         ErrorStrip errorStrip = new ErrorStrip(editorPane);
         this.add(errorStrip, BorderLayout.EAST);
