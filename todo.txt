@@ -1,10 +1,14 @@
 Current Task
 ============
 
-Move focus automatically when the process finishes (useful for git).
+TerminalTask (and maybe others) do Swing stuff not on the EDT
 
 ToolPanel convert from toollistener to tasklistener.
 	Then delete ToolListener
+	MainWindow needs changing - methods just to set the go/stop button? (which isn't currently working).
+		ToolPanel has a if (!running) , which is only there because Terminal doens't repaint if it is removed.
+	Should tool have isRunning? If so, how does it know?
+	
 
 Shortcut to get out of the Terminal
 	

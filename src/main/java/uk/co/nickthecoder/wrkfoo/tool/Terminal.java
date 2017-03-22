@@ -5,7 +5,7 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
-import uk.co.nickthecoder.wrkfoo.AbstractTool;
+import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
@@ -13,7 +13,7 @@ import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
-public class Terminal extends AbstractTool<TerminalTask> implements TaskListener, ProcessListener
+public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements TaskListener, ProcessListener
 {
     public BooleanParameter autoClose = new BooleanParameter.Builder("autoClose")
         .parameter();

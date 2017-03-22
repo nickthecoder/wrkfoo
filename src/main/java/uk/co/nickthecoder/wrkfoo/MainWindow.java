@@ -372,23 +372,14 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         String title = "wrkfoo";
 
-        int goState = -1; // -1 Disabled Go, 0 = Go, 1 = Stop
-
         ToolTab tab = getCurrentTab();
-        if (tab != null) {
+        if (tab == null) {
+            stopGoButtons(false);
+        } else {
             Tool tool = tab.getTool();
             title = tool.getLongTitle();
-            if (tool.isRunning()) {
-                goState = (tool.getTask() instanceof Stoppable) ? 1 : -1;
-                title = title + " (running)";
-            } else {
-                goState = 0;
-            }
+            stopGoButtons(tool.isRunning());
         }
-
-        goButton.setVisible(goState != 1);
-        stopButton.setVisible(goState == 1);
-        goButton.setEnabled(goState >= 0);
 
         if (description != null) {
             title = description + " : " + title;
@@ -396,15 +387,42 @@ public class MainWindow extends JFrame implements ExceptionHandler
         setTitle(title);
     }
 
-    public void changedState(Tool changedTool)
+    private void stopGoButtons(boolean running)
     {
+        WrkFoo.assertIsEDT();
+        int goState = running ? -1 : 0; // -1 Disabled Go, 0 = Go, 1 = Stop
+
+        ToolTab tab = getCurrentTab();
+        if (running && (tab != null) && (tab.getTool().getTask() instanceof Stoppable)) {
+            goState = 1;
+        }
+        
+        goButton.setVisible(goState != 1);
+        stopButton.setVisible(goState == 1);
+        goButton.setEnabled(goState >= 0);
+    }
+
+    public void changedRunningState(Tool changedTool, boolean running)
+    {
+        WrkFoo.assertIsEDT();
+
         ToolTab tab = getCurrentTab();
         if ((tab != null) && (tab.getTool() == changedTool)) {
-            if (changedTool.isRunning()) {
+            if (running) {
                 setMessage("Running");
             } else {
                 setMessage("Finished");
             }
+        }
+        stopGoButtons(running);
+    }
+
+    // TODO Check callers
+    public void changedState(Tool changedTool)
+    {
+        WrkFoo.assertIsEDT();
+        ToolTab tab = getCurrentTab();
+        if ((tab != null) && (tab.getTool() == changedTool)) {
             changedTab();
         }
     }
@@ -669,7 +687,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
         if (new Date().getTime() - lastError > ERROR_TIMEOUT_MILLIS) {
             message.setForeground(Color.black);
             message.setText(text);
-
         }
     }
 

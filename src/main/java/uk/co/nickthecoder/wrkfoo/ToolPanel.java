@@ -18,12 +18,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
-public class ToolPanel extends JPanel implements ToolListener
+public class ToolPanel extends JPanel implements TaskListener
 {
     private static final long serialVersionUID = 1L;
 
@@ -125,7 +127,7 @@ public class ToolPanel extends JPanel implements ToolListener
         }
 
         this.setBackground(Color.blue);
-        this.tool.addToolListener(this);
+        this.tool.getTask().addTaskListener(this);
     }
 
     public HidingSplitPane getSplitPane()
@@ -155,12 +157,12 @@ public class ToolPanel extends JPanel implements ToolListener
 
     public void onToggleLeftPane()
     {
-        MainWindow.focusLater("toogle left",  splitPane.toggleLeft(), 10);
+        MainWindow.focusLater("toogle left", splitPane.toggleLeft(), 10);
     }
 
     public void onToggleRightPane()
     {
-        MainWindow.focusLater("toogle right",  splitPane.toggleRight(), 10);
+        MainWindow.focusLater("toogle right", splitPane.toggleRight(), 10);
     }
 
     public boolean check()
@@ -178,27 +180,47 @@ public class ToolPanel extends JPanel implements ToolListener
         tool.stop();
     }
 
-    @Override
-    public void changedState(final Tool tool)
-    {
-        WrkFoo.assertIsEDT();
-
-        boolean isRunning = tool.isRunning();
-        goButton.setEnabled(!isRunning);
-        if (tool.getTask() instanceof Stoppable) {
-            goButton.setVisible(!isRunning);
-            stopButton.setVisible(isRunning);
-        }
-
-        MainWindow mainWindow = getMainWindow();
-        if (mainWindow != null) {
-            mainWindow.changedState(tool);
-        }
-    }
-
     public MainWindow getMainWindow()
     {
         return (MainWindow) SwingUtilities.getRoot(this);
+    }
+
+    private void changedRunningState(final boolean running)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                goButton.setEnabled(running);
+                if (tool.getTask() instanceof Stoppable) {
+                    goButton.setVisible(running);
+                    stopButton.setVisible(running);
+                }
+
+                MainWindow mainWindow = getMainWindow();
+                if (mainWindow != null) {
+                    mainWindow.changedRunningState(tool, running);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void started(Task task)
+    {
+        changedRunningState(true);
+    }
+
+    @Override
+    public void ended(Task task, boolean normally)
+    {
+        changedRunningState(false);
+    }
+
+    @Override
+    public void aborted(Task task)
+    {
+
     }
 
 }

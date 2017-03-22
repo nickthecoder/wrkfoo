@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class AbstractTextTool<T extends Task & TextResults> extends AbstractTool<T>
+public abstract class AbstractTextTool<T extends Task & TextResults> extends AbstractThreadedTool<T>
 {
 
     public AbstractTextTool(T task)

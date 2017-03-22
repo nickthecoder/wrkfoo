@@ -65,10 +65,6 @@ public interface Tool
 
     public Tool duplicate();
 
-    public void addToolListener(ToolListener cl);
-
-    public void removeToolListener(ToolListener cl);
-    
     /**
      * A String which is used to create a new instance of this Tool. For java classes, this is simply
      *  the fully qualified class name. For a groovy script, it is the path to the groovy file.

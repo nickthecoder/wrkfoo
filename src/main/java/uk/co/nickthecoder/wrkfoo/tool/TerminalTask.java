@@ -23,6 +23,7 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Sink;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
@@ -65,6 +66,7 @@ public class TerminalTask extends Task
 
     private final void init()
     {
+        WrkFoo.assertIsEDT();
         panel = new ResultsPanel();
         panel.setLayout(new BorderLayout());
     }
@@ -77,9 +79,10 @@ public class TerminalTask extends Task
     @Override
     public void body()
     {
+        WrkFoo.assertIsEDT();
+        
         // When re-running this task, we need to reset
         processPoller = null;
-        panel.removeAll();
 
         String[] commandArray;
         String directoryString;
@@ -100,10 +103,6 @@ public class TerminalTask extends Task
             env.put("TERM", "xterm");
             Charset charset = Charset.forName("UTF-8");
             terminal = createTerminal(commandArray, env, directoryString, charset, console);
-            panel.add(terminal);
-            // TODO Bodge?
-            panel.doLayout();
-            terminal.repaint();
 
         } catch (Exception e) {
 
@@ -111,13 +110,20 @@ public class TerminalTask extends Task
             e.printStackTrace();
 
             createExecPanel(commandArray, env, directoryString);
-            panel.add(textArea);
         }
+
+        panel.removeAll();
+        if (terminal == null) {
+            panel.add(textArea);
+        } else {
+            panel.add(terminal);
+        }
+
     }
-    
+
     public void killProcess()
     {
-        if ( process != null) {
+        if (process != null) {
             process.destroy();
         }
     }

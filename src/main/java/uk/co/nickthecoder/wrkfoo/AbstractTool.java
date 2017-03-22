@@ -1,10 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.Icon;
-import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
@@ -12,7 +8,6 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
 import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
-import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
@@ -24,13 +19,10 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     private ToolTab toolTab;
 
-    private GoThread goThread;
-
-    private List<ToolListener> toolListeners = new ArrayList<>();
-
     private ToolPanel toolPanel;
 
     private OptionsGroup options;
+
 
     public AbstractTool(T task)
     {
@@ -127,92 +119,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
         return toolTab;
     }
 
-    public class GoThread extends Thread
-    {
-        @Override
-        public void run()
-        {
-            try {
-                task.run();
-            } finally {
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        updateResults();
-                        end();
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public void addToolListener(ToolListener cl)
-    {
-        toolListeners.add(cl);
-    }
-
-    @Override
-    public void removeToolListener(ToolListener cl)
-    {
-        toolListeners.remove(cl);
-    }
-
-    private void fireChangedState()
-    {
-        for (ToolListener cl : toolListeners) {
-            try {
-                cl.changedState(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Routed through toolTab, so that it can record the history.
-     */
-    @Override
-    public void go()
-    {
-        if (goThread == null) {
-            goThread = new GoThread();
-
-            fireChangedState();
-
-            try {
-                goThread.start();
-            } catch (Exception e) {
-                goThread = null;
-            }
-        }
-    }
-
-    @Override
-    public void stop()
-    {
-        if (task instanceof Stoppable) {
-            ((Stoppable) task).stop();
-        }
-    }
-
-    private void end()
-    {
-        goThread = null;
-
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                getToolPanel().getSplitPane().showLeft();
-                focusOnResults(7);
-            }
-        });
-        fireChangedState();
-    }
-
     /**
      * Focus on the results panel when the tool completes.
      * Called from {@link #end()}, and is here so that different tools can choose to focus where they see best.
@@ -233,12 +139,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
         } else {
             focusOnResults(importance);
         }
-    }
-
-    @Override
-    public boolean isRunning()
-    {
-        return goThread != null;
     }
 
     /**

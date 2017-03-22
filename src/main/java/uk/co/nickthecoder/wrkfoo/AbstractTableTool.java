@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class AbstractTableTool<T extends Task, R> extends AbstractTool<T> implements TableTool<R>
+public abstract class AbstractTableTool<T extends Task, R> extends AbstractThreadedTool<T> implements TableTool<R>
 {
     public AbstractTableTool(T task)
     {
