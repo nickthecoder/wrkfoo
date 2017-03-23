@@ -47,9 +47,14 @@ public class HomeTask extends Task implements ListResults<Tool>
 
         GroovyTools groovyTools = new GroovyTools();
         results.add(groovyTools);
-        
-        Terminal terminal= new Terminal();
+
+        Terminal terminal = new Terminal();
         results.add(terminal);
+
+        Terminal bash = new Terminal();
+        bash.task.command.setDefaultValue("bash\n--login");
+        bash.title.setDefaultValue("Bash");
+        results.add(bash);
     }
 
     @Override

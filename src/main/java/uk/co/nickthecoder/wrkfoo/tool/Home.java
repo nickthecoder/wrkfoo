@@ -43,7 +43,7 @@ public class Home extends AbstractListTool<HomeTask, Tool>
             @Override
             public String getValue(Tool row)
             {
-                return row.getName();
+                return row.getLongTitle();
             }
         }.width(500).sort());
 

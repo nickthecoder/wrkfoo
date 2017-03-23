@@ -1,13 +1,16 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
@@ -15,6 +18,12 @@ import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
 public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements TaskListener, ProcessListener
 {
+    public static Icon icon = Resources.icon("terminal.png");
+
+    public StringParameter title = new StringParameter.Builder("title")
+        .value("Terminal")
+        .parameter();
+
     public BooleanParameter autoClose = new BooleanParameter.Builder("autoClose")
         .parameter();
 
@@ -22,7 +31,6 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
         .value(true)
         .description("Kill the process when the tab is closed")
         .parameter();
-
 
     /**
      * Can we re-run this command? If it is a user-defined command, set using the TerminalTask's
@@ -47,9 +55,20 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
 
     private final void init()
     {
+        task.insertParameter(2, title);
         task.addParameters(autoClose, killOnClose);
         task.addTaskListener(this);
-        System.out.println("Added task Terminal listener");
+    }
+
+    public Icon getIcon()
+    {
+        return icon;
+    }
+    
+    @Override
+    public String getTitle()
+    {
+        return title.getValue();
     }
 
     public boolean isRerunnable()
@@ -87,17 +106,6 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     public void ended(Task tsk, boolean normally)
     {
         ProcessPoller pp = task.getProcessPoller();
-        System.out.println("listening to the process poller");
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                // TODO Bodge?
-                task.panel.doLayout();
-                task.panel.repaint();
-            }
-        });
         pp.addProcessListener(this);
         focus(5);
     }
@@ -110,21 +118,20 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     @Override
     public void finished(Process process)
     {
-        System.out.println("Terminal's process has finished");
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
-                ToolTab tab =  getToolTab();
+                ToolTab tab = getToolTab();
                 if (tab == null) {
                     return;
                 }
-                
+
                 if (tab.getTabbedPane().getSelectedToolTab() == tab) {
                     MainWindow.focusLater("Terminal process finished",
                         MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 5);
                 }
-                
+
                 if (autoClose.getValue()) {
                     tab.getTabbedPane().removeTab(getToolTab());
                 }

@@ -23,8 +23,6 @@ public interface Tool
 
     public Task getTask();
 
-    public String getName();
-
     public String getShortTitle();
 
     public String getLongTitle();

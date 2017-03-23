@@ -26,9 +26,7 @@ public class ProcessPoller implements Runnable
     public void run()
     {
         try {
-            System.out.println("Waiting for process to finsh");
             process.waitFor();
-            System.out.println("Process has finshed");
             ended = true;
             for (ProcessListener listener : listeners) {
                 try {

@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import groovy.lang.Binding;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -28,11 +29,14 @@ import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 public class TerminalTask extends Task
 {
     public StringParameter command = new StringParameter.Builder("command").multiLine()
-        // .value("/bin/bash\n--login\n")
         .parameter();
 
-    public FileParameter directory = new FileParameter.Builder("directory")
+    public FileParameter directory = new FileParameter.Builder("directory").directory().includeHidden()
         .value(new File("."))
+        .parameter();
+
+    public BooleanParameter useSimpleTerminal = new BooleanParameter.Builder("useSimpleTerminal")
+        .value(false)
         .parameter();
 
     public Command cmd;
@@ -51,13 +55,14 @@ public class TerminalTask extends Task
     {
         super();
 
-        addParameters(command);
+        addParameters(command, directory, useSimpleTerminal);
         init();
     }
 
     public TerminalTask(Command c)
     {
         super();
+        addParameters(useSimpleTerminal);
         cmd = c;
         init();
     }
@@ -97,13 +102,15 @@ public class TerminalTask extends Task
             env = cmd.env;
         }
 
-        boolean useFallback = true;
-        try {
-            Class.forName("com.jediterm.terminal.ui.JediTermWidget");
-            // TODO Comment out to use fall back
-            //useFallback = false;
-        } catch (ClassNotFoundException e1) {
-            System.err.println("JediTermWidget not found. Using (naff) fall-back terminal.");
+        boolean useFallback = useSimpleTerminal.getValue();
+
+        if (!useFallback) {
+            try {
+                Class.forName("com.jediterm.terminal.ui.JediTermWidget");
+            } catch (ClassNotFoundException e1) {
+                useFallback = true;
+                System.err.println("JediTermWidget not found. Falling back to using the simple terminal.");
+            }
         }
 
         if (useFallback) {
@@ -203,8 +210,6 @@ public class TerminalTask extends Task
             "com.pty4j.PtyProcess process = com.pty4j.PtyProcess.exec(cmd, envs, dir, console);");
         process = (Process) script1.run(bindings);
 
-        System.out.println("Set TerminalTask.process");
-
         bindings.setProperty("process", process);
 
         GroovyScriptlet script2 = new GroovyScriptlet("" +
@@ -227,7 +232,6 @@ public class TerminalTask extends Task
     public ProcessPoller getProcessPoller()
     {
         if (processPoller == null) {
-            System.out.println("Created poller");
             processPoller = new ProcessPoller(process);
             processPoller.start();
         }
