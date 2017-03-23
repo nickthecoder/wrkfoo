@@ -49,11 +49,15 @@ public class OptionsData
 
     /**
      * When loading a single .json file, we end up with a complex structure, with this being the top-level.
-     * The first Options in optionsGroup will be a SimpleOptions, containing the options loaded directly from the .json file.
-     * The remaining items are the INCLUDES. These are currently handled badly, because there will end up being repetition.
+     * The first Options in optionsGroup will be a SimpleOptions, containing the options loaded directly from the .json
+     * file.
+     * The remaining items are the INCLUDES. These are currently handled badly, because there will end up being
+     * repetition.
      */
     public transient OptionsGroup optionsGroup;
 
+    public transient SimpleOptions options;
+    
     public List<String> include = new ArrayList<>();
 
     @SerializedName("options")
@@ -61,7 +65,7 @@ public class OptionsData
 
     public OptionsData(File directory, String name) throws MalformedURLException
     {
-        this( new File(directory, name + ".json").toURI().toURL() );
+        this(new File(directory, name + ".json").toURI().toURL());
     }
 
     public OptionsData(URL url)
@@ -73,12 +77,12 @@ public class OptionsData
     private void createOptions()
     {
         if (this.optionData != null) {
-            SimpleOptions simple = new SimpleOptions();
+            options = new SimpleOptions();
             for (OptionData optionData : optionData) {
                 GroovyOption groovyOption = optionData.createOption();
-                simple.add(groovyOption);
+                options.add(groovyOption);
             }
-            optionsGroup.add(simple);
+            optionsGroup.add(options);
         }
 
         if (this.include != null) {
@@ -91,6 +95,11 @@ public class OptionsData
 
     }
 
+    public SimpleOptions getOptions()
+    {
+        return options;
+    }
+    
     public void reload()
     {
         optionsGroup.clear();
@@ -114,11 +123,13 @@ public class OptionsData
         } finally {
             out.close();
         }
-        
+
     }
 
     public static class OptionData
     {
+        transient Option option;
+        
         public String code;
         public String label;
 
@@ -134,11 +145,33 @@ public class OptionsData
         public boolean refreshResults;
         public boolean prompt;
 
+        public List<String> aliases;
+
+        public OptionData()
+        {
+            aliases = new ArrayList<>();
+        }
+        
         public GroovyOption createOption()
         {
-            return new GroovyOption(code, label, action, ifScript, isRow(), multi, newTab, refreshResults, prompt);
+            GroovyOption option = new GroovyOption(code, label, action, ifScript, isRow(), multi, newTab,
+                refreshResults, prompt);
+            this.option = option;
+
+            if (aliases != null) {
+                for (String alias : aliases) {
+                    option.addAlias(alias);
+                }
+            }
+
+            return option;
         }
 
+        public Option getOption()
+        {
+            return option;
+        }
+        
         public boolean isRow()
         {
             return row == Boolean.FALSE ? false : true;

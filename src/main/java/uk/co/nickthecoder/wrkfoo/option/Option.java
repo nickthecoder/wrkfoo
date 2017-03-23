@@ -9,6 +9,8 @@ public interface Option
 {
     public String getCode();
 
+    public Iterable<String> getAliases();
+    
     public String getLabel();
 
     public void runMultiOption(TableTool<?> tool, List<Object> row, boolean newTab, boolean prompt);

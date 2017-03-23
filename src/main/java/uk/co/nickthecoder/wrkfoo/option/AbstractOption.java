@@ -1,8 +1,13 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractOption implements Option
 {
     private final String code;
+
+    private List<String> aliases;
 
     public String label;
 
@@ -20,6 +25,7 @@ public abstract class AbstractOption implements Option
         boolean refreshResults, boolean prompt)
     {
         this.code = code;
+        this.aliases = new ArrayList<>();
         this.label = label;
         this.isRow = isRow;
         this.isMultiRow = isMultiRow;
@@ -32,6 +38,16 @@ public abstract class AbstractOption implements Option
     public String getCode()
     {
         return code;
+    }
+    
+    public void addAlias( String alias )
+    {
+        this.aliases.add(alias);
+    }
+
+    public Iterable<String> getAliases()
+    {
+        return aliases;
     }
 
     @Override
@@ -65,5 +81,5 @@ public abstract class AbstractOption implements Option
     public boolean getPrompt()
     {
         return prompt;
-    }    
+    }
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
+import uk.co.nickthecoder.jguifier.parameter.MultipleParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.Resources;
@@ -24,6 +25,9 @@ public class EditOption extends Task
     public StringParameter code = new StringParameter.Builder("code").columns(6).optional()
         .parameter();
 
+    public MultipleParameter<StringParameter,String> aliases = new StringParameter.Builder("").columns(6)
+        .multipleParameter("aliases");
+    
     public StringParameter label = new StringParameter.Builder("label")
         .parameter();
 
@@ -56,6 +60,7 @@ public class EditOption extends Task
         this.optionData = optionData;
 
         code.setDefaultValue(optionData.code);
+        aliases.setValues(optionData.aliases);
         label.setDefaultValue(optionData.label);
         action.setDefaultValue(optionData.action);
 
@@ -70,13 +75,17 @@ public class EditOption extends Task
         refreshResults.setDefaultValue(optionData.refreshResults);
         prompt.setDefaultValue(optionData.prompt);
 
-        addParameters(code, label, action, type, newTab, refreshResults, prompt, ifScript);
+        addParameters(code, aliases, label, action, type, newTab, refreshResults, prompt, ifScript);
     }
 
     @Override
     public void body()
     {
+        if ( optionData.getOption() != null) {
+            optionsData.getOptions().remove(optionData.getOption());
+        }
         optionData.code = code.getValue();
+        optionData.aliases = aliases.getValue();
         optionData.label = label.getValue();
         optionData.action = action.getValue();
         optionData.row = !type.getValue().equals("non-row");
@@ -85,6 +94,9 @@ public class EditOption extends Task
         optionData.newTab = newTab.getValue();
         optionData.refreshResults = refreshResults.getValue();
         optionData.prompt = prompt.getValue();
+        if ( optionData.getOption() != null) {
+            optionsData.getOptions().add(optionData.getOption());
+        }
     }
 
     @Override

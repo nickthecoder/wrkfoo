@@ -51,6 +51,7 @@ public class SimpleOptions implements Options
                 return option;
             }
         }
+        
         return null;
     }
 
@@ -63,19 +64,30 @@ public class SimpleOptions implements Options
     public void add(Option option)
     {
         list.add(option);
+        
         if (option.isRow()) {
             addToSet(rowMap, option, option.getCode());
+            for (String alias : option.getAliases()) {
+                addToSet(rowMap, option, alias );
+            }
         } else {
             nonRowMap.put(option.getCode(), option);
+            for (String alias : option.getAliases()) {
+                nonRowMap.put(alias, option);
+            }
         }
     }
 
-    public void addAlias(Option option, String alias)
+    public void remove(Option option)
     {
+        list.remove(option);
+        
         if (option.isRow()) {
-            addToSet(rowMap, option, alias);
+            removeFromSet(rowMap, option, option.getCode());
+            for (String alias : option.getAliases()) {
+                removeFromSet(rowMap, option, alias );
+            }
         } else {
-            nonRowMap.put(alias, option);
         }
     }
 
@@ -87,6 +99,20 @@ public class SimpleOptions implements Options
             map.put(code, options);
         }
         options.add(option);
+    }
+
+    private void removeFromSet(Map<String, List<Option>> map, Option option, String code)
+    {
+        List<Option> options = map.get(code);
+        if (options == null) {
+            return;
+        }
+        
+        options.remove(option);
+
+        if (options.size() == 0) {
+            map.remove(code);
+        }
     }
 
     @Override
