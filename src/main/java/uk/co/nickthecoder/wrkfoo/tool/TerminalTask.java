@@ -14,9 +14,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import groovy.lang.Binding;
+import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.SimpleSink;
@@ -65,6 +67,13 @@ public class TerminalTask extends Task
         addParameters(useSimpleTerminal);
         cmd = c;
         init();
+        directory.addListener(new ParameterListener(){
+            @Override
+            public void changed(Parameter source)
+            {
+                cmd.dir(directory.getValue());
+            }
+        });
     }
 
     private final void init()

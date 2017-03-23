@@ -38,7 +38,7 @@
     {
       "code": "c",
       "label": "Git Commit",
-      "action": "os.term('git', 'commit')\n  .dir(task.directory.value)\n  .title(\"Git Commit\")\n  simple()",
+      "action": "os.term('git', 'commit')\n  .dir(task.directory.value)\n  .title(\"Git Commit\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
