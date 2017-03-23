@@ -1,6 +1,10 @@
 Current Task
 ============
 
+
+Git Status is flakey, sometimes showing no results
+    probably cause by a screw up in Exec.
+
 Fallback terminal - add an TextField, so that commands can be typed. Naff, but better than nothing.
 
 Shortcut to get out of the Terminal
@@ -11,9 +15,6 @@ Task body, pre post can throw exceptions
 
 BUGS
 ====
-
-Git Status is flakey, sometimes showing no results
-    probably cause by a screw up in Exec.
 
 Terminal does not output anything for short-lived commands (such as a simple "ls").
 

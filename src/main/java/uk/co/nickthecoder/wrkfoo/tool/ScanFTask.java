@@ -35,7 +35,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
     }
 
     @Override
-    public void body()
+    public void body() throws Exception
     {
         stopping = false;
         results = new ArrayList<>();
@@ -61,13 +61,13 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
                     System.err.println("Skipping  " + line);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        try {
-            reader.close();
-        } catch (IOException e) {
+        } finally {
+
+            try {
+                reader.close();
+            } catch (IOException e) {
+            }
         }
     }
 

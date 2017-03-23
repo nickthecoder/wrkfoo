@@ -121,7 +121,7 @@ public class EditOption extends Task
         }
 
         @Override
-        public void pre()
+        public void pre() throws Exception
         {
             super.pre();
             try {

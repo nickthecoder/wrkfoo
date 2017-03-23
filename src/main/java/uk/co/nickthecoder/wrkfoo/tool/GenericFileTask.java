@@ -30,7 +30,7 @@ public abstract class GenericFileTask<R extends RelativePath> extends Task imple
     BufferedReader reader;
 
     @Override
-    public void pre()
+    public void pre() throws IOException
     {
         stopping = false;
         results = new ArrayList<>();
