@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 import groovy.lang.Binding;
 import uk.co.nickthecoder.jguifier.ParameterListener;
@@ -21,12 +18,12 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
-import uk.co.nickthecoder.jguifier.util.SimpleSink;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
+import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class TerminalTask extends Task
 {
@@ -47,8 +44,6 @@ public class TerminalTask extends Task
 
     private JPanel terminal;
 
-    private JTextArea textArea;
-
     private Process process;
 
     private ProcessPoller processPoller;
@@ -67,7 +62,8 @@ public class TerminalTask extends Task
         addParameters(useSimpleTerminal);
         cmd = c;
         init();
-        directory.addListener(new ParameterListener(){
+        directory.addListener(new ParameterListener()
+        {
             @Override
             public void changed(Parameter source)
             {
@@ -124,10 +120,9 @@ public class TerminalTask extends Task
 
         if (useFallback) {
 
-            createExecPanel(commandArray, env, directoryString);
-            JScrollPane scroll = new JScrollPane(textArea);
-            panel.add(scroll);
-
+            simpleTerminal = createExecPanel(commandArray, env, directoryString);
+            panel.add( simpleTerminal.getOutputComponent());
+            
         } else {
 
             boolean console = false;
@@ -149,11 +144,10 @@ public class TerminalTask extends Task
         }
     }
 
-    public void createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
-    {
-        textArea = new JTextArea();
-        textArea.setEditable(false);
+    private SimpleTerminalWidget simpleTerminal;
 
+    public SimpleTerminalWidget createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
+    {
         final Exec exec = new Exec(commandArray);
         if (directoryString != null) {
             exec.dir(new File(directoryString));
@@ -161,31 +155,11 @@ public class TerminalTask extends Task
         for (Entry<String, String> entry : env.entrySet()) {
             exec.var(entry.getKey(), entry.getValue());
         }
-        exec.combineStdoutStderr();
-        exec.stdout(new TerminalSink());
 
-        try {
-            process = exec.runWithoutWaiting();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SimpleTerminalWidget result = new SimpleTerminalWidget(exec);
+        process = exec.getProcess();
 
-    }
-
-    private class TerminalSink extends SimpleSink
-    {
-        protected void sink(char[] buffer, int len) throws IOException
-        {
-            final StringBuffer sb = new StringBuffer();
-            sb.append(buffer, 0, len);
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    textArea.append(sb.toString());
-                }
-            });
-        }
+        return result;
     }
 
     private JPanel createTerminal(String[] cmd, Map<String, String> envs, String dir, Charset charset,
