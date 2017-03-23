@@ -32,7 +32,7 @@ public class ActionBuilder
 
     private JComponent component;
 
-    private int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private int condition = JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
 
     private ExceptionHandler exceptionHandler;
 

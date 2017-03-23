@@ -113,6 +113,10 @@ public final class ActionShortcuts
         put("replace.replaceFind", "");
         put("replace.find", "");
 
+        // Teminal
+        put( "SimpleTerminalWidget.go", "ENTER" );
+        put( "SimpleTerminalWidget.terminate", "ctrl+D" );
+        
     }
 
     /**

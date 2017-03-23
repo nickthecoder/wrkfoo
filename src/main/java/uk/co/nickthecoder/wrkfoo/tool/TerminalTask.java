@@ -121,8 +121,9 @@ public class TerminalTask extends Task
         if (useFallback) {
 
             simpleTerminal = createExecPanel(commandArray, env, directoryString);
-            panel.add( simpleTerminal.getOutputComponent());
-            
+            panel.add(simpleTerminal.getOutputComponent());
+            panel.add(simpleTerminal.getInputComponent(), BorderLayout.SOUTH);
+
         } else {
 
             boolean console = false;

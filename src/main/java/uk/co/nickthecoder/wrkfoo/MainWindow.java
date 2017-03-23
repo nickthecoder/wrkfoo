@@ -251,11 +251,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
         ActionBuilder builder = new ActionBuilder(this).component(textField);
 
-        builder.name("runNonRowOption").buildShortcut();
-        builder.name("runNonRowOptionInNewTab").buildShortcut();
-
         builder.name("promptNonRowOption").buildShortcut();
         builder.name("promptNonRowOptionInNewTab").buildShortcut();
+
+        builder.name("runNonRowOptionInNewTab").buildShortcut();
+        builder.name("runNonRowOption").buildShortcut();
 
         textField.addMouseListener(new MouseAdapter()
         {
@@ -294,8 +294,10 @@ public class MainWindow extends JFrame implements ExceptionHandler
         if (tab != null) {
             Tool tool = tab.getTool();
 
-            if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
-                optionTextField.setText("");
+            if (!optionTextField.getText().equals("")) {
+                if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
+                    optionTextField.setText("");
+                }
             }
         }
     }
