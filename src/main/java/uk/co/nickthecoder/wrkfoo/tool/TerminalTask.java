@@ -3,15 +3,13 @@ package uk.co.nickthecoder.wrkfoo.tool;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -20,7 +18,7 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
-import uk.co.nickthecoder.jguifier.util.Sink;
+import uk.co.nickthecoder.jguifier.util.SimpleSink;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
@@ -30,7 +28,7 @@ import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 public class TerminalTask extends Task
 {
     public StringParameter command = new StringParameter.Builder("command").multiLine()
-        .value("/bin/bash\n--login\n")
+        // .value("/bin/bash\n--login\n")
         .parameter();
 
     public FileParameter directory = new FileParameter.Builder("directory")
@@ -102,18 +100,20 @@ public class TerminalTask extends Task
         boolean useFallback = true;
         try {
             Class.forName("com.jediterm.terminal.ui.JediTermWidget");
-            useFallback = false;
+            // TODO Comment out to use fall back
+            //useFallback = false;
         } catch (ClassNotFoundException e1) {
+            System.err.println("JediTermWidget not found. Using (naff) fall-back terminal.");
         }
 
         if (useFallback) {
-            
-            System.err.println("Failed to start JeditTerm, falling back to a display-only terminal.");
+
             createExecPanel(commandArray, env, directoryString);
-            panel.add(textArea);
-       
+            JScrollPane scroll = new JScrollPane(textArea);
+            panel.add(scroll);
+
         } else {
-            
+
             boolean console = false;
             env.put("TERM", "xterm");
             Charset charset = Charset.forName("UTF-8");
@@ -135,7 +135,9 @@ public class TerminalTask extends Task
 
     public void createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
     {
-        // JediTerm failed, so lets try Exec
+        textArea = new JTextArea();
+        textArea.setEditable(false);
+
         final Exec exec = new Exec(commandArray);
         if (directoryString != null) {
             exec.dir(new File(directoryString));
@@ -144,56 +146,30 @@ public class TerminalTask extends Task
             exec.var(entry.getKey(), entry.getValue());
         }
         exec.combineStdoutStderr();
-        exec.runStreaming();
-        process = exec.getProcess();
-
         exec.stdout(new TerminalSink());
 
-        textArea = new JTextArea();
-        textArea.setEnabled(false);
+        try {
+            process = exec.runWithoutWaiting();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private class TerminalSink implements Sink
+    private class TerminalSink extends SimpleSink
     {
-        Reader reader;
-
-        @Override
-        public void setStream(InputStream in)
+        protected void sink(char[] buffer, int len) throws IOException
         {
-            reader = new InputStreamReader(in);
-        }
-
-        @Override
-        public void run()
-        {
-            try {
-                char[] buffer = new char[1000];
-                int read = 0;
-                while (read >= 0) {
-                    read = reader.read(buffer);
-                    if (read > 0) {
-                        StringBuffer sb = new StringBuffer();
-                        sb.append(buffer, 0, read);
-                        append(sb.toString());
-                    }
-                }
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public void append(final String str)
-        {
+            final StringBuffer sb = new StringBuffer();
+            sb.append(buffer, 0, len);
             SwingUtilities.invokeLater(new Runnable()
             {
                 public void run()
                 {
-                    textArea.append(str);
+                    textArea.append(sb.toString());
                 }
             });
         }
-
     }
 
     private JPanel createTerminal(String[] cmd, Map<String, String> envs, String dir, Charset charset,

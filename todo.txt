@@ -1,24 +1,26 @@
 Current Task
 ============
-    
+
+Fallback terminal - add an TextField, so that commands can be typed. Naff, but better than nothing.
+
 Shortcut to get out of the Terminal
 	
 Go back to using nano for git editor?
 
+Task body, pre post can throw exceptions
+
 BUGS
 ====
 
+Terminal does not output anything for short-lived commands (such as a simple "ls").
+
+Says "Finished" when Task is finished, but the Terminal process is still running.
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
-	Shouldn't have a list of tools passed to MainFrame constructor.
-	Probably MainWindow.getMainWindow(component) is returning null
+    Shouldn't have a list of tools passed to MainFrame constructor.
+    It is the (lack of) change event from TabbedPane?
 
 Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
-
-ExecTool breaks the convension of being defined by tool's class and parameters
-	Doesn't have a non-arg constructor, so loading the tab will fail.
-	Also consider re-runnable when loading/saving. Just ignore non-rerunnable when saving.
-	Need a "builder"
 
 New Features
 ============
