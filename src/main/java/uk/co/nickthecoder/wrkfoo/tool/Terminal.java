@@ -1,5 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import java.io.File;
+
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
@@ -42,6 +44,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     public Terminal()
     {
         super(new TerminalTask());
+        task.insertParameter(2, title);
         init();
         reRunnable = true;
     }
@@ -49,22 +52,70 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     public Terminal(Command command)
     {
         super(new TerminalTask(command));
+        task.insertParameter(0,title);
         init();
         reRunnable = false;
     }
 
     private final void init()
     {
-        task.insertParameter(2, title);
         task.addParameters(autoClose, killOnClose);
         task.addTaskListener(this);
+    }
+
+    /**
+     * A Fluent API for setting the directory
+     * 
+     * @param directory
+     * @return this
+     */
+    public Terminal dir(File directory)
+    {
+        task.directory.setValue(directory);
+        return this;
+    }
+
+    /**
+     * A Fluent API for setting the directory
+     * 
+     * @param path
+     *            The directory's path
+     * @return this
+     */
+    public Terminal dir(String path)
+    {
+        task.directory.setValue(new File(path));
+        return this;
+    }
+
+    /**
+     * A fluent API for choosing to use the simple terminal (instead of JediTermWidget).
+     * 
+     * @return this
+     */
+    public Terminal simple()
+    {
+        task.useSimpleTerminal.setValue(true);
+        return this;
+    }
+
+    /**
+     * A fluent API for setting the name, as it will appear in the tab.
+     * 
+     * @param value
+     * @return this
+     */
+    public Terminal title(String value)
+    {
+        title.setValue(value);
+        return this;
     }
 
     public Icon getIcon()
     {
         return icon;
     }
-    
+
     @Override
     public String getTitle()
     {

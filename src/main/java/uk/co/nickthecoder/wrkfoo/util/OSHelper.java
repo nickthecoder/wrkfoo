@@ -9,6 +9,7 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
+import uk.co.nickthecoder.wrkfoo.tool.Terminal;
 
 /**
  * A convenient way to run operating system commands from a {@link GroovyOption}.
@@ -65,6 +66,7 @@ public class OSHelper
      * @param args
      *            The set of command line argument passes to <code>command</code>. See {@link #exec(String, Object...)}.
      * @return An ExecTool which GroovyOption will run.
+     * @deprecated Use {@link term
      */
     public Command show(String exe, Object... args)
     {
@@ -74,6 +76,18 @@ public class OSHelper
             command.addArg(arg);
         }
         return command;
+    }
+
+    public Terminal term(String cmd, String... args)
+    {
+        Command command = new Command(cmd);
+
+        for (Object arg : args) {
+            command.addArg(arg);
+        }
+
+        Terminal result = new Terminal(command);
+        return result;
     }
 
     /**

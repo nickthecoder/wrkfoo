@@ -12,6 +12,9 @@ Task body, pre post can throw exceptions
 BUGS
 ====
 
+Git Status is flakey, sometimes showing no results
+    probably cause by a screw up in Exec.
+
 Terminal does not output anything for short-lived commands (such as a simple "ls").
 
 Says "Finished" when Task is finished, but the Terminal process is still running.

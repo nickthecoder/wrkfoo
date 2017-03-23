@@ -36,7 +36,7 @@
     {
       "code": "rm-r",
       "label": "Delete All",
-      "action": "os.show( 'rm', '-rv', rows )",
+      "action": "os.term( 'rm', '-rv', rows )\n  .title(\"rm -r\" )\n  .simple()",
       "if": "",
       "row": true,
       "multi": true,

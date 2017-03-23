@@ -18,7 +18,7 @@
     {
       "code": "a",
       "label": "Git Add",
-      "action": "os.exec('git', 'add', rows.collect {it.path} ).dir(task.directory.value)",
+      "action": "os.exec('git', 'add', rows.collect {it.path} )\n  .dir(task.directory.value)",
       "row": true,
       "multi": true,
       "newTab": false,
@@ -28,7 +28,8 @@
     {
       "code": "d",
       "label": "Git Diff",
-      "action": "os.exec('git', 'diff', row.path).dir(task.directory.value)",
+      "action": "os.exec('git', 'diff', row.path)\n  .dir(task.directory.value)",
+      "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,
@@ -37,7 +38,7 @@
     {
       "code": "c",
       "label": "Git Commit",
-      "action": "os.show('git', 'commit').dir(task.directory.value)",
+      "action": "os.term('git', 'commit')\n  .dir(task.directory.value)\n  .title(\"Git Commit\")\n  simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -47,7 +48,7 @@
     {
       "code": "all",
       "label": "Git Commit All",
-      "action": "os.show('git', 'commit', '-a').dir(task.directory.value)",
+      "action": "os.term('git', 'commit', '-a')\n  .dir(task.directory.value)\n  .title(\"Git Commit\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -57,7 +58,7 @@
     {
       "code": "push",
       "label": "Git Push to Origin",
-      "action": "os.show('git', 'push', '-u', 'origin').dir(task.directory.value)",
+      "action": "os.term('git', 'push', '-u', 'origin')\n  .dir(task.directory.value)\n  .title(\"Git Push\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": false,
@@ -67,7 +68,7 @@
     {
       "code": "ignore",
       "label": "Git Ignore",
-      "action": "os.exec('echo',row.path).stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
+      "action": "os.exec('echo',row.path)\n  .stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
       "row": true,
       "multi": false,
       "newTab": false,
@@ -77,7 +78,7 @@
     {
       "code": "co",
       "label": "Git Check Out",
-      "action": "os.exec( 'git', 'checkout', row.path ).dir(task.directory.value)",
+      "action": "os.exec( 'git', 'checkout', row.path )\n  .dir(task.directory.value)",
       "row": true,
       "multi": false,
       "newTab": false,
@@ -87,7 +88,7 @@
     {
       "code": "gi",
       "label": "Gradle Install",
-      "action": "os.show( 'gradle', 'install' ).dir( task.directory.value )",
+      "action": "os.term( 'gradle', 'install' )\n  .dir( task.directory.value )\n  .title(\"Gradle Install\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -97,7 +98,7 @@
     {
       "code": "gb",
       "label": "Gradle Build",
-      "action": "os.show( 'gradle', 'build' ).dir( task.directory.value )",
+      "action": "os.term( 'gradle', 'build' )\n  .dir( task.directory.value )\n  .title(\"Gradle Build\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -107,7 +108,7 @@
     {
       "code": "gj",
       "label": "Gradle Javadoc",
-      "action": "os.show( 'gradle', 'javadoc' ).dir( task.directory.value )",
+      "action": "os.term( 'gradle', 'javadoc' )\n   .dir( task.directory.value )\n   .title(\"Gradle Javadoc\")\n   .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -117,7 +118,7 @@
     {
       "code": "gia",
       "label": "Gradle Install Application",
-      "action": "os.show( 'gradle', 'installApp' ).dir( task.directory.value )",
+      "action": "os.term( 'gradle', 'installApp' )\n  .dir( task.directory.value )\n  .title(\"Gradle installApp\")\n  .simple()",
       "row": false,
       "multi": false,
       "newTab": true,
@@ -127,7 +128,7 @@
     {
       "code": "clean",
       "label": "Gradle Clean",
-      "action": "os.show( 'gradle', 'clean' ).dir( task.directory.value )",
+      "action": "os.term( 'gradle', 'clean' )\n  .dir( task.directory.value )\n  .title( \"Gradle clean\" )\n  .simple()\n",
       "row": false,
       "multi": false,
       "newTab": true,
