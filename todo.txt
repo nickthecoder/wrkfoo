@@ -1,14 +1,6 @@
 Current Task
 ============
 
-
-Bug Enter is being grabbed by MainFrame? when in SimpleTerminal's input
-    Enter with blank gives an error. Should just ignore if there is no default option?
-
-Shortcut to get out of the Terminal
-	
-Go back to using nano for git editor?
-
 BUGS
 ====
 
@@ -28,15 +20,17 @@ New Features
 Git stash features
 	http://stackoverflow.com/questions/1105253/how-would-i-extract-a-single-file-or-changes-to-a-file-from-a-git-stash
 
+    Then maybe implement a compound Tool "Git", which has a GitStatus AND a GitStash
+    Later have other Git lists, such as branches, tags.
+    Or just reply on shortcuts to switch between different Git tools, e.g. alt+s for git status, alt+b for git branches etc.
+
+Non-row options to have shortcuts
+
+
 OptionData doesn't handle aliases
 	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
 
-Add "description" to Option
-	Us it (or the first sentence) as tooltips for the popup menus.
-
 Editor saveAs , rename
-
-Editor to prompt when closing the tab without saving (if dirty)
 
 Settings Task to edit the Settings data
 	Settings to show/hide toolbars. Either toolbar,statusbar or hide.
@@ -45,7 +39,12 @@ Settings Task to edit the Settings data
 	Settings to show/hide each tool bar item
 		Put them into GroupParameters - a good way to force me to get this right!
 
+Terminal to have shortcuts so that it is easy to move away from the Terminal using the keyboard.
+    trolCommander creates a subclass of JediTermWidget which creates its own subclass of TerminalPane,
+    and this TerminalPane has its own actions with shortcuts.
 
+Maybe F9 and ctrl+F9 should be merged into a single key which cycles through left, right both.
+    Or use a DIFFENT key to cycle F8? and keep F9 and ctrl+F9
 
 Nice-to-Haves
 =============
@@ -53,7 +52,9 @@ Nice-to-Haves
 action and ifScript to use Editor
 	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.
 	EditorPane interacts with new EditorWindow instead of Editor.
-	Maybe rename Editor to EditorTool.
+    EditorWindow and MainWindow both implement TopLevel, which has toolbar hooks.
+    Keep MainWindow.getMainWindow, but also have TopLevel.getTopLevel()
+    TopLevel.getFrame() returns the JFrame.
 
 Un-close tab. Useful when you close a tab by mistake.
 
@@ -84,6 +85,12 @@ TabbedTool
 Custom options applied to a tool
 	e.g. WrkF is given more options, suitable only for images.
 	Problem : For this to be useful, it needs to be added to the History, and saved in the tabset. Nasty.
+    Can we create a WrappedTool, which has the names of additional option file(s).
+    Maybe just create a subclass of WrkF for images, which sets the fileExtension filter,
+        and has its own options file which includes the wrkf's options file.
+
+Look at trolCommander to see what I can pinch from it???
+    http://trolsoft.ru/en/soft/trolcommander
 
 Editor to have syntax highlighter choice, which is guessed based on extension when file is changed.
 

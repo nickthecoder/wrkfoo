@@ -102,7 +102,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return (MainWindow) SwingUtilities.getWindowAncestor(component);
     }
 
-    public MainWindow(Tool... tools)
+    public MainWindow()
     {
         whole = new JPanel();
 
@@ -140,10 +140,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
         whole.add(statusBarPanel, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
-
-        for (Tool tool : tools) {
-            addTab(tool);
-        }
 
         pack();
         setLocationRelativeTo(null);
@@ -478,7 +474,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void onNewWindow()
     {
         Home tool = new Home();
-        MainWindow newWindow = new MainWindow(tool);
+        MainWindow newWindow = new MainWindow();
+        newWindow.addTab(tool);
         tool.go();
         newWindow.setVisible(true);
     }
