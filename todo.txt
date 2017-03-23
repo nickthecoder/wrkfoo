@@ -1,10 +1,6 @@
 Current Task
 ============
 
-
-Git Status is flakey, sometimes showing no results
-    probably cause by a screw up in Exec.
-
 Fallback terminal - add an TextField, so that commands can be typed. Naff, but better than nothing.
 
 Shortcut to get out of the Terminal
