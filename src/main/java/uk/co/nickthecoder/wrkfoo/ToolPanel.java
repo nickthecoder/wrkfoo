@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -84,30 +82,13 @@ public class ToolPanel extends JPanel implements TaskListener
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        goButton = new JButton("Go");
-        goButton.setIcon(Resources.icon("run.png"));
-        goButton.setToolTipText("(Re)Run the tool (F5)");
-        goButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                go();
-            }
-        });
+        ActionBuilder builder = new ActionBuilder( this );
+        
+        goButton = builder.name("toolpanel.go").method("go").label("Go").icon("run.png").buildButton();
         goStop.add(goButton, gbc);
 
-        stopButton = new JButton("Stop");
-        stopButton.setIcon(Resources.icon("stop.png"));
+        stopButton = builder.name("toolpanel.stop").method("stop").label("Stop").buildButton();
         stopButton.setVisible(false);
-        stopButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                stop();
-            }
-        });
         goStop.add(stopButton, gbc);
 
         sidePanel.add(goStop, BorderLayout.SOUTH);

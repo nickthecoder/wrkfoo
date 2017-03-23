@@ -1,7 +1,6 @@
 Current Task
 ============
 
-Put back MainWindow ENTER handler, make sure it only works when in the option text field.
 
 Bug Enter is being grabbed by MainFrame? when in SimpleTerminal's input
     Enter with blank gives an error. Should just ignore if there is no default option?

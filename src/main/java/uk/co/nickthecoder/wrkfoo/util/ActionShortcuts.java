@@ -76,6 +76,8 @@ public final class ActionShortcuts
         // ToolPanel
         put("toggleLeftPane", "F9");
         put("toggleRightPane", "ctrl+F9");
+        put("toolpanel.go", "ENTER");
+        put("toolpanel.stop", "ctrl+ESCAPE");
 
         // ToolTab
         put("undoTool", "alt LEFT");

@@ -48,8 +48,6 @@ public class ActionBuilder
 
     private String actionName;
 
-    private Method method;
-
     public ActionBuilder(Object receiver)
     {
         this.receiver = receiver;
@@ -152,15 +150,22 @@ public class ActionBuilder
     private static final Class<?>[] EMPTY_SIGNATURE = {};
     private static final Object[] EMPTY_VALUES = {};
 
-    public ActionBuilder method(String methodName)
+    public Method getMethod()
     {
         try {
-            method = receiver.getClass().getMethod(methodName, EMPTY_SIGNATURE);
+            return receiver.getClass().getMethod(methodName, EMPTY_SIGNATURE);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ActionBuilder method(String methodName)
+    {
+        this.methodName = methodName;
         return this;
     }
+
+    private String methodName;
 
     /**
      * Uses the name to look for an icon, and as the method name.
@@ -176,7 +181,7 @@ public class ActionBuilder
         String lastPart = actionName;
         int dot = lastPart.lastIndexOf('.');
         if (dot >= 0) {
-            lastPart = lastPart.substring(dot +1);
+            lastPart = lastPart.substring(dot + 1);
         }
         icon(lastPart + ".png");
         method("on" + lastPart.substring(0, 1).toUpperCase() + lastPart.substring(1));
@@ -198,7 +203,7 @@ public class ActionBuilder
             }
         }
 
-        if (method != null) {
+        if (methodName != null) {
             Action action = createAction();
             result.addActionListener(action);
 
@@ -213,7 +218,7 @@ public class ActionBuilder
         final JToggleButton result = new JToggleButton();
         buildButton(result);
 
-        if (method != null) {
+        if (methodName != null) {
             final Action action = createAction();
             result.addActionListener(action);
 
@@ -238,7 +243,7 @@ public class ActionBuilder
         JButton result = new JButton();
         buildButton(result);
 
-        if (method != null) {
+        if (methodName != null) {
             Action action = createAction();
             result.addActionListener(action);
             mapShortcut(action);
@@ -281,7 +286,7 @@ public class ActionBuilder
             result.setToolTipText(tooltip + ActionShortcuts.instance.tooltipSuffix(actionName));
         }
 
-        if (method != null) {
+        if (methodName != null) {
             Action action = createAction();
             result.addActionListener(action);
 
@@ -297,7 +302,7 @@ public class ActionBuilder
 
     public void buildShortcut()
     {
-        if (method != null) {
+        if (methodName != null) {
             mapShortcut(createAction());
         }
         reset();
@@ -305,7 +310,7 @@ public class ActionBuilder
 
     private Action createAction()
     {
-        final Method theMethod = this.method;
+        final Method theMethod = this.getMethod();
         final ExceptionHandler handler = this.exceptionHandler;
         Action action = new AbstractAction()
         {
@@ -350,7 +355,7 @@ public class ActionBuilder
         this.label = null;
         this.icon = null;
         this.tooltip = null;
-        this.method = null;
+        this.methodName = null;
         this.actionName = null;
         this.visible = true;
         this.enable = true;
