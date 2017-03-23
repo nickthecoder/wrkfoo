@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskCommand;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.MultipleParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 
@@ -23,13 +24,12 @@ public class WrkFoo extends Task
         .description("Default is ~/.config/wrkfoo/settings.json")
         .optional().parameter();
 
-    public FileParameter tabsFile = new FileParameter.Builder("tabsFile")
-        .optional().file().mustExist()
-        .parameter();
+    public MultipleParameter<FileParameter, File> tabsFile = new FileParameter.Builder("")
+        .file().mustExist()
+        .multipleParameter("tabsFile");
 
-    public StringParameter tabsName = new StringParameter.Builder("tabsName")
-        .optional()
-        .parameter();
+    public MultipleParameter<StringParameter, String> tabsName = new StringParameter.Builder("")
+        .multipleParameter("tabsName");
 
     public WrkFoo()
     {
@@ -43,22 +43,25 @@ public class WrkFoo extends Task
             Resources.settingsFile = settings.getValue();
         }
 
-        if (tabsFile.getValue() != null) {
-            TabSetData.load(tabsFile.getValue()).openMainWindow();
-
-        } else if (tabsName.getValue() != null) {
-            File file = new File(Resources.getInstance().getTabsDirectory(), tabsName.getValue() + ".json");
+        for (File file : tabsFile.getValue()) {
             TabSetData.load(file).openMainWindow();
 
-        } else {
+        }
 
+        for (String name : tabsName.getValue()) {
+
+            File file = new File(Resources.getInstance().getTabsDirectory(), name + ".json");
+            TabSetData.load(file).openMainWindow();
+        }
+
+        if ((tabsFile.getValue().size() == 0) && (tabsName.getValue().size() == 0)) {
             MainWindow mainWindow = new MainWindow();
             mainWindow.onWorkTabSets();
             mainWindow.setVisible(true);
         }
     }
 
-    public static void newWindow( final Tool tool )
+    public static void newWindow(final Tool tool)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -68,12 +71,12 @@ public class WrkFoo extends Task
                 Util.defaultLookAndFeel();
 
                 MainWindow mainWindow = new MainWindow();
-                mainWindow.addTab( tool );
+                mainWindow.addTab(tool);
                 mainWindow.setVisible(true);
             }
         });
     }
-     
+
     public static void main(final String[] argv)
     {
         try {
