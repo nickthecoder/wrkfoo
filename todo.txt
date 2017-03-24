@@ -1,15 +1,18 @@
 Current Task
 ============
 
+
 BUGS
 ====
+
+
+Editor doesn't respond to the CONTEXT_MENU key.
 
 Terminal does not output anything for short-lived commands (such as a simple "ls").
 
 Says "Finished" when Task is finished, but the Terminal process is still running.
 
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
-    Shouldn't have a list of tools passed to MainFrame constructor.
     It is the (lack of) change event from TabbedPane?
 
 Editor doesn't offer "Close without saving" when closing the tab or opening a different document.

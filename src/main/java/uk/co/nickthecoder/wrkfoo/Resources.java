@@ -88,6 +88,11 @@ public class Resources
     {
         return optionsPath;
     }
+    
+    public File getSettingsDirectory()
+    {
+        return settingsDirectory;
+    }
 
     public File getCustomOptionsDirectory()
     {

@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,12 @@ public class HomeTask extends Task implements ListResults<Tool>
         results = new ArrayList<>();
 
         WrkF wrkFHome = new WrkF();
-        wrkFHome.getTask().directory.setValue(Resources.getInstance().getHomeDirectory());
+        wrkFHome.getTask().directory.setValueSafely(Resources.getInstance().getHomeDirectory());
         results.add(wrkFHome);
 
         WrkFTree wrkFTreeHome = new WrkFTree();
-        wrkFTreeHome.getTask().directory.setValue(Resources.getInstance().getHomeDirectory());
-        wrkFTreeHome.getTask().depth.setValue(1);
+        wrkFTreeHome.getTask().directory.setValueSafely(Resources.getInstance().getHomeDirectory());
+        wrkFTreeHome.getTask().depth.setValueSafely(1);
         results.add(wrkFTreeHome);
 
         WrkMounts wrkMountPoints = new WrkMounts();
@@ -38,9 +39,14 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(wrkTabSets);
 
         Places places = new Places();
-        places.task.store.setValue(Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0",
-            "bookmarks"));
+        places.task.store.setValueSafely(
+            Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));
         results.add(places);
+
+        PlacesChoices placesChoice = new PlacesChoices();
+        placesChoice.directory
+            .setValueSafely(new File(Resources.getInstance().getSettingsDirectory(), "placesChoices"));
+        results.add(placesChoice);
 
         WrkOptionsFiles wrkOptionFiles = new WrkOptionsFiles();
         results.add(wrkOptionFiles);
@@ -52,8 +58,8 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(terminal);
 
         Terminal bash = new Terminal();
-        bash.task.command.setDefaultValue("bash\n--login");
-        bash.title.setDefaultValue("Bash");
+        bash.task.command.setValueSafely("bash\n--login");
+        bash.title.setValueSafely("Bash");
         results.add(bash);
     }
 
