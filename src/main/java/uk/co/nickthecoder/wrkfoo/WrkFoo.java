@@ -37,6 +37,12 @@ public class WrkFoo extends Task
     }
 
     @Override
+    public MultipleParameter<StringParameter,String> getTrailingParameter()
+    {
+        return tabsName;
+    }
+
+    @Override
     public void body()
     {
         if (settings.getValue() != null) {
