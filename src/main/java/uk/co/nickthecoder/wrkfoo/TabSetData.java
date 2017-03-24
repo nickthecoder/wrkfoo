@@ -16,7 +16,6 @@ import com.google.gson.stream.JsonReader;
 
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
-import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
@@ -147,18 +146,17 @@ public class TabSetData
 
                 if (creationString.endsWith(".groovy")) {
                     klass = (Class<Tool>) Resources.getInstance().loadGroovyClass(new File(creationString));
-                    
+
                 } else {
                     klass = (Class<Tool>) Class.forName(creationString);
                 }
                 Tool tool = klass.newInstance();
 
-                GroupParameter gp = tool.getParameters();
-                for (String key : parameters.keySet()) {
-                    String value = parameters.get(key);
-                    Parameter parameter = gp.findParameter(key);
-                    if ((parameter != null) && (parameter instanceof ValueParameter)) {
+                for (Parameter parameter : tool.getTask().getParameters().getChildren()) {
+                    if ((parameters.containsKey(parameter.getName()) && (parameter instanceof ValueParameter))) {
+
                         ValueParameter<?> vp = (ValueParameter<?>) parameter;
+                        String value = parameters.get(parameter.getName());
                         try {
                             vp.setStringValue(value);
                         } catch (ParameterException e) {
