@@ -110,6 +110,11 @@ public class SimpleTerminalWidget implements ProcessListener
         return inputArea;
     }
 
+    public JComponent getInputTextField()
+    {
+        return input;
+    }
+
     private class TerminalSink extends SimpleSink
     {
         protected void sink(char[] buffer, int len) throws IOException

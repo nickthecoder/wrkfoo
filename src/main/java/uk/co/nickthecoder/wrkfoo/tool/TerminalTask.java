@@ -19,6 +19,7 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.Command;
+import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
@@ -43,6 +44,8 @@ public class TerminalTask extends Task
     ResultsPanel panel;
 
     private JPanel terminal;
+
+    private SimpleTerminalWidget simpleTerminal;
 
     private Process process;
 
@@ -121,8 +124,8 @@ public class TerminalTask extends Task
         if (useFallback) {
 
             simpleTerminal = createExecPanel(commandArray, env, directoryString);
-            panel.add(simpleTerminal.getOutputComponent());
             panel.add(simpleTerminal.getInputComponent(), BorderLayout.SOUTH);
+            panel.add(simpleTerminal.getOutputComponent(), BorderLayout.CENTER);
 
         } else {
 
@@ -144,8 +147,6 @@ public class TerminalTask extends Task
             process.destroy();
         }
     }
-
-    private SimpleTerminalWidget simpleTerminal;
 
     public SimpleTerminalWidget createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
     {
@@ -238,5 +239,18 @@ public class TerminalTask extends Task
             terminal = null;
         }
         panel.removeAll();
+    }
+
+    public void focusOnResults(int importance)
+    {
+        WrkFoo.assertIsEDT();
+
+        if (terminal != null) {
+            MainWindow.focusLater("TerminalTask.focus-terminal", terminal, importance);
+        } else if (simpleTerminal != null) {
+            MainWindow.focusLater("TerminalTask.focus-input", simpleTerminal.getInputTextField(), importance);
+        }
+        MainWindow.focusLater("TerminalTask.focus-panel", panel, 0);
+
     }
 }

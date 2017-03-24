@@ -594,7 +594,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 long now = new Date().getTime();
                 if ((importance < focusImportance) && (now - focusTime < 1000)) {
                     // Ignore a lower importance soon after a high importance.
-                    // System.out.println("Skipping - too soon");
+                    //System.out.println("Skipping - too soon");
                     return;
                 }
 
@@ -602,11 +602,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 // There is a focus pending
                 if (importance < focusImportance) {
                     // Ignore lower importance
-                    // System.out.println("Ignoring low importance " + description + " for " + focusDescription);
+                    //System.out.println("Ignoring low importance " + description + " for " + focusDescription);
                     return;
                 } else {
                     // Ok, lets replace the pending one with this higher importance one.
-                    // System.out.println("Doing " + description + " instead of " + focusDescription);
+                    //System.out.println("Doing " + description + " instead of " + focusDescription);
                 }
             }
 
@@ -617,13 +617,13 @@ public class MainWindow extends JFrame implements ExceptionHandler
             focusDescription = description;
 
             if (old == null) {
-                // System.out.println("Invoking later");
+                //System.out.println("Invoking later");
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        // System.out.println("Focusing NOW. " + focusDescription);
+                        //System.out.println("Focusing NOW. " + focusDescription);
                         focusComponent.requestFocusInWindow();
                         focusComponent = null;
                         focusTime = new Date().getTime();
@@ -631,7 +631,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
                 });
             }
         } else {
-            // System.out.println("Ignoring " + description + ". Doing this instead : " + focusDescription);
+            //System.out.println("Ignoring " + description + ". Doing this instead : " + focusDescription);
         }
     }
 

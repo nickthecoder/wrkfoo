@@ -15,8 +15,7 @@ public abstract class AbstractUnthreadedTool<T extends Task> extends AbstractToo
         task.run();
         updateResults();
         getToolPanel().getSplitPane().showLeft();
-        focusOnResults(7);
-
+        focus(7);
     }
 
     public void stop()

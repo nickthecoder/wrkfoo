@@ -45,7 +45,7 @@ public abstract class AbstractThreadedTool<T extends Task> extends AbstractTool<
             public void run()
             {
                 getToolPanel().getSplitPane().showLeft();
-                focusOnResults(7);
+                focus(7);
             }
         });
     }

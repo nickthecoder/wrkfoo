@@ -10,7 +10,6 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
-import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public abstract class AbstractTool<T extends Task> implements Tool
 {
@@ -120,12 +119,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     @Override
     public void focus(final int importance)
     {
-        HidingSplitPane hsp = getToolPanel().getSplitPane();
-        if (hsp.getRightComponent().isVisible()) {
-            MainWindow.focusLater("Tool's parameters as they are showing", hsp.getRightComponent(), importance);
-        } else {
-            focusOnResults(importance);
-        }
+        focusOnResults(importance);
     }
 
     /**

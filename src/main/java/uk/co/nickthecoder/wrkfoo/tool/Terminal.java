@@ -52,7 +52,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     public Terminal(Command command)
     {
         super(new TerminalTask(command));
-        task.insertParameter(0,title);
+        task.insertParameter(0, title);
         init();
         reRunnable = false;
     }
@@ -188,5 +188,11 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
                 }
             }
         });
+    }
+
+    @Override
+    public void focusOnResults(int importance)
+    {
+        task.focusOnResults(importance);
     }
 }
