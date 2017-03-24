@@ -15,6 +15,7 @@ import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.parameter.MultipleParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -28,8 +29,8 @@ import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class TerminalTask extends Task
 {
-    public StringParameter command = new StringParameter.Builder("command").multiLine()
-        .parameter();
+    public MultipleParameter<StringParameter, String> command = new StringParameter.Builder("")
+        .multipleParameter("command").minimumValues(1);
 
     public FileParameter directory = new FileParameter.Builder("directory").directory().includeHidden()
         .value(new File("."))
@@ -101,7 +102,7 @@ public class TerminalTask extends Task
         Map<String, String> env;
 
         if (cmd == null) {
-            commandArray = command.getValue().split("\n");
+            commandArray = command.getValue().toArray(new String[] {});
             directoryString = directory.getValue().getPath();
             env = new HashMap<>(System.getenv());
         } else {

@@ -58,7 +58,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(terminal);
 
         Terminal bash = new Terminal();
-        bash.task.command.setValueIgnoreErrors("bash\n--login");
+        bash.task.command.addValues("bash", "--login");
         bash.title.setValueIgnoreErrors("Bash");
         results.add(bash);
     }
