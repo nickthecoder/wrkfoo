@@ -103,7 +103,7 @@ public class ToolPanel extends JPanel implements TaskListener
         this.add(splitPane, BorderLayout.CENTER);
 
         splitPane.setState(HidingSplitPane.State.LEFT);
-        if (this.tool.getTask().getRootParameter().getChildren().size() == 0) {
+        if (!this.tool.getTask().getRootParameter().children().iterator().hasNext()) {
             sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
 

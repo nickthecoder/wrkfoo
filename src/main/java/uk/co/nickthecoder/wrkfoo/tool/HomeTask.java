@@ -18,12 +18,12 @@ public class HomeTask extends Task implements ListResults<Tool>
         results = new ArrayList<>();
 
         WrkF wrkFHome = new WrkF();
-        wrkFHome.getTask().directory.setValueSafely(Resources.getInstance().getHomeDirectory());
+        wrkFHome.getTask().directory.setValueIgnoreErrors(Resources.getInstance().getHomeDirectory());
         results.add(wrkFHome);
 
         WrkFTree wrkFTreeHome = new WrkFTree();
-        wrkFTreeHome.getTask().directory.setValueSafely(Resources.getInstance().getHomeDirectory());
-        wrkFTreeHome.getTask().depth.setValueSafely(1);
+        wrkFTreeHome.getTask().directory.setValueIgnoreErrors(Resources.getInstance().getHomeDirectory());
+        wrkFTreeHome.getTask().depth.setValueIgnoreErrors(1);
         results.add(wrkFTreeHome);
 
         WrkMounts wrkMountPoints = new WrkMounts();
@@ -39,13 +39,13 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(wrkTabSets);
 
         Places places = new Places();
-        places.task.store.setValueSafely(
+        places.task.store.setValueIgnoreErrors(
             Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));
         results.add(places);
 
         PlacesChoices placesChoice = new PlacesChoices();
         placesChoice.directory
-            .setValueSafely(new File(Resources.getInstance().getSettingsDirectory(), "placesChoices"));
+            .setValueIgnoreErrors(new File(Resources.getInstance().getSettingsDirectory(), "placesChoices"));
         results.add(placesChoice);
 
         WrkOptionsFiles wrkOptionFiles = new WrkOptionsFiles();
@@ -58,8 +58,8 @@ public class HomeTask extends Task implements ListResults<Tool>
         results.add(terminal);
 
         Terminal bash = new Terminal();
-        bash.task.command.setValueSafely("bash\n--login");
-        bash.title.setValueSafely("Bash");
+        bash.task.command.setValueIgnoreErrors("bash\n--login");
+        bash.title.setValueIgnoreErrors("Bash");
         results.add(bash);
     }
 
