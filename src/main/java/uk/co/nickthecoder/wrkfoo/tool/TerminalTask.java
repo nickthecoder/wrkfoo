@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,8 +31,11 @@ import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class TerminalTask extends Task
 {
-    public MultipleParameter<StringParameter, String> command = new StringParameter.Builder("")
-        .multipleParameter("command").minimumValues(1);
+    public StringParameter command = new StringParameter.Builder("command")
+        .parameter();
+
+    public MultipleParameter<StringParameter, String> arguments = new StringParameter.Builder("")
+        .multipleParameter("arguments");
 
     public FileParameter directory = new FileParameter.Builder("directory").directory().includeHidden()
         .value(new File("."))
@@ -56,7 +61,7 @@ public class TerminalTask extends Task
     {
         super();
 
-        addParameters(command, directory, useSimpleTerminal);
+        addParameters(command, arguments, directory, useSimpleTerminal);
         init();
     }
 
@@ -102,7 +107,10 @@ public class TerminalTask extends Task
         Map<String, String> env;
 
         if (cmd == null) {
-            commandArray = command.getValue().toArray(new String[] {});
+            List<String> commandList = new ArrayList<>();
+            commandList.add(command.getValue());
+            commandList.addAll(arguments.getValue() );
+            commandArray = commandList.toArray(new String[] {});
             directoryString = directory.getValue().getPath();
             env = new HashMap<>(System.getenv());
         } else {
