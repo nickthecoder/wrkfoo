@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.util;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -40,7 +41,8 @@ public class SimpleTerminalWidget implements ProcessListener
         
         textArea = new JTextPane();
         textArea.setEditable(false);
-
+        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        
         StyledDocument doc = textArea.getStyledDocument();
 
         Style defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
