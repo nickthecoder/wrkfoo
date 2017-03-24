@@ -4,7 +4,6 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 
@@ -28,8 +27,6 @@ public interface Tool
     public String getLongTitle();
 
     public Icon getIcon();
-
-    public GroupParameter getParameters();
 
     public void attachTo(ToolTab tab);
 

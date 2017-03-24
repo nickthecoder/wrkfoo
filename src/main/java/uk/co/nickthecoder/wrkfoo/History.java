@@ -119,7 +119,7 @@ public class History
             this.tool = tool;
             parameterValues = new HashMap<>();
 
-            saveParameters(tool.getTask().getParameters());
+            saveParameters(tool.getTask().getRootParameter());
         }
 
         void saveParameters(GroupParameter group)
@@ -139,8 +139,8 @@ public class History
 
             for (String key : parameterValues.keySet()) {
                 try {
-                    Parameter parameter = task.getParameters().findParameter(key);
-                    ((ValueParameter) parameter).setDefaultValue(parameterValues.get(key));
+                    ValueParameter parameter = task.findParameter(key);
+                    parameter.setDefaultValue(parameterValues.get(key));
 
                 } catch (Exception e) {
                     e.printStackTrace();

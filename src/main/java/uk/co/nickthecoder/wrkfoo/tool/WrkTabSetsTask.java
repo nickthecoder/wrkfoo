@@ -18,7 +18,7 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
     public WrkTabSetsTask()
     {
         super();
-        for (Parameter parameter : getParameters().getChildren()) {
+        for (Parameter parameter : parameters()) {
             parameter.visible = false;
         }
 

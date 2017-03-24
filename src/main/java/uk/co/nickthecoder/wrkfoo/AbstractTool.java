@@ -6,7 +6,6 @@ import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
-import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
@@ -46,7 +45,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return task;
     }
-
+    
     /**
      * Used by both getShortTitle and getLongTitle unless either are overridden in sub-classes.
      * 
@@ -78,12 +77,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
     public Icon getIcon()
     {
         return null;
-    }
-
-    @Override
-    public GroupParameter getParameters()
-    {
-        return task.getParameters();
     }
 
     @Override
@@ -166,7 +159,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
         try {
             AbstractTool<T> copy = this.getClass().newInstance();
 
-            for (ValueParameter src : getTask().getParameters().allValueParameters()) {
+            for (ValueParameter src : getTask().valueParameters()) {
                 ValueParameter dest = ((ValueParameter) copy.getTask().findParameter(src.getName()));
                 try {
                     dest.setValue(src.getValue());
@@ -185,7 +178,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     public ParametersPanel createParametersPanel()
     {
         ParametersPanel pp = new ParametersPanel();
-        pp.addParameters(getTask().getParameters());
+        pp.addParameters(getTask().getRootParameter());
         return pp;
     }
 

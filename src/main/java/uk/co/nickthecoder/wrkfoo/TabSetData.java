@@ -16,7 +16,6 @@ import com.google.gson.stream.JsonReader;
 
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
-import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class TabSetData
@@ -129,11 +128,8 @@ public class TabSetData
 
             creationString = tool.getCreationString();
             parameters = new HashMap<>();
-            for (Parameter parameter : tool.getParameters().getChildren()) {
-                if (parameter instanceof ValueParameter) {
-                    ValueParameter<?> vp = (ValueParameter<?>) parameter;
-                    parameters.put(vp.getName(), vp.getStringValue());
-                }
+            for (ValueParameter<?> parameter : tool.getTask().valueParameters()) {
+                parameters.put(parameter.getName(), parameter.getStringValue());
             }
             showParameters = tool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
         }
@@ -152,13 +148,12 @@ public class TabSetData
                 }
                 Tool tool = klass.newInstance();
 
-                for (Parameter parameter : tool.getTask().getParameters().getChildren()) {
+                for (ValueParameter<?> parameter : tool.getTask().valueParameters()) {
                     if ((parameters.containsKey(parameter.getName()) && (parameter instanceof ValueParameter))) {
 
-                        ValueParameter<?> vp = (ValueParameter<?>) parameter;
                         String value = parameters.get(parameter.getName());
                         try {
-                            vp.setStringValue(value);
+                            parameter.setStringValue(value);
                         } catch (ParameterException e) {
                             // Do nothing
                         }

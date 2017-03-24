@@ -82,8 +82,8 @@ public class ToolPanel extends JPanel implements TaskListener
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        ActionBuilder builder = new ActionBuilder( this );
-        
+        ActionBuilder builder = new ActionBuilder(this);
+
         goButton = builder.name("toolpanel.go").method("go").label("Go").icon("run.png").buildButton();
         goStop.add(goButton, gbc);
 
@@ -103,7 +103,7 @@ public class ToolPanel extends JPanel implements TaskListener
         this.add(splitPane, BorderLayout.CENTER);
 
         splitPane.setState(HidingSplitPane.State.LEFT);
-        if (this.tool.getTask().getParameters().getChildren().size() == 0) {
+        if (this.tool.getTask().getRootParameter().getChildren().size() == 0) {
             sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
 
