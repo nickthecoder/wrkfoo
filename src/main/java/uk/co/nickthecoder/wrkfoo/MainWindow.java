@@ -415,7 +415,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
             if (running) {
                 setMessage("Running");
             } else {
-                setMessage("Finished");
+                setMessage("");
             }
         }
         stopGoButtons(running);
