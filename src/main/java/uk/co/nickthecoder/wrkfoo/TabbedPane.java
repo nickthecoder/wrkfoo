@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputAdapter;
 
 import uk.co.nickthecoder.jguifier.Task;
@@ -27,6 +27,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     {
         toolTabs = new ArrayList<>();
         enableReordering();
+        
+        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        setTabPlacement(JTabbedPane.LEFT);
     }
 
     public ToolTab getCurrentTab()
@@ -67,8 +70,10 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
-        tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
-
+        //tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
+        tabLabel.setHorizontalAlignment(LEFT);
+        tabLabel.setPreferredSize(new Dimension(150, tabLabel.getPreferredSize().height));
+        
         JPanel panel = tab.getPanel();
 
         insertTab(null, null, panel, null, position);
