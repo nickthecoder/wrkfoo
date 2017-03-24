@@ -67,7 +67,7 @@ public class SimpleTerminalWidget implements ProcessListener
         JButton terminateButton = builder.name("SimpleTerminalWidget.terminate").label("Terminate").buildButton();
         inputArea.add(terminateButton, BorderLayout.WEST);
 
-        exec.combineStdoutStderr();
+        exec.mergeStderr();
         exec.stdout(new TerminalSink());
 
         printSource = new SimplePrintSource();
