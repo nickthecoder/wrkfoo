@@ -9,12 +9,10 @@ Terminal does not output anything for short-lived commands (such as a simple "ls
 Editor toolbar appears when tabset is loaded, even though it isn't on the selected tab.
     It is the (lack of) change event from TabbedPane?
 
-Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
-
-Editor doesn't detect when the file has changed on disk.
-
 New Features
 ============
+
+Places to accept Drag and Drop files.
 
 A window to have a current directory, then basic git/gradle commands can be a GLOBAL.
     Make it more generic, allow for any number of named values that the groovy scripts can use.
@@ -33,8 +31,9 @@ Git stash features
 Non-row options to have shortcuts
 
 
-OptionData doesn't handle aliases
-	WrkOptions needs a new column. Hide it and make it the tooltip for the code column.
+Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
+
+Editor doesn't detect when the file has changed on disk.
 
 Editor saveAs , rename
 
@@ -48,12 +47,14 @@ Settings Task to edit the Settings data
 Terminal to have shortcuts so that it is easy to move away from the Terminal using the keyboard.
     trolCommander creates a subclass of JediTermWidget which creates its own subclass of TerminalPane,
     and this TerminalPane has its own actions with shortcuts.
-
-Maybe F9 and ctrl+F9 should be merged into a single key which cycles through left, right both.
-    Or use a DIFFENT key to cycle F8? and keep F9 and ctrl+F9
-
+    
 Nice-to-Haves
 =============
+
+TextEditorParameter, for editing chunks of code (such as groovy scripts, xml, json etc)
+    Right click on the "plain" JTextPane for a "Edit..." option, which pops up an EditorWindow
+    Share the same document between the Parameter's component and the EditorWidget, so changes
+      appear in both.
 
 action and ifScript to use Editor
 	default to 3 or 4 lines JTextArea, but with a button to popup a full editor.
@@ -62,9 +63,10 @@ action and ifScript to use Editor
     Keep MainWindow.getMainWindow, but also have TopLevel.getTopLevel()
     TopLevel.getFrame() returns the JFrame.
 
-Un-close tab. Useful when you close a tab by mistake.
+Un-close tab. Useful when you close a tab by mistake. (shift+ctrl+T)
 
 Save Tab sets to remember the order and widths of the columns
+    Only possible with regular TableTools, not with future compound tools, such as the planned trolCommaner-like tools.
 
 RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
 	Should grep then use RegexParameter?
