@@ -50,8 +50,8 @@ public final class ActionShortcuts
         put("showError", "ctrl+E");
         put("previousTab", "alt+PAGE_UP");
         put("nextTab", "alt+PAGE_DOWN");
-        put("jumpToToolBar", "F10");
-        put("jumpToResults", "F11");
+        put("jumpToToolBar", "F11");
+        put("jumpToResults", "ctrl+F12");
         put("jumpToParameters", "F12");
 
         put("runNonRowOption", "ENTER");
@@ -74,6 +74,7 @@ public final class ActionShortcuts
         put("promptOptionsInNewTab", "ctrl F2");
 
         // ToolPanel
+        put("cyclePane", "F10");
         put("toggleLeftPane", "F9");
         put("toggleRightPane", "ctrl+F9");
         put("toolpanel.go", "ENTER");

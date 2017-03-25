@@ -1,13 +1,8 @@
 Current Task
 ============
 
-
 BUGS
 ====
-
-SimpleTerminal not showing stderr? Type an invalid command into bash, and you get no results.
-
-Editor doesn't respond to the CONTEXT_MENU key.
 
 Terminal does not output anything for short-lived commands (such as a simple "ls").
 
@@ -20,6 +15,13 @@ Editor doesn't detect when the file has changed on disk.
 
 New Features
 ============
+
+A window to have a current directory, then basic git/gradle commands can be a GLOBAL.
+    Make it more generic, allow for any number of named values that the groovy scripts can use.
+        Put them in a single map
+    Choose the type, String, File, Integer etc, plus Groovy Eval - run a Groovy script to get the value.
+
+trolCommander style split screen to make copy/move easier.
 
 Git stash features
 	http://stackoverflow.com/questions/1105253/how-would-i-extract-a-single-file-or-changes-to-a-file-from-a-git-stash

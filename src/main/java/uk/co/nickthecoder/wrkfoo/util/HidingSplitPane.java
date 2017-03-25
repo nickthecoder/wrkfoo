@@ -65,8 +65,8 @@ public class HidingSplitPane extends JSplitPane
                 // Swap the visibility of left & right, but don't do anything with the divider
                 Component makeInvisibleComponent = newState == State.LEFT ? getRightComponent() : getLeftComponent();
                 Component makeVisibleComponent = this.state == State.LEFT ? getRightComponent() : getLeftComponent();
-                makeInvisibleComponent.setVisible(true);
-                makeVisibleComponent.setVisible(false);
+                makeInvisibleComponent.setVisible(false);
+                makeVisibleComponent.setVisible(true);
             }
         }
 
@@ -84,6 +84,24 @@ public class HidingSplitPane extends JSplitPane
     {
         if (this.state == State.LEFT) {
             setState(State.BOTH);
+        }
+    }
+
+    /**
+     * 
+     * @return The component which just became visible
+     */
+    public Component cycle()
+    {
+        if (this.state == State.BOTH) {
+            setState(State.LEFT);
+            return getLeftComponent();
+        } else if (this.state == State.LEFT) {
+            setState(State.RIGHT);
+            return getRightComponent();
+        } else {
+            setState(State.BOTH);
+            return getLeftComponent();
         }
     }
 

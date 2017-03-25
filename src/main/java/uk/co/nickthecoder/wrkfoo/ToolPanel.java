@@ -130,10 +130,16 @@ public class ToolPanel extends JPanel implements TaskListener
     {
         tool.postCreate();
 
-        ActionBuilder builder = new ActionBuilder(this);
+        ActionBuilder builder = new ActionBuilder(this).condition(WHEN_IN_FOCUSED_WINDOW);
 
+        builder.name("cyclePane").buildShortcut();
         builder.name("toggleLeftPane").buildShortcut();
         builder.name("toggleRightPane").buildShortcut();
+    }
+
+    public void onCyclePane()
+    {
+        MainWindow.focusLater("cycle", splitPane.cycle(), 10);
     }
 
     public void onToggleLeftPane()
