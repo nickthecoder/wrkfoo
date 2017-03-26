@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.guiutil.Places.Place;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -14,75 +15,86 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.tool.PlacesTask.PlacesWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
+public class PlacesTool extends AbstractListTool<PlacesTask, Place>
 {
     public static final Icon icon = Resources.icon("places.png");
 
-    public Places()
+    public PlacesTool()
     {
         super(new PlacesTask());
     }
 
     @Override
-    protected Columns<PlacesWrappedFile> createColumns()
+    public String getOptionsName()
     {
-        Columns<PlacesWrappedFile> columns = new Columns<>();
+        return "places";
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "Places";
+    }
+
+    @Override
+    protected Columns<Place> createColumns()
+    {
+        Columns<Place> columns = new Columns<>();
 
         columns = new Columns<>();
 
-        columns.add(new Column<PlacesWrappedFile>(Icon.class, "")
+        columns.add(new Column<Place>(Icon.class, "")
         {
             @Override
-            public Icon getValue(PlacesWrappedFile row)
+            public Icon getValue(Place row)
             {
                 return WrkFBase.getIconForFile(row.file);
             }
         }.width(25).lock());
 
-        columns.add(new Column<PlacesWrappedFile>(File.class, "file")
+        columns.add(new Column<Place>(File.class, "file")
         {
             @Override
-            public File getValue(PlacesWrappedFile row)
+            public File getValue(Place row)
             {
                 return row.file;
             }
         }.hide());
 
-        columns.add(new Column<PlacesWrappedFile>(String.class, "name")
+        columns.add(new Column<Place>(String.class, "label")
         {
             @Override
-            public String getValue(PlacesWrappedFile row)
+            public String getValue(Place row)
             {
-                return row.name;
+                return row.label;
             }
         }.width(150));
 
-        columns.add(new Column<PlacesWrappedFile>(String.class, "path")
+        columns.add(new Column<Place>(String.class, "path")
         {
             @Override
-            public String getValue(PlacesWrappedFile row)
+            public String getValue(Place row)
             {
-                return row.getChoppedPath();
+                return row.file.getPath();
             }
         }.tooltip(4).width(500));
 
-        columns.add(new Column<PlacesWrappedFile>(Date.class, "lastModified")
+        columns.add(new Column<Place>(Date.class, "lastModified")
         {
             @Override
-            public Date getValue(PlacesWrappedFile row)
+            public Date getValue(Place row)
             {
                 return new Date(row.file.lastModified());
             }
         }.width(120).lock().renderer(DateRenderer.instance));
 
-        columns.add(new Column<PlacesWrappedFile>(Long.class, "size")
+        columns.add(new Column<Place>(Long.class, "size")
         {
             @Override
-            public Long getValue(PlacesWrappedFile row)
+            public Long getValue(Place row)
             {
                 return row.file.length();
             }
@@ -128,7 +140,7 @@ public class Places extends AbstractListTool<PlacesTask, PlacesWrappedFile>
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Places.this.go();
+            PlacesTool.this.go();
         }
     };
 }

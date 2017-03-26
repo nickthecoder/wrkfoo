@@ -10,11 +10,11 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.FileLister;
 
 /**
- * Like the {@link Places} tool, but instead of asking for a places store using a FileParameter,
+ * Like the {@link PlacesTool} tool, but instead of asking for a places store using a FileParameter,
  * this has a directory, where many places stores live, and you pick one from a pull down list.
  * 
  */
-public class PlacesChoices extends Places
+public class PlacesChoices extends PlacesTool
 {
     public FileParameter directory = new FileParameter.Builder("directory").directory().mustExist()
         .parameter();
@@ -55,6 +55,12 @@ public class PlacesChoices extends Places
     public String getOptionsName()
     {
         return "places";
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return "Places Choices";
     }
 
     public void updateChoices()

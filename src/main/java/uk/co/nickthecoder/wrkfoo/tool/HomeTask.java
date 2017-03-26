@@ -38,7 +38,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         WrkTabSets wrkTabSets = new WrkTabSets();
         results.add(wrkTabSets);
 
-        Places places = new Places();
+        PlacesTool places = new PlacesTool();
         places.task.store.setValueIgnoreErrors(
             Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));
         results.add(places);
