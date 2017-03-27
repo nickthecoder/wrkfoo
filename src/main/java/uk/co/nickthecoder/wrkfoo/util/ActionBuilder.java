@@ -110,9 +110,6 @@ public class ActionBuilder
             Image image = ImageIO.read(resourceClass.getResource(iconName));
             this.icon = new ImageIcon(image);
         } catch (Exception e) {
-            if (label == null) {
-                label = iconName;
-            }
         }
         return this;
     }

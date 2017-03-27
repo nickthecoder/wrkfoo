@@ -50,19 +50,19 @@ public class WrkFoo extends Task
         }
 
         for (File file : tabsFile.getValue()) {
-            TabSetData.load(file).openMainWindow();
+            Project.load(file).openMainWindow();
 
         }
 
         for (String name : tabsName.getValue()) {
 
-            File file = new File(Resources.getInstance().getTabsDirectory(), name + ".json");
-            TabSetData.load(file).openMainWindow();
+            File file = new File(Resources.getInstance().getProjectsDirectory(), name + ".json");
+            Project.load(file).openMainWindow();
         }
 
         if ((tabsFile.getValue().size() == 0) && (tabsName.getValue().size() == 0)) {
             MainWindow mainWindow = new MainWindow();
-            mainWindow.onWorkTabSets();
+            mainWindow.onWorkProjects();
             mainWindow.setVisible(true);
         }
     }

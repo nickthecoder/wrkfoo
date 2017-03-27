@@ -8,21 +8,21 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.TabSetData;
-import uk.co.nickthecoder.wrkfoo.tool.WrkTabSetsTask.WrkTabSetsFile;
+import uk.co.nickthecoder.wrkfoo.Project;
+import uk.co.nickthecoder.wrkfoo.tool.ProjectsTask.ProjectFile;
 
-public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTabSetsFile>
+public class ProjectsTask extends FileListerTask implements ListResults<ProjectFile>
 {
-    public List<WrkTabSetsFile> wrappedResults;
+    public List<ProjectFile> wrappedResults;
 
-    public WrkTabSetsTask()
+    public ProjectsTask()
     {
         super();
         for (Parameter parameter : parameters()) {
             parameter.visible = false;
         }
 
-        directory.setValue(Resources.getInstance().getTabsDirectory());
+        directory.setValue(Resources.getInstance().getProjectsDirectory());
         directory.visible = true;
 
         fileExtensions.setValue("json");
@@ -30,7 +30,7 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
     }
 
     @Override
-    public List<WrkTabSetsFile> getResults()
+    public List<ProjectFile> getResults()
     {
         return wrappedResults;
     }
@@ -42,8 +42,8 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
 
         wrappedResults = new ArrayList<>();
         for (File file : results) {
-            WrkTabSetsFile wrapped = new WrkTabSetsFile(file);
-            TabSetData tsd = TabSetData.load(file);
+            ProjectFile wrapped = new ProjectFile(file);
+            Project tsd = Project.load(file);
             wrapped.description = tsd.description;
 
             wrappedResults.add(wrapped);
@@ -51,11 +51,11 @@ public class WrkTabSetsTask extends FileListerTask implements ListResults<WrkTab
 
     }
 
-    public class WrkTabSetsFile extends WrappedFile
+    public class ProjectFile extends WrappedFile
     {
         public String description;
 
-        public WrkTabSetsFile(File file)
+        public ProjectFile(File file)
         {
             super(file);
         }

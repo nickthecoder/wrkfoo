@@ -7,9 +7,9 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.TabSetData;
+import uk.co.nickthecoder.wrkfoo.Project;
 
-public class SaveTabSet extends Task
+public class SaveProject extends Task
 {
     public MainWindow mainWindow;
 
@@ -22,15 +22,15 @@ public class SaveTabSet extends Task
         .description("And optional description, which will appear in the window title")
         .optional().parameter();
 
-    public SaveTabSet(MainWindow mainWindow)
+    public SaveProject(MainWindow mainWindow)
     {
         this.mainWindow = mainWindow;
         addParameters(saveAs, description);
 
-        if (mainWindow.tabSetFile == null) {
-            saveAs.setDefaultValue(Resources.getInstance().getTabsDirectory());
+        if (mainWindow.projectFile == null) {
+            saveAs.setDefaultValue(Resources.getInstance().getProjectsDirectory());
         } else {
-            saveAs.setDefaultValue(mainWindow.tabSetFile);
+            saveAs.setDefaultValue(mainWindow.projectFile);
         }
         description.setDefaultValue(mainWindow.description);
     }
@@ -41,7 +41,7 @@ public class SaveTabSet extends Task
         mainWindow.description = description.getValue();
 
         try {
-            TabSetData.save(saveAs.getValue(), mainWindow);
+            Project.save(saveAs.getValue(), mainWindow);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             // TODO Report the error.

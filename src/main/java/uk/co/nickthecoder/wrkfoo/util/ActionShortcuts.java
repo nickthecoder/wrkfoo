@@ -39,8 +39,8 @@ public final class ActionShortcuts
         put("newTab", "ctrl T");
         put("duplicateTab", "");
         put("closeTab", "ctrl+W");
-        put("workTabSets", "");
-        put("saveTabSet", "");
+        put("workProjects", "");
+        put("saveProject", "");
         put("exportTable", "");
 
         put("back", "alt+LEFT");

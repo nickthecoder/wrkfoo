@@ -35,7 +35,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         GitStatus gitStatus = new GitStatus();
         results.add(gitStatus);
 
-        WrkTabSets wrkTabSets = new WrkTabSets();
+        Projects wrkTabSets = new Projects();
         results.add(wrkTabSets);
 
         PlacesTool places = new PlacesTool();

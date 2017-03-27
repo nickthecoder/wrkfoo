@@ -18,7 +18,7 @@ import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
-public class TabSetData
+public class Project
 {
     public List<TabData> tabs;
 
@@ -28,9 +28,9 @@ public class TabSetData
 
     public int height = 600;
 
-    private transient File tabSetFile;
+    private transient File projectFile;
 
-    public TabSetData(MainWindow mainWindow)
+    public Project(MainWindow mainWindow)
     {
         tabs = new ArrayList<>();
         for (ToolTab toolTab : mainWindow.tabbedPane) {
@@ -42,18 +42,18 @@ public class TabSetData
         width = mainWindow.getWidth();
         height = mainWindow.getHeight();
         description = mainWindow.description;
-        tabSetFile = mainWindow.tabSetFile;
+        projectFile = mainWindow.projectFile;
     }
 
-    public static TabSetData load(File file)
+    public static Project load(File file)
     {
         Gson gson = new Gson();
 
         JsonReader reader;
         try {
             reader = new JsonReader(new FileReader(file));
-            TabSetData tsd = gson.fromJson(reader, TabSetData.class);
-            tsd.tabSetFile = file;
+            Project tsd = gson.fromJson(reader, Project.class);
+            tsd.projectFile = file;
             return tsd;
 
         } catch (FileNotFoundException e) {
@@ -64,9 +64,9 @@ public class TabSetData
     public static void save(File file, MainWindow mainWindow)
         throws FileNotFoundException
     {
-        mainWindow.tabSetFile = file;
+        mainWindow.projectFile = file;
 
-        TabSetData tsd = new TabSetData(mainWindow);
+        Project tsd = new Project(mainWindow);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         String json = gson.toJson(tsd);
@@ -92,7 +92,7 @@ public class TabSetData
     {
         MainWindow mainWindow = new MainWindow();
         mainWindow.description = description;
-        mainWindow.tabSetFile = tabSetFile;
+        mainWindow.projectFile = projectFile;
 
         for (TabData tabData : tabs) {
             Tool tool = tabData.createTool();

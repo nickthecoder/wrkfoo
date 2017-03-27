@@ -53,7 +53,7 @@ public class Resources
 
     private File settingsDirectory;
 
-    private File tabsDirectory;
+    private File projectsDirectory;
 
     private File customOptionsDirectory;
 
@@ -72,8 +72,8 @@ public class Resources
 
         optionsDataByURL = new HashMap<>();
 
-        tabsDirectory = new File(settingsDirectory, "tabs");
-        tabsDirectory.mkdirs();
+        projectsDirectory = new File(settingsDirectory, "projects");
+        projectsDirectory.mkdirs();
 
         groovyClassLoader = new GroovyClassLoader();
         groovyPath = new ArrayList<>();
@@ -160,9 +160,9 @@ public class Resources
         return homeDirectory;
     }
 
-    public File getTabsDirectory()
+    public File getProjectsDirectory()
     {
-        return tabsDirectory;
+        return projectsDirectory;
     }
 
     public static Icon icon(String name)

@@ -42,8 +42,8 @@ import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
-import uk.co.nickthecoder.wrkfoo.tool.SaveTabSet;
-import uk.co.nickthecoder.wrkfoo.tool.WrkTabSets;
+import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
+import uk.co.nickthecoder.wrkfoo.tool.Projects;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 import uk.co.nickthecoder.wrkfoo.util.WrapLayout;
@@ -81,7 +81,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
      */
     public String description;
 
-    public File tabSetFile;
+    public File projectFile;
 
     private JButton goButton;
 
@@ -181,8 +181,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
         toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
-        toolBar.add(builder.name("workTabSets").tooltip("Work with Tab Sets").buildButton());
-        toolBar.add(builder.name("saveTabSet").tooltip("Save Tab Sets").buildButton());
+        toolBar.add(builder.name("workProjects").icon("projects.png").tooltip("Work with Projects").buildButton());
+        toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());
         toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
         toolBar.addSeparator();
         toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
@@ -508,16 +508,16 @@ public class MainWindow extends JFrame implements ExceptionHandler
         }
     }
 
-    public void onWorkTabSets()
+    public void onWorkProjects()
     {
-        WrkTabSets tool = new WrkTabSets();
+        Projects tool = new Projects();
         getCurrentOrNewTab().go(tool);
     }
 
-    public void onSaveTabSet()
+    public void onSaveProject()
     {
-        SaveTabSet sts = new SaveTabSet(this);
-        sts.promptTask();
+        SaveProject sp = new SaveProject(this);
+        sp.promptTask();
     }
 
     public void onExportTable()
