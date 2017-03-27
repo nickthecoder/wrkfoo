@@ -7,6 +7,7 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.ValueParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
@@ -20,7 +21,6 @@ public abstract class AbstractTool<T extends Task> implements Tool
     private ToolPanel toolPanel;
 
     private OptionsGroup options;
-
 
     public AbstractTool(T task)
     {
@@ -44,7 +44,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
     {
         return task;
     }
-    
+
     /**
      * Used by both getShortTitle and getLongTitle unless either are overridden in sub-classes.
      * 
@@ -52,7 +52,11 @@ public abstract class AbstractTool<T extends Task> implements Tool
      */
     protected String getTitle()
     {
-        return getClass().getSimpleName();
+        String title = Util.uncamel(getClass().getSimpleName());
+        if (title.endsWith("Tool")) {
+            return title.substring(0, title.length() - 4);
+        }
+        return title;
     }
 
     @Override
@@ -69,13 +73,20 @@ public abstract class AbstractTool<T extends Task> implements Tool
 
     public String getOptionsName()
     {
-        return getClass().getSimpleName().toLowerCase();
+        String name = getClass().getSimpleName().toLowerCase();
+        if (name.endsWith("tool")) {
+            return name.substring(0, name.length() - 4);
+        }
+        if (name.startsWith("wrk")) {
+            return name.substring(3);
+        }
+        return name;
     }
 
     @Override
     public Icon getIcon()
     {
-        return null;
+        return Resources.icon(getOptionsName() + ".png");
     }
 
     @Override

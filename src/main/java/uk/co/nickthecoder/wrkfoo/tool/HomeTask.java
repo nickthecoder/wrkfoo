@@ -29,7 +29,7 @@ public class HomeTask extends Task implements ListResults<Tool>
         WrkMounts wrkMountPoints = new WrkMounts();
         results.add(wrkMountPoints);
 
-        ScanF scanF = new ScanF();
+        DiskUsage scanF = new DiskUsage();
         results.add(scanF);
 
         GitStatus gitStatus = new GitStatus();

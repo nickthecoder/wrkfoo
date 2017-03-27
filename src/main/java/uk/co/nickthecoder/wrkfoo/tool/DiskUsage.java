@@ -2,23 +2,18 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
-import javax.swing.Icon;
-
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
-import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.tool.ScanFTask.ScannedDirectory;
+import uk.co.nickthecoder.wrkfoo.tool.DiskUsageTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class ScanF extends AbstractListTool<ScanFTask, ScannedDirectory> implements DirectoryTool
+public class DiskUsage extends AbstractListTool<DiskUsageTask, ScannedDirectory> implements DirectoryTool
 {
-    public static final Icon icon = Resources.icon("diskUsage.png");
-
-    public ScanF()
+    public DiskUsage()
     {
-        super(new ScanFTask());
+        super(new DiskUsageTask());
     }
 
     @Override
@@ -43,15 +38,9 @@ public class ScanF extends AbstractListTool<ScanFTask, ScannedDirectory> impleme
             {
                 return row.size;
             }
-        }.reverseSort().width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
+        }.reverseSort().width(120).lock().renderer(SizeRenderer.getInstance()));
 
         return columns;
-    }
-
-    @Override
-    public Icon getIcon()
-    {
-        return icon;
     }
 
     @Override

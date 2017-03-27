@@ -20,23 +20,9 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class PlacesTool extends AbstractListTool<PlacesTask, Place>
 {
-    public static final Icon icon = Resources.icon("places.png");
-
     public PlacesTool()
     {
         super(new PlacesTask());
-    }
-
-    @Override
-    public String getOptionsName()
-    {
-        return "places";
-    }
-
-    @Override
-    public String getTitle()
-    {
-        return "Places";
     }
 
     @Override
@@ -101,12 +87,6 @@ public class PlacesTool extends AbstractListTool<PlacesTask, Place>
         }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
 
         return columns;
-    }
-
-    @Override
-    public Icon getIcon()
-    {
-        return icon;
     }
 
     public Task add()

@@ -8,6 +8,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.Task;
@@ -26,6 +27,8 @@ public class ToolTab
 
     private String titleTemplate = "%t";
 
+    private boolean splitVertical;
+
     private String shortcut;
 
     public ToolTab(Tool tool)
@@ -34,6 +37,7 @@ public class ToolTab
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         history = new History();
+        splitVertical = false;
     }
 
     public void setTitleTemplate(String value)
@@ -90,6 +94,18 @@ public class ToolTab
     public String getTitle()
     {
         return titleTemplate.replaceAll("%t", tool.getShortTitle());
+    }
+
+    public boolean isSplitVertical()
+    {
+        return splitVertical;
+    }
+
+    public void setSplitVertical(boolean value)
+    {
+        this.splitVertical = value;
+        this.getTool().getToolPanel().getSplitPane().setOrientation(
+            splitVertical ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
     }
 
     public JPanel getPanel()

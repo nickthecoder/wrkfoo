@@ -12,10 +12,10 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;
-import uk.co.nickthecoder.wrkfoo.tool.ScanFTask.ScannedDirectory;
+import uk.co.nickthecoder.wrkfoo.tool.DiskUsageTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
-public class ScanFTask extends Task implements ListResults<ScannedDirectory>, Stoppable
+public class DiskUsageTask extends Task implements ListResults<ScannedDirectory>, Stoppable
 {
     private Exec du;
 
@@ -29,7 +29,7 @@ public class ScanFTask extends Task implements ListResults<ScannedDirectory>, St
 
     public List<ScannedDirectory> results;
 
-    public ScanFTask()
+    public DiskUsageTask()
     {
         addParameters(directory, oneFileSystem);
     }

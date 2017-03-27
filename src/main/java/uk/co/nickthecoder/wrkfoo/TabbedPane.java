@@ -14,6 +14,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.MouseInputAdapter;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
@@ -125,6 +126,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             .description("Format : [ctrl|shift|alt]* KEY_NAME")
             .optional().parameter();
 
+        private BooleanParameter splitVertical = new BooleanParameter.Builder("splitVertical")
+            .parameter();
+        
         private int tabIndex;
 
         public TabPropertiesTask(int tabIndex)
@@ -132,17 +136,23 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             super();
             this.tabIndex = tabIndex;
             ToolTab tab = getToolTab(tabIndex);
+            
             title.setDefaultValue(tab.getTitleTemplate());
             shortcut.setDefaultValue(tab.getShortcut());
-            addParameters(title, shortcut);
+            splitVertical.setDefaultValue(tab.isSplitVertical());
+            
+            addParameters(title, shortcut, splitVertical);
         }
 
         @Override
         public void body()
         {
             ToolTab tab = getToolTab(tabIndex);
+            
             tab.setTitleTemplate(title.getValue());
             tab.setShortcut(shortcut.getValue());
+            tab.setSplitVertical(splitVertical.getValue());
+            
             MainWindow.getMainWindow(TabbedPane.this).changedTab();
             ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
         }

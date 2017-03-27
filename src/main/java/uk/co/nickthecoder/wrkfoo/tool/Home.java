@@ -5,22 +5,13 @@ import javax.swing.Icon;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Tool;
 
 public class Home extends AbstractListTool<HomeTask, Tool>
 {
-    public static Icon icon = Resources.icon("home.png");
-
     public Home()
     {
         super(new HomeTask());
-    }
-
-    @Override
-    public Icon getIcon()
-    {
-        return icon;
     }
 
     @Override

@@ -6,9 +6,7 @@ Fix Places options (remove needs work, maybe others).
 Drag files from WrkF (and other WrappedFile results)
     Maybe create a new subclas of ListTableTool FileListTableTool? Hmm, use a special interface instead?
 
-Rename "TabSet" to "Project"
-
-Edit Settings - a Task (not a Tool), where each of the Resources attributes are a represented as a Parameter
+Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane
         is ALWAYS hidden, and we only see the parameters
         "Go" is replaced by "OK", or maybe the updates happen without the need for "OK"
