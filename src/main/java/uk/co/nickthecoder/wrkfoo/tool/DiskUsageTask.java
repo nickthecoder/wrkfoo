@@ -13,7 +13,6 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.DiskUsageTask.ScannedDirectory;
-import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class DiskUsageTask extends Task implements ListResults<ScannedDirectory>, Stoppable
 {
@@ -56,7 +55,7 @@ public class DiskUsageTask extends Task implements ListResults<ScannedDirectory>
                 if (tab >= 0) {
                     long size = Long.parseLong(line.substring(0, tab));
                     String path = line.substring(tab + 1);
-                    results.add(new ScannedDirectory(path, size));
+                    results.add(new ScannedDirectory(new File(path), size));
                 } else {
                     System.err.println("Skipping  " + line);
                 }
@@ -77,35 +76,14 @@ public class DiskUsageTask extends Task implements ListResults<ScannedDirectory>
         return results;
     }
 
-    public class ScannedDirectory
+    public class ScannedDirectory extends WrappedFile
     {
-        final String path;
         final long size;
-        File file;
 
-        public ScannedDirectory(String path, long size)
+        public ScannedDirectory(File file, long size)
         {
-            this.path = path;
+            super(file);
             this.size = size;
-        }
-
-        public File getFile()
-        {
-            if (file == null) {
-                file = new File(path);
-            }
-            return file;
-        }
-
-        /**
-         * Suitable for <code>row</code> to be passed to {@link OSHelper#command(String, Object...)}
-         * 
-         * @return The path
-         */
-        @Override
-        public String toString()
-        {
-            return this.path;
         }
     }
 

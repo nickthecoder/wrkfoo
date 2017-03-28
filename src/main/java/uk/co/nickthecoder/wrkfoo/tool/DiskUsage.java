@@ -6,6 +6,7 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
+import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.tool.DiskUsageTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
@@ -14,6 +15,7 @@ public class DiskUsage extends AbstractListTool<DiskUsageTask, ScannedDirectory>
     public DiskUsage()
     {
         super(new DiskUsageTask());
+        dragListConverter = new DragFileConverter<ScannedDirectory>();
     }
 
     @Override
@@ -26,7 +28,7 @@ public class DiskUsage extends AbstractListTool<DiskUsageTask, ScannedDirectory>
             @Override
             public String getValue(ScannedDirectory row)
             {
-                return row.path;
+                return row.file.getPath();
             }
 
         }.tooltip(1).width(200));
