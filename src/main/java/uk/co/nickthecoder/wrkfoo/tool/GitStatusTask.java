@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.PatternParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -73,63 +72,56 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
                 path = path.substring(arrow + 4);
             }
 
-            GitStatusLine gsl = new GitStatusLine(index, work, path, renamed);
-            if (gsl.getFile().isDirectory()) {
-                addDirectory(gsl);
+            File file = createFile(path);
+            GitStatusLine gsl = new GitStatusLine(file, index, work, renamed);
+            if (file.isDirectory()) {
+                addDirectory(file, index, work);
             }
             results.add(gsl);
         }
     }
 
-    private void addDirectory(GitStatusLine gsl)
+    private void addDirectory(File directory, char index, char work)
     {
-        int prefix = gsl.getFile().getPath().length() + 1;
-
         FileLister fileLister = new FileLister().depth(10).includeHidden();
-        List<File> listing = fileLister.listFiles(gsl.getFile());
+        List<File> listing = fileLister.listFiles(directory);
         for (File file : listing) {
-            String newPath = gsl.path + file.getPath().substring(prefix);
-            GitStatusLine extra = new GitStatusLine(gsl.index, gsl.work, newPath, null);
+            GitStatusLine extra = new GitStatusLine(file, index, work, null);
             results.add(extra);
         }
     }
 
+    private File createFile( String path )
+    {
+        return new File( directory.getValue(), path );
+    }
+    
     @Override
     public List<GitStatusLine> getResults()
     {
         return results;
     }
 
-    public class GitStatusLine implements WithFile
+    public class GitStatusLine extends WrappedFile
     {
         public char index;
         public char work;
-        public String path;
         public String renamed;
-        public String name;
 
-        public GitStatusLine(char index, char work, String path, String renamed)
+        public GitStatusLine(File file, char index, char work, String renamed)
         {
+            super(file);
+            
             this.index = index;
             this.work = work;
-            this.path = path;
-            if (this.path.endsWith(File.separator)) {
-                this.path = this.path.substring(0, this.path.length() - 1);
-            }
-            int lastSlash = path.lastIndexOf(File.separatorChar);
-            if (lastSlash >= 0) {
-                name = path.substring(lastSlash + 1);
-            } else {
-                name = path;
-            }
 
             this.renamed = renamed;
         }
 
         @Override
-        public File getFile()
+        public File getBase()
         {
-            return new File(directory.getValue(), this.path);
+            return directory.getValue();
         }
 
         public File getRenamedFile()
@@ -138,12 +130,6 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
                 return null;
             }
             return new File(directory.getValue(), this.renamed);
-        }
-
-        @Override
-        public String toString()
-        {
-            return getFile().getPath();
         }
     }
 }

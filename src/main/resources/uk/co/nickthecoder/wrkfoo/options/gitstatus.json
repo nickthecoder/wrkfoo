@@ -13,27 +13,30 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "a",
       "label": "Git Add",
-      "action": "os.exec('git', 'add', rows.collect {it.path} )\n  .dir(task.directory.value)",
+      "action": "os.exec('git', 'add', rows.collect {it.choppedPath} )\n  .dir(task.directory.value)",
       "row": true,
       "multi": true,
       "newTab": false,
       "refreshResults": true,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "d",
       "label": "Git Diff",
-      "action": "os.exec('git', 'diff', row.path)\n  .dir(task.directory.value)",
+      "action": "os.exec('git', 'diff', row.choppedPath)\n  .dir(task.directory.value)",
       "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "c",
@@ -43,7 +46,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": true,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "all",
@@ -53,7 +57,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": true,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "push",
@@ -63,27 +68,30 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "ignore",
       "label": "Git Ignore",
-      "action": "os.exec('echo',row.path)\n  .stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
+      "action": "os.exec('echo',row.choppedPath)\n  .stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
       "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": true,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "co",
       "label": "Git Check Out",
-      "action": "os.exec( 'git', 'checkout', row.path )\n  .dir(task.directory.value)",
+      "action": "os.exec( 'git', 'checkout', row.choppedPath )\n  .dir(task.directory.value)",
       "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": true,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "gi",
@@ -93,7 +101,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "gb",
@@ -103,7 +112,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "gj",
@@ -113,7 +123,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "gia",
@@ -123,7 +134,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "clean",
@@ -133,7 +145,8 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "eg",
@@ -143,7 +156,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

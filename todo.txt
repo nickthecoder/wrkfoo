@@ -1,7 +1,7 @@
 Current Task
 ============
 
-WrkMounts and GitStatus both don't use WrappedFile
+GitStatus both don't use WrappedFile
     
 Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane

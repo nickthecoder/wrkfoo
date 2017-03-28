@@ -96,7 +96,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
             @Override
             public String getValue(GitStatusLine row)
             {
-                return row.name;
+                return row.getFile().getName();
             }
 
         }.tooltip(4).width(300));
@@ -106,7 +106,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
             @Override
             public String getValue(GitStatusLine row)
             {
-                return row.path;
+                return row.getChoppedPath();
             }
 
         }.tooltip(4).sort().width(500));
