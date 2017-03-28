@@ -11,27 +11,31 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
-      "code": "",
-      "label": "Open File",
+      "code": ".",
+      "label": "Open",
       "action": "os.exec('gnome-open', row.file)",
       "if": "!row.file.isDirectory()",
+      "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "ep",
       "label": "Edit Places",
-      "action": "os.edit(task.store.value)",
+      "action": "println(task.store.value)\nnew Editor(task.store.value)",
       "row": false,
       "multi": false,
-      "newTab": false,
+      "newTab": true,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "+",
@@ -40,38 +44,31 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": true
-    },
-    {
-      "code": "test",
-      "label": "Test",
-      "action": "println( os.fileLines(task.store.value).findAll( { ! it.contains(row.line) } ) )",
-      "row": true,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "refreshResults": true,
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "-",
-      "label": "Remove a Place",
-      "action": "task.store.value.write (task.store.value.readLines() .findAll( { ! it.contains(row.line) } ).join('\\n') + '\\n') ; tool",
+      "label": "Remove Place",
+      "action": "tool.remove(row)",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "refreshResults": true,
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "++",
       "label": "Duplicate Place",
-      "action": "def add = tool.add();\nadd.placeName.value = row.name;\nadd.file.value = row.file;\nadd",
+      "action": "def add = tool.add();\nadd.label.value = row.label;\nadd.file.value = row.file;\nadd",
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
-      "prompt": true
+      "refreshResults": true,
+      "prompt": true,
+      "aliases": []
     }
   ]
 }
