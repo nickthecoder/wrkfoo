@@ -29,7 +29,7 @@
     {
       "code": "ep",
       "label": "Edit Places",
-      "action": "println(task.store.value)\nnew Editor(task.store.value)",
+      "action": "new Editor(task.store.value)",
       "row": false,
       "multi": false,
       "newTab": true,

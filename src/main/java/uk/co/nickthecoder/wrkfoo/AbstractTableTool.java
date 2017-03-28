@@ -4,6 +4,8 @@ import uk.co.nickthecoder.jguifier.Task;
 
 public abstract class AbstractTableTool<T extends Task, R> extends AbstractThreadedTool<T> implements TableTool<R>
 {
+    protected DragListConverter<R,?> dragListConverter;   
+
     public AbstractTableTool(T task)
     {
         super(task);
@@ -47,6 +49,11 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractThrea
     public TableResultsPanel<R> createResultsComponent()
     {
         SimpleTable<R> table = getColumns().createTable(getTableModel());
+        
+        if (dragListConverter != null) {
+            dragListConverter.createDragListHandler(table);
+        }
+
         return new TableResultsPanel<>(table);
     }
 
