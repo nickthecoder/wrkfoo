@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.WrkMountsTask.MountPoint;
-import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
 public class WrkMountsTask extends Task implements ListResults<MountPoint>
 {
@@ -35,6 +33,10 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
 
     public boolean accept(MountPoint mp)
     {
+        if (mp.file == null) {
+            return false;
+        }
+
         if (mp.size <= 0) {
             return false;
         }
@@ -56,17 +58,49 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
         return results;
     }
 
-    public class MountPoint implements WithFile
+    public static File createFile(FileStore store)
+    {
+        // Look for a private field called "file" or "root" in the FileStore. (Only works for Unix type systems).
+        try {
+            Class<?> klass = store.getClass();
+            Field field = null;
+            do {
+                try {
+                    field = klass.getDeclaredField("file");
+                } catch (Exception e) {
+                    // Do nothing
+                }
+                if (field != null) {
+                    break;
+                }
+                klass = klass.getSuperclass();
+            } while (klass != null);
+
+            // If we found the field, great, get the path.
+            if (field != null) {
+                field.setAccessible(true);
+                return ((Path) field.get(store)).toFile();
+            }
+
+        } catch (Exception e) {
+            // Couldn't find the actual mount point.
+            // e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public class MountPoint extends WrappedFile
     {
         public FileStore store;
 
         long size = 0;
         long used = 0;
         long available = 0;
-        File file = null;
 
         public MountPoint(FileStore store)
         {
+            super(createFile(store));
             this.store = store;
             // Try to get the size and free space of the mount, and if not, stick with defaults of zero.
             try {
@@ -76,51 +110,6 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            // Look for a private field called "file" or "root" in the FileStore. (Only works for Unix type systems).
-            try {
-                Class<?> klass = store.getClass();
-                Field field = null;
-                do {
-                    try {
-                        field = klass.getDeclaredField("file");
-                    } catch (Exception e) {
-                        // Do nothing
-                    }
-                    if (field != null) {
-                        break;
-                    }
-                    klass = klass.getSuperclass();
-                } while (klass != null);
-
-                // If we found the field, great, get the path.
-                if (field != null) {
-                    field.setAccessible(true);
-                    file = ((Path) field.get(store)).toFile();
-                }
-
-            } catch (Exception e) {
-                // Couldn't find the actual mount point.
-                // e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public File getFile()
-        {
-            return file;
-        }
-        
-        /**
-         * Suitable for <code>row</code> to be passed to {@link OSHelper#command(String, Object...)}
-         * 
-         * @return The path
-         */
-        @Override
-        public String toString()
-        {
-            return file.getPath();
         }
     }
 }

@@ -1,8 +1,7 @@
 Current Task
 ============
 
-Sort out confusion between WrappedFile and WithFile
-    Use WrappedFile wherever possible, as it has a useful toString implementation
+WrkMounts and GitStatus both don't use WrappedFile
     
 Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane
