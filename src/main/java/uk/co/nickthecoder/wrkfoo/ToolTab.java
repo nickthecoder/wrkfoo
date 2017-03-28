@@ -8,13 +8,19 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
+/**
+ * The isn't a GUI component, it only hold the data associated with one of the tabs in the {@link TabbedPane}.
+ * It has a {@link Tool}, but over time, the tool will change. The history of all of the tools, and the
+ * Tool's Task's parameters are stored in a {@link History}, which allows the user to go backwards and
+ * forwards similar to  web browser's back and forward buttons.
+ * 
+ */
 public class ToolTab
 {
     private TabbedPane tabbedPane;
@@ -27,8 +33,6 @@ public class ToolTab
 
     private String titleTemplate = "%t";
 
-    private boolean splitVertical;
-
     private String shortcut;
 
     public ToolTab(Tool tool)
@@ -37,7 +41,6 @@ public class ToolTab
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         history = new History();
-        splitVertical = false;
     }
 
     public void setTitleTemplate(String value)
@@ -94,18 +97,6 @@ public class ToolTab
     public String getTitle()
     {
         return titleTemplate.replaceAll("%t", tool.getShortTitle());
-    }
-
-    public boolean isSplitVertical()
-    {
-        return splitVertical;
-    }
-
-    public void setSplitVertical(boolean value)
-    {
-        this.splitVertical = value;
-        this.getTool().getToolPanel().getSplitPane().setOrientation(
-            splitVertical ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
     }
 
     public JPanel getPanel()

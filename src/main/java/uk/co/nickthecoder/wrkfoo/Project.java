@@ -106,6 +106,7 @@ public class Project
             tab.setShortcut(tabData.shortcut);
             // We added the tab before giving it its titleTemplate, so now we need to update it.
             tab.getTabbedPane().updateTabInfo(tab);
+
         }
 
         return mainWindow;
@@ -162,7 +163,7 @@ public class Project
 
                 tool.getToolPanel().getSplitPane()
                     .setState(showParameters ? HidingSplitPane.State.BOTH : HidingSplitPane.State.LEFT);
-
+                
                 return tool;
 
             } catch (Exception e) {

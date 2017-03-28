@@ -24,22 +24,22 @@ public class WrkFoo extends Task
         .description("Default is ~/.config/wrkfoo/settings.json")
         .optional().parameter();
 
-    public MultipleParameter<FileParameter, File> tabsFile = new FileParameter.Builder("")
+    public MultipleParameter<FileParameter, File> projectFile = new FileParameter.Builder("")
         .file().mustExist()
-        .multipleParameter("tabsFile");
+        .multipleParameter("projectFile");
 
-    public MultipleParameter<StringParameter, String> tabsName = new StringParameter.Builder("")
-        .multipleParameter("tabsName");
+    public MultipleParameter<StringParameter, String> project = new StringParameter.Builder("")
+        .multipleParameter("project");
 
     public WrkFoo()
     {
-        addParameters(settings, tabsFile, tabsName);
+        addParameters(settings, project, projectFile );
     }
 
     @Override
     public MultipleParameter<StringParameter,String> getTrailingParameter()
     {
-        return tabsName;
+        return project;
     }
 
     @Override
@@ -49,18 +49,18 @@ public class WrkFoo extends Task
             Resources.settingsFile = settings.getValue();
         }
 
-        for (File file : tabsFile.getValue()) {
+        for (File file : projectFile.getValue()) {
             Project.load(file).openMainWindow();
 
         }
 
-        for (String name : tabsName.getValue()) {
+        for (String name : project.getValue()) {
 
             File file = new File(Resources.getInstance().getProjectsDirectory(), name + ".json");
             Project.load(file).openMainWindow();
         }
 
-        if ((tabsFile.getValue().size() == 0) && (tabsName.getValue().size() == 0)) {
+        if ((project.getValue().size() == 0) && (projectFile.getValue().size() == 0)) {
             MainWindow mainWindow = new MainWindow();
             mainWindow.onWorkProjects();
             mainWindow.setVisible(true);

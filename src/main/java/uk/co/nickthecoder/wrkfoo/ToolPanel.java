@@ -96,8 +96,8 @@ public class ToolPanel extends JPanel implements TaskListener
         resultsPanel = tool.createResultsComponent();
         body.add(resultsPanel, BorderLayout.CENTER);
 
-        splitPane = new HidingSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, body, sidePanel);
-        splitPane.setResizeWeight(1);
+        splitPane = new HidingSplitPane(JSplitPane.VERTICAL_SPLIT, true, body, sidePanel);
+        splitPane.setResizeWeight(0.5);
 
         this.setLayout(new BorderLayout());
         this.add(splitPane, BorderLayout.CENTER);
