@@ -6,8 +6,8 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
-import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Project;
+import uk.co.nickthecoder.wrkfoo.Resources;
 
 public class SaveProject extends Task
 {

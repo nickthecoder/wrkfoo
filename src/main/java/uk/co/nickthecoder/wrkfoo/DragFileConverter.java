@@ -3,9 +3,9 @@ package uk.co.nickthecoder.wrkfoo;
 import java.io.File;
 
 import uk.co.nickthecoder.jguifier.guiutil.DragFileHandler;
-import uk.co.nickthecoder.wrkfoo.tool.WrappedFile;
+import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 
-public class DragFileConverter<R extends WrappedFile> extends DragListConverter<R,File>
+public class DragFileConverter<R extends WithFile> extends DragListConverter<R,File>
 {
     public DragFileConverter()
     {
@@ -13,8 +13,8 @@ public class DragFileConverter<R extends WrappedFile> extends DragListConverter<
     }
 
     @Override
-    public File convertRow(WrappedFile row)
+    public File convertRow(WithFile row)
     {
-        return row.file;
+        return row.getFile();
     }
 }

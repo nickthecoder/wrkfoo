@@ -7,8 +7,8 @@ import java.util.List;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.FileListerTask;
 import uk.co.nickthecoder.wrkfoo.ListResults;
-import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Project;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.ProjectsTask.ProjectFile;
 
 public class ProjectsTask extends FileListerTask implements ListResults<ProjectFile>

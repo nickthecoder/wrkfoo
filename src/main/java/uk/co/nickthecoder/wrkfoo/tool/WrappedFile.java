@@ -2,7 +2,9 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
-public class WrappedFile
+import uk.co.nickthecoder.jguifier.guiutil.WithFile;
+
+public class WrappedFile implements WithFile
 {
     public final File file;
 
@@ -11,6 +13,12 @@ public class WrappedFile
         this.file = file;
     }
 
+    @Override
+    public File getFile()
+    {
+        return file;
+    }
+    
     @Override
     public String toString()
     {
