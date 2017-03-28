@@ -10,6 +10,7 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
+import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.GitStatusTask.GitStatusLine;
@@ -27,6 +28,7 @@ public class GitStatus extends AbstractListTool<GitStatusTask, GitStatusLine> im
     public GitStatus()
     {
         super(new GitStatusTask());
+        dragListConverter = new DragFileConverter<GitStatusLine>();
     }
 
     @Override

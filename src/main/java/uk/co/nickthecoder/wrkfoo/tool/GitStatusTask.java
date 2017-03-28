@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.PatternParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
@@ -99,7 +100,7 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
         return results;
     }
 
-    public class GitStatusLine
+    public class GitStatusLine implements WithFile
     {
         public char index;
         public char work;
@@ -125,6 +126,7 @@ public class GitStatusTask extends Task implements ListResults<GitStatusLine>
             this.renamed = renamed;
         }
 
+        @Override
         public File getFile()
         {
             return new File(directory.getValue(), this.path);
