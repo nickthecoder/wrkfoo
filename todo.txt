@@ -1,8 +1,21 @@
 Current Task
 ============
 
-GitStatus both don't use WrappedFile
+Copy and Move and Link files using drag and drop
+    Tabs can be a drop target for files if they are a directory
+        Rename the DirectoryTool interface to HasDirectory and put in jGuifier?
+
+    A FileSetTool, where files can be dragged for further processing
+    A TrashTool ? where files can be dragged to?
+
+PlacesTool to allow drag and drop from other PlacesTool - copies the file AND label
+
+gkt places file can contain http:// etc, so PlacesTool will screw them up when editing.
+    Allow for all protocols, and handle non-file ones gracefully
+
     
+Some kind of split screen, allowing two tools side by side for easy drag and drop
+
 Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane
         is ALWAYS hidden, and we only see the parameters
@@ -29,8 +42,6 @@ A window to have a current directory, then basic git/gradle commands can be a GL
         Put them in a single map
     Choose the type, String, File, Integer etc, plus Groovy Eval - run a Groovy script to get the value.
 
-trolCommander style split screen to make copy/move easier.
-
 Git stash features
 	http://stackoverflow.com/questions/1105253/how-would-i-extract-a-single-file-or-changes-to-a-file-from-a-git-stash
 
@@ -39,7 +50,6 @@ Git stash features
     Or just reply on shortcuts to switch between different Git tools, e.g. alt+s for git status, alt+b for git branches etc.
 
 Non-row options to have shortcuts
-
 
 Editor doesn't offer "Close without saving" when closing the tab or opening a different document.
 
@@ -77,9 +87,6 @@ Un-close tab. Useful when you close a tab by mistake. (shift+ctrl+T)
 
 Save Tab sets to remember the order and widths of the columns
     Only possible with regular TableTools, not with future compound tools, such as the planned trolCommaner-like tools.
-
-RegexParameter - add popup-menu for oft used constructs, such as quote, whitespace, one or more, zero of more, identifier...
-	Should grep then use RegexParameter?
 
 Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/components/table.html
 

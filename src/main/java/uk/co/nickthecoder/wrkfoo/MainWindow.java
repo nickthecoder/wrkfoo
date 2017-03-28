@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import uk.co.nickthecoder.jguifier.guiutil.WrapLayout;
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
@@ -46,7 +47,6 @@ import uk.co.nickthecoder.wrkfoo.tool.Projects;
 import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
-import uk.co.nickthecoder.wrkfoo.util.WrapLayout;
 
 public class MainWindow extends JFrame implements ExceptionHandler
 {
