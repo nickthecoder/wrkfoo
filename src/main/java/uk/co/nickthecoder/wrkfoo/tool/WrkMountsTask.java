@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.tool.WrkMountsTask.MountPoint;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
@@ -55,7 +56,7 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
         return results;
     }
 
-    public class MountPoint
+    public class MountPoint implements WithFile
     {
         public FileStore store;
 
@@ -105,6 +106,12 @@ public class WrkMountsTask extends Task implements ListResults<MountPoint>
 
         }
 
+        @Override
+        public File getFile()
+        {
+            return file;
+        }
+        
         /**
          * Suitable for <code>row</code> to be passed to {@link OSHelper#command(String, Object...)}
          * 

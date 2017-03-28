@@ -12,6 +12,7 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
+import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsFilesTask.WrkOptionsFile;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -22,6 +23,7 @@ public class WrkOptionsFiles extends AbstractListTool<WrkOptionsFilesTask, WrkOp
     public WrkOptionsFiles()
     {
         super(new WrkOptionsFilesTask());
+        dragListConverter = new DragFileConverter<WrkOptionsFile>();
     }
 
     @Override

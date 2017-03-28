@@ -6,6 +6,7 @@ import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
+import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.Project;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.tool.ProjectsTask.ProjectFile;
@@ -15,6 +16,7 @@ public class Projects extends AbstractListTool<ProjectsTask, ProjectFile> implem
     public Projects()
     {
         super(new ProjectsTask());
+        dragListConverter = new DragFileConverter<ProjectFile>();
     }
 
     @Override
