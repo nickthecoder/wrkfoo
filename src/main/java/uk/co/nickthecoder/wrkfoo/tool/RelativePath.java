@@ -2,9 +2,10 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
 
+import uk.co.nickthecoder.jguifier.guiutil.WithFile;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
-public abstract class RelativePath
+public abstract class RelativePath implements WithFile
 {
     final String path;
     private File file;
@@ -20,6 +21,7 @@ public abstract class RelativePath
 
     public abstract File getBase();
 
+    @Override
     public File getFile()
     {
         if (file == null) {

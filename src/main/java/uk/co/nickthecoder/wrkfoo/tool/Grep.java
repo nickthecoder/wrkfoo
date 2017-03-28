@@ -4,6 +4,7 @@ import java.io.File;
 
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.tool.GrepTask.GrepRow;
 
 public class Grep extends GenericFileTool<GrepRow>
@@ -11,11 +12,13 @@ public class Grep extends GenericFileTool<GrepRow>
     public Grep(File directory)
     {
         super(new GrepTask(directory));
+        dragListConverter = new DragFileConverter<GrepRow>();
     }
 
     public Grep()
     {
         super(new GrepTask());
+        dragListConverter = new DragFileConverter<GrepRow>();
     }
 
     @Override
