@@ -81,7 +81,7 @@ public class GrepTask extends GenericFileTask<GrepRow>
     protected GrepRow parseLine(String line)
     {
         if (invertResults.getValue()) {
-            return new GrepRow(line, 0, "");
+            return new GrepRow(createFile(line), 0, "");
         } else {
 
             Matcher matcher = parseLineNumber.matcher(line);
@@ -91,23 +91,23 @@ public class GrepTask extends GenericFileTask<GrepRow>
                 String path = line.substring(0, matcher.start() );
                 int lineNumber = Integer.parseInt(line.substring(matcher.start() + 1, matcher.end() - 1));
                 String text = line.substring(matcher.end() );
-                return new GrepRow(path, lineNumber, text);
+                return new GrepRow(createFile(path), lineNumber, text);
 
             } else {
-                return new GrepRow(line, 0, "");
+                return new GrepRow(createFile(line), 0, "");
             }
         }
 
     }
 
-    public class GrepRow extends RelativePath
+    public class GrepRow extends WrappedFile
     {
         public int line;
         public String text;
         
-        public GrepRow(String path, int lineNumber, String text)
+        public GrepRow(File file, int lineNumber, String text)
         {
-            super(path);
+            super(file);
             this.line = lineNumber;
             this.text = text;
         }

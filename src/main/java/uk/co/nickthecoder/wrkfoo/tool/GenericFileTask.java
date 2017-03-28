@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 
-public abstract class GenericFileTask<R extends RelativePath> extends Task implements ListResults<R>, Stoppable
+public abstract class GenericFileTask<R extends WrappedFile> extends Task implements ListResults<R>, Stoppable
 {
     protected Exec exec;
 
@@ -58,6 +59,20 @@ public abstract class GenericFileTask<R extends RelativePath> extends Task imple
 
     protected abstract R parseLine(String line);
 
+    protected File createFile( String path )
+    {
+        if (path.startsWith("./")) {
+            return new File( directory.getValue(), path.substring(2) );
+        } else {
+            File tmp = new File( path );
+            if (tmp.isAbsolute()) {
+                return tmp;
+            } else {
+                return new File( directory.getValue(), path );
+            }
+        }
+    }
+    
     @Override
     public void post()
     {

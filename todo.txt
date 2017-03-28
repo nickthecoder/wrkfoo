@@ -1,14 +1,9 @@
 Current Task
 ============
 
-Drag files from WrkF (and other WrappedFile results)
-
-Grep uses weird GenericFileTask class which doesn't use WrappedFile
-    Uses weird RelativePath class
-    Delete
+Sort out confusion between WrappedFile and WithFile
+    Use WrappedFile wherever possible, as it has a useful toString implementation
     
-Fix Places options (remove needs work, maybe others).
-
 Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane
         is ALWAYS hidden, and we only see the parameters

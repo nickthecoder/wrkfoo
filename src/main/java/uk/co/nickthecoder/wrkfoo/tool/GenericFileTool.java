@@ -8,7 +8,7 @@ import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class GenericFileTool<R extends RelativePath> extends AbstractListTool<GenericFileTask<R>, R>
+public class GenericFileTool<R extends WrappedFile> extends AbstractListTool<GenericFileTask<R>, R>
 {
     public GenericFileTool(GenericFileTask<R> task)
     {
@@ -23,9 +23,9 @@ public class GenericFileTool<R extends RelativePath> extends AbstractListTool<Ge
         columns.add(new Column<R>(String.class, "path")
         {
             @Override
-            public String getValue(RelativePath row)
+            public String getValue(R row)
             {
-                return row.path;
+                return row.getChoppedPath();
             }
 
         }.tooltip(1).width(200));
@@ -40,7 +40,7 @@ public class GenericFileTool<R extends RelativePath> extends AbstractListTool<Ge
         columns.add(new Column<R>(Date.class, "lastModified")
         {
             @Override
-            public Date getValue(RelativePath row)
+            public Date getValue(R row)
             {
                 return new Date(row.getFile().lastModified());
             }
