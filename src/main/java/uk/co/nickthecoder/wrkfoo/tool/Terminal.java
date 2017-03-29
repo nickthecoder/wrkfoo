@@ -178,7 +178,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
                     return;
                 }
 
-                if (tab.getTabbedPane().getSelectedToolTab() == tab) {
+                if (tab.getTabbedPane().getSelectedTab() == tab) {
                     MainWindow.focusLater("Terminal process finished",
                         MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 5);
                 }

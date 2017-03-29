@@ -120,7 +120,7 @@ public class Editor extends AbstractUnthreadedTool<EditorTask> implements Window
             public void stateChanged(ChangeEvent ce)
             {
                 try {
-                    boolean show = getToolTab().getTabbedPane().getCurrentTab() == getToolTab();
+                    boolean show = getToolTab().getTabbedPane().getSelectedTab() == getToolTab();
                     activate(show);
                 } catch (Exception e) {
                     editorPanel.handleException(e);

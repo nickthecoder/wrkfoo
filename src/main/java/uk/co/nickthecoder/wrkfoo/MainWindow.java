@@ -163,7 +163,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public ToolTab getCurrentTab()
     {
-        return tabbedPane.getCurrentTab();
+        return tabbedPane.getSelectedTab();
     }
 
     private void fillToolBars()

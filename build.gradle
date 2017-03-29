@@ -33,6 +33,8 @@ javadoc {
     source = sourceSets.main.allJava
     classpath = configurations.compile
     
+    options.addStringOption( "diagram", "src/docs/classDiagram.xml" )
+    
     options.doclet = "uk.co.nickthecoder.prioritydoc.PriorityDoc"
     options.addStringOption( "mainpackage", "uk.co.nickthecoder.wrkfoo" )
     options.addStringOption( "overwriteresources" )

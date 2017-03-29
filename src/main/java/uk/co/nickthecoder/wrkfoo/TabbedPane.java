@@ -32,7 +32,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         setTabPlacement(JTabbedPane.LEFT);
     }
 
-    public ToolTab getCurrentTab()
+    public ToolTab getSelectedTab()
     {
         WrkFoo.assertIsEDT();
 
@@ -43,9 +43,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         if (index < 0) {
             return null;
         }
-        if (index >= toolTabs.size()) {
-            return null;
-        }
+
         return toolTabs.get(index);
     }
 
@@ -231,18 +229,6 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 setSelectedIndex(i);
                 return;
             }
-        }
-    }
-
-    public ToolTab getSelectedToolTab()
-    {
-        WrkFoo.assertIsEDT();
-
-        int index = getSelectedIndex();
-        if (index >= 0) {
-            return toolTabs.get(index);
-        } else {
-            return null;
         }
     }
 
