@@ -30,12 +30,12 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
     public BooleanParameter showIncludes = new BooleanParameter.Builder("showIncludes")
         .value(true).parameter();
 
-    // public BooleanParameter showGlobals = new BooleanParameter.Builder("showGlobals")
-    // .value(false).parameter();
+    public BooleanParameter showReadOnlyOptions = new BooleanParameter.Builder("showReadOnlyOptions")
+        .value(false).parameter();
 
     public WrkOptionsTask()
     {
-        addParameters(path, optionsName, showIncludes); // , showGlobals);
+        addParameters(path, optionsName, showIncludes, showReadOnlyOptions);
     }
 
     public WrkOptionsTask(String name)
@@ -63,16 +63,12 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         results = new ArrayList<>();
         addedNames = new HashSet<>();
 
-        add(optionsName.getValue());
-
-        // TODO Once resources only has a single globals url, then finish this.
-        // if (showGlobals.getValue()) {
-        // }
+        add(optionsName.getValue(), false);
     }
 
     private Set<String> addedNames;
 
-    private void add(String name)
+    private void add(String name, boolean included)
     {
         if (addedNames.contains(name)) {
             return;
@@ -92,20 +88,22 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         }
 
         for (OptionsData item : list) {
-            add(item);
+            add(item, included);
         }
     }
 
-    private void add(OptionsData optionsData)
+    private void add(OptionsData optionsData, boolean included )
     {
         for (OptionData data : optionsData.optionData) {
-            results.add(new OptionRow(optionsData, data, optionsData.url));
+            OptionRow row = new OptionRow(optionsData, data, optionsData.url, included);
+            if (showReadOnlyOptions.getValue() || row.canEdit()) {
+                results.add(row);
+            }
         }
 
         if (showIncludes.getValue()) {
-
             for (String include : optionsData.include) {
-                add(include);
+                add(include, true);
             }
         }
     }
@@ -115,12 +113,14 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         public OptionsData options;
         public OptionsData.OptionData option;
         public URL url;
+        public boolean included;
 
-        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url)
+        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url, boolean included)
         {
             this.options = optionsData;
             this.option = data;
             this.url = url;
+            this.included = included;
         }
 
         public boolean canEdit()

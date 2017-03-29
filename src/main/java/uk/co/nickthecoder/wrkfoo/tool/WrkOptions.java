@@ -21,9 +21,11 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
 public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
 {
-    public static Color EDITABLE_COLOR = Color.black;
+    public static Color EDITABLE_COLOR = Color.BLACK;
 
-    public static Color FIXED_COLOR = Color.red;
+    public static Color FIXED_COLOR = new Color(128,0,0); // Dark red
+
+    public static Color INCLUDED_COLOR = new Color(0,0,128); // Dark blue
 
     public WrkOptions()
     {
@@ -158,7 +160,11 @@ public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
                 OptionRow line = getRow(row);
 
                 if (line.url.getProtocol().equals("file")) {
-                    return EDITABLE_COLOR;
+                    if (line.included) {
+                        return INCLUDED_COLOR;
+                    } else {
+                        return EDITABLE_COLOR;
+                    }
                 } else {
                     return FIXED_COLOR;
                 }

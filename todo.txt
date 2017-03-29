@@ -1,19 +1,18 @@
 Current Task
 ============
 
-HTMLViewer to support back and forward
 
 Next Tasks
 ==========
 
-ignore is not adding the "/"
-
 Clean up stuff surrounding ResultsPanel
     Tool should be able to getResultsPanel for example.
+    Should be simple to focus on the "right" component of the results panel.
 
 WrkOptions to show includes in a different color.
     Purple? for includes.
     Grey for read-only
+    Should have an option to filter out read-only options (don't show by default).
 
 Results to have their own parameters
     Example, List of Options plus an the "if" statement
