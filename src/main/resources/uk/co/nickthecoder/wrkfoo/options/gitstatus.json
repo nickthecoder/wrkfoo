@@ -158,6 +158,17 @@
       "refreshResults": false,
       "prompt": false,
       "aliases": []
+    },
+    {
+      "code": "jd",
+      "label": "View Javadocs",
+      "action": "new HTMLViewer( new File( tool.directory, \"build/docs/javadoc/index.html\" ) )\n",
+      "row": false,
+      "multi": false,
+      "newTab": true,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

@@ -45,6 +45,10 @@ Editor toolbar appears when tabset is loaded, even though it isn't on the select
 New Features
 ============
 
+Drop targets can implement a new interface which allows them to give feedback when a drop
+    may happen. At the moment I am adding/removing a border, but that won't be applicable
+    some cases. Tabs may be drop targets, in which case they should just change color?
+
 Include IF
     Only use the included options IF the scriptlet returns true
     Use this for Places, where SOME of the places are files, but other aren't.

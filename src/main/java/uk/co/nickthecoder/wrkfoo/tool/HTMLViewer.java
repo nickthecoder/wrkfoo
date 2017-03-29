@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import java.net.MalformedURLException;
 
 import javafx.application.Platform;
@@ -20,6 +21,17 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
 {
     private HTMLResultsPanel htmlResultsPanel;
 
+    public HTMLViewer(File file)
+    {
+        this(file.toURI().toString());
+    }
+    
+    public HTMLViewer(String address)
+    {
+        this();
+        getTask().address.setValue( address );
+    }
+    
     public HTMLViewer()
     {
         super(new HTMLViewerTask());
