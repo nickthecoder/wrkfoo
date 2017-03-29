@@ -1,6 +1,17 @@
 Current Task
 ============
 
+WebViewer
+
+Next Tasks
+==========
+
+Editor to use AbstractUnthreadTool
+    Editor delete getTask() - it does nothing.
+
+PlacesChoices store.listener was throwing exection before I added the "if"
+    Check it out!
+
 Copy and Move and Link files using drag and drop
     Tabs can be a drop target for files if they are a directory
         Rename the DirectoryTool interface to HasDirectory and put in jGuifier?
@@ -12,7 +23,6 @@ PlacesTool to allow drag and drop from other PlacesTool - copies the file AND la
 
 gkt places file can contain http:// etc, so PlacesTool will screw them up when editing.
     Allow for all protocols, and handle non-file ones gracefully
-
     
 Some kind of split screen, allowing two tools side by side for easy drag and drop
 
@@ -34,6 +44,12 @@ Editor toolbar appears when tabset is loaded, even though it isn't on the select
 
 New Features
 ============
+
+Include IF
+    Only use the included options IF the scriptlet returns true
+    Use this for Places, where SOME of the places are files, but other aren't.
+    Can also use it to include directory.json from file.json
+    No. The IF should be part of the options file, not part of the include
 
 Places to accept Drag and Drop files.
 
@@ -67,9 +83,31 @@ Settings Task to edit the Settings data
 Terminal to have shortcuts so that it is easy to move away from the Terminal using the keyboard.
     trolCommander creates a subclass of JediTermWidget which creates its own subclass of TerminalPane,
     and this TerminalPane has its own actions with shortcuts.
+
+Tools to have a "Help" link in the parameters pane. Click to show the web page.
     
 Nice-to-Haves
 =============
+
+Image Manipulation
+    Using ImageMagik
+    Create options for creating thumbnails and larger, but scaled down versions of photos.
+    Create options to convert from one format to another
+    Create a Tool, which includes an image preview, which takes an image
+        and lets you scale and crop
+        Save using a new "Save" component, which is RISC-OS style draggable icon + name text field
+            + ComboBox for the file extension
+
+Music player
+    Split view with PlayList and Browse as two lists
+    Browse options for "play now", "queue". Includes file.json
+    Playlist "." for play now "-" for remove
+        Drag and drop to re-order
+
+Video Series Player
+    List of "Series"
+        "." will launch the video, and move onto the next item in the directory
+    Drag a directory / video file onto the list to add to the "Up-Next" list
 
 TextEditorParameter, for editing chunks of code (such as groovy scripts, xml, json etc)
     Right click on the "plain" JTextPane for a "Edit..." option, which pops up an EditorWindow

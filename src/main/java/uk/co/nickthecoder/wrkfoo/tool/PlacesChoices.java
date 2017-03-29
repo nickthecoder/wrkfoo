@@ -39,11 +39,12 @@ public class PlacesChoices extends PlacesTool
 
         store.addListener(new ParameterListener()
         {
-
             @Override
             public void changed(Parameter source)
             {
-                task.store.setValue(store.getValue());
+                if ( store.getValue() != null) {
+                    task.store.setValue(store.getValue());
+                }
             }
         });
         
