@@ -62,10 +62,14 @@ public class HomeTask extends Task implements ListResults<Tool>
         bash.task.arguments.addValue("--login");
         bash.title.setValueIgnoreErrors("Bash");
         results.add(bash);
-        
+
         HTMLViewer htmlViewer = new HTMLViewer();
         results.add(htmlViewer);
-            
+
+        HTMLViewer about = new HTMLViewer();
+        about.task.address.setValue("http://nickthecoder.co.uk/wiki/view/software/WrkFoo");
+        results.add(about);
+
     }
 
     @Override

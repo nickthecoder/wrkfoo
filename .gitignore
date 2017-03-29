@@ -5,6 +5,6 @@
 /.project
 /.settings
 /rsyncdocs.sh
-src/main/resources/uk/co/nickthecoder/wrkfoo/unused/
-copyConfig.sh
-.places
+/copyConfig.sh
+/src/main/resources/uk/co/nickthecoder/wrkfoo/unused
+/.places

@@ -5,6 +5,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -23,15 +26,15 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
 
     public HTMLViewer(File file)
     {
-        this(file.toURI().toString());
+        this(Util.toURL(file).toString());
     }
-    
+
     public HTMLViewer(String address)
     {
         this();
-        getTask().address.setValue( address );
+        getTask().address.setValue(address);
     }
-    
+
     public HTMLViewer()
     {
         super(new HTMLViewerTask());
@@ -50,7 +53,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
         return htmlResultsPanel;
     }
 
-    public static class HTMLResultsPanel extends ResultsPanel
+    public class HTMLResultsPanel extends ResultsPanel
     {
         final JFXPanel fxPanel = new JFXPanel();
 
@@ -60,6 +63,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
             Util.assertIsEDT();
             setLayout(new BorderLayout());
             add(fxPanel, BorderLayout.CENTER);
+            Platform.setImplicitExit(false);
         }
 
         public void show(String address)
@@ -84,7 +88,6 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
             }
             // Without this, JavaFX will terminate when there are no JFXPanels visible, and
             // then all JFX stuff will stop working
-            Platform.setImplicitExit(false);
 
             StackPane root = new StackPane();
             Scene scene = new Scene(root);
@@ -93,9 +96,34 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
             WebView webView = new WebView();
             root.getChildren().add(webView);
 
-            WebEngine webEngine = webView.getEngine();
+            final WebEngine webEngine = webView.getEngine();
             webEngine.load(address);
+            webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>()
+            {
+                @Override
+                public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue)
+                {
+                    changedAddress(webEngine.getLocation());
+                }
+            });
         }
+    }
+
+    private void changedAddress(String address)
+    {
+        if ((address == null)|| (task.address.getValue() == null)) {
+            return;
+        }
+        
+        if (address.equals(task.address.getValue())) {
+            return;
+        }
+        // Don't care if it is file:///foo and file:/foo
+        
+        
+        System.out.println("Location changed " + address + " vs " + task.address.getValue());
+        task.address.setValue(address);
+        this.getToolTab().pushHistory();
     }
 
     public static class HTMLViewerTask extends Task

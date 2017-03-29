@@ -74,7 +74,7 @@
     {
       "code": "ignore",
       "label": "Git Ignore",
-      "action": "os.exec('echo',row.choppedPath)\n  .stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
+      "action": "os.exec('echo', \"/\" + row.choppedPath)\n  .stdout(new FileSink(new File(task.directory.value,'.gitignore'),true))",
       "row": true,
       "multi": false,
       "newTab": false,

@@ -168,6 +168,16 @@ public class ToolTab
             goPrivate(history.redo(), false, false);
         }
     }
+    
+    /**
+     * Used when the Tool's task's parameters have changed without the task being re-run by the normal
+     * mechanism. Used by HTMLViewer for example when the address is changed.
+     * This allows the normal history to work.
+     */
+    public void pushHistory()
+    {
+        history.add(tool);
+    }
 
     public void go(Tool newTool)
     {

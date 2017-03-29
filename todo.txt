@@ -1,13 +1,26 @@
 Current Task
 ============
 
-WebViewer
+HTMLViewer to support back and forward
 
 Next Tasks
 ==========
 
-PlacesChoices store.listener was throwing exection before I added the "if"
-    Check it out!
+ignore is not adding the "/"
+
+Clean up stuff surrounding ResultsPanel
+    Tool should be able to getResultsPanel for example.
+
+WrkOptions to show includes in a different color.
+    Purple? for includes.
+    Grey for read-only
+
+Results to have their own parameters
+    Example, List of Options plus an the "if" statement
+    Listen to all parameters convenience method (maybe put that on Task too).
+        Does GroupParameter listen to all of its children?
+    Use a normal splitpane?
+    Parameters can be disabled.
 
 Copy and Move and Link files using drag and drop
     Tabs can be a drop target for files if they are a directory
@@ -31,6 +44,8 @@ Edit Settings - a Task (not a Tool), where each of the Resources attributes are 
 
 BUGS
 ====
+
+Add an option does not make it available until a restart
 
 Git Status is not focusing on the non-row option when empty only when running from command line.
 
@@ -89,6 +104,8 @@ Tools to have a "Help" link in the parameters pane. Click to show the web page.
     
 Nice-to-Haves
 =============
+
+History to store the long title, and show it in a popup menu to Jump to a distance moment.
 
 Image Manipulation
     Using ImageMagik
