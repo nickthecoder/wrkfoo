@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram title="PriorityDoc" filename="classDiagram.html" image="classDiagram.png" thumbnail="classDiagramThumb.png" width="900" height="900">
+
+    <class name="uk.co.nickthecoder.wrkfoo.TabbedPane" x="379" y="239"/>
+    <class name="uk.co.nickthecoder.wrkfoo.Tool" x="827" y="733"/>
+    <class name="uk.co.nickthecoder.wrkfoo.ToolTab" x="518" y="734"/>
+    <class name="uk.co.nickthecoder.wrkfoo.MainWindow" x="37" y="19"/>
+    <class name="uk.co.nickthecoder.wrkfoo.ResultsPanel" x="1041" y="408"/>
+    <class name="uk.co.nickthecoder.wrkfoo.ToolPanel" x="620" y="280"/>
+    <class name="uk.co.nickthecoder.wrkfoo.util.HidingSplitPane" x="855" y="181"/>
+ 
+    <dependency from="uk.co.nickthecoder.wrkfoo.TabbedPane" to="uk.co.nickthecoder.wrkfoo.MainWindow" toLabel="getMainWindow" />
+    <dependency from="uk.co.nickthecoder.wrkfoo.TabbedPane" to="uk.co.nickthecoder.wrkfoo.ToolTab" toLabel="getToolTab(i)" />
+    <dependency from="uk.co.nickthecoder.wrkfoo.TabbedPane" to="uk.co.nickthecoder.wrkfoo.ToolPanel" toLabel="getComponent(i)" />
+
+    <dependency from="uk.co.nickthecoder.wrkfoo.Tool" to="uk.co.nickthecoder.wrkfoo.ToolTab" toLabel="getToolTab" />
+    <dependency from="uk.co.nickthecoder.wrkfoo.Tool" to="uk.co.nickthecoder.wrkfoo.ToolPanel" toLabel="getToolPanel" />
+
+    <dependency from="uk.co.nickthecoder.wrkfoo.ToolPanel" to="uk.co.nickthecoder.wrkfoo.ResultsPane" toLabel="getResultsPanel" />
+    <dependency from="uk.co.nickthecoder.wrkfoo.ToolPanel" to="uk.co.nickthecoder.wrkfoo.HidingSplitPane" toLabel="getSplitPane" />
+
+
+	<dependency from="uk.co.nickthecoder.wrkfoo.HidingSplitPane" to="uk.co.nickthecoder.wrkfoo.ResultsPanel" toLabel="getTopComponent" />
+
+</diagram>
