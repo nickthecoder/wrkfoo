@@ -24,7 +24,7 @@ import uk.co.nickthecoder.jguifier.util.SimpleSink;
 public class SimpleTerminalWidget implements ProcessListener
 {
     private Exec exec;
-    
+
     private JTextPane textArea;
 
     private JScrollPane scrollPane;
@@ -38,11 +38,11 @@ public class SimpleTerminalWidget implements ProcessListener
     public SimpleTerminalWidget(final Exec exec)
     {
         this.exec = exec;
-        
+
         textArea = new JTextPane();
         textArea.setEditable(false);
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
-        
+
         StyledDocument doc = textArea.getStyledDocument();
 
         Style defaultStyle = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
@@ -55,14 +55,15 @@ public class SimpleTerminalWidget implements ProcessListener
         StyleConstants.setItalic(errorStyle, true);
 
         scrollPane = new JScrollPane(textArea);
-
+        scrollPane.setViewportBorder(null);
+        
         inputArea = new JPanel();
         inputArea.setLayout(new BorderLayout());
         input = new JTextField();
         inputArea.add(input, BorderLayout.CENTER);
 
         ActionBuilder builder = new ActionBuilder(this).component(inputArea);
-        
+
         JButton goButton = builder.name("SimpleTerminalWidget.go").label("Go").buildButton();
         inputArea.add(goButton, BorderLayout.EAST);
 
