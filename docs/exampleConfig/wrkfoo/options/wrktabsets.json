@@ -1,6 +1,0 @@
-{
-    include: "files.json",
-    options:[
-        {code: "", label: "Load Tab Set", groovy: "tool.load(row.file)"}
-    ]
-}

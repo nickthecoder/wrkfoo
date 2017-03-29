@@ -1,6 +1,0 @@
-{
-    options:[
-        {code:"", label:"Run", groovy:"row"},
-        {code:"eo", label:"Edit the Tools's Options", groovy:"edit( rows.collect {it.optionsFile} )", multi:true}
-    ]
-}

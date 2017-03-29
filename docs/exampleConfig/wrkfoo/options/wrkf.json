@@ -1,6 +1,0 @@
-{
-    include:"files.json",
-    options:[
-        {code:"ls", label:"Work with Directory", if: "row.file.isDirectory()", groovy:"command.parameter('directory',row.file)"}
-    ]
-}
