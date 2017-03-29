@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
-import uk.co.nickthecoder.wrkfoo.AbstractThreadedTool;
+import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
@@ -20,7 +20,7 @@ import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class Editor extends AbstractThreadedTool<EditorTask> implements WindowFocusListener, EditorListener
+public class Editor extends AbstractUnthreadedTool<EditorTask> implements WindowFocusListener, EditorListener
 {
     EditorPanel editorPanel;
 
@@ -80,12 +80,6 @@ public class Editor extends AbstractThreadedTool<EditorTask> implements WindowFo
             return "New";
         }
         return task.file.getValue().getName();
-    }
-
-    @Override
-    public EditorTask getTask()
-    {
-        return task;
     }
 
     private boolean firstTime = true;

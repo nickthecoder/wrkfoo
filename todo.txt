@@ -6,9 +6,6 @@ WebViewer
 Next Tasks
 ==========
 
-Editor to use AbstractUnthreadTool
-    Editor delete getTask() - it does nothing.
-
 PlacesChoices store.listener was throwing exection before I added the "if"
     Check it out!
 
