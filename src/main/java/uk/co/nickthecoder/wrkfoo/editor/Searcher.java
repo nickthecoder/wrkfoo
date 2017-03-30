@@ -28,6 +28,11 @@ public class Searcher
         context = new SearchContext();
     }
 
+    public RSyntaxTextArea getTextArea()
+    {
+        return textEditorPane;
+    }
+    
     public void addSearcherListener(SearcherListener sl)
     {
         listeners.add(sl);

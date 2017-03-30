@@ -97,6 +97,11 @@ public class FindToolBar extends JPanel implements SearcherListener
         searcher.addSearcherListener(this);
     }
 
+    public JTextField getTextField()
+    {
+        return textField;
+    }
+    
     public void onMatchCase()
     {
         searcher.context.setMatchCase(matchCase.isSelected());

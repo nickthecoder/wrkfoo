@@ -86,6 +86,16 @@ public class ActionBuilder
         return this;
     }
 
+    /**
+     * The default is {@link JComponent#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT}
+     * 
+     * @param condition
+     *            One of
+     *            {@link JComponent#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT}
+     *            {@link JComponent#WHEN_FOCUSED}
+     *            {@link JComponent#WHEN_IN_FOCUSED_WINDOW}
+     * @return this
+     */
     public ActionBuilder condition(int condition)
     {
         this.condition = condition;
@@ -152,7 +162,7 @@ public class ActionBuilder
         try {
             return receiver.getClass().getMethod(methodName, EMPTY_SIGNATURE);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to method : " + methodName);
         }
     }
 

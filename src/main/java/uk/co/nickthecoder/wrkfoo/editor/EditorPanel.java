@@ -82,7 +82,11 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
 
     private void populateToolBar()
     {
-        ActionBuilder builder = new ActionBuilder(this);
+        // Should the condition be WHEN_IN_FOCUSED_WINDOW?
+        // This allows the shortcuts to take affect when the focus is in the FindToolBar.
+        // However, they will ALSO take affect when in other places, where it may not make sense.
+        // Currently it is OK, but if we ever have two Tools visible in one MainWindow, then it may not be correct.
+        ActionBuilder builder = new ActionBuilder(this).condition(WHEN_IN_FOCUSED_WINDOW);
 
         toolBar.add(builder.name("documentSave").tooltip("Save Document").buildButton());
         // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").buildButton());
@@ -93,13 +97,13 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         toolBar.add(builder.name("editCopy").tooltip("Copy").buildButton());
         toolBar.add(builder.name("editPaste").tooltip("Paste").buildButton());
 
-        toolBar.add(
-            findButton = builder.name("editFind").tooltip("Search").buildToggleButton());
+        toolBar.add(findButton = builder.name("editFind").tooltip("Search").buildToggleButton());
 
         toolBar.add(builder.name("editReplace").tooltip("Find and Replace").buildButton());
         toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").buildButton());
 
         findToolBar.rightPanel.add(builder.name("editReplace").label("Replace...").buildButton());
+
         builder.name("escape").buildShortcut();
     }
 
@@ -188,11 +192,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
     public void onEditFind()
     {
         replaceDialog.setVisible(false);
-        if (!findButton.isSelected()) {
-            onCloseFind();
-        } else {
-            findToolBar.setVisible(true);
-        }
+        findToolBar.setVisible(true);
+        Focuser.focusLater("EditorPanel.onEditFind. Find text field", findToolBar.getTextField(), 8);
     }
 
     public void onEditReplace()

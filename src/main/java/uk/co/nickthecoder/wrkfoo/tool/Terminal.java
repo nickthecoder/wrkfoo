@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -26,16 +27,17 @@ import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
+import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
-public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
+public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTask>
     implements ProcessListener
 {
     public static Icon icon = Resources.icon("terminal.png");
 
-    ResultsPanel panel;
+    TerminalResults panel;
 
     private JPanel terminal;
 
@@ -72,7 +74,7 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
 
     private final void init()
     {
-        panel = new ResultsPanel();
+        panel = new TerminalResults();
         panel.setLayout(new BorderLayout());
 
         task.directory.addListener(new ParameterListener()
@@ -212,11 +214,13 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
         ProcessPoller pp = getProcessPoller();
         pp.addProcessListener(this);
 
+        Focuser.focusLater("Terminal just created", getResultsPanel().getFocusComponent(), 8);
+        
         super.go();
     }
 
     @Override
-    public ResultsPanel createResultsPanel()
+    public TerminalResults createResultsPanel()
     {
         return panel;
     }
@@ -352,14 +356,17 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
     class TerminalResults extends ResultsPanel
     {
         @Override
-        public boolean requestFocusInWindow()
+        public JComponent getFocusComponent()
         {
             if (terminal != null) {
-                return terminal.requestFocusInWindow();
+                Focuser.log( "Terminal.getFocusComponent - terminal");
+                return terminal;
             } else if (simpleTerminal != null) {
-                return simpleTerminal.getInputTextField().requestFocusInWindow();
+                Focuser.log( "Terminal.getFocusComponent - terminal");
+                return simpleTerminal.getInputTextField();
             }
-            return super.requestFocusInWindow();
+            Focuser.log( "Terminal.getFocusComponent calling super");
+            return super.getFocusComponent();
         }
     }
 }
