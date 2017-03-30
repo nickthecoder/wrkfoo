@@ -23,8 +23,8 @@ import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
+import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
@@ -37,7 +37,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
 {
     public static Icon icon = Resources.icon("terminal.png");
 
-    TerminalResults panel;
+    TerminalResults results;
 
     private JPanel terminal;
 
@@ -74,8 +74,8 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
 
     private final void init()
     {
-        panel = new TerminalResults();
-        panel.setLayout(new BorderLayout());
+        results = new TerminalResults();
+        results.getComponent().setLayout(new BorderLayout());
 
         task.directory.addListener(new ParameterListener()
         {
@@ -162,7 +162,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     {
         // When re-running this task, we need to reset
         processPoller = null;
-        panel.removeAll();
+        results.getComponent().removeAll();
 
         String[] commandArray;
         String directoryString;
@@ -195,8 +195,8 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         if (useFallback) {
 
             simpleTerminal = createExecPanel(commandArray, env, directoryString);
-            panel.add(simpleTerminal.getInputComponent(), BorderLayout.SOUTH);
-            panel.add(simpleTerminal.getOutputComponent(), BorderLayout.CENTER);
+            results.getComponent().add(simpleTerminal.getInputComponent(), BorderLayout.SOUTH);
+            results.getComponent().add(simpleTerminal.getOutputComponent(), BorderLayout.CENTER);
 
         } else {
 
@@ -208,7 +208,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            panel.add(terminal);
+            results.getComponent().add(terminal);
         }
 
         ProcessPoller pp = getProcessPoller();
@@ -222,7 +222,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     @Override
     public TerminalResults createResultsPanel()
     {
-        return panel;
+        return results;
     }
 
     @Override
@@ -233,7 +233,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
             closeTerminal();
             terminal = null;
         }
-        panel.removeAll();
+        results.getComponent().removeAll();
         if (task.killOnClose.getValue()) {
             killProcess();
         }
@@ -353,7 +353,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         }
     }
 
-    class TerminalResults extends ResultsPanel
+    class TerminalResults extends PanelResults
     {
         @Override
         public JComponent getFocusComponent()

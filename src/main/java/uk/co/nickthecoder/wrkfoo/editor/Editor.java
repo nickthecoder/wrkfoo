@@ -34,7 +34,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         editorPanel = new EditorPanel(this);
         editorPanel.addEditorListener(this);
 
-        ActionBuilder builder = new ActionBuilder(this).component(editorPanel);
+        ActionBuilder builder = new ActionBuilder(this).component(editorPanel.getComponent());
         builder.name("documentOpen").buildShortcut();
     }
 

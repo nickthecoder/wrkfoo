@@ -94,7 +94,7 @@ public class ToolPanel extends JPanel implements TaskListener
 
         sidePanel.add(goStop, BorderLayout.SOUTH);
 
-        body.add(tool.getResultsPanel(), BorderLayout.CENTER);
+        body.add(tool.getResultsPanel().getComponent(), BorderLayout.CENTER);
 
         splitPane = new HidingSplitPane(JSplitPane.VERTICAL_SPLIT, true, body, sidePanel);
         splitPane.setResizeWeight(0.5);
@@ -119,7 +119,7 @@ public class ToolPanel extends JPanel implements TaskListener
     /**
      * @deprecated
      */
-    public ResultsPanel getResultsPanel()
+    public Results getResultsPanel()
     {
         return tool.getResultsPanel();
     }

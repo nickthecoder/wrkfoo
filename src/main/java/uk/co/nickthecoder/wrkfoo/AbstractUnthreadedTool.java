@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class AbstractUnthreadedTool<S extends ResultsPanel, T extends Task>
+public abstract class AbstractUnthreadedTool<S extends Results, T extends Task>
     extends AbstractTool<S, T>
 {
     public AbstractUnthreadedTool(T task)

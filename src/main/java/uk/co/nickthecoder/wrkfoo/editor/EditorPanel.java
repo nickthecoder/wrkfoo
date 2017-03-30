@@ -24,15 +24,13 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
-import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
-public class EditorPanel extends ResultsPanel implements ExceptionHandler, DocumentListener
+public class EditorPanel extends PanelResults implements ExceptionHandler, DocumentListener
 {
-    private static final long serialVersionUID = 1L;
-
     Editor editorTool;
 
     TextEditorPane editorPane;
@@ -55,17 +53,15 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
     {
         this.editorTool = editorTool;
 
-        this.setLayout(new BorderLayout());
-
         editorPane = new TextEditorPane();
         editorPane.setTabsEmulated(true);
         editorPane.setTabSize(4);
 
         ErrorStrip errorStrip = new ErrorStrip(editorPane);
-        this.add(errorStrip, BorderLayout.EAST);
+        getComponent().add(errorStrip, BorderLayout.EAST);
 
         scrollPane = new RTextScrollPane(editorPane);
-        this.add(scrollPane, BorderLayout.CENTER);
+        getComponent().add(scrollPane, BorderLayout.CENTER);
         searcher = new Searcher(editorPane);
 
         toolBar = new JToolBar();
@@ -86,7 +82,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         // This allows the shortcuts to take affect when the focus is in the FindToolBar.
         // However, they will ALSO take affect when in other places, where it may not make sense.
         // Currently it is OK, but if we ever have two Tools visible in one MainWindow, then it may not be correct.
-        ActionBuilder builder = new ActionBuilder(this).condition(WHEN_IN_FOCUSED_WINDOW);
+        ActionBuilder builder = new ActionBuilder(this).component(getComponent())
+            .condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         toolBar.add(builder.name("documentSave").tooltip("Save Document").buildButton());
         // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").buildButton());
@@ -113,7 +110,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         findToolBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
         findToolBar.setVisible(false);
 
-        Frame window = (Frame) SwingUtilities.getWindowAncestor(this);
+        Frame window = (Frame) SwingUtilities.getWindowAncestor(getComponent());
         replaceDialog = new ReplaceDialog(window, searcher);
     }
 
@@ -213,7 +210,8 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
     {
         WrkFoo.assertIsEDT();
 
-        int result = JOptionPane.showConfirmDialog(this, "Revert file?", "Revert", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(getComponent(), "Revert file?", "Revert",
+            JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
 

@@ -10,10 +10,8 @@ import javax.swing.JScrollPane;
 import uk.co.nickthecoder.wrkfoo.option.Option;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class TableResultsPanel<R> extends ResultsPanel
+public class TableResults<R> extends PanelResults
 {
-    private static final long serialVersionUID = 1L;
-
     protected SimpleTable<R> table;
 
     protected JScrollPane tableScrollPane;
@@ -22,7 +20,7 @@ public class TableResultsPanel<R> extends ResultsPanel
 
     protected OptionsRunner optionsRunner;
 
-    public TableResultsPanel(TableTool<?, ?> tool, SimpleTable<R> table)
+    public TableResults(TableTool<?, ?> tool, SimpleTable<R> table)
     {
         super();
         this.tableTool = tool;
@@ -35,7 +33,7 @@ public class TableResultsPanel<R> extends ResultsPanel
         tableScrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
-        this.add(tableScrollPane, BorderLayout.CENTER);
+        getComponent().add(tableScrollPane, BorderLayout.CENTER);
 
         ActionBuilder builder = new ActionBuilder(this).component(table)
             .condition(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

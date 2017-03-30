@@ -1,12 +1,13 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import uk.co.nickthecoder.wrkfoo.AbstractTool;
-import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.PanelResults;
+import uk.co.nickthecoder.wrkfoo.Results;
 
 /**
  * A tool which does nothing!
  */
-public class NullTool extends AbstractTool<ResultsPanel,NullTask>
+public class NullTool extends AbstractTool<Results,NullTask>
 {
     public NullTool()
     {
@@ -29,8 +30,8 @@ public class NullTool extends AbstractTool<ResultsPanel,NullTask>
     }
 
     @Override
-    protected ResultsPanel createResultsPanel()
+    protected Results createResultsPanel()
     {
-        return new ResultsPanel();
+        return new PanelResults();
     }
 }

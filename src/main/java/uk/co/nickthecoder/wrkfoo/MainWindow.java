@@ -560,7 +560,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().showLeft();
-            Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel(), 8);
+            Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel().getComponent(), 8);
         }
     }
 

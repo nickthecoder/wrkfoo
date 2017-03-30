@@ -12,7 +12,7 @@ import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
-public abstract class AbstractTool<S extends ResultsPanel, T extends Task>
+public abstract class AbstractTool<S extends Results, T extends Task>
     implements Tool<S>
 {
     public T task;

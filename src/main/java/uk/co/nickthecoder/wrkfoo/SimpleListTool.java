@@ -3,7 +3,7 @@ package uk.co.nickthecoder.wrkfoo;
 import uk.co.nickthecoder.jguifier.Task;
 
 public abstract class SimpleListTool<T extends Task & ListResults<R>, R>
-    extends AbstractListTool<TableResultsPanel<R>, T, R>
+    extends AbstractListTool<TableResults<R>, T, R>
 {
     public SimpleListTool(T task)
     {
@@ -11,7 +11,7 @@ public abstract class SimpleListTool<T extends Task & ListResults<R>, R>
     }
     
     @Override
-    public TableResultsPanel<R> createResultsPanel()
+    public TableResults<R> createResultsPanel()
     {
         SimpleTable<R> table = getColumns().createTable(getTableModel());
 
@@ -19,7 +19,7 @@ public abstract class SimpleListTool<T extends Task & ListResults<R>, R>
             dragListConverter.createDragListHandler(table);
         }
 
-        return new TableResultsPanel<>(this, table);
+        return new TableResults<>(this, table);
     }
 
     @Override

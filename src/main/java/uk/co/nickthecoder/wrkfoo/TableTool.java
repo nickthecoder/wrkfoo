@@ -1,6 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
-public interface TableTool<S extends ResultsPanel,R> extends Tool<S>
+public interface TableTool<S extends Results,R> extends Tool<S>
 {
     public ToolTableModel<R> getTableModel();
 

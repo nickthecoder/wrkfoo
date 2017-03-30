@@ -16,7 +16,7 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  * i.e. it defines the columns, and any special cell renderers etc.
  * 
  */
-public interface Tool<S extends ResultsPanel>
+public interface Tool<S extends Results>
 {
     public void postCreate();
 

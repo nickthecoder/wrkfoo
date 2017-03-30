@@ -19,8 +19,8 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
+import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLViewerTask;
 
@@ -76,7 +76,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
         return htmlResultsPanel;
     }
 
-    public class HTMLResultsPanel extends ResultsPanel
+    public class HTMLResultsPanel extends PanelResults
     {
         final JFXPanel fxPanel = new JFXPanel();
 
@@ -84,8 +84,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
         {
             super();
             Util.assertIsEDT();
-            setLayout(new BorderLayout());
-            add(fxPanel, BorderLayout.CENTER);
+            getComponent().add(fxPanel, BorderLayout.CENTER);
             Platform.setImplicitExit(false);
         }
 
