@@ -43,8 +43,6 @@ public class ToolPanel extends JPanel implements TaskListener
 
     private JScrollPane parametersScrollPane;
 
-    protected ResultsPanel resultsPanel;
-
     public ToolPanel(Tool<?> foo)
     {
         this.tool = foo;
@@ -93,8 +91,7 @@ public class ToolPanel extends JPanel implements TaskListener
 
         sidePanel.add(goStop, BorderLayout.SOUTH);
 
-        resultsPanel = tool.createResultsPanel();
-        body.add(resultsPanel, BorderLayout.CENTER);
+        body.add(tool.getResultsPanel(), BorderLayout.CENTER);
 
         splitPane = new HidingSplitPane(JSplitPane.VERTICAL_SPLIT, true, body, sidePanel);
         splitPane.setResizeWeight(0.5);
@@ -116,9 +113,12 @@ public class ToolPanel extends JPanel implements TaskListener
         return splitPane;
     }
 
+    /**
+     * @deprecated
+     */
     public ResultsPanel getResultsPanel()
     {
-        return resultsPanel;
+        return tool.getResultsPanel();
     }
 
     public ParametersPanel getParametersPanel()

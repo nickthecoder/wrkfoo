@@ -35,18 +35,6 @@ public abstract class AbstractTableTool<S extends TableResultsPanel<R>, T extend
     }
 
     @Override
-    public TableResultsPanel<R> createResultsPanel()
-    {
-        SimpleTable<R> table = getColumns().createTable(getTableModel());
-
-        if (dragListConverter != null) {
-            dragListConverter.createDragListHandler(table);
-        }
-
-        return new TableResultsPanel<>(this, table);
-    }
-
-    @Override
     public void focusOnResults(int importance)
     {
         if (getResultsPanel().getTable().getModel().getRowCount() == 0) {
@@ -58,11 +46,4 @@ public abstract class AbstractTableTool<S extends TableResultsPanel<R>, T extend
             super.focusOnResults(importance);
         }
     }
-
-    @SuppressWarnings("unchecked")
-    public TableResultsPanel<R> getResultsPanel()
-    {
-        return (S) getToolPanel().getResultsPanel();
-    }
-
 }

@@ -180,6 +180,19 @@ public abstract class AbstractTool<S extends ResultsPanel, T extends Task>
         }
     }
 
+    private S resultsPanel;
+    
+    protected abstract S createResultsPanel();
+
+    @Override
+    public S getResultsPanel()
+    {
+        if ( resultsPanel == null) {
+            resultsPanel = createResultsPanel();
+        }
+        return resultsPanel;
+    }
+
     @Override
     public ParametersPanel createParametersPanel()
     {

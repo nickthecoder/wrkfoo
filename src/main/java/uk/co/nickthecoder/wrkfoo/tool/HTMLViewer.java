@@ -48,7 +48,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
     }
 
     @Override
-    public ResultsPanel createResultsPanel()
+    public HTMLResultsPanel createResultsPanel()
     {
         htmlResultsPanel = new HTMLResultsPanel();
         return htmlResultsPanel;

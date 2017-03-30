@@ -10,17 +10,16 @@ import java.util.ArrayList;
 import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.TableResultsPanel;
+import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
-public class WrkOptions extends AbstractListTool<TableResultsPanel<OptionRow>, WrkOptionsTask, OptionRow>
+public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
 {
     public static Color EDITABLE_COLOR = Color.BLACK;
 

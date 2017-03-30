@@ -36,7 +36,7 @@ public interface Tool<S extends ResultsPanel>
 
     public void updateResults();
 
-    public ResultsPanel createResultsPanel();
+    public S getResultsPanel();
 
     public ParametersPanel createParametersPanel();
 

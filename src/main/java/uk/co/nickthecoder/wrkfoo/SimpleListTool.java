@@ -8,4 +8,17 @@ public abstract class SimpleListTool<T extends Task & ListResults<R>, R> extends
     {
         super(task);
     }
+    
+    @Override
+    public TableResultsPanel<R> createResultsPanel()
+    {
+        SimpleTable<R> table = getColumns().createTable(getTableModel());
+
+        if (dragListConverter != null) {
+            dragListConverter.createDragListHandler(table);
+        }
+
+        return new TableResultsPanel<>(this, table);
+    }
+
 }
