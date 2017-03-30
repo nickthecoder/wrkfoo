@@ -18,9 +18,10 @@ import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
+import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLViewerTask;
 
-public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
+public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLViewerTask>
 {
     private HTMLResultsPanel htmlResultsPanel;
 
@@ -111,16 +112,15 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
 
     private void changedAddress(String address)
     {
-        if ((address == null)|| (task.address.getValue() == null)) {
+        if ((address == null) || (task.address.getValue() == null)) {
             return;
         }
-        
+
         if (address.equals(task.address.getValue())) {
             return;
         }
         // Don't care if it is file:///foo and file:/foo
-        
-        
+
         System.out.println("Location changed " + address + " vs " + task.address.getValue());
         task.address.setValue(address);
         this.getToolTab().pushHistory();

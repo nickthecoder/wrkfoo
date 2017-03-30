@@ -18,11 +18,11 @@ public class TableResultsPanel<R> extends ResultsPanel
 
     public JScrollPane tableScrollPane;
 
-    protected TableTool<?> tableTool;
+    protected TableTool<?,?> tableTool;
     
     protected OptionsRunner optionsRunner;
 
-    public TableResultsPanel(TableTool<?> tool, SimpleTable<R> table)
+    public TableResultsPanel(TableTool<?,?> tool, SimpleTable<R> table)
     {
         super();
         this.tableTool = tool;

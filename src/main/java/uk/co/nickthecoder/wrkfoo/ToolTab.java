@@ -25,7 +25,7 @@ public class ToolTab
 {
     private TabbedPane tabbedPane;
 
-    private Tool tool;
+    private Tool<?> tool;
 
     private History history;
 
@@ -35,7 +35,7 @@ public class ToolTab
 
     private String shortcut;
 
-    public ToolTab(Tool tool)
+    public ToolTab(Tool<?> tool)
     {
         this.tool = tool;
         panel = new JPanel();
@@ -128,7 +128,7 @@ public class ToolTab
         }
     }
 
-    private final void attach(final Tool tool)
+    private final void attach(final Tool<?> tool)
     {
         this.tool = tool;
         panel.removeAll();
@@ -139,13 +139,13 @@ public class ToolTab
     private void detach()
     {
         this.tool.detach();
-        Tool tool = getTool();
+        Tool<?> tool = getTool();
         if (tool.getTask().isRunning()) {
             tool.stop();
         }
     }
 
-    public Tool getTool()
+    public Tool<?> getTool()
     {
         return tool;
     }
@@ -179,17 +179,17 @@ public class ToolTab
         history.add(tool);
     }
 
-    public void go(Tool newTool)
+    public void go(Tool<?> newTool)
     {
         goPrivate(newTool, false, true);
     }
 
-    public void goPrompt(Tool newTool, boolean prompt)
+    public void goPrompt(Tool<?> newTool, boolean prompt)
     {
         goPrivate(newTool, prompt, true);
     }
 
-    private void goPrivate(Tool newTool, boolean prompt, boolean updateHistory)
+    private void goPrivate(Tool<?> newTool, boolean prompt, boolean updateHistory)
     {
         if (newTool != this.tool) {
             detach();

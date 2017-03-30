@@ -288,7 +288,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
-            Tool tool = tab.getTool();
+            Tool<?> tool = tab.getTool();
 
             if (!optionTextField.getText().equals("")) {
                 if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
@@ -298,7 +298,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         }
     }
 
-    public ToolTab insertTab(final Tool tool, boolean prompt)
+    public ToolTab insertTab(final Tool<?> tool, boolean prompt)
     {
         ToolTab tab = new ToolTab(tool);
 
@@ -317,7 +317,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return tab;
     }
 
-    public ToolTab addTab(Tool tool)
+    public ToolTab addTab(Tool<?> tool)
     {
         ToolTab tab = new ToolTab(tool);
 
@@ -374,7 +374,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         if (tab == null) {
             stopGoButtons(false);
         } else {
-            Tool tool = tab.getTool();
+            Tool<?> tool = tab.getTool();
             title = tool.getLongTitle();
             stopGoButtons(tool.getTask().isRunning());
 
@@ -406,7 +406,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         goButton.setEnabled(goState >= 0);
     }
 
-    public void changedRunningState(Tool changedTool, boolean running)
+    public void changedRunningState(Tool<?> changedTool, boolean running)
     {
         WrkFoo.assertIsEDT();
 
@@ -457,7 +457,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         ToolTab tab = getCurrentTab();
         if (tab != null) {
-            Tool copy = tab.getTool().duplicate();
+            Tool<?> copy = tab.getTool().duplicate();
             addTab(copy);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         }
@@ -523,9 +523,9 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public void onExportTable()
     {
         if (getCurrentTab() != null) {
-            Tool tool = getCurrentTab().getTool();
-            if (tool instanceof TableTool<?>) {
-                ExportTableData std = new ExportTableData((TableTool<?>) tool);
+            Tool<?> tool = getCurrentTab().getTool();
+            if (tool instanceof TableTool<?,?>) {
+                ExportTableData std = new ExportTableData((TableTool<?,?>) tool);
                 std.promptTask();
             }
         }

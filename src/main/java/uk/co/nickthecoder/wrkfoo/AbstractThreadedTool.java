@@ -5,7 +5,8 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 
-public abstract class AbstractThreadedTool<T extends Task> extends AbstractTool<T>
+public abstract class AbstractThreadedTool<S extends ResultsPanel, T extends Task>
+    extends AbstractTool<S,T>
 {
     public AbstractThreadedTool(T task)
     {

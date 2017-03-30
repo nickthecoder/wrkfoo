@@ -36,19 +36,19 @@ public class GroovyOption extends AbstractOption
     }
 
     @Override
-    public void runMultiOption(TableTool<?> tool, List<Object> rows, boolean openNewTab, boolean prompt)
+    public void runMultiOption(TableTool<?,?> tool, List<Object> rows, boolean openNewTab, boolean prompt)
     {
         privateRunOption(tool, rows, openNewTab, prompt);
     }
 
     @Override
-    public void runOption(Tool tool, boolean openNewTab, boolean prompt)
+    public void runOption(Tool<?> tool, boolean openNewTab, boolean prompt)
     {
         privateRunOption(tool, null, openNewTab, prompt);
     }
 
     @Override
-    public void runOption(TableTool<?> tool, Object row, boolean openNewTab, boolean prompt)
+    public void runOption(TableTool<?,?> tool, Object row, boolean openNewTab, boolean prompt)
     {
         privateRunOption(tool, row, openNewTab, prompt);
     }
@@ -65,7 +65,7 @@ public class GroovyOption extends AbstractOption
         return result == Boolean.TRUE;
     }
 
-    private void privateRunOption(Tool currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)
+    private void privateRunOption(Tool<?> currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)
     {
         ToolTab tab = currentTool.getToolTab();
 
@@ -79,7 +79,7 @@ public class GroovyOption extends AbstractOption
         }
         
         if (result instanceof Tool) {
-            Tool newTool = (Tool) result;
+            Tool<?> newTool = (Tool<?>) result;
 
             if (openNewTab) {
 
@@ -132,7 +132,7 @@ public class GroovyOption extends AbstractOption
      * @param runnable
      *            The action to be performed.
      */
-    private void listen(final Tool currentTool, final Runnable runnable)
+    private void listen(final Tool<?> currentTool, final Runnable runnable)
     {
         Thread thread = new Thread()
         {
@@ -152,7 +152,7 @@ public class GroovyOption extends AbstractOption
         thread.start();
     }
 
-    private void listen(final Tool currentTool, Task task)
+    private void listen(final Tool<?> currentTool, Task task)
     {
         task.addTaskListener(new TaskAdaptor()
         {
@@ -170,7 +170,7 @@ public class GroovyOption extends AbstractOption
         });
     }
 
-    private Object runScript(GroovyScriptlet scriplet, Tool tool, boolean isMulti, Object rowOrRows)
+    private Object runScript(GroovyScriptlet scriplet, Tool<?> tool, boolean isMulti, Object rowOrRows)
     {
         Binding bindings = new Binding();
         bindings.setProperty("tool", tool);

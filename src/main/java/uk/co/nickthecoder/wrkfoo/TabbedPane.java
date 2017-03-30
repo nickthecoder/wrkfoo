@@ -305,7 +305,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 draggedTabIndex = -1;
                 return;
             }
-            Tool tool = tab.getTool();
+            Tool<?> tool = tab.getTool();
 
             MainWindow destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {

@@ -316,12 +316,12 @@ public class Resources
         }
     }
 
-    public Tool createGroovyTool(File file)
+    public Tool<?> createGroovyTool(File file)
         throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException
     {
         @SuppressWarnings("unchecked")
-        Class<Tool> klass = (Class<Tool>) loadGroovyClass(file);
-        Tool tool = klass.newInstance();
+        Class<Tool<?>> klass = (Class<Tool<?>>) loadGroovyClass(file);
+        Tool<?> tool = klass.newInstance();
         return tool;
     }
 

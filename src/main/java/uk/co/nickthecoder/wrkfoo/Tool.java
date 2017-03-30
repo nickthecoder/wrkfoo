@@ -16,7 +16,7 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  * i.e. it defines the columns, and any special cell renderers etc.
  * 
  */
-public interface Tool
+public interface Tool<S extends ResultsPanel>
 {
     public void postCreate();
 
@@ -56,7 +56,7 @@ public interface Tool
 
     public Options getOptions();
 
-    public Tool duplicate();
+    public Tool<S> duplicate();
 
     /**
      * A String which is used to create a new instance of this Tool. For java classes, this is simply

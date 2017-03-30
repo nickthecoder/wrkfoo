@@ -6,12 +6,12 @@ import javax.swing.Icon;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 
-public class WrkOptionsIncludes extends AbstractListTool<WrkOptionsIncludesTask, String>
+public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, String>
 {
     public WrkOptionsIncludes(URL path, String name)
     {

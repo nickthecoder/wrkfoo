@@ -67,7 +67,7 @@ public class WrkFoo extends Task
         }
     }
 
-    public static void newWindow(final Tool tool)
+    public static void newWindow(final Tool<?> tool)
     {
         SwingUtilities.invokeLater(new Runnable()
         {

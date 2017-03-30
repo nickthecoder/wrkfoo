@@ -12,7 +12,8 @@ import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
 
-public abstract class AbstractTool<T extends Task> implements Tool
+public abstract class AbstractTool<S extends ResultsPanel, T extends Task>
+    implements Tool<S>
 {
     public T task;
 
@@ -143,7 +144,7 @@ public abstract class AbstractTool<T extends Task> implements Tool
      * @return this
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public AbstractTool<T> parameter(String name, Object value)
+    public AbstractTool<S,T> parameter(String name, Object value)
     {
         Parameter p = getTask().findParameter(name);
         ValueParameter vp = (ValueParameter) p;
@@ -159,10 +160,10 @@ public abstract class AbstractTool<T extends Task> implements Tool
      */
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public AbstractTool<T> duplicate()
+    public AbstractTool<S,T> duplicate()
     {
         try {
-            AbstractTool<T> copy = this.getClass().newInstance();
+            AbstractTool<S,T> copy = this.getClass().newInstance();
 
             for (ValueParameter src : getTask().valueParameters()) {
                 ValueParameter dest = ((ValueParameter) copy.getTask().findParameter(src.getName()));

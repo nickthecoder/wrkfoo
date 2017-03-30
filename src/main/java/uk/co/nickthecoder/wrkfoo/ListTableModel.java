@@ -8,7 +8,7 @@ public class ListTableModel<R> extends ToolTableModel<R>
 
     private List<R> list;
 
-    public ListTableModel(TableTool<?> tool, List<R> list, Columns<R> columns)
+    public ListTableModel(TableTool<?,?> tool, List<R> list, Columns<R> columns)
     {
         super(tool, columns);
         this.list = list;

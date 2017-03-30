@@ -8,13 +8,13 @@ public abstract class ToolTableModel<R> extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
 
-    private TableTool<?> tool;
+    private TableTool<?,?> tool;
 
     private String[] codes = new String[] {};
 
     public Columns<R> columns;
 
-    public ToolTableModel(TableTool<?> tool, Columns<R> columns)
+    public ToolTableModel(TableTool<?,?> tool, Columns<R> columns)
     {
         this.tool = tool;
         this.columns = columns;
@@ -33,7 +33,7 @@ public abstract class ToolTableModel<R> extends AbstractTableModel
         fireTableRowsUpdated(row, row);
     }
 
-    public TableTool<?> getTool()
+    public TableTool<?,?> getTool()
     {
         return tool;
     }

@@ -10,10 +10,10 @@ import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Tool;
 
-public class HomeTask extends Task implements ListResults<Tool>
+public class HomeTask extends Task implements ListResults<Tool<?>>
 {
-    public static List<Tool> results = new ArrayList<>();
-
+    public static List<Tool<?>> results = new ArrayList<>();
+    
     {
         results = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class HomeTask extends Task implements ListResults<Tool>
     }
 
     @Override
-    public List<Tool> getResults()
+    public List<Tool<?>> getResults()
     {
         return new ArrayList<>(results);
     }

@@ -2,13 +2,13 @@ package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.util.Date;
 
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class GenericFileTool<R extends WrappedFile> extends AbstractListTool<GenericFileTask<R>, R>
+public class GenericFileTool<R extends WrappedFile> extends SimpleListTool<GenericFileTask<R>, R>
 {
     public GenericFileTool(GenericFileTask<R> task)
     {

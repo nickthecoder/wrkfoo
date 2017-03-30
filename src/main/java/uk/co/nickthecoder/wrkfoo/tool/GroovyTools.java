@@ -51,7 +51,7 @@ public class GroovyTools extends WrkFBase implements DirectoryTool
 
     }
     
-    public Tool openGroovyTool(File file)
+    public Tool<?> openGroovyTool(File file)
         throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException
     {
         return Resources.getInstance().createGroovyTool(file);

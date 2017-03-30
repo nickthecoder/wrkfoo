@@ -15,17 +15,18 @@ import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TableResultsPanel;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
-public class WrkOptions extends AbstractListTool<WrkOptionsTask, OptionRow>
+public class WrkOptions extends AbstractListTool<TableResultsPanel<OptionRow>, WrkOptionsTask, OptionRow>
 {
     public static Color EDITABLE_COLOR = Color.BLACK;
 
-    public static Color FIXED_COLOR = new Color(128,0,0); // Dark red
+    public static Color FIXED_COLOR = new Color(128, 0, 0); // Dark red
 
-    public static Color INCLUDED_COLOR = new Color(0,0,128); // Dark blue
+    public static Color INCLUDED_COLOR = new Color(0, 0, 128); // Dark blue
 
     public WrkOptions()
     {

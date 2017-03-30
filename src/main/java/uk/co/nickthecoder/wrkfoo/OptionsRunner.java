@@ -41,9 +41,9 @@ public class OptionsRunner
         }
     };
 
-    private Tool tool;
+    private Tool<?> tool;
 
-    private TableTool<?> tableTool;
+    private TableTool<?,?> tableTool;
 
     /**
      * The table for the {@link TableTool} passed into the constructor.
@@ -58,7 +58,7 @@ public class OptionsRunner
      * 
      * @param tool
      */
-    public OptionsRunner(Tool tool)
+    public OptionsRunner(Tool<?> tool)
     {
         this.tool = tool;
     }
@@ -68,9 +68,9 @@ public class OptionsRunner
      * 
      * @param tableTool
      */
-    public OptionsRunner(TableTool<?> tableTool)
+    public OptionsRunner(TableTool<?,?> tableTool)
     {
-        this((Tool) tableTool);
+        this.tool = tableTool;
         this.tableTool = tableTool;
     }
 
@@ -349,7 +349,7 @@ public class OptionsRunner
         }
     }
 
-    private void processMultiRowOptions(TableTool<?> tableTool, Option option, boolean newTab, boolean prompt)
+    private void processMultiRowOptions(TableTool<?,?> tableTool, Option option, boolean newTab, boolean prompt)
     {
         ToolTableModel<?> model = getTable().getModel();
 

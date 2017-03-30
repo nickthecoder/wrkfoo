@@ -15,15 +15,15 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class PlacesTool extends AbstractListTool<PlacesTask, Place>
+public class PlacesTool extends SimpleListTool<PlacesTask, Place>
 {
     public PlacesTool()
     {

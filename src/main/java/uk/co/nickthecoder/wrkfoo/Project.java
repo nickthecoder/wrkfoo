@@ -34,7 +34,7 @@ public class Project
     {
         tabs = new ArrayList<>();
         for (ToolTab toolTab : mainWindow.tabbedPane) {
-            Tool tool = toolTab.getTool();
+            Tool<?> tool = toolTab.getTool();
 
             TabData tabData = new TabData(tool);
             tabs.add(tabData);
@@ -95,7 +95,7 @@ public class Project
         mainWindow.projectFile = projectFile;
 
         for (TabData tabData : tabs) {
-            Tool tool = tabData.createTool();
+            Tool<?> tool = tabData.createTool();
             if (tool == null) {
                 continue;
             }
@@ -122,7 +122,7 @@ public class Project
         public String titleTemplate = "%t";
         public String shortcut;
 
-        public TabData(Tool tool)
+        public TabData(Tool<?> tool)
         {
             titleTemplate = tool.getToolTab().getTitleTemplate();
             shortcut = tool.getToolTab().getShortcut();
@@ -136,18 +136,18 @@ public class Project
         }
 
         @SuppressWarnings("unchecked")
-        public Tool createTool()
+        public Tool<?> createTool()
         {
             try {
-                Class<Tool> klass;
+                Class<Tool<?>> klass;
 
                 if (creationString.endsWith(".groovy")) {
-                    klass = (Class<Tool>) Resources.getInstance().loadGroovyClass(new File(creationString));
+                    klass = (Class<Tool<?>>) Resources.getInstance().loadGroovyClass(new File(creationString));
 
                 } else {
-                    klass = (Class<Tool>) Class.forName(creationString);
+                    klass = (Class<Tool<?>>) Class.forName(creationString);
                 }
-                Tool tool = klass.newInstance();
+                Tool<?> tool = klass.newInstance();
 
                 for (ValueParameter<?> parameter : tool.getTask().valueParameters()) {
                     if ((parameters.containsKey(parameter.getName()) && (parameter instanceof ValueParameter))) {

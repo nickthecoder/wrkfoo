@@ -32,7 +32,7 @@ public class History
      *            The tool to compare with the current Moment.
      * @return true if the Tool is the same class, and the parameters have all the same values.
      */
-    public boolean sameAsCurrent(Tool tool)
+    public boolean sameAsCurrent(Tool<?> tool)
     {
         if (currentIndex < 0) {
             return false;
@@ -56,7 +56,7 @@ public class History
         return true;
     }
 
-    public void add(Tool tool)
+    public void add(Tool<?> tool)
     {
         if (sameAsCurrent(tool)) {
             return;
@@ -81,7 +81,7 @@ public class History
         return currentIndex > 0;
     }
 
-    public Tool undo()
+    public Tool<?> undo()
     {
         if (currentIndex == 0) {
             throw new RuntimeException("Cannot undo");
@@ -96,7 +96,7 @@ public class History
         return currentIndex < history.size() - 1;
     }
 
-    public Tool redo()
+    public Tool<?> redo()
     {
         if (currentIndex > history.size() - 1) {
             throw new RuntimeException("Cannot redo");
@@ -111,10 +111,10 @@ public class History
      */
     private final class Moment
     {
-        Tool tool;
+        Tool<?> tool;
         Map<String, Object> parameterValues;
 
-        Moment(Tool tool)
+        Moment(Tool<?> tool)
         {
             this.tool = tool;
             parameterValues = new HashMap<>();

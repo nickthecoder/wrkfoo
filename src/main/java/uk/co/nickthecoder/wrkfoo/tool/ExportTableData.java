@@ -18,7 +18,7 @@ import uk.co.nickthecoder.wrkfoo.TableTool;
 
 public class ExportTableData extends Task
 {
-    private TableTool<?> tool;
+    private TableTool<?,?> tool;
 
     public FileParameter saveAs = new FileParameter.Builder("saveAs")
         .writable().mayExist().file()
@@ -34,7 +34,7 @@ public class ExportTableData extends Task
         .value(false)
         .parameter();
 
-    public ExportTableData(TableTool<?> tool)
+    public ExportTableData(TableTool<?,?> tool)
     {
         this.tool = tool;
         addParameters(saveAs, includeHeadings, includeParameters);

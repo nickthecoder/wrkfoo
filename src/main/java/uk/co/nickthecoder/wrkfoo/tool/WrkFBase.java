@@ -7,13 +7,13 @@ import java.util.Date;
 
 import javax.swing.Icon;
 
-import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -21,7 +21,7 @@ import uk.co.nickthecoder.wrkfoo.util.FileNameRenderer;
 import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public abstract class WrkFBase extends AbstractListTool<WrkFTask, WrkFWrappedFile>
+public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     implements DirectoryTool
 {
     public static final Color directoryColor = new Color(80, 80, 0);

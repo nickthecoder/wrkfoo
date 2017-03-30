@@ -27,7 +27,7 @@ public class ToolPanel extends JPanel implements TaskListener
 {
     private static final long serialVersionUID = 1L;
 
-    private Tool tool;
+    private Tool<?> tool;
 
     private HidingSplitPane splitPane;
 
@@ -45,7 +45,7 @@ public class ToolPanel extends JPanel implements TaskListener
 
     protected ResultsPanel resultsPanel;
 
-    public ToolPanel(Tool foo)
+    public ToolPanel(Tool<?> foo)
     {
         this.tool = foo;
 

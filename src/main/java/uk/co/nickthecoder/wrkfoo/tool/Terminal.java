@@ -18,7 +18,8 @@ import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 
-public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements TaskListener, ProcessListener
+public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
+    implements TaskListener, ProcessListener
 {
     public static Icon icon = Resources.icon("terminal.png");
 

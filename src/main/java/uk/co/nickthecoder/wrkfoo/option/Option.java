@@ -13,11 +13,11 @@ public interface Option
     
     public String getLabel();
 
-    public void runMultiOption(TableTool<?> tool, List<Object> row, boolean newTab, boolean prompt);
+    public void runMultiOption(TableTool<?,?> tool, List<Object> row, boolean newTab, boolean prompt);
 
-    public void runOption(Tool tool, boolean newTab, boolean prompt);
+    public void runOption(Tool<?> tool, boolean newTab, boolean prompt);
 
-    public void runOption(TableTool<?> tool, Object row, boolean newTab, boolean prompt);
+    public void runOption(TableTool<?,?> tool, Object row, boolean newTab, boolean prompt);
 
     public boolean isApplicable(Object row);
 
