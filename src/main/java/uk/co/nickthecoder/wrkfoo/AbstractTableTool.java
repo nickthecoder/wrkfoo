@@ -4,7 +4,7 @@ import uk.co.nickthecoder.jguifier.Task;
 
 public abstract class AbstractTableTool<T extends Task, R> extends AbstractThreadedTool<T> implements TableTool<R>
 {
-    protected DragListConverter<R,?> dragListConverter;   
+    protected DragListConverter<R, ?> dragListConverter;
 
     public AbstractTableTool(T task)
     {
@@ -33,40 +33,28 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractThrea
     }
 
     @Override
-    protected TableToolPanel<R> createToolPanel()
-    {
-        return new TableToolPanel<>(this);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public TableToolPanel<R> getToolPanel()
-    {
-        return (TableToolPanel<R>) super.getToolPanel();
-    }
-
-    @Override
     public TableResultsPanel<R> createResultsPanel()
     {
         SimpleTable<R> table = getColumns().createTable(getTableModel());
-        
+
         if (dragListConverter != null) {
             dragListConverter.createDragListHandler(table);
         }
 
-        return new TableResultsPanel<>(table);
+        return new TableResultsPanel<>(this, table);
     }
 
     @Override
     public void focusOnResults(int importance)
     {
-        if (getToolPanel().getTable().getModel().getRowCount() == 0) {
+        // TODO Repair
+        //if (getToolPanel().getTable().getModel().getRowCount() == 0) {
 
-            MainWindow.focusLater("Results. No rows", MainWindow.getMainWindow(getToolPanel()).getOptionField(),
-                importance);
+        //    MainWindow.focusLater("Results. No rows", MainWindow.getMainWindow(getToolPanel()).getOptionField(),
+        //        importance);
 
-        } else {
+        //} else {
             super.focusOnResults(importance);
-        }
+        //}
     }
 }

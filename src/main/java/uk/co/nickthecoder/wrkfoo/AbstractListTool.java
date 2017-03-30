@@ -40,7 +40,8 @@ public abstract class AbstractListTool<T extends Task & ListResults<R>, R> exten
     public void updateResults()
     {
         getTableModel().update(getTask().getResults());
-        columns.defaultSort(getToolPanel().table);
+        // TODO Repair
+        //columns.defaultSort(getToolPanel().table);
     }
 
 }

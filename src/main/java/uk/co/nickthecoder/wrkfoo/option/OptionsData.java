@@ -114,7 +114,6 @@ public class OptionsData
 
         PrintWriter out = null;
         try {
-            // TODO Check if it IS a file:// url
             File file = new File(url.toURI());
             out = new PrintWriter(file);
             out.println(json);

@@ -20,9 +20,9 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
 
     public WrkOptionsFilesTask()
     {
-        addParameters( directory );
+        addParameters(directory);
     }
-    
+
     @Override
     public List<WrkOptionsFile> getResults()
     {
@@ -43,9 +43,8 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
 
     public WrkOptions wrkOptions(OptionsData optionsData)
     {
+        // TODO This is broken!
         WrkOptions wrkOptions = new WrkOptions();
-        //TODO This class no longer works!
-        // wrkOptions.getTask().optionsFile.setValue(optionsData.uri);
         return wrkOptions;
     }
 

@@ -695,7 +695,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
     @Override
     public void handleException(Throwable e)
     {
-        // TODO Remove this for production.
         e.printStackTrace();
 
         // Find the root cause, but stop at ScriptletExceptions, because they are useful.

@@ -84,7 +84,8 @@ public class OptionsRunner
     private SimpleTable<?> getTable()
     {
         if (table == null) {
-            table = tableTool.getToolPanel().table;
+            TableResultsPanel<?> trp = (TableResultsPanel<?>) tableTool.getToolPanel().getResultsPanel();
+            table = trp.table;
         }
         return table;
     }

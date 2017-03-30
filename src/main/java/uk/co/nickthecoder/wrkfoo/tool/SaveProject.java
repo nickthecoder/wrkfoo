@@ -44,7 +44,6 @@ public class SaveProject extends Task
             Project.save(saveAs.getValue(), mainWindow);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            // TODO Report the error.
         }
     }
 
