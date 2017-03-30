@@ -142,7 +142,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         setTitle("WrkFoo");
 
         pack();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null);        
     }
 
     @Override
@@ -307,8 +307,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         tab.postCreate();
         if (prompt) {
             tool.getToolPanel().getSplitPane().showRight();
-            MainWindow.focusLater("right - inserted tab being prompted",
-                tool.getToolPanel().getSplitPane().getRightComponent(), 8);
+            tool.getToolPanel().getSplitPane().getRightComponent();
 
         } else {
             tab.go(tool);
@@ -546,93 +545,14 @@ public class MainWindow extends JFrame implements ExceptionHandler
         setVisible(false);
     }
 
-    public void onJumpToToolBar()
-    {
-        optionTextField.requestFocusInWindow();
-    }
-
     public JTextField getOptionField()
     {
         return optionTextField;
     }
 
-    private int focusImportance = -1;
-    private Component focusComponent;
-    private long focusTime;
-    @SuppressWarnings("unused")
-    private String focusDescription; // This is only used when I uncomment the System.out s.
-
-    public static void focusLater(String description, Component c, int importance)
+    public void onJumpToToolBar()
     {
-        MainWindow mw = MainWindow.getMainWindow(c);
-        if (mw != null) {
-            mw.privateFocusLater(c, description, importance);
-        }
-    }
-
-    /**
-     * Focuses on the component invoking later, using SwingUtilities.invokeLater.
-     * If a component is already requested to be focused, and before it has been carried out,
-     * then the less important will be ignored.
-     * If a component has very recently been focused, and then a request to focus with lower importance
-     * will be ignored
-     * 
-     * @param c
-     *            The component to focus on
-     * @param description
-     *            A description of why/what is being focused on, just to help debugging
-     * @param importance
-     *            Range 0..10, 10 being the most important
-     */
-    private void privateFocusLater(Component c, String description, int importance)
-    {
-        // Note. focusComponent is null, when there is nothing waiting, but focusImportance is NOT reset back to -1.
-
-        if ((focusComponent == null) || (importance > focusImportance)) {
-            if (focusComponent == null) {
-                // No focus pending.
-                long now = new Date().getTime();
-                if ((importance < focusImportance) && (now - focusTime < 1000)) {
-                    // Ignore a lower importance soon after a high importance.
-                    //System.out.println("Skipping - too soon");
-                    return;
-                }
-
-            } else {
-                // There is a focus pending
-                if (importance < focusImportance) {
-                    // Ignore lower importance
-                    //System.out.println("Ignoring low importance " + description + " for " + focusDescription);
-                    return;
-                } else {
-                    // Ok, lets replace the pending one with this higher importance one.
-                    //System.out.println("Doing " + description + " instead of " + focusDescription);
-                }
-            }
-
-            Component old = focusComponent;
-
-            focusComponent = c;
-            focusImportance = importance;
-            focusDescription = description;
-
-            if (old == null) {
-                //System.out.println("Invoking later");
-                SwingUtilities.invokeLater(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        //System.out.println("Focusing NOW. " + focusDescription);
-                        focusComponent.requestFocusInWindow();
-                        focusComponent = null;
-                        focusTime = new Date().getTime();
-                    }
-                });
-            }
-        } else {
-            //System.out.println("Ignoring " + description + ". Doing this instead : " + focusDescription);
-        }
+        Focuser.focusLater("MainWindow.JumptToToolBar", optionTextField, 8 );
     }
 
     public void onJumpToResults()
@@ -640,8 +560,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().showLeft();
-            MainWindow.focusLater("Jump to results", tab.getTool().getToolPanel().getSplitPane().getRightComponent(),
-                10);
+            Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel(), 8);
         }
     }
 
@@ -650,8 +569,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         ToolTab tab = getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().showRight();
-            MainWindow.focusLater("Jump to parameters", tab.getTool().getToolPanel().getSplitPane().getLeftComponent(),
-                10);
+            Focuser.focusLater("MainWindow jumpToParameters", tab.getTool().getToolPanel().getParametersPanel(), 8);
         }
     }
 

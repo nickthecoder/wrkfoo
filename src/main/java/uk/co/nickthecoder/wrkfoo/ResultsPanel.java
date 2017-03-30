@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
@@ -21,5 +22,25 @@ public class ResultsPanel extends JPanel
     public ResultsPanel()
     {
         this.setLayout(new BorderLayout());
+    }
+    
+    public JComponent getFocusComponent()
+    {
+        Focuser.log("Results panel default implementation returning MainWindow's option field");
+        return MainWindow.getMainWindow(this).getOptionField();
+    }
+
+    @Override
+    public boolean requestFocusInWindow()
+    {
+        Focuser.log("ResultsPanel.requestFocusInWindow");
+        return getFocusComponent().requestFocusInWindow();
+    }
+    
+    @Override
+    public void requestFocus()
+    {
+        Focuser.log("ResultsPanel.requestFocus");
+        getFocusComponent().requestFocus();
     }
 }

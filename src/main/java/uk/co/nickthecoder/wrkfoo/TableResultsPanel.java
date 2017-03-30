@@ -18,15 +18,15 @@ public class TableResultsPanel<R> extends ResultsPanel
 
     protected JScrollPane tableScrollPane;
 
-    protected TableTool<?,?> tableTool;
-    
+    protected TableTool<?, ?> tableTool;
+
     protected OptionsRunner optionsRunner;
 
-    public TableResultsPanel(TableTool<?,?> tool, SimpleTable<R> table)
+    public TableResultsPanel(TableTool<?, ?> tool, SimpleTable<R> table)
     {
         super();
         this.tableTool = tool;
-            
+
         this.table = table;
         optionsRunner = new OptionsRunner(tool);
 
@@ -36,7 +36,7 @@ public class TableResultsPanel<R> extends ResultsPanel
         table.setFillsViewportHeight(true);
 
         this.add(tableScrollPane, BorderLayout.CENTER);
-        
+
         ActionBuilder builder = new ActionBuilder(this).component(table)
             .condition(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -83,11 +83,18 @@ public class TableResultsPanel<R> extends ResultsPanel
 
     }
 
+    @Override
+    public JComponent getFocusComponent()
+    {
+        Focuser.log("TableResultsPanel row count = " + table.getModel().getRowCount());
+        return table.getModel().getRowCount() == 0 ? super.getFocusComponent() : table;
+    }
+
     public SimpleTable<?> getTable()
     {
         return table;
     }
-    
+
     public void onRunOptions()
     {
         optionsRunner.processTableOptions(false, false);

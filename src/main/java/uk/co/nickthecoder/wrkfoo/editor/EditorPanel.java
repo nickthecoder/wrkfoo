@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -21,6 +22,7 @@ import org.fife.ui.rsyntaxtextarea.FileLocation;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
@@ -111,6 +113,12 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         replaceDialog = new ReplaceDialog(window, searcher);
     }
 
+    @Override
+    public JComponent getFocusComponent()
+    {
+        return editorPane;
+    }
+
     public void load(File file)
     {
         try {
@@ -120,24 +128,24 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         }
     }
 
-    public void goToLine( int lineNumber )
+    public void goToLine(int lineNumber)
     {
         try {
-            editorPane.setCaretPosition(editorPane.getLineStartOffset(lineNumber+1));
+            editorPane.setCaretPosition(editorPane.getLineStartOffset(lineNumber + 1));
         } catch (Exception e) {
             // We must have asked for a line number too large, so just go to the end of the document
             editorPane.setCaretPosition(editorPane.getDocument().getLength());
-        }    
+        }
     }
-    
-    public void find( String search, boolean regex )
+
+    public void find(String search, boolean regex)
     {
         searcher.setSearchText(search);
         searcher.context.setRegularExpression(regex);
         searcher.markMatches();
         searcher.onFindNext();
     }
-    
+
     @Override
     public void handleException(Throwable e)
     {
@@ -223,7 +231,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         }
         fireChange();
 
-        editorPane.requestFocus();
+        Focuser.focusLater("EditorPaned reverted", editorPane, 9);
     }
 
     public void onEscape()
@@ -231,7 +239,7 @@ public class EditorPanel extends ResultsPanel implements ExceptionHandler, Docum
         findToolBar.setVisible(false);
         findButton.setSelected(false);
         replaceDialog.setVisible(false);
-        editorPane.requestFocus();
+        Focuser.focusLater("Editor.onEscape", editorPane, 8);
     }
 
     public void addEditorListener(EditorListener listener)

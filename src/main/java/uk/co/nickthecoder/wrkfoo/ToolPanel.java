@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskListener;
+import uk.co.nickthecoder.jguifier.guiutil.FocusNextListener;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -48,6 +49,8 @@ public class ToolPanel extends JPanel implements TaskListener
         this.tool = foo;
 
         sidePanel = new JPanel();
+        sidePanel.addFocusListener(new FocusNextListener());
+
         sidePanel.setPreferredSize(new Dimension(300, 300));
         body = new JPanel();
         body.setLayout(new BorderLayout());
@@ -139,17 +142,49 @@ public class ToolPanel extends JPanel implements TaskListener
 
     public void onCyclePane()
     {
-        MainWindow.focusLater("cycle", splitPane.cycle(), 10);
+        splitPane.cycle();
+        if (splitPane.getState() == HidingSplitPane.State.LEFT) {
+            Focuser.focusLater("ToolPanel.Cycle. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+        } else {
+            Focuser.focusLater("ToolPanel.Cycle. Parameters", getParametersPanel(), 7 );
+        }
     }
 
     public void onToggleLeftPane()
     {
-        MainWindow.focusLater("toogle left", splitPane.toggleLeft(), 10);
+        splitPane.toggleLeft();
+        if (splitPane.getState() == HidingSplitPane.State.LEFT) {
+            Focuser.focusLater("ToolPanel.ToggleLeft. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+        } else {
+            Focuser.focusLater("ToolPanel.ToggleLeft. Parameters", getParametersPanel(), 7 );
+        }
     }
 
     public void onToggleRightPane()
     {
-        MainWindow.focusLater("toogle right", splitPane.toggleRight(), 10);
+        splitPane.toggleRight();
+        if (splitPane.getState() == HidingSplitPane.State.RIGHT) {
+            Focuser.focusLater("ToolPanel.ToggleRight. Parameters", getParametersPanel(), 7 );
+        } else {
+            Focuser.focusLater("ToolPanel.ToggleRight. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+        }
+    }
+
+    @Override
+    public boolean requestFocusInWindow()
+    {
+        if (splitPane.getState() == HidingSplitPane.State.RIGHT) {
+            Focuser.focusLater("ToolPanel rfiw. Parameters", getParametersPanel(), 5 );
+        } else {
+            Focuser.focusLater("ToolPanel rfiw. Results", tool.getResultsPanel().getFocusComponent(), 5 );
+        }
+        return true;
+    }
+
+    @Override
+    public void requestFocus()
+    {
+        requestFocusInWindow();
     }
 
     public boolean check()

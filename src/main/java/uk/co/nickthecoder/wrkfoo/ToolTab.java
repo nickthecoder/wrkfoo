@@ -203,8 +203,6 @@ public class ToolTab
         if (prompt) {
 
             newTool.getToolPanel().getSplitPane().showRight();
-            MainWindow.focusLater("Right - prompting new Tool",
-                newTool.getToolPanel().getSplitPane().getRightComponent(), 8);
 
         } else {
             if (getTool().getToolPanel().check()) {
@@ -215,8 +213,7 @@ public class ToolTab
             } else {
                 // Missing/incorrect parameters. Show the parameters panel.
                 newTool.getToolPanel().getSplitPane().showRight();
-                MainWindow.focusLater("Right - new tool has invalid parameters",
-                    newTool.getToolPanel().getSplitPane().getRightComponent(), 8);
+
             }
         }
 

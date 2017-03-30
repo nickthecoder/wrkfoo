@@ -16,7 +16,6 @@ public abstract class AbstractUnthreadedTool<S extends ResultsPanel, T extends T
         task.run();
         updateResults();
         getToolPanel().getSplitPane().showLeft();
-        focus(7);
     }
 
     public void stop()

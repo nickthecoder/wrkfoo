@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class FindToolBar extends JPanel implements SearcherListener
@@ -121,7 +122,7 @@ public class FindToolBar extends JPanel implements SearcherListener
             matchRegex.setSelected(searcher.context.isRegularExpression());
             matchWholeWord.setSelected(searcher.context.getWholeWord());
             textField.selectAll();
-            textField.requestFocus();
+            Focuser.focusLater("FindToolBar.setVisible", textField, 8);
             searcher.setSearchText(textField.getText());
         }
     }

@@ -66,7 +66,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
             add(fxPanel, BorderLayout.CENTER);
             Platform.setImplicitExit(false);
         }
-
+        
         public void show(String address)
         {
             Util.assertIsEDT();

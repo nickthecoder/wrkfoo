@@ -33,17 +33,4 @@ public abstract class AbstractTableTool<S extends TableResultsPanel<R>, T extend
         this.columns = null;
         this.clearResults();
     }
-
-    @Override
-    public void focusOnResults(int importance)
-    {
-        if (getResultsPanel().getTable().getModel().getRowCount() == 0) {
-
-            MainWindow.focusLater("Results. No rows", MainWindow.getMainWindow(getToolPanel()).getOptionField(),
-                importance);
-
-        } else {
-            super.focusOnResults(importance);
-        }
-    }
 }

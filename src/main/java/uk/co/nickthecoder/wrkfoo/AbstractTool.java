@@ -118,23 +118,6 @@ public abstract class AbstractTool<S extends ResultsPanel, T extends Task>
     }
 
     /**
-     * Focus on the results panel when the tool completes.
-     * Called from {@link #end()}, and is here so that different tools can choose to focus where they see best.
-     * Note. TableTools overrides this so that it can focus on {@link MainWindow}'s option text field when there are no
-     * rows.
-     */
-    protected void focusOnResults(int importance)
-    {
-        MainWindow.focusLater("Results. Left.", getToolPanel().getSplitPane().getLeftComponent(), importance);
-    }
-
-    @Override
-    public void focus(final int importance)
-    {
-        focusOnResults(importance);
-    }
-
-    /**
      * A convenience method for {@link GroovyOption}s to change a parameter, and return the same Tool.
      * 
      * @param name

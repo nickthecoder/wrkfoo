@@ -215,8 +215,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         WrkFoo.assertIsEDT();
 
         super.setSelectedIndex(i);
-        if (i < toolTabs.size()) {
-            this.toolTabs.get(i).getTool().focus(2);
+        if ((i >= 0) && (i < toolTabs.size())) {
+            Focuser.focusLater("TabbedPane.selected. Results", this.toolTabs.get(i).getTool().getResultsPanel().getFocusComponent(), 4 );
         }
     }
 

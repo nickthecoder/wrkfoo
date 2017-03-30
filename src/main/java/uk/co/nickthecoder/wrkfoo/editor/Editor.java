@@ -1,7 +1,5 @@
 package uk.co.nickthecoder.wrkfoo.editor;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.io.File;
 
 import javax.swing.Icon;
@@ -20,7 +18,7 @@ import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
-    implements WindowFocusListener, EditorListener
+    implements EditorListener
 {
     EditorPanel editorPanel;
 
@@ -151,8 +149,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         if (show) {
             WrkFoo.assertIsEDT();
 
-            mainWindow.addWindowFocusListener(this);
-
             if (tb.getParent() == null) {
                 mainWindow.getToolBarPanel().add(tb);
             }
@@ -171,9 +167,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
             editorPanel.replaceDialog.setVisible(false);
             editorPanel.replaceDialog.dispose();
 
-            if (mainWindow != null) {
-                mainWindow.removeWindowFocusListener(this);
-            }
         }
 
         if (mainWindow != null) {
@@ -195,17 +188,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         public void body()
         {
         }
-    }
-
-    @Override
-    public void windowGainedFocus(WindowEvent e)
-    {
-        this.editorPanel.editorPane.requestFocus();
-    }
-
-    @Override
-    public void windowLostFocus(WindowEvent e)
-    {
     }
 
     private boolean wasDirty = false;

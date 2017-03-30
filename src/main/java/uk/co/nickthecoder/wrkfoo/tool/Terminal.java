@@ -20,11 +20,11 @@ import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
+import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
-import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
@@ -208,11 +208,10 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
             }
             panel.add(terminal);
         }
-        
+
         ProcessPoller pp = getProcessPoller();
         pp.addProcessListener(this);
-        focus(5);
-        
+
         super.go();
     }
 
@@ -249,8 +248,7 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
                 }
 
                 if (tab.getTabbedPane().getSelectedTab() == tab) {
-                    MainWindow.focusLater("Terminal process finished",
-                        MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 5);
+                    Focuser.focusLater("TerminalEnded", MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 6);
                 }
 
                 if (task.autoClose.getValue()) {
@@ -344,20 +342,6 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
         script.run(bindings);
     }
 
-    @Override
-    public void focusOnResults(int importance)
-    {
-        WrkFoo.assertIsEDT();
-
-        if (terminal != null) {
-            MainWindow.focusLater("TerminalTask.focus-terminal", terminal, importance);
-        } else if (simpleTerminal != null) {
-            MainWindow.focusLater("TerminalTask.focus-input", simpleTerminal.getInputTextField(), importance);
-        }
-        MainWindow.focusLater("TerminalTask.focus-panel", panel, 0);
-
-    }
-
     public void killProcess()
     {
         if (process != null) {
@@ -365,4 +349,17 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
         }
     }
 
+    class TerminalResults extends ResultsPanel
+    {
+        @Override
+        public boolean requestFocusInWindow()
+        {
+            if (terminal != null) {
+                return terminal.requestFocusInWindow();
+            } else if (simpleTerminal != null) {
+                return simpleTerminal.getInputTextField().requestFocusInWindow();
+            }
+            return super.requestFocusInWindow();
+        }
+    }
 }

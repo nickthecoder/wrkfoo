@@ -6,7 +6,7 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 
 public abstract class AbstractThreadedTool<S extends ResultsPanel, T extends Task>
-    extends AbstractTool<S,T>
+    extends AbstractTool<S, T>
 {
     public AbstractThreadedTool(T task)
     {
@@ -20,7 +20,7 @@ public abstract class AbstractThreadedTool<S extends ResultsPanel, T extends Tas
     {
         if (goThread == null) {
             goThread = new GoThread();
-            
+
             try {
                 goThread.start();
             } catch (Exception e) {
@@ -45,8 +45,9 @@ public abstract class AbstractThreadedTool<S extends ResultsPanel, T extends Tas
         {
             public void run()
             {
+                Focuser.log("AbstractThreadedTool Showing left (results)");
                 getToolPanel().getSplitPane().showLeft();
-                focus(7);
+                Focuser.focusLater("AbstractThreadedTool task complete", getResultsPanel().getFocusComponent(), 9);
             }
         });
     }

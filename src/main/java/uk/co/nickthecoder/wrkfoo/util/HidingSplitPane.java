@@ -1,9 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.util;
 
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
@@ -25,16 +22,6 @@ public class HidingSplitPane extends JSplitPane
     {
         super(or, con, left, right);
         this.state = State.BOTH;
-        FocusAdapter listener = new FocusAdapter()
-        {
-            @Override
-            public void focusGained(FocusEvent e)
-            {
-                KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
-            }
-        };
-        left.addFocusListener(listener);
-        right.addFocusListener(listener);
     }
 
     public void setState(State newState)
@@ -76,6 +63,7 @@ public class HidingSplitPane extends JSplitPane
     public void showLeft()
     {
         if (this.state == State.RIGHT) {
+            System.out.println( "State was RIGHT, changing to BOTH");
             setState(State.BOTH);
         }
     }
@@ -83,6 +71,7 @@ public class HidingSplitPane extends JSplitPane
     public void showRight()
     {
         if (this.state == State.LEFT) {
+            System.out.println( "State was LEFT, changing to BOTH");
             setState(State.BOTH);
         }
     }
@@ -94,11 +83,11 @@ public class HidingSplitPane extends JSplitPane
     public Component cycle()
     {
         if (this.state == State.BOTH) {
-            setState(State.LEFT);
-            return getLeftComponent();
-        } else if (this.state == State.LEFT) {
             setState(State.RIGHT);
             return getRightComponent();
+        } else if (this.state == State.RIGHT) {
+            setState(State.LEFT);
+            return getLeftComponent();
         } else {
             setState(State.BOTH);
             return getLeftComponent();
