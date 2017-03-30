@@ -47,7 +47,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLViewerTask>
     }
 
     @Override
-    public ResultsPanel createResultsComponent()
+    public ResultsPanel createResultsPanel()
     {
         htmlResultsPanel = new HTMLResultsPanel();
         return htmlResultsPanel;

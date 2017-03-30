@@ -36,7 +36,7 @@ public interface Tool
 
     public void updateResults();
 
-    public ResultsPanel createResultsComponent();
+    public ResultsPanel createResultsPanel();
 
     public ParametersPanel createParametersPanel();
 

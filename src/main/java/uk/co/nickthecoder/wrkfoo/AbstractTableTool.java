@@ -46,7 +46,7 @@ public abstract class AbstractTableTool<T extends Task, R> extends AbstractThrea
     }
 
     @Override
-    public TableResultsPanel<R> createResultsComponent()
+    public TableResultsPanel<R> createResultsPanel()
     {
         SimpleTable<R> table = getColumns().createTable(getTableModel());
         

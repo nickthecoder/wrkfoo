@@ -1,10 +1,11 @@
 Current Task
 ============
 
-TabbedPane dup method getSelectedToolTab getCurrentTab
-
 Next Tasks
 ==========
+
+PriorityDoc to allow diagrams with classes from other prjects
+    Then add ParametersPanel, linking with just ToolPanel
 
 Clean up stuff surrounding ResultsPanel
     Tool should be able to getResultsPanel for example.

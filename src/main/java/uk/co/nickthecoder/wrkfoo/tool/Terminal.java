@@ -133,7 +133,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalTask> implements Ta
     }
 
     @Override
-    public ResultsPanel createResultsComponent()
+    public ResultsPanel createResultsPanel()
     {
         return task.createResultsComponent();
     }

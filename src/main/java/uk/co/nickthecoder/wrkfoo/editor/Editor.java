@@ -102,7 +102,7 @@ public class Editor extends AbstractUnthreadedTool<EditorTask> implements Window
     }
 
     @Override
-    public ResultsPanel createResultsComponent()
+    public ResultsPanel createResultsPanel()
     {
         return editorPanel;
     }
@@ -130,7 +130,7 @@ public class Editor extends AbstractUnthreadedTool<EditorTask> implements Window
 
         getToolTab().getTabbedPane().addChangeListener(tabbedPaneListener);
 
-        createResultsComponent();
+        createResultsPanel();
         activate(true);
     }
 

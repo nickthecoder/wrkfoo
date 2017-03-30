@@ -11,7 +11,7 @@ public abstract class AbstractTextTool<T extends Task & TextResults> extends Abs
     }
 
     @Override
-    public TextResultsPanel createResultsComponent()
+    public TextResultsPanel createResultsPanel()
     {
         return new TextResultsPanel(task.getResults());
     }
