@@ -14,9 +14,9 @@ public class TableResultsPanel<R> extends ResultsPanel
 {
     private static final long serialVersionUID = 1L;
 
-    public SimpleTable<R> table;
+    protected SimpleTable<R> table;
 
-    public JScrollPane tableScrollPane;
+    protected JScrollPane tableScrollPane;
 
     protected TableTool<?,?> tableTool;
     
@@ -83,6 +83,11 @@ public class TableResultsPanel<R> extends ResultsPanel
 
     }
 
+    public SimpleTable<?> getTable()
+    {
+        return table;
+    }
+    
     public void onRunOptions()
     {
         optionsRunner.processTableOptions(false, false);
