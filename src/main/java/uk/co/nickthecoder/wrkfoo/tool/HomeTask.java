@@ -35,8 +35,8 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
         GitStatus gitStatus = new GitStatus();
         results.add(gitStatus);
 
-        Projects wrkTabSets = new Projects();
-        results.add(wrkTabSets);
+        Projects projects = new Projects();
+        results.add(projects);
 
         PlacesTool places = new PlacesTool();
         places.task.store.setValueIgnoreErrors(
@@ -67,6 +67,7 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
         results.add(htmlViewer);
 
         HTMLViewer about = new HTMLViewer();
+        about.setTitle("About");
         about.task.address.setValue("http://nickthecoder.co.uk/wiki/view/software/WrkFoo");
         results.add(about);
 

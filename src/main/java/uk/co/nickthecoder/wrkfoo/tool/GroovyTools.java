@@ -3,6 +3,8 @@ package uk.co.nickthecoder.wrkfoo.tool;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.Icon;
+
 import org.codehaus.groovy.control.CompilationFailedException;
 
 import uk.co.nickthecoder.jguifier.ParameterListener;
@@ -14,7 +16,6 @@ import uk.co.nickthecoder.wrkfoo.Tool;
 
 public class GroovyTools extends WrkFBase implements DirectoryTool
 {
-    
     private ChoiceParameter<File> directoryChoice;
     
     public GroovyTools()
@@ -49,6 +50,18 @@ public class GroovyTools extends WrkFBase implements DirectoryTool
         task.insertParameter(0, directoryChoice);
         task.directory.visible = false;
 
+    }
+    
+    @Override
+    public String getTitle()
+    {
+        return "Groovy Tools";
+    }
+    
+    @Override
+    public Icon getIcon()
+    {
+        return Resources.icon("groovyTools.png");
     }
     
     public Tool<?> openGroovyTool(File file)

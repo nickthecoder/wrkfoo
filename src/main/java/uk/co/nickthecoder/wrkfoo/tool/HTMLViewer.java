@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.swing.Icon;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +19,7 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
+import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLViewerTask;
@@ -24,6 +27,8 @@ import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLViewerTask;
 public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLViewerTask>
 {
     private HTMLResultsPanel htmlResultsPanel;
+
+    private String title = "HTMLViewer";
 
     public HTMLViewer(File file)
     {
@@ -39,6 +44,23 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
     public HTMLViewer()
     {
         super(new HTMLViewerTask());
+    }
+
+    @Override
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+    
+    @Override
+    public Icon getIcon()
+    {
+        return Resources.icon("html.png");
     }
 
     @Override
@@ -66,7 +88,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
             add(fxPanel, BorderLayout.CENTER);
             Platform.setImplicitExit(false);
         }
-        
+
         public void show(String address)
         {
             Util.assertIsEDT();

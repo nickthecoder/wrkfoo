@@ -3,7 +3,7 @@ Current Task
 
 Later ResultsPanel should not BE a JComponent, but instead HAVE a JComponent with getComponent method
     So that ResultsPanel can be a composite of more than one type of results.
-    For example, a table plus header/footer information will have a JSplitPane, where the
+    For example, a table plus header/footer infromation will have a JSplitPane, where the
         contents are the getComponent of the two wrapped ResultsPanels.
 
 Next Tasks
@@ -42,6 +42,19 @@ Edit Settings - a Task (not a Tool), where each of the Resources attributes are 
         is ALWAYS hidden, and we only see the parameters
         "Go" is replaced by "OK", or maybe the updates happen without the need for "OK"
     TaskTool has a "goLabel" attribute, if null, then the Go button is not visible.
+
+Pinkwino to have a "Plain" view, where the only the content is show.
+    Then use that view for the About page.
+    Create other pages for each tool, and add a "Help"/"About" button to the side panel.
+    Maybe also add similar functionality to jguifier's Task, but launch the page in a browser.
+        In which case, put the help url on Task, not on Tool.
+    Edit links etc are not rendered.
+    Maybe put an extra icon to link to the "full" version of the page.
+    Use a template, which defaults to the *regular* template if no other is specified in the config.
+        OR Could even make it generic, allowing any number of additional views.
+        But ay be tricky to dynamically register replacements for the "/view" url handler
+            Use a ?template=xxx parameter instead?
+    Links to other pinkwino pages should use the same template view. Hmm.
 
 BUGS
 ====
