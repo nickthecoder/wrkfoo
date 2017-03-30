@@ -1,39 +1,51 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import java.awt.BorderLayout;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Icon;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.TaskListener;
-import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
-import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import groovy.lang.Binding;
+import uk.co.nickthecoder.jguifier.ParameterListener;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
+import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ResultsPanel;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
+import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
 import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
+import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
-    implements TaskListener, ProcessListener
+    implements ProcessListener
 {
     public static Icon icon = Resources.icon("terminal.png");
 
-    public StringParameter title = new StringParameter.Builder("title")
-        .value("Terminal")
-        .parameter();
+    ResultsPanel panel;
 
-    public BooleanParameter autoClose = new BooleanParameter.Builder("autoClose")
-        .parameter();
+    private JPanel terminal;
 
-    public BooleanParameter killOnClose = new BooleanParameter.Builder("killOnClose")
-        .value(true)
-        .description("Kill the process when the tab is closed")
-        .parameter();
+    private SimpleTerminalWidget simpleTerminal;
+
+    private Process process;
+
+    private ProcessPoller processPoller;
+
+    private Command cmd;
 
     /**
      * Can we re-run this command? If it is a user-defined command, set using the TerminalTask's
@@ -44,24 +56,34 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
 
     public Terminal()
     {
-        super(new TerminalTask());
-        task.insertParameter(2, title);
+        super(new TerminalTask(false));
         init();
         reRunnable = true;
     }
 
     public Terminal(Command command)
     {
-        super(new TerminalTask(command));
-        task.insertParameter(0, title);
+        super(new TerminalTask(true));
         init();
         reRunnable = false;
+        cmd = command;
+
     }
 
     private final void init()
     {
-        task.addParameters(autoClose, killOnClose);
-        task.addTaskListener(this);
+        panel = new ResultsPanel();
+        panel.setLayout(new BorderLayout());
+
+        task.directory.addListener(new ParameterListener()
+        {
+            @Override
+            public void changed(Parameter source)
+            {
+                cmd.dir(task.directory.getValue());
+            }
+        });
+
     }
 
     /**
@@ -108,7 +130,7 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
      */
     public Terminal title(String value)
     {
-        title.setValue(value);
+        task.title.setValue(value);
         return this;
     }
 
@@ -120,7 +142,7 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
     @Override
     public String getTitle()
     {
-        return title.getValue();
+        return task.title.getValue();
     }
 
     public boolean isRerunnable()
@@ -134,37 +156,84 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
     }
 
     @Override
+    public void go()
+    {
+        // When re-running this task, we need to reset
+        processPoller = null;
+        panel.removeAll();
+
+        String[] commandArray;
+        String directoryString;
+        Map<String, String> env;
+
+        if (cmd == null) {
+            List<String> commandList = new ArrayList<>();
+            commandList.add(task.command.getValue());
+            commandList.addAll(task.arguments.getValue());
+            commandArray = commandList.toArray(new String[] {});
+            directoryString = task.directory.getValue().getPath();
+            env = new HashMap<>(System.getenv());
+        } else {
+            commandArray = cmd.getCommandArray();
+            directoryString = cmd.directory;
+            env = cmd.env;
+        }
+
+        boolean useFallback = task.useSimpleTerminal.getValue();
+
+        if (!useFallback) {
+            try {
+                Class.forName("com.jediterm.terminal.ui.JediTermWidget");
+            } catch (ClassNotFoundException e1) {
+                useFallback = true;
+                System.err.println("JediTermWidget not found. Falling back to using the simple terminal.");
+            }
+        }
+
+        if (useFallback) {
+
+            simpleTerminal = createExecPanel(commandArray, env, directoryString);
+            panel.add(simpleTerminal.getInputComponent(), BorderLayout.SOUTH);
+            panel.add(simpleTerminal.getOutputComponent(), BorderLayout.CENTER);
+
+        } else {
+
+            boolean console = false;
+            env.put("TERM", "xterm");
+            Charset charset = Charset.forName("UTF-8");
+            try {
+                terminal = createTerminal(commandArray, env, directoryString, charset, console);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            panel.add(terminal);
+        }
+        
+        ProcessPoller pp = getProcessPoller();
+        pp.addProcessListener(this);
+        focus(5);
+        
+        super.go();
+    }
+
+    @Override
     public ResultsPanel createResultsPanel()
     {
-        return task.createResultsComponent();
+        return panel;
     }
 
     @Override
     public void detach()
     {
         super.detach();
-        task.detach();
-        if (killOnClose.getValue()) {
-            task.killProcess();
+        if (terminal != null) {
+            closeTerminal();
+            terminal = null;
         }
-    }
-
-    @Override
-    public void started(Task tsk)
-    {
-    }
-
-    @Override
-    public void ended(Task tsk, boolean normally)
-    {
-        ProcessPoller pp = task.getProcessPoller();
-        pp.addProcessListener(this);
-        focus(5);
-    }
-
-    @Override
-    public void aborted(Task tsk)
-    {
+        panel.removeAll();
+        if (task.killOnClose.getValue()) {
+            killProcess();
+        }
     }
 
     @Override
@@ -184,16 +253,116 @@ public class Terminal extends AbstractUnthreadedTool<ResultsPanel, TerminalTask>
                         MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 5);
                 }
 
-                if (autoClose.getValue()) {
+                if (task.autoClose.getValue()) {
                     tab.getTabbedPane().removeTab(getToolTab());
                 }
             }
         });
     }
 
+    public SimpleTerminalWidget createExecPanel(String[] commandArray, Map<String, String> env, String directoryString)
+    {
+        final Exec exec = new Exec(commandArray);
+        if (directoryString != null) {
+            exec.dir(new File(directoryString));
+        }
+        for (Entry<String, String> entry : env.entrySet()) {
+            exec.var(entry.getKey(), entry.getValue());
+        }
+
+        SimpleTerminalWidget result = new SimpleTerminalWidget(exec);
+        process = exec.getProcess();
+
+        return result;
+    }
+
+    private JPanel createTerminal(String[] cmd, Map<String, String> envs, String dir, Charset charset,
+        boolean console) throws IOException
+    {
+        // Create the terminal widget dynamically using Groovy, so that the WrkFoo is not strongly tied
+        // to the butt loads of jar files required by JediTerm. This means that WrkFoo can be compiled and used
+        // without JediTerm, and only the terminal emulation will be missing.
+        // When/if JediTerm is published to Maven Central or similar, then maybe we can include the dependencies.
+        // Here's the java code that is replaced by Groovy...
+        /*
+         * PtyProcess process = PtyProcess.exec(cmd, envs, dir, console);
+         * PtyProcessTtyConnector connector = new PtyProcessTtyConnector(process, charset);
+         * DefaultSettingsProvider settings = new DefaultSettingsProvider();
+         * 
+         * JediTermWidget result = new JediTermWidget(settings);
+         * 
+         * TerminalSession session = result.createTerminalSession(connector);
+         * session.start();
+         * return result;
+         */
+
+        Binding bindings = new Binding();
+        bindings.setProperty("cmd", cmd);
+        bindings.setProperty("envs", envs);
+        bindings.setProperty("dir", dir);
+        bindings.setProperty("charset", charset);
+        bindings.setProperty("console", console);
+
+        GroovyScriptlet script1 = new GroovyScriptlet(
+            "com.pty4j.PtyProcess process = com.pty4j.PtyProcess.exec(cmd, envs, dir, console);");
+        process = (Process) script1.run(bindings);
+
+        bindings.setProperty("process", process);
+
+        GroovyScriptlet script2 = new GroovyScriptlet("" +
+            "com.jediterm.pty.PtyProcessTtyConnector connector = new com.jediterm.pty.PtyProcessTtyConnector(process, charset);"
+            +
+            "com.jediterm.terminal.ui.settings.DefaultSettingsProvider settings = new com.jediterm.terminal.ui.settings.DefaultSettingsProvider();"
+            +
+            "com.jediterm.terminal.ui.JediTermWidget result = new com.jediterm.terminal.ui.JediTermWidget(settings);"
+            +
+            "com.jediterm.terminal.ui.TerminalSession session = result.createTerminalSession(connector);"
+            +
+            "session.start();" +
+            "result");
+
+        JPanel panel = (JPanel) script2.run(bindings);
+
+        return panel;
+    }
+
+    public ProcessPoller getProcessPoller()
+    {
+        if (processPoller == null) {
+            processPoller = new ProcessPoller(process);
+            processPoller.start();
+        }
+        return processPoller;
+    }
+
+    private void closeTerminal()
+    {
+        Binding bindings = new Binding();
+        bindings.setProperty("terminal", terminal);
+
+        GroovyScriptlet script = new GroovyScriptlet("terminal.close();");
+        script.run(bindings);
+    }
+
     @Override
     public void focusOnResults(int importance)
     {
-        task.focusOnResults(importance);
+        WrkFoo.assertIsEDT();
+
+        if (terminal != null) {
+            MainWindow.focusLater("TerminalTask.focus-terminal", terminal, importance);
+        } else if (simpleTerminal != null) {
+            MainWindow.focusLater("TerminalTask.focus-input", simpleTerminal.getInputTextField(), importance);
+        }
+        MainWindow.focusLater("TerminalTask.focus-panel", panel, 0);
+
     }
+
+    public void killProcess()
+    {
+        if (process != null) {
+            process.destroy();
+        }
+    }
+
 }

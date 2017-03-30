@@ -60,7 +60,7 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
         Terminal bash = new Terminal();
         bash.task.command.setValue("bash");
         bash.task.arguments.addValue("--login");
-        bash.title.setValueIgnoreErrors("Bash");
+        bash.task.title.setValueIgnoreErrors("Bash");
         results.add(bash);
 
         HTMLViewer htmlViewer = new HTMLViewer();
