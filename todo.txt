@@ -6,15 +6,15 @@ Later ResultsPanel should not BE a JComponent, but instead HAVE a JComponent wit
     For example, a table plus header/footer infromation will have a JSplitPane, where the
         contents are the getComponent of the two wrapped ResultsPanels.
 
+GitStatus to default to the first writable options file
+    Remove the "show read-only" option.
+    Create a ParametersResultsPanel, and a BorderedResultsPanel
+
 Next Tasks
 ==========
 
 PriorityDoc to allow diagrams with classes from other prjects
     Then add ParametersPanel, linking with just ToolPanel
-
-Clean up stuff surrounding ResultsPanel
-    Tool should be able to getResultsPanel for example.
-    Should be simple to focus on the "right" component of the results panel.
 
 Results to have their own parameters
     Example, List of Options plus an the "if" statement
@@ -163,13 +163,12 @@ Filtering table results. See : https://docs.oracle.com/javase/tutorial/uiswing/c
 Undecided
 =========
 
-Would like to launch a browser window for javadocs from the gitstatus Tool
-	Plus run the rsync and launch the published version too (specific to my setup).
-		Put this in a "Custom" place (see below)
 
 Later Features
 ==============
 The following features may taks some time, for little benefit, so don't have a high priority.
+
+Maybe put real Terminal stuff into its own sub-project, and don't require it to be build??
 
 TabbedTool
 	A tool, which has TWO or more tasks, and therefore many results.

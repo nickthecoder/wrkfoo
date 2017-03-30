@@ -22,4 +22,9 @@ public abstract class SimpleListTool<T extends Task & ListResults<R>, R>
         return new TableResultsPanel<>(this, table);
     }
 
+    @Override
+    public SimpleTable<R> getTable()
+    {
+        return getResultsPanel().getTable();
+    }
 }

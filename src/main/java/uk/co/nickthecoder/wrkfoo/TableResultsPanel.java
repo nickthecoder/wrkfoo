@@ -90,7 +90,7 @@ public class TableResultsPanel<R> extends ResultsPanel
         return table.getModel().getRowCount() == 0 ? super.getFocusComponent() : table;
     }
 
-    public SimpleTable<?> getTable()
+    public SimpleTable<R> getTable()
     {
         return table;
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import uk.co.nickthecoder.jguifier.Task;
 
-public abstract class AbstractListTool<S extends TableResultsPanel<R>, T extends Task & ListResults<R>, R>
+public abstract class AbstractListTool<S extends ResultsPanel, T extends Task & ListResults<R>, R>
     extends AbstractTableTool<S, T, R>
     implements TableTool<S, R>
 {
@@ -41,7 +41,7 @@ public abstract class AbstractListTool<S extends TableResultsPanel<R>, T extends
     public void updateResults()
     {
         getTableModel().update(getTask().getResults());
-        columns.defaultSort( getResultsPanel().getTable());
+        columns.defaultSort(getTable());
     }
 
 }
