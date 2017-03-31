@@ -13,6 +13,16 @@ import uk.co.nickthecoder.wrkfoo.SimpleListTool;
 
 public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, String>
 {
+    public WrkOptionsIncludes(WrkOptionsIncludesTask task)
+    {
+        super(task);
+    }
+
+    public WrkOptionsIncludes()
+    {
+        super(new WrkOptionsIncludesTask());
+    }
+
     public WrkOptionsIncludes(URL path, String name)
     {
         super(new WrkOptionsIncludesTask(path, name));
@@ -50,6 +60,7 @@ public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, S
     public void save()
     {
         task.optionsData.save();
+        task.optionsData.reload();
     }
 
     @Override
@@ -67,7 +78,13 @@ public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, S
     {
         return new RemoveInclude(name);
     }
-
+    
+    @Override
+    protected void end()
+    {
+        // TODO Better way? Do nothing, we don't want to create a ToolPanel
+    }
+    
     class AddInclude extends Task
     {
         StringParameter include = new StringParameter.Builder("include").parameter();

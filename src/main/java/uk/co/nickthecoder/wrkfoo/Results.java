@@ -15,10 +15,15 @@ import uk.co.nickthecoder.jguifier.ParametersPanel;
 public interface Results
 {
     public JComponent getComponent();
-    
+
     public default JComponent getFocusComponent()
     {
-        Focuser.log("Results panel default implementation returning MainWindow's option field");
-        return MainWindow.getMainWindow(getComponent()).getOptionField();
+        try {
+            Focuser.log("Results panel default implementation returning MainWindow's option field");
+            return MainWindow.getMainWindow(getComponent()).getOptionField();
+        } catch (Exception e) {
+            Focuser.log("Failed to focus on options field for component " + getComponent());
+            return null;
+        }
     }
 }

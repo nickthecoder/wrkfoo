@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
@@ -26,9 +24,14 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
     public StringParameter optionsName = new StringParameter.Builder("optionsName")
         .parameter();
 
-    public WrkOptionsIncludesTask(URL path, String optionsName)
+    public WrkOptionsIncludesTask()
     {
         addParameters(this.path, this.optionsName);
+    }
+
+    public WrkOptionsIncludesTask(URL path, String optionsName)
+    {
+        this();
 
         this.path.setDefaultValue(path);
         this.optionsName.setDefaultValue(optionsName);
@@ -41,21 +44,19 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
     }
 
     @Override
-    public void body()
+    public void body() throws URISyntaxException
     {
-        Set<String> names = new HashSet<>();
+        results = new ArrayList<>();
 
-        OptionsData optionsData;
         try {
-            optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
-        } catch (URISyntaxException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        for (String name : optionsData.include) {
-            names.add(name);
+            OptionsData optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
+            for (String name : optionsData.include) {
+                results.add(name);
+            }
+        } catch (IOException e) {
+            // Do nothing if file doesn't exist, or can't be loaded.
         }
 
-        results = new ArrayList<>(names);
     }
 
 }

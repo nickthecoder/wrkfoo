@@ -25,9 +25,11 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
 
     public static Color RENAMED = new Color(16, 160, 16);
 
+
     public GitStatus()
     {
         super(new GitStatusTask());
+
         dragListConverter = new DragFileConverter<GitStatusLine>();
     }
 
@@ -135,4 +137,5 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
     {
         return task.directory.getValue();
     }
+
 }

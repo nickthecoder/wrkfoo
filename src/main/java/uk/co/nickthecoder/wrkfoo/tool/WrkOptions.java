@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,38 +9,81 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JSplitPane;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
+import uk.co.nickthecoder.wrkfoo.FakeToolPanel;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
+import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.SimpleListTool;
+import uk.co.nickthecoder.wrkfoo.SimpleTable;
+import uk.co.nickthecoder.wrkfoo.TableResults;
+import uk.co.nickthecoder.wrkfoo.TaskResults;
+import uk.co.nickthecoder.wrkfoo.ToolPanel;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
+import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.WrkOptionsResults;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
-public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
+public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTask, OptionRow>
 {
     public static Color EDITABLE_COLOR = Color.BLACK;
 
     public static Color FIXED_COLOR = new Color(128, 0, 0); // Dark red
 
-    public static Color INCLUDED_COLOR = new Color(0, 0, 128); // Dark blue
+    private ResultsTask resultsTask = new ResultsTask();
+
+    private WrkOptionsIncludes includesTool;
 
     public WrkOptions()
     {
         super(new WrkOptionsTask());
+        init();
     }
 
     public WrkOptions(String optionsName)
     {
         super(new WrkOptionsTask(optionsName));
+        init();
     }
 
     public WrkOptions(URL path, String name)
     {
         super(new WrkOptionsTask(path, name));
+        init();
+    }
+
+    private final void init()
+    {
+        includesTool = new WrkOptionsIncludes()
+        {
+            @Override
+            protected ToolPanel createToolPanel()
+            {
+                return new FakeToolPanel();
+            }
+        };
+    }
+
+    public WrkOptionsIncludes getIncludesTool()
+    {
+        return includesTool;
+    }
+
+    @Override
+    public void go()
+    {
+        super.go();
+
+        includesTool.getTask().path.setValue(getTask().path.getValue());
+        includesTool.getTask().optionsName.setValue(getTask().optionsName.getValue());
+
+        includesTool.go();
     }
 
     @Override
@@ -54,7 +98,7 @@ public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
             {
                 return row.option.code;
             }
-        }.width(50));
+        }.width(80));
 
         columns.add(new Column<OptionRow>(String.class, "label")
         {
@@ -64,21 +108,6 @@ public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
                 return row.option.label;
             }
         }.width(200));
-
-        columns.add(new Column<OptionRow>(String.class, "definedIn")
-        {
-            @Override
-            public String getValue(OptionRow row)
-            {
-                String path = row.url.getPath();
-                int slash = path.lastIndexOf("/");
-                if (slash > 0) {
-                    return path.substring(slash + 1);
-                } else {
-                    return path;
-                }
-            }
-        }.width(200).tooltip(4));
 
         columns.add(new Column<OptionRow>(URL.class, "URL")
         {
@@ -141,7 +170,7 @@ public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
             {
                 return row.option.ifScript;
             }
-        }.width(300));
+        }.width(90));
 
         return columns;
     }
@@ -160,11 +189,7 @@ public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
                 OptionRow line = getRow(row);
 
                 if (line.url.getProtocol().equals("file")) {
-                    if (line.included) {
-                        return INCLUDED_COLOR;
-                    } else {
-                        return EDITABLE_COLOR;
-                    }
+                    return EDITABLE_COLOR;
                 } else {
                     return FIXED_COLOR;
                 }
@@ -235,4 +260,66 @@ public class WrkOptions extends SimpleListTool<WrkOptionsTask, OptionRow>
         return new WrkOptionsIncludes(task.path.getValue(), task.optionsName.getValue());
     }
 
+    @Override
+    public SimpleTable<OptionRow> getTable()
+    {
+        return getResultsPanel().tableResults.getTable();
+    }
+
+    @Override
+    protected WrkOptionsResults createResultsPanel()
+    {
+        return new WrkOptionsResults();
+    }
+
+    public class WrkOptionsResults extends PanelResults
+    {
+        TaskResults taskResults;
+
+        TableResults<OptionRow> tableResults;
+
+        TableResults<String> includesTableResults;
+
+        public WrkOptionsResults()
+        {
+            SimpleTable<OptionRow> table = getColumns().createTable(getTableModel());
+
+            taskResults = new TaskResults(resultsTask);
+            tableResults = new TableResults<OptionRow>(WrkOptions.this, table);
+
+            includesTableResults = getIncludesTool().getResultsPanel();
+
+            JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+            splitPane.setResizeWeight(0.7);
+
+            getComponent().add(taskResults.getComponent(), BorderLayout.NORTH);
+            getComponent().add(splitPane, BorderLayout.CENTER);
+
+            splitPane.setTopComponent(tableResults.getComponent());
+            splitPane.setBottomComponent(includesTableResults.getComponent());
+        }
+
+        @Override
+        public JComponent getFocusComponent()
+        {
+            return tableResults.getFocusComponent();
+        }
+    }
+
+    public class ResultsTask extends Task
+    {
+        public StringParameter ifScript = new StringParameter.Builder("if")
+            .multiLine().size(300, 50).parameter();
+
+        public ResultsTask()
+        {
+            addParameters(ifScript);
+        }
+
+        @Override
+        public void body() throws Exception
+        {
+        }
+
+    }
 }

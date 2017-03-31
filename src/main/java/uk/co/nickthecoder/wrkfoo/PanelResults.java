@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class PanelResults implements Results
 {
-    private JPanel panel;
+    protected JPanel panel;
 
     public PanelResults()
     {

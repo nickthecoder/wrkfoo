@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.parameter.BooleanParameter;
 import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.ListResults;
@@ -20,22 +17,16 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsTask.OptionRow;
 
 public class WrkOptionsTask extends Task implements ListResults<OptionRow>
 {
-    private List<OptionRow> results;
-
-    public ChoiceParameter<URL> path = Resources.getInstance().createOptionsPathChoice(true);
+    public ChoiceParameter<URL> path = Resources.getInstance().createOptionsPathChoice(false);
 
     public StringParameter optionsName = new StringParameter.Builder("optionsName")
         .parameter();
 
-    public BooleanParameter showIncludes = new BooleanParameter.Builder("showIncludes")
-        .value(true).parameter();
-
-    public BooleanParameter showReadOnlyOptions = new BooleanParameter.Builder("showReadOnlyOptions")
-        .value(false).parameter();
+    private List<OptionRow> results;
 
     public WrkOptionsTask()
     {
-        addParameters(path, optionsName, showIncludes, showReadOnlyOptions);
+        addParameters(path, optionsName);
     }
 
     public WrkOptionsTask(String name)
@@ -58,53 +49,18 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
     }
 
     @Override
-    public void body()
+    public void body() throws URISyntaxException
     {
         results = new ArrayList<>();
-        addedNames = new HashSet<>();
 
-        add(optionsName.getValue(), false);
-    }
-
-    private Set<String> addedNames;
-
-    private void add(String name, boolean included)
-    {
-        if (addedNames.contains(name)) {
-            return;
-        }
-        addedNames.add(name);
-
-        List<OptionsData> list;
-        if (path.getValue() == null) {
-            list = Resources.getInstance().readOptionsData(name);
-        } else {
-            list = new ArrayList<>(1);
-            try {
-                list.add(Resources.getInstance().readOptionsData(path.getValue(), name));
-            } catch (URISyntaxException | IOException e) {
-                // Do nothing. This file may not exist, which is ok.
-            }
-        }
-
-        for (OptionsData item : list) {
-            add(item, included);
-        }
-    }
-
-    private void add(OptionsData optionsData, boolean included )
-    {
-        for (OptionData data : optionsData.optionData) {
-            OptionRow row = new OptionRow(optionsData, data, optionsData.url, included);
-            if (showReadOnlyOptions.getValue() || row.canEdit()) {
+        try {
+            OptionsData item = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
+            for (OptionData data : item.optionData) {
+                OptionRow row = new OptionRow(item, data, item.url);
                 results.add(row);
             }
-        }
-
-        if (showIncludes.getValue()) {
-            for (String include : optionsData.include) {
-                add(include, true);
-            }
+        } catch (IOException e) {
+            // Do nothing, we don't care if the file was not found
         }
     }
 
@@ -113,14 +69,12 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
         public OptionsData options;
         public OptionsData.OptionData option;
         public URL url;
-        public boolean included;
 
-        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url, boolean included)
+        public OptionRow(OptionsData optionsData, OptionsData.OptionData data, URL url)
         {
             this.options = optionsData;
             this.option = data;
             this.url = url;
-            this.included = included;
         }
 
         public boolean canEdit()

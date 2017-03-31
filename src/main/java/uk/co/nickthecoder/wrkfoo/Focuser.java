@@ -23,23 +23,19 @@ public class Focuser
     private static String focusDescription;
 
     /**
-     * The time in milliseconds after which less important focus events actually have an effect. 
+     * The time in milliseconds after which less important focus events actually have an effect.
      */
     public static int TOO_SOON_INTERVAL = 50;
-    
-    public static void focusLater(String description, Component c, int importance)
-    {
-        privateFocusLater(c, description, importance);
-    }
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
-    public static void log( String message )
+    public static void log(String message)
     {
         if (debug) {
-            System.out.println( message );
+            System.out.println(message);
         }
     }
+
     /**
      * Focuses on the component invoking later, using SwingUtilities.invokeLater.
      * If a component is already requested to be focused, and before it has been carried out,
@@ -54,10 +50,14 @@ public class Focuser
      * @param importance
      *            Range 0..10, 10 being the most important
      */
-    private static void privateFocusLater(Component c, String description, int importance)
+    public static void focusLater(String description, Component c, int importance)
     {
-        // Note. focusComponent is null, when there is nothing waiting, but focusImportance is NOT reset back to -1.
+        if (c == null) {
+            log("Ignoring null component. Description : " + description);
+            return;
+        }
 
+        // Note. focusComponent is null, when there is nothing waiting, but focusImportance is NOT reset back to -1.
         if ((focusComponent == null) || (importance > focusImportance)) {
             if (focusComponent == null) {
                 // No focus pending.
@@ -87,7 +87,7 @@ public class Focuser
             focusDescription = description;
 
             if (old == null) {
-                //log("Invoking later");
+                // log("Invoking later");
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     @Override

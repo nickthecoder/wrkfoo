@@ -310,7 +310,7 @@ public class OptionsRunner
                 foundOne = true;
 
                 Object row = model.getRow(i);
-                Option option = tableTool.getOptions().getOption(code, row);
+                Option option = tableTool.getOptions().getOption(tool, code, row);
                 
                 if (option == null) {
                     message("Unknown Option Code : '" + code + "'");
@@ -337,7 +337,7 @@ public class OptionsRunner
                 int rowIndex = getTable().convertRowIndexToModel(r);
                 if (Util.empty(model.getCode(rowIndex))) {
                     Object row = getTable().getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getOption(DEFAULT_CODE, row);
+                    Option option = tableTool.getOptions().getOption(tool, DEFAULT_CODE, row);
                     if (option == null) {
                         message("No default Option");
                     } else {
@@ -355,7 +355,7 @@ public class OptionsRunner
         List<Object> rows = new ArrayList<>();
         for (int i = 0; i < model.getRowCount(); i++) {
             Object row = model.getRow(i);
-            Option otherOption = tableTool.getOptions().getRowOption(model.getCode(i), row);
+            Option otherOption = tableTool.getOptions().getRowOption(tool, model.getCode(i), row);
             if (otherOption == option) {
                 if (option.isApplicable(row)) {
                     model.setCode(i, "");
@@ -377,7 +377,7 @@ public class OptionsRunner
      */
     public boolean runOption(String code, boolean newTab, boolean prompt)
     {
-        Option option = tool.getOptions().getNonRowOption(code);
+        Option option = tool.getOptions().getNonRowOption(tool, code);
         if (option != null) {
             return runOption(option, newTab, prompt);
         } else {

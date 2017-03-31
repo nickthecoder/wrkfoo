@@ -37,7 +37,7 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
         }
     }
 
-    private void end()
+    protected void end()
     {
         goThread = null;
 
@@ -59,6 +59,8 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
         {
             try {
                 task.run();
+            } catch (Exception e) {
+                MainWindow.getMainWindow(getToolPanel()).handleException(e);
             } finally {
                 SwingUtilities.invokeLater(new Runnable()
                 {

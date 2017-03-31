@@ -197,7 +197,7 @@ public abstract class AbstractTool<S extends Results, T extends Task>
 
     protected ToolPanel createToolPanel()
     {
-        return new ToolPanel(this);
+        return new RealToolPanel(this);
     }
 
     @Override

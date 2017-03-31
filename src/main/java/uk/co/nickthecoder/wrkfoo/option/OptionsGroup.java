@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import uk.co.nickthecoder.wrkfoo.Tool;
+
 public class OptionsGroup implements Options
 {
     public List<Options> optionsList;
@@ -23,21 +25,21 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public Option getOption(String code, Object row)
+    public Option getOption(Tool<?> tool, String code, Object row)
     {
-        Option result = getRowOption(code, row);
+        Option result = getRowOption(tool, code, row);
         if (result == null) {
-            return getNonRowOption(code);
+            return getNonRowOption(tool, code);
         } else {
             return result;
         }
     }
 
     @Override
-    public Option getRowOption(String code, Object row)
+    public Option getRowOption(Tool<?> tool, String code, Object row)
     {
         for (Options options : optionsList) {
-            Option option = options.getRowOption(code, row);
+            Option option = options.getRowOption(tool, code, row);
             if (option != null) {
                 return option;
             }
@@ -46,10 +48,10 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public Option getNonRowOption(String code)
+    public Option getNonRowOption(Tool<?> tool, String code)
     {
         for (Options options : optionsList) {
-            Option option = options.getNonRowOption(code);
+            Option option = options.getNonRowOption(tool, code);
             if (option != null) {
                 return option;
             }

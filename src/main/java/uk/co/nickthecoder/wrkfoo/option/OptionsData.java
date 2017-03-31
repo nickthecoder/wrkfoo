@@ -21,7 +21,40 @@ import uk.co.nickthecoder.wrkfoo.Resources;
  */
 public class OptionsData
 {
+    public transient URL url;
 
+    /**
+     * When loading a single .json file, we end up with a complex structure, with this being the top-level.
+     * The first Options in optionsGroup will be a SimpleOptions, containing the options loaded directly from the .json
+     * file.
+     * The remaining items are the INCLUDES. These are currently handled badly, because there will end up being
+     * repetition.
+     */
+    public transient OptionsGroup optionsGroup;
+
+    public transient SimpleOptions options;
+
+    public List<String> include = new ArrayList<>();
+
+    @SerializedName("if")
+    public String ifScript;
+
+    @SerializedName("options")
+    public List<OptionData> optionData = new ArrayList<>();
+
+    /**
+     * Creates OptionsData from a json file. After loading the json data, it is also converted into
+     * the *real* data structure (and OptionsGroup) used by the rest of WrkFoo).
+     * Note that there is no reverse process - there is no mechanism to convert the *real* data structure
+     * into an OptionsData. Instead, it is the OptionsData that is edited by WrkOptions etc, and when it is
+     * saved, it is also reloaded, which updates the *real* data structures.
+     * 
+     * @param url
+     *            The url to load (this may be a jar or a file)
+     * @return The loaded OptionsData
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     public static OptionsData load(URL url) throws MalformedURLException, IOException
     {
         Gson gson = new Gson();
@@ -45,24 +78,6 @@ public class OptionsData
         return optionsData;
     }
 
-    public transient URL url;
-
-    /**
-     * When loading a single .json file, we end up with a complex structure, with this being the top-level.
-     * The first Options in optionsGroup will be a SimpleOptions, containing the options loaded directly from the .json
-     * file.
-     * The remaining items are the INCLUDES. These are currently handled badly, because there will end up being
-     * repetition.
-     */
-    public transient OptionsGroup optionsGroup;
-
-    public transient SimpleOptions options;
-    
-    public List<String> include = new ArrayList<>();
-
-    @SerializedName("options")
-    public List<OptionData> optionData = new ArrayList<>();
-
     public OptionsData(File directory, String name) throws MalformedURLException
     {
         this(new File(directory, name + ".json").toURI().toURL());
@@ -78,6 +93,8 @@ public class OptionsData
     {
         if (this.optionData != null) {
             options = new SimpleOptions();
+            options.setIfScript(ifScript);
+
             for (OptionData optionData : optionData) {
                 GroovyOption groovyOption = optionData.createOption();
                 options.add(groovyOption);
@@ -99,7 +116,7 @@ public class OptionsData
     {
         return options;
     }
-    
+
     public void reload()
     {
         optionsGroup.clear();
@@ -128,7 +145,7 @@ public class OptionsData
     public static class OptionData
     {
         transient Option option;
-        
+
         public String code;
         public String label;
 
@@ -150,7 +167,7 @@ public class OptionsData
         {
             aliases = new ArrayList<>();
         }
-        
+
         public GroovyOption createOption()
         {
             GroovyOption option = new GroovyOption(code, label, action, ifScript, isRow(), multi, newTab,
@@ -170,7 +187,7 @@ public class OptionsData
         {
             return option;
         }
-        
+
         public boolean isRow()
         {
             return row == Boolean.FALSE ? false : true;

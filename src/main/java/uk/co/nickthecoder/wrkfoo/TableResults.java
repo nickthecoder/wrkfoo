@@ -70,7 +70,7 @@ public class TableResults<R> extends PanelResults
                     int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
 
                     R row = table.getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getRowOption(OptionsRunner.DEFAULT_CODE, row);
+                    Option option = tableTool.getOptions().getRowOption(tableTool, OptionsRunner.DEFAULT_CODE, row);
                     if (option != null) {
                         optionsRunner.runOption(option, row, newTab, false);
                     }

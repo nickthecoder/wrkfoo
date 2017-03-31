@@ -41,7 +41,7 @@ public abstract class AbstractListTool<S extends Results, T extends Task & ListR
     public void updateResults()
     {
         getTableModel().update(getTask().getResults());
-        columns.defaultSort(getTable());
+        getColumns().defaultSort(getTable());
     }
 
 }

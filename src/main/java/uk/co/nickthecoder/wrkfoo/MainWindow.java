@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -99,7 +100,11 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public static MainWindow getMainWindow(Component component)
     {
-        return (MainWindow) SwingUtilities.getWindowAncestor(component);
+        Window window = SwingUtilities.getWindowAncestor(component);
+        //if (window == null) {
+        //    System.err.println("Failed to find window for component : " + component);
+        //}
+        return (MainWindow) window;
     }
 
     public MainWindow()
@@ -142,7 +147,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
         setTitle("WrkFoo");
 
         pack();
-        setLocationRelativeTo(null);        
+        setLocationRelativeTo(null);
     }
 
     @Override
@@ -523,8 +528,8 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         if (getCurrentTab() != null) {
             Tool<?> tool = getCurrentTab().getTool();
-            if (tool instanceof TableTool<?,?>) {
-                ExportTableData std = new ExportTableData((TableTool<?,?>) tool);
+            if (tool instanceof TableTool<?, ?>) {
+                ExportTableData std = new ExportTableData((TableTool<?, ?>) tool);
                 std.promptTask();
             }
         }
@@ -552,7 +557,7 @@ public class MainWindow extends JFrame implements ExceptionHandler
 
     public void onJumpToToolBar()
     {
-        Focuser.focusLater("MainWindow.JumptToToolBar", optionTextField, 8 );
+        Focuser.focusLater("MainWindow.JumptToToolBar", optionTextField, 8);
     }
 
     public void onJumpToResults()
