@@ -75,6 +75,10 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     public String getOptionsName()
     {
         String name = getClass().getSimpleName().toLowerCase();
+        // If this is an anonymous inner class, then use the parent class.
+        if (name.equals("")) {
+            name = getClass().getSuperclass().getSimpleName().toLowerCase();
+        }
         if (name.endsWith("tool")) {
             return name.substring(0, name.length() - 4);
         }
