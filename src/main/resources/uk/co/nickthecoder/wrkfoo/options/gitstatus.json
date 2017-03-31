@@ -116,7 +116,7 @@
       "aliases": []
     },
     {
-      "code": "gj",
+      "code": "gjd",
       "label": "Gradle Javadoc",
       "action": "os.term( 'gradle', 'javadoc' )\n   .dir( task.directory.value )\n   .title(\"Gradle Javadoc\")\n   .simple()",
       "row": false,
