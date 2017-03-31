@@ -183,19 +183,19 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
-    public void updateTabInfo(ToolTab tab)
+    void updateTitle(ToolTab tab)
     {
         WrkFoo.assertIsEDT();
 
-        String title = tab.getTitle();
-        Icon icon = tab.getTool().getIcon();
-
         int index = toolTabs.indexOf(tab);
-        JLabel label = (JLabel) getTabComponentAt(index);
-        label.setText(title);
-        label.setIcon(icon);
+        if ( index >= 0 ) {
+            String title = tab.getTitle();
+            Icon icon = tab.getTool().getIcon();
 
-        // TODO Replace with listeners getMainWindow().changedTab();
+            JLabel label = (JLabel) getTabComponentAt(index);
+            label.setText(title);
+            label.setIcon(icon);
+        }
     }
 
     public ToolTab getToolTab(int index)

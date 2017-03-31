@@ -261,6 +261,11 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
+    public void changedTitle(ToolTab tab)
+    {
+    }
+    
+    @Override
     public void finished(Process process)
     {
         SwingUtilities.invokeLater(new Runnable()

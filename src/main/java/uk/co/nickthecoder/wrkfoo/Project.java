@@ -105,8 +105,7 @@ public class Project
             tab.setTitleTemplate(tt);
             tab.setShortcut(tabData.shortcut);
             // We added the tab before giving it its titleTemplate, so now we need to update it.
-            tab.getTabbedPane().updateTabInfo(tab);
-
+            tab.getTabbedPane().updateTitle(tab);
         }
 
         return mainWindow;

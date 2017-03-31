@@ -78,10 +78,17 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
     @Override
     public String getLongTitle()
     {
+        String text;
         if (task.file.getValue() == null) {
-            return "New";
+            text = "New";
+        } else {
+            text = task.file.getValue().getName();
         }
-        return task.file.getValue().getName();
+
+        if (editorPanel.getEditorPane().isDirty()) {
+            text += " *";
+        }
+        return text;
     }
 
     private boolean firstTime = true;
@@ -169,6 +176,11 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         }
     }
 
+    @Override
+    public void changedTitle(ToolTab tab)
+    {
+    }
+
     public static class EditorTask extends Task
     {
         public FileParameter file = new FileParameter.Builder("file").file().mayExist()
@@ -191,7 +203,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
     {
         if (editorPanel.getEditorPane().isDirty() != wasDirty) {
             wasDirty = editorPanel.getEditorPane().isDirty();
-            getToolTab().getTabbedPane().updateTabInfo(getToolTab());
+            TabNotifier.fireChangedTitle(getToolTab());
         }
     }
 

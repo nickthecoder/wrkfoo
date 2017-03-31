@@ -18,7 +18,7 @@ import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
  * The isn't a GUI component, it only hold the data associated with one of the tabs in the {@link TabbedPane}.
  * It has a {@link Tool}, but over time, the tool will change. The history of all of the tools, and the
  * Tool's Task's parameters are stored in a {@link History}, which allows the user to go backwards and
- * forwards similar to  web browser's back and forward buttons.
+ * forwards similar to web browser's back and forward buttons.
  * 
  */
 public class ToolTab
@@ -159,7 +159,7 @@ public class ToolTab
     {
         getTabbedPane().setSelectedToolTab(this);
     }
-    
+
     public void onUndoTool()
     {
         if (history.canUndo()) {
@@ -173,7 +173,7 @@ public class ToolTab
             goPrivate(history.redo(), false, false);
         }
     }
-    
+
     /**
      * Used when the Tool's task's parameters have changed without the task being re-run by the normal
      * mechanism. Used by HTMLViewer for example when the address is changed.
@@ -222,9 +222,10 @@ public class ToolTab
             }
         }
 
-        if (tabbedPane != null) {
-            tabbedPane.updateTabInfo(this);
-        }
+        // TODO Is this needed?
+        // if (tabbedPane != null) {
+        // tabbedPane.updateTitle(this);
+        // }
 
         this.panel.repaint();
     }

@@ -72,4 +72,12 @@ public class TabNotifier
             tl.deselectingTab(tab);
         }
     }
+    
+
+    public static void fireChangedTitle(ToolTab tab)
+    {
+        for (TabListener tl : listeners()) {
+            tl.changedTitle(tab);
+        }
+    }
 }

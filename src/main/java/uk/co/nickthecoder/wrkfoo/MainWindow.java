@@ -88,7 +88,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     }
 
     public MainWindow()
-    {        
+    {
         whole = new JPanel();
 
         tabbedPane = new TabbedPane();
@@ -517,4 +517,12 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
     }
 
+    @Override
+    public void changedTitle(ToolTab tab)
+    {
+        if (tab.getTool().getToolPanel().getTopLevel() == this) {
+            updateTitle();
+            tabbedPane.updateTitle(tab);
+        }
+    }
 }
