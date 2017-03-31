@@ -27,13 +27,7 @@ public interface Tool<S extends Results>
     public String getLongTitle();
 
     public Icon getIcon();
-
-    public void attachTo(ToolTab tab);
-
-    public void detach();
-
-    public ToolTab getToolTab();
-
+    
     public void updateResults();
 
     public S getResultsPanel();
@@ -41,6 +35,8 @@ public interface Tool<S extends Results>
     public ParametersPanel createParametersPanel();
 
     public ToolPanel getToolPanel();
+
+    public ToolTab getToolTab();
 
     public boolean isRerunnable();
 

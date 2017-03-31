@@ -8,13 +8,14 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.Tool;
 
 public class HomeTask extends Task implements ListResults<Tool<?>>
 {
     public static List<Tool<?>> results = new ArrayList<>();
-    
-    {
+
+    static {
         results = new ArrayList<>();
 
         WrkF wrkFHome = new WrkF();
@@ -56,12 +57,16 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
 
         Terminal terminal = new Terminal();
         results.add(terminal);
+        // The prototype Terminal tool has no need of notifications. Prevent warning messages at exit. 
+        TabNotifier.removeTabListener(terminal);
 
         Terminal bash = new Terminal();
         bash.task.command.setValue("bash");
         bash.task.arguments.addValue("--login");
         bash.task.title.setValueIgnoreErrors("Bash");
         results.add(bash);
+        // The prototype Terminal tool has no need of notifications. Prevent warning messages at exit. 
+        TabNotifier.removeTabListener(bash);
 
         HTMLViewer htmlViewer = new HTMLViewer();
         results.add(htmlViewer);

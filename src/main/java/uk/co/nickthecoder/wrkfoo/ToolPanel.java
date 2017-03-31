@@ -20,5 +20,11 @@ public interface ToolPanel
     public void go();
 
     public TopLevel getTopLevel();
-    
+ 
+    public void attachTo(ToolTab tab);
+
+    public void detach();
+
+    public ToolTab getToolTab();
+
 }

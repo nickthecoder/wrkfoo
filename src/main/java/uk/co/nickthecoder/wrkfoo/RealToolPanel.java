@@ -29,6 +29,8 @@ public class RealToolPanel implements ToolPanel, TaskListener
 {
     private JPanel panel;
 
+    private ToolTab toolTab;
+
     private Tool<?> tool;
 
     private HidingSplitPane splitPane;
@@ -149,6 +151,27 @@ public class RealToolPanel implements ToolPanel, TaskListener
         builder.name("cyclePane").buildShortcut();
         builder.name("toggleLeftPane").buildShortcut();
         builder.name("toggleRightPane").buildShortcut();
+    }
+
+
+    @Override
+    public void attachTo(ToolTab tab)
+    {
+        assert (this.toolTab == null);
+
+        this.toolTab = tab;
+    }
+
+    @Override
+    public void detach()
+    {
+        this.toolTab = null;
+    }
+
+    @Override
+    public ToolTab getToolTab()
+    {
+        return toolTab;
     }
 
     public void onCyclePane()

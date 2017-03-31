@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptions;
@@ -12,18 +11,18 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
  * For an example of its use, see {@link WrkOptions} - The main WrkOptions tool has a hidden inner
  * WrkOptionsIncludes tool, which has the FakeToolPanel.
  */
-public abstract class FakeToolPanel implements ToolPanel
+public class MergedToolPanel implements ToolPanel
 {
-    private JPanel component;
-
-    public FakeToolPanel()
+    private ToolPanel other;
+    
+    public MergedToolPanel( ToolPanel other )
     {
-        component = new JPanel();
+        this.other = other;
     }
 
     public JComponent getComponent()
     {
-        return component;
+        return null;
     }
 
     @Override
@@ -52,6 +51,28 @@ public abstract class FakeToolPanel implements ToolPanel
     @Override
     public void go()
     {
+    }
+
+    @Override
+    public TopLevel getTopLevel()
+    {
+        return other.getTopLevel();
+    }
+
+    @Override
+    public void attachTo(ToolTab tab)
+    {
+    }
+
+    @Override
+    public void detach()
+    {        
+    }
+
+    @Override
+    public ToolTab getToolTab()
+    {
+        return other.getToolTab();
     }
 
 }

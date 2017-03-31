@@ -1,8 +1,9 @@
 Current Task
 ============
 
-Move attach / detach stuff from Tool into ToolPanel?
-    ToolPanel to have the ToolTab, not Tool
+Extend TabListener to include title changes
+    MainFrame to listen
+
 
 Check the WrkOptions tool.
 

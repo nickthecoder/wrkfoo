@@ -24,6 +24,8 @@ import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TabListener;
+import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
@@ -32,7 +34,7 @@ import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTask>
-    implements ProcessListener
+    implements ProcessListener, TabListener
 {
     public static Icon icon = Resources.icon("terminal.png");
 
@@ -68,11 +70,12 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         init();
         reRunnable = false;
         cmd = command;
-
     }
 
     private final void init()
     {
+        TabNotifier.addTabListener(this);
+
         results = new TerminalResults();
         results.getComponent().setLayout(new BorderLayout());
 
@@ -214,7 +217,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         pp.addProcessListener(this);
 
         Focuser.focusLater("Terminal just created", getResultsPanel().getFocusComponent(), 8);
-        
+
         super.go();
     }
 
@@ -225,17 +228,36 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
-    public void detach()
+    public void attachedTab(ToolTab tab)
     {
-        super.detach();
-        if (terminal != null) {
-            closeTerminal();
-            terminal = null;
+    }
+
+    @Override
+    public void detachingTab(ToolTab tab)
+    {
+        if (tab.getTool() == this) {
+
+            TabNotifier.removeTabListener(this);
+
+            if (terminal != null) {
+                closeTerminal();
+                terminal = null;
+            }
+            results.getComponent().removeAll();
+            if (task.killOnClose.getValue()) {
+                killProcess();
+            }
         }
-        results.getComponent().removeAll();
-        if (task.killOnClose.getValue()) {
-            killProcess();
-        }
+    }
+
+    @Override
+    public void selectedTab(ToolTab tab)
+    {
+    }
+
+    @Override
+    public void deselectingTab(ToolTab tab)
+    {
     }
 
     @Override
@@ -363,14 +385,15 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         public JComponent getFocusComponent()
         {
             if (terminal != null) {
-                Focuser.log( "Terminal.getFocusComponent - terminal");
+                Focuser.log("Terminal.getFocusComponent - terminal");
                 return terminal;
             } else if (simpleTerminal != null) {
-                Focuser.log( "Terminal.getFocusComponent - terminal");
+                Focuser.log("Terminal.getFocusComponent - terminal");
                 return simpleTerminal.getInputTextField();
             }
-            Focuser.log( "Terminal.getFocusComponent calling super");
+            Focuser.log("Terminal.getFocusComponent calling super");
             return super.getFocusComponent();
         }
     }
+
 }

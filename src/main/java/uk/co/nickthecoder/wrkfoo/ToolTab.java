@@ -133,12 +133,12 @@ public class ToolTab
         this.tool = tool;
         panel.removeAll();
         panel.add(tool.getToolPanel().getComponent());
-        tool.attachTo(this);
+        tool.getToolPanel().attachTo(this);
     }
 
     private void detach()
     {
-        this.tool.detach();
+        this.tool.getToolPanel().detach();
         Tool<?> tool = getTool();
         if (tool.getTask().isRunning()) {
             tool.stop();

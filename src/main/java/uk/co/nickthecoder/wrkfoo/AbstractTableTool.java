@@ -26,11 +26,4 @@ public abstract class AbstractTableTool<S extends Results, T extends Task, R>
 
     protected abstract Columns<R> createColumns();
 
-    @Override
-    public void detach()
-    {
-        super.detach();
-        this.columns = null;
-        this.clearResults();
-    }
 }

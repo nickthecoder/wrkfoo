@@ -17,15 +17,14 @@ import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
-import uk.co.nickthecoder.wrkfoo.FakeToolPanel;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
+import uk.co.nickthecoder.wrkfoo.MergedToolPanel;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.SimpleTable;
 import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.TaskResults;
 import uk.co.nickthecoder.wrkfoo.ToolPanel;
-import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.WrkOptionsResults;
@@ -66,13 +65,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             @Override
             protected ToolPanel createToolPanel()
             {
-                return new FakeToolPanel() {
-                    @Override
-                    public TopLevel getTopLevel()
-                    {
-                        return WrkOptions.this.getToolPanel().getTopLevel();
-                    }
-                };
+                return new MergedToolPanel( WrkOptions.this.getToolPanel());
             }
         };
     }

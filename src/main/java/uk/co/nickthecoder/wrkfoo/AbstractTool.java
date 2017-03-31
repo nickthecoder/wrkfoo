@@ -17,8 +17,6 @@ public abstract class AbstractTool<S extends Results, T extends Task>
 {
     public T task;
 
-    private ToolTab toolTab;
-
     private ToolPanel toolPanel;
 
     private OptionsGroup options;
@@ -44,6 +42,12 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     public T getTask()
     {
         return task;
+    }
+
+    @Override
+    public ToolTab getToolTab()
+    {
+        return getToolPanel().getToolTab();
     }
 
     /**
@@ -100,27 +104,6 @@ public abstract class AbstractTool<S extends Results, T extends Task>
         return true;
     }
 
-    @Override
-    public void attachTo(ToolTab tab)
-    {
-        assert (this.toolTab == null);
-
-        this.toolTab = tab;
-    }
-
-    @Override
-    public void detach()
-    {
-        this.toolTab = null;
-        this.toolPanel = null;
-    }
-
-    @Override
-    public ToolTab getToolTab()
-    {
-        return toolTab;
-    }
-
     /**
      * A convenience method for {@link GroovyOption}s to change a parameter, and return the same Tool.
      * 
@@ -131,7 +114,7 @@ public abstract class AbstractTool<S extends Results, T extends Task>
      * @return this
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public AbstractTool<S,T> parameter(String name, Object value)
+    public AbstractTool<S, T> parameter(String name, Object value)
     {
         Parameter p = getTask().findParameter(name);
         ValueParameter vp = (ValueParameter) p;
@@ -147,10 +130,10 @@ public abstract class AbstractTool<S extends Results, T extends Task>
      */
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public AbstractTool<S,T> duplicate()
+    public AbstractTool<S, T> duplicate()
     {
         try {
-            AbstractTool<S,T> copy = this.getClass().newInstance();
+            AbstractTool<S, T> copy = this.getClass().newInstance();
 
             for (ValueParameter src : getTask().valueParameters()) {
                 ValueParameter dest = ((ValueParameter) copy.getTask().findParameter(src.getName()));
@@ -168,13 +151,13 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     }
 
     private S resultsPanel;
-    
+
     protected abstract S createResultsPanel();
 
     @Override
     public S getResultsPanel()
     {
-        if ( resultsPanel == null) {
+        if (resultsPanel == null) {
             resultsPanel = createResultsPanel();
         }
         return resultsPanel;

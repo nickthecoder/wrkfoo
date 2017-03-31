@@ -45,7 +45,7 @@ import uk.co.nickthecoder.wrkfoo.tool.Projects;
 import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class MainWindow extends JFrame implements TopLevel
+public class MainWindow extends JFrame implements TopLevel, TabListener
 {
     private static final long serialVersionUID = 1L;
 
@@ -335,7 +335,8 @@ public class MainWindow extends JFrame implements TopLevel
 
         if (show) {
             windows.add(this);
-
+            TabNotifier.addTabListener(this);
+            
             MouseListener listener = new MouseAdapter()
             {
                 @Override
@@ -358,6 +359,8 @@ public class MainWindow extends JFrame implements TopLevel
 
         } else {
             windows.remove(this);
+            TabNotifier.removeTabListener(this);
+
             tabbedPane.removeAllTabs();
             dispose();
         }
@@ -659,6 +662,26 @@ public class MainWindow extends JFrame implements TopLevel
     public void onPromptNonRowOptionInNewTab()
     {
         processOptionField(true, true);
+    }
+
+    @Override
+    public void attachedTab(ToolTab tab)
+    {        
+    }
+
+    @Override
+    public void detachingTab(ToolTab tab)
+    {       
+    }
+
+    @Override
+    public void selectedTab(ToolTab tab)
+    {       
+    }
+
+    @Override
+    public void deselectingTab(ToolTab tab)
+    {      
     }
 
 }

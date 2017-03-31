@@ -32,6 +32,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         setTabPlacement(JTabbedPane.LEFT);
     }
 
+
     public ToolTab getSelectedTab()
     {
         WrkFoo.assertIsEDT();
@@ -79,6 +80,45 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         setTabComponentAt(position, tabLabel);
 
         tab.setTabbedPane(this);
+
+        TabNotifier.fireAttached(tab);
+    }
+
+    public void removeTab(ToolTab tab)
+    {
+        int index = toolTabs.indexOf(tab);
+        if (index >= 0) {
+            removeTabAt(index);
+        }
+    }
+
+    @Override
+    public void removeTabAt(int index)
+    {
+        WrkFoo.assertIsEDT();
+
+        ToolTab tab = toolTabs.get(index);
+        TabNotifier.fireDetaching(tab);
+
+        toolTabs.remove(index);
+        super.removeTabAt(index);
+
+        if (getSelectedIndex() == index) {
+            if (index > 0) {
+                setSelectedIndex(index - 1);
+            }
+        }
+
+        tab.setTabbedPane(null);
+    }
+
+    public void removeAllTabs()
+    {
+        WrkFoo.assertIsEDT();
+
+        for (int i = getTabCount() - 1; i >= 0; i--) {
+            removeTabAt(i);
+        }
     }
 
     private JPopupMenu createTabPopupMenu(MouseEvent me)
@@ -143,43 +183,6 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
-    public void removeTab(ToolTab tab)
-    {
-        int index = toolTabs.indexOf(tab);
-        if (index >= 0) {
-            removeTabAt(index);
-        }
-    }
-
-    @Override
-    public void removeTabAt(int index)
-    {
-        WrkFoo.assertIsEDT();
-
-        ToolTab tab = toolTabs.get(index);
-
-        toolTabs.remove(index);
-        super.removeTabAt(index);
-
-        if (getSelectedIndex() == index) {
-            if (index > 0) {
-                setSelectedIndex(index - 1);
-            }
-        }
-
-        tab.setTabbedPane(null);
-
-    }
-
-    public void removeAllTabs()
-    {
-        WrkFoo.assertIsEDT();
-
-        for (int i = getTabCount() - 1; i >= 0; i--) {
-            removeTabAt(i);
-        }
-    }
-
     public void updateTabInfo(ToolTab tab)
     {
         WrkFoo.assertIsEDT();
@@ -207,9 +210,17 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     {
         WrkFoo.assertIsEDT();
 
+        ToolTab selectedTab = this.getSelectedTab();
+        if (selectedTab != null) {
+            TabNotifier.fireDeselecting(selectedTab);
+        }
+
         super.setSelectedIndex(i);
         if ((i >= 0) && (i < toolTabs.size())) {
-            Focuser.focusLater("TabbedPane.selected. Results", this.toolTabs.get(i).getTool().getResultsPanel().getFocusComponent(), 4 );
+            Focuser.focusLater("TabbedPane.selected. Results",
+                this.toolTabs.get(i).getTool().getResultsPanel().getFocusComponent(), 4);
+
+            TabNotifier.fireSelected(getSelectedTab());
         }
     }
 
