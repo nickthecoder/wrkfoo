@@ -22,7 +22,7 @@ public class TableResults<R> extends PanelResults
 
     public TableResults(TableTool<?, ?> tool, SimpleTable<R> table)
     {
-        super();
+        super(tool);
         this.tableTool = tool;
 
         this.table = table;

@@ -49,7 +49,7 @@ public class WrkOptionsIncludesTask extends Task implements ListResults<String>
         results = new ArrayList<>();
 
         try {
-            OptionsData optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
+            optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
             for (String name : optionsData.include) {
                 results.add(name);
             }

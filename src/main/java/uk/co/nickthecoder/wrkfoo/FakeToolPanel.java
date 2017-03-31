@@ -12,7 +12,7 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
  * For an example of its use, see {@link WrkOptions} - The main WrkOptions tool has a hidden inner
  * WrkOptionsIncludes tool, which has the FakeToolPanel.
  */
-public class FakeToolPanel implements ToolPanel
+public abstract class FakeToolPanel implements ToolPanel
 {
     private JPanel component;
 
@@ -53,4 +53,5 @@ public class FakeToolPanel implements ToolPanel
     public void go()
     {
     }
+
 }

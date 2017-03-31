@@ -87,20 +87,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
         JPopupMenu menu = new JPopupMenu();
 
-        ActionBuilder builder = new ActionBuilder(this).exceptionHandler(getMainWindow());
+        ActionBuilder builder = new ActionBuilder(this);
         menu.add(builder.name("tab.properties").label("Tab Promperties").buildMenuItem());
         menu.add(builder.name("tab.close").label("Close Tab").buildMenuItem());
 
         menu.show(me.getComponent(), me.getX(), me.getY());
 
         return menu;
-    }
-
-    public MainWindow getMainWindow()
-    {
-        WrkFoo.assertIsEDT();
-
-        return MainWindow.getMainWindow(this);
     }
 
     public void onProperties()
@@ -145,7 +138,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             tab.setTitleTemplate(title.getValue());
             tab.setShortcut(shortcut.getValue());
 
-            MainWindow.getMainWindow(TabbedPane.this).changedTab();
+            // TODO Replace with listeners MainWindow.getMainWindow(TabbedPane.this).changedTab();
             ((JLabel) getTabComponentAt(tabIndex)).setText(tab.getTitle());
         }
     }
@@ -199,7 +192,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         label.setText(title);
         label.setIcon(icon);
 
-        getMainWindow().changedTab();
+        // TODO Replace with listeners getMainWindow().changedTab();
     }
 
     public ToolTab getToolTab(int index)
@@ -307,7 +300,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             }
             Tool<?> tool = tab.getTool();
 
-            MainWindow destinationWindow = MainWindow.getMouseMainWindow();
+            TopLevel destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {
 
                 // Tear off the tab into a new MainWindow
@@ -325,9 +318,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                     newWindow.setVisible(true);
                 }
 
-            } else if (destinationWindow != MainWindow.getMainWindow(tab.getPanel())) {
+            } else if (destinationWindow != tool.getToolPanel().getTopLevel()) {
                 // Move the tab to a different MainWindow
-                MainWindow currentMainWindow = MainWindow.getMainWindow(tab.getPanel());
+                TopLevel currentMainWindow = tool.getToolPanel().getTopLevel();
                 removeTabAt(draggedTabIndex);
                 ToolTab newTab = destinationWindow.addTab(tool);
 

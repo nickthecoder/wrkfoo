@@ -1,6 +1,9 @@
 Current Task
 ============
 
+Move attach / detach stuff from Tool into ToolPanel?
+    ToolPanel to have the ToolTab, not Tool
+
 Check the WrkOptions tool.
 
     Can we double click an include to wrkoptions on it?

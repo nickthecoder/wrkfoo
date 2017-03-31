@@ -9,7 +9,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "-",
@@ -19,7 +20,19 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
+    },
+    {
+      "code": ".",
+      "label": "Work with Included Options",
+      "action": "println( task );\nprintln( task.optionsData.url );\nprintln( row );\nnew WrkOptions( task.optionsData.url, row )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

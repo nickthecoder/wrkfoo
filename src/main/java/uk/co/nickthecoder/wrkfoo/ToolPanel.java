@@ -19,4 +19,6 @@ public interface ToolPanel
 
     public void go();
 
+    public TopLevel getTopLevel();
+    
 }

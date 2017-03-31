@@ -32,6 +32,6 @@ public class NullTool extends AbstractTool<Results,NullTask>
     @Override
     protected Results createResultsPanel()
     {
-        return new PanelResults();
+        return new PanelResults(this);
     }
 }

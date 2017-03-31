@@ -10,9 +10,9 @@ import javax.swing.event.ChangeListener;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -145,15 +145,16 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         JToolBar tb = editorPanel.toolBar;
         FindToolBar ftb = editorPanel.findToolBar;
 
-        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel().getComponent());
+        TopLevel topLevel = getToolPanel().getTopLevel();
+
         if (show) {
             WrkFoo.assertIsEDT();
 
             if (tb.getParent() == null) {
-                mainWindow.getToolBarPanel().add(tb);
+                topLevel.addToolBar(tb);
             }
             if (ftb.getParent() == null) {
-                mainWindow.getStatusBarPanel().add(ftb, 0);
+                topLevel.addStatusBar(ftb);
             }
 
         } else {
@@ -169,8 +170,8 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
 
         }
 
-        if (mainWindow != null) {
-            mainWindow.getToolBarPanel().repaint();
+        if (topLevel != null) {
+            // TODO Hmm, is this needed? topLevel.getToolBarPanel().repaint();
         }
     }
 
@@ -211,9 +212,10 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         Editor newEditor = new Editor();
         newEditor.task.file.setDefaultValue(this.task.file.getValue().getParentFile());
 
-        MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel().getComponent());
-        ToolTab newTab = mainWindow.insertTab(newEditor, true);
-        mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
+        TopLevel topLevel = this.getToolPanel().getTopLevel();
+        
+        ToolTab newTab = topLevel.insertTab(newEditor, true);
+        newTab.select();
     }
 
 }

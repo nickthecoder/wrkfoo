@@ -23,7 +23,6 @@ import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import uk.co.nickthecoder.wrkfoo.Focuser;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -51,6 +50,8 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
 
     public EditorPanel(Editor editorTool)
     {
+        super(editorTool);
+
         this.editorTool = editorTool;
 
         editorPane = new TextEditorPane();
@@ -150,7 +151,7 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
     @Override
     public void handleException(Throwable e)
     {
-        MainWindow.getMainWindow(editorTool.getToolPanel().getComponent()).handleException(e);
+        editorTool.getToolPanel().getTopLevel().handleException(e);
     }
 
     public void onDocumentSave() throws IOException

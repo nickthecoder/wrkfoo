@@ -16,11 +16,13 @@ public interface Results
 {
     public JComponent getComponent();
 
+    public Tool<?> getTool();
+    
     public default JComponent getFocusComponent()
     {
         try {
             Focuser.log("Results panel default implementation returning MainWindow's option field");
-            return MainWindow.getMainWindow(getComponent()).getOptionField();
+            return getTool().getToolPanel().getTopLevel().getFocusComponent();
         } catch (Exception e) {
             Focuser.log("Failed to focus on options field for component " + getComponent());
             return null;

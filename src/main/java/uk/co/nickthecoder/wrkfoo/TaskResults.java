@@ -18,14 +18,14 @@ public class TaskResults extends PanelResults
 
     private ParametersPanel parametersPanel;
 
-    public TaskResults(Task task)
+    public TaskResults(Tool<?> tool, Task task)
     {
-        this(task, "Save");
+        this(tool, task, "Save");
     }
 
-    public TaskResults(Task task, String goText)
+    public TaskResults(Tool<?> tool, Task task, String goText)
     {
-        super();
+        super(tool);
         this.task = task;
 
         parametersPanel = new ParametersPanel();

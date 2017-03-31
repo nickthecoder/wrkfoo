@@ -155,6 +155,11 @@ public class ToolTab
         return tool.getTask();
     }
 
+    public void select()
+    {
+        getTabbedPane().setSelectedToolTab(this);
+    }
+    
     public void onUndoTool()
     {
         if (history.canUndo()) {

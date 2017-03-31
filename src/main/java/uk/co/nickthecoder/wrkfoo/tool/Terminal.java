@@ -22,7 +22,6 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
@@ -252,7 +251,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
                 }
 
                 if (tab.getTabbedPane().getSelectedTab() == tab) {
-                    Focuser.focusLater("TerminalEnded", MainWindow.getMainWindow(tab.getPanel()).getOptionField(), 6);
+                    Focuser.focusLater("TerminalEnded", getToolPanel().getTopLevel().getFocusComponent(), 6);
                 }
 
                 if (task.autoClose.getValue()) {
@@ -355,6 +354,11 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
 
     class TerminalResults extends PanelResults
     {
+        public TerminalResults()
+        {
+            super(Terminal.this);
+        }
+
         @Override
         public JComponent getFocusComponent()
         {

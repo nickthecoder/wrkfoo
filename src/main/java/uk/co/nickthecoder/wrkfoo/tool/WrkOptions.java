@@ -25,6 +25,7 @@ import uk.co.nickthecoder.wrkfoo.SimpleTable;
 import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.TaskResults;
 import uk.co.nickthecoder.wrkfoo.ToolPanel;
+import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.option.OptionsData.OptionData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptions.WrkOptionsResults;
@@ -65,7 +66,13 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             @Override
             protected ToolPanel createToolPanel()
             {
-                return new FakeToolPanel();
+                return new FakeToolPanel() {
+                    @Override
+                    public TopLevel getTopLevel()
+                    {
+                        return WrkOptions.this.getToolPanel().getTopLevel();
+                    }
+                };
             }
         };
     }
@@ -282,9 +289,10 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
 
         public WrkOptionsResults()
         {
+            super(WrkOptions.this);
             SimpleTable<OptionRow> table = getColumns().createTable(getTableModel());
 
-            taskResults = new TaskResults(resultsTask);
+            taskResults = new TaskResults(WrkOptions.this, resultsTask);
             tableResults = new TableResults<OptionRow>(WrkOptions.this, table);
 
             includesTableResults = getIncludesTool().getResultsPanel();

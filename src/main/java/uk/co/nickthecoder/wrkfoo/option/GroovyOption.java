@@ -9,10 +9,10 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskAdaptor;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Command;
-import uk.co.nickthecoder.wrkfoo.MainWindow;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
 
@@ -87,9 +87,9 @@ public class GroovyOption extends AbstractOption
                     listen(currentTool, newTool.getTask());
                 }
 
-                MainWindow mainWindow = MainWindow.getMainWindow(tab.getPanel());
-                ToolTab newTab = mainWindow.insertTab(newTool, prompt);
-                mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
+                TopLevel topLevel = currentTool.getToolPanel().getTopLevel();
+                ToolTab newTab = topLevel.insertTab(newTool, prompt);
+                newTab.select();
 
             } else {
                 tab.goPrompt(newTool, prompt);

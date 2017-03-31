@@ -2,10 +2,8 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,7 +31,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -47,9 +44,8 @@ import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.tool.Projects;
 import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
-import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
-public class MainWindow extends JFrame implements ExceptionHandler
+public class MainWindow extends JFrame implements TopLevel
 {
     private static final long serialVersionUID = 1L;
 
@@ -96,15 +92,6 @@ public class MainWindow extends JFrame implements ExceptionHandler
     public static MainWindow getMouseMainWindow()
     {
         return mouseMainWindow;
-    }
-
-    public static MainWindow getMainWindow(Component component)
-    {
-        Window window = SwingUtilities.getWindowAncestor(component);
-        //if (window == null) {
-        //    System.err.println("Failed to find window for component : " + component);
-        //}
-        return (MainWindow) window;
     }
 
     public MainWindow()
@@ -156,14 +143,22 @@ public class MainWindow extends JFrame implements ExceptionHandler
         return new Dimension(1000, 600);
     }
 
-    public JPanel getToolBarPanel()
+    @Override
+    public void addToolBar(JComponent toolBar)
     {
-        return toolBarPanel;
+        toolBarPanel.add(toolBar);
     }
 
-    public JPanel getStatusBarPanel()
+    @Override
+    public void addStatusBar(JComponent statusBar)
     {
-        return statusBarPanel;
+        statusBarPanel.add(statusBar, 0);
+    }
+
+    @Override
+    public JComponent getFocusComponent()
+    {
+        return optionTextField;
     }
 
     public ToolTab getCurrentTab()
@@ -665,4 +660,5 @@ public class MainWindow extends JFrame implements ExceptionHandler
     {
         processOptionField(true, true);
     }
+
 }

@@ -8,10 +8,19 @@ public class PanelResults implements Results
 {
     protected JPanel panel;
 
-    public PanelResults()
+    private Tool<?> tool;
+
+    public PanelResults(Tool<?> tool)
     {
+        this.tool = tool;
+
         panel = new JPanel()
         {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public boolean requestFocusInWindow()
             {
@@ -30,8 +39,15 @@ public class PanelResults implements Results
         panel.setLayout(new BorderLayout());
     }
 
+    @Override
     public JPanel getComponent()
     {
         return panel;
+    }
+
+    @Override
+    public Tool<?> getTool()
+    {
+        return tool;
     }
 }

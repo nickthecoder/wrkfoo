@@ -239,7 +239,12 @@ public class RealToolPanel implements ToolPanel, TaskListener
     @Override
     public void aborted(Task task)
     {
+    }
 
+    @Override
+    public TopLevel getTopLevel()
+    {
+        return TopLevel.getTopLevel(getComponent());
     }
 
 }
