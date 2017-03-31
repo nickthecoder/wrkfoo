@@ -222,10 +222,9 @@ public class ToolTab
             }
         }
 
-        // TODO Is this needed?
-        // if (tabbedPane != null) {
-        // tabbedPane.updateTitle(this);
-        // }
+        if (tabbedPane != null) {
+            TabNotifier.fireChangedTitle(this);
+        }
 
         this.panel.repaint();
     }

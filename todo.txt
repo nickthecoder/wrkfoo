@@ -1,9 +1,7 @@
 Current Task
 ============
 
-Extend TabListener to include title changes
-    MainFrame to listen
-
+Bug : HTMLViewer is blank when changing tabs
 
 Check the WrkOptions tool.
 
