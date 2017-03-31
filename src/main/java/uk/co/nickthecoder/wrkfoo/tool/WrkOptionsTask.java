@@ -22,6 +22,8 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
     public StringParameter optionsName = new StringParameter.Builder("optionsName")
         .parameter();
 
+    OptionsData optionsData;
+
     private List<OptionRow> results;
 
     public WrkOptionsTask()
@@ -47,16 +49,16 @@ public class WrkOptionsTask extends Task implements ListResults<OptionRow>
     {
         return results;
     }
-
+    
     @Override
     public void body() throws URISyntaxException
     {
         results = new ArrayList<>();
 
         try {
-            OptionsData item = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
-            for (OptionData data : item.optionData) {
-                OptionRow row = new OptionRow(item, data, item.url);
+            optionsData = Resources.getInstance().readOptionsData(path.getValue(), optionsName.getValue());
+            for (OptionData data : optionsData.optionData) {
+                OptionRow row = new OptionRow(optionsData, data, optionsData.url);
                 results.add(row);
             }
         } catch (IOException e) {

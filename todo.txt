@@ -1,30 +1,15 @@
 Current Task
 ============
 
-WrkOptions to have TWO tables. Options and Includes
-    Would an inner tools : WrkOptionsIncludes
-    The Results are a special combo, of three things. "if", "options" and "includes"
-    The non-row options work on the wrkoptions.json (are there any?)
-    The row options work on the wrkoptions.json and wrkpptionsincludes.json
-        Both will include the wrkoptions.json
-    Use a JSplitPane between the two tables, with 30% weight to the includes.
+Check the WrkOptions tool.
 
-NOTE any row options will have a tool and task of the INNER tool/task, so they need a
-    getParent() method to get to the outer WrkOptions Tool and WrkOptionsTask
-
-NOTE2 We don't need TWO inner tools&tasks, because WrkOptions can do the options, and then
-    call the inner WrkOptionsIncludeTask
+    Can we double click an include to wrkoptions on it?
+    Can we add and remove includes
 
 Options to have an "if", and only consider that whole Options if the "if-clause" passes.
     Catch and ignore the exception?
         Maybe add a value into the Bindings, which can change this behaviour.
         e.g. THROW=true; row.file.isDirectory()
-
-WrkOptions to default to the first writable options file
-    Remove the "show read-only" option.
-    Remove the "all-paths" choice.
-    Remove the "defined-in" column and the "show includes" - never include them,
-        we can see them by double clicking an include line.
 
 Next Tasks
 ==========

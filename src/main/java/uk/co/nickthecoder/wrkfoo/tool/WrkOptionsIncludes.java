@@ -27,7 +27,7 @@ public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, S
     {
         super(new WrkOptionsIncludesTask(path, name));
     }
-
+    
     @Override
     public String getLongTitle()
     {
@@ -78,7 +78,7 @@ public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, S
     {
         return new RemoveInclude(name);
     }
-    
+
     class AddInclude extends Task
     {
         StringParameter include = new StringParameter.Builder("include").parameter();

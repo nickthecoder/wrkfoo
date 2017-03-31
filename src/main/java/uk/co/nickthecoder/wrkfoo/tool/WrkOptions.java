@@ -309,7 +309,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
     public class ResultsTask extends Task
     {
         public StringParameter ifScript = new StringParameter.Builder("if")
-            .multiLine().size(300, 50).parameter();
+            .optional().multiLine().size(300, 50).parameter();
 
         public ResultsTask()
         {
@@ -319,6 +319,8 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
         @Override
         public void body() throws Exception
         {
+            getTask().optionsData.save();
+            getTask().optionsData.reload();
         }
 
     }
