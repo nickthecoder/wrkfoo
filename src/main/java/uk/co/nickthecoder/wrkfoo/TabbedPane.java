@@ -26,7 +26,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public TabbedPane()
     {
         toolTabs = new ArrayList<>();
-        enableReordering();
+        //enableReordering();
 
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         setTabPlacement(JTabbedPane.LEFT);

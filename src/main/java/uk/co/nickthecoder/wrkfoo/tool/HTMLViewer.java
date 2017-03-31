@@ -9,6 +9,7 @@ import javax.swing.Icon;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLResultsPanel;
 import uk.co.nickthecoder.wrkfoo.tool.HTMLViewer.HTMLViewerTask;
 
@@ -28,7 +30,11 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
 {
     private HTMLResultsPanel htmlResultsPanel;
 
+    private WebView webView;
+
     private String title = "HTMLViewer";
+
+    private String docTitle = "";
 
     public HTMLViewer(File file)
     {
@@ -44,6 +50,10 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
     public HTMLViewer()
     {
         super(new HTMLViewerTask());
+
+        // Without this, JavaFX will terminate when there are no JFXPanels visible, and
+        // then all JavaFX stuff will stop working
+        Platform.setImplicitExit(false);
     }
 
     @Override
@@ -56,7 +66,12 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
     {
         this.title = title;
     }
-    
+
+    public String getLongTitle()
+    {
+        return getTitle() + " " + docTitle;
+    }
+
     @Override
     public Icon getIcon()
     {
@@ -76,22 +91,43 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
         return htmlResultsPanel;
     }
 
+    private void pageLoaded()
+    {
+        docTitle = webView.getEngine().getTitle();
+        if (docTitle == null) {
+            docTitle = "";
+        }
+        TabNotifier.fireChangedTitle(getToolTab());
+    }
+
+    private void changedAddress(String address)
+    {
+        if ((address == null) || (task.address.getValue() == null)) {
+            return;
+        }
+
+        if (address.equals(task.address.getValue())) {
+            return;
+        }
+        task.address.setValue(address);
+        this.getToolTab().pushHistory();
+    }
+
     public class HTMLResultsPanel extends PanelResults
     {
-        final JFXPanel fxPanel = new JFXPanel();
+        final JFXPanel fxPanel;
 
         public HTMLResultsPanel()
         {
             super(HTMLViewer.this);
             Util.assertIsEDT();
+
+            fxPanel = new JFXPanel();
             getComponent().add(fxPanel, BorderLayout.CENTER);
-            Platform.setImplicitExit(false);
         }
 
         public void show(String address)
         {
-            Util.assertIsEDT();
-            fxPanel.removeAll();
             Platform.runLater(new Runnable()
             {
                 @Override
@@ -108,14 +144,11 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
             if (!Platform.isFxApplicationThread()) {
                 throw new RuntimeException("Not the FXApplicationThread");
             }
-            // Without this, JavaFX will terminate when there are no JFXPanels visible, and
-            // then all JFX stuff will stop working
-
             StackPane root = new StackPane();
             Scene scene = new Scene(root);
             fxPanel.setScene(scene);
 
-            WebView webView = new WebView();
+            webView = new WebView();
             root.getChildren().add(webView);
 
             final WebEngine webEngine = webView.getEngine();
@@ -128,23 +161,21 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
                     changedAddress(webEngine.getLocation());
                 }
             });
-        }
-    }
 
-    private void changedAddress(String address)
-    {
-        if ((address == null) || (task.address.getValue() == null)) {
-            return;
-        }
+            webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
+            {
+                @Override
+                public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue,
+                    Worker.State newValue)
+                {
+                    if (newValue != Worker.State.SUCCEEDED) {
+                        return;
+                    }
 
-        if (address.equals(task.address.getValue())) {
-            return;
+                    pageLoaded();
+                }
+            });
         }
-        // Don't care if it is file:///foo and file:/foo
-
-        System.out.println("Location changed " + address + " vs " + task.address.getValue());
-        task.address.setValue(address);
-        this.getToolTab().pushHistory();
     }
 
     public static class HTMLViewerTask extends Task
@@ -162,5 +193,4 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
         {
         }
     }
-
 }

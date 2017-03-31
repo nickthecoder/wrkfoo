@@ -1,7 +1,14 @@
 Current Task
 ============
 
-Bug : HTMLViewer is blank when changing tabs
+Bug : HTMLViewer is blank when switching between two HTMLViewer tabs
+Bug : When clicking the LAST tab, it selects it, then selects the penultimate tab
+    Need two windows open to see this happening
+        Only when TabbedPane enableReording.
+Bug : It appears that when TabbedPane enableReording the HTMLViewer (and other tools) are refreshing when a tab is CLICKED.
+Bug : With two windows, hyperlinks only work in one window at a time.
+
+Reordering is doing a DRAG when two windows are open!    
 
 Check the WrkOptions tool.
 

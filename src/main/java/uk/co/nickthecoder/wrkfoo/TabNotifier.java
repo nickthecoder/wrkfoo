@@ -3,6 +3,8 @@ package uk.co.nickthecoder.wrkfoo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 public class TabNotifier
 {
     private static List<TabListener> tabListeners = new ArrayList<>();
@@ -45,39 +47,78 @@ public class TabNotifier
         return new ArrayList<>(tabListeners);
     }
 
-    public static void fireAttached(ToolTab tab)
+    public static void nowOrLater(Runnable r)
     {
-        for (TabListener tl : listeners()) {
-            tl.attachedTab(tab);
+        if (SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        } else {
+            SwingUtilities.invokeLater(r);
         }
     }
 
-    public static void fireDetaching(ToolTab tab)
+    public static void fireAttached(final ToolTab tab)
     {
-        for (TabListener tl : listeners()) {
-            tl.detachingTab(tab);
-        }
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.attachedTab(tab);
+                }
+            }
+        });
     }
 
-    public static void fireSelected(ToolTab tab)
+    public static void fireDetaching(final ToolTab tab)
     {
-        for (TabListener tl : listeners()) {
-            tl.selectedTab(tab);
-        }
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.detachingTab(tab);
+                }
+            }
+        });
     }
 
-    public static void fireDeselecting(ToolTab tab)
+    public static void fireSelected(final ToolTab tab)
     {
-        for (TabListener tl : listeners()) {
-            tl.deselectingTab(tab);
-        }
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.selectedTab(tab);
+                }
+            }
+        });
     }
-    
 
-    public static void fireChangedTitle(ToolTab tab)
+    public static void fireDeselecting(final ToolTab tab)
     {
-        for (TabListener tl : listeners()) {
-            tl.changedTitle(tab);
-        }
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.deselectingTab(tab);
+                }
+            }
+        });
+    }
+
+    public static void fireChangedTitle(final ToolTab tab)
+    {
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.changedTitle(tab);
+                }
+
+            }
+        });
     }
 }
