@@ -145,7 +145,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         JToolBar tb = editorPanel.toolBar;
         FindToolBar ftb = editorPanel.findToolBar;
 
-        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel());
+        MainWindow mainWindow = MainWindow.getMainWindow(getToolPanel().getComponent());
         if (show) {
             WrkFoo.assertIsEDT();
 
@@ -211,7 +211,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         Editor newEditor = new Editor();
         newEditor.task.file.setDefaultValue(this.task.file.getValue().getParentFile());
 
-        MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel());
+        MainWindow mainWindow = MainWindow.getMainWindow(this.getToolPanel().getComponent());
         ToolTab newTab = mainWindow.insertTab(newEditor, true);
         mainWindow.tabbedPane.setSelectedComponent(newTab.getPanel());
     }

@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,9 +25,9 @@ import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
-public class RealToolPanel extends ToolPanel implements TaskListener
+public class RealToolPanel implements ToolPanel, TaskListener
 {
-    private static final long serialVersionUID = 1L;
+    private JPanel panel;
 
     private Tool<?> tool;
 
@@ -46,6 +47,7 @@ public class RealToolPanel extends ToolPanel implements TaskListener
 
     public RealToolPanel(Tool<?> foo)
     {
+        this.panel = new JPanel();
         this.tool = foo;
 
         sidePanel = new JPanel();
@@ -83,7 +85,7 @@ public class RealToolPanel extends ToolPanel implements TaskListener
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        ActionBuilder builder = new ActionBuilder(this);
+        ActionBuilder builder = new ActionBuilder(this).component(getComponent());
 
         goButton = builder.name("toolpanel.go").method("go").label("Go").icon("run.png").buildButton();
         goStop.add(goButton, gbc);
@@ -99,16 +101,21 @@ public class RealToolPanel extends ToolPanel implements TaskListener
         splitPane = new HidingSplitPane(JSplitPane.VERTICAL_SPLIT, true, body, sidePanel);
         splitPane.setResizeWeight(0.5);
 
-        this.setLayout(new BorderLayout());
-        this.add(splitPane, BorderLayout.CENTER);
+        panel.setLayout(new BorderLayout());
+        panel.add(splitPane, BorderLayout.CENTER);
 
         splitPane.setState(HidingSplitPane.State.LEFT);
         if (!this.tool.getTask().getRootParameter().children().iterator().hasNext()) {
             sidePanel.add(new JLabel("No Parameters"), BorderLayout.NORTH);
         }
 
-        this.setBackground(Color.blue);
         this.tool.getTask().addTaskListener(this);
+    }
+
+    @Override
+    public JComponent getComponent()
+    {
+        return panel;
     }
 
     @Override
@@ -137,7 +144,7 @@ public class RealToolPanel extends ToolPanel implements TaskListener
     {
         tool.postCreate();
 
-        ActionBuilder builder = new ActionBuilder(this).condition(WHEN_IN_FOCUSED_WINDOW);
+        ActionBuilder builder = new ActionBuilder(this).component(panel).condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         builder.name("cyclePane").buildShortcut();
         builder.name("toggleLeftPane").buildShortcut();
@@ -148,9 +155,9 @@ public class RealToolPanel extends ToolPanel implements TaskListener
     {
         splitPane.cycle();
         if (splitPane.getState() == HidingSplitPane.State.LEFT) {
-            Focuser.focusLater("ToolPanel.Cycle. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+            Focuser.focusLater("ToolPanel.Cycle. Results", tool.getResultsPanel().getFocusComponent(), 7);
         } else {
-            Focuser.focusLater("ToolPanel.Cycle. Parameters", getParametersPanel(), 7 );
+            Focuser.focusLater("ToolPanel.Cycle. Parameters", getParametersPanel(), 7);
         }
     }
 
@@ -158,9 +165,9 @@ public class RealToolPanel extends ToolPanel implements TaskListener
     {
         splitPane.toggleLeft();
         if (splitPane.getState() == HidingSplitPane.State.LEFT) {
-            Focuser.focusLater("ToolPanel.ToggleLeft. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+            Focuser.focusLater("ToolPanel.ToggleLeft. Results", tool.getResultsPanel().getFocusComponent(), 7);
         } else {
-            Focuser.focusLater("ToolPanel.ToggleLeft. Parameters", getParametersPanel(), 7 );
+            Focuser.focusLater("ToolPanel.ToggleLeft. Parameters", getParametersPanel(), 7);
         }
     }
 
@@ -168,27 +175,10 @@ public class RealToolPanel extends ToolPanel implements TaskListener
     {
         splitPane.toggleRight();
         if (splitPane.getState() == HidingSplitPane.State.RIGHT) {
-            Focuser.focusLater("ToolPanel.ToggleRight. Parameters", getParametersPanel(), 7 );
+            Focuser.focusLater("ToolPanel.ToggleRight. Parameters", getParametersPanel(), 7);
         } else {
-            Focuser.focusLater("ToolPanel.ToggleRight. Results", tool.getResultsPanel().getFocusComponent(), 7 );
+            Focuser.focusLater("ToolPanel.ToggleRight. Results", tool.getResultsPanel().getFocusComponent(), 7);
         }
-    }
-
-    @Override
-    public boolean requestFocusInWindow()
-    {
-        if (splitPane.getState() == HidingSplitPane.State.RIGHT) {
-            Focuser.focusLater("ToolPanel rfiw. Parameters", getParametersPanel(), 5 );
-        } else {
-            Focuser.focusLater("ToolPanel rfiw. Results", tool.getResultsPanel().getFocusComponent(), 5 );
-        }
-        return true;
-    }
-
-    @Override
-    public void requestFocus()
-    {
-        requestFocusInWindow();
     }
 
     @Override
@@ -210,7 +200,7 @@ public class RealToolPanel extends ToolPanel implements TaskListener
 
     public MainWindow getMainWindow()
     {
-        return (MainWindow) SwingUtilities.getRoot(this);
+        return (MainWindow) SwingUtilities.getRoot(getComponent());
     }
 
     private void changedRunningState(final boolean running)

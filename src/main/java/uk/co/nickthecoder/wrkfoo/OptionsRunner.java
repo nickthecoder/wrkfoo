@@ -91,7 +91,7 @@ public class OptionsRunner
 
     private MainWindow getMainWindow()
     {
-        return (MainWindow) SwingUtilities.getRoot(tool.getToolPanel());
+        return (MainWindow) SwingUtilities.getRoot(tool.getToolPanel().getComponent());
     }
 
     /**

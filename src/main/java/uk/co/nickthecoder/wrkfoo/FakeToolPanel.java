@@ -1,5 +1,8 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptions;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
@@ -9,12 +12,18 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
  * For an example of its use, see {@link WrkOptions} - The main WrkOptions tool has a hidden inner
  * WrkOptionsIncludes tool, which has the FakeToolPanel.
  */
-public class FakeToolPanel extends ToolPanel
+public class FakeToolPanel implements ToolPanel
 {
-    private static final long serialVersionUID = 1L;
+    private JPanel component;
 
     public FakeToolPanel()
     {
+        component = new JPanel();
+    }
+
+    public JComponent getComponent()
+    {
+        return component;
     }
 
     @Override

@@ -79,12 +79,6 @@ public class WrkOptionsIncludes extends SimpleListTool<WrkOptionsIncludesTask, S
         return new RemoveInclude(name);
     }
     
-    @Override
-    protected void end()
-    {
-        // TODO Better way? Do nothing, we don't want to create a ToolPanel
-    }
-    
     class AddInclude extends Task
     {
         StringParameter include = new StringParameter.Builder("include").parameter();

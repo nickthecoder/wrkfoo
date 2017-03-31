@@ -150,7 +150,7 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
     @Override
     public void handleException(Throwable e)
     {
-        MainWindow.getMainWindow(editorTool.getToolPanel()).handleException(e);
+        MainWindow.getMainWindow(editorTool.getToolPanel().getComponent()).handleException(e);
     }
 
     public void onDocumentSave() throws IOException

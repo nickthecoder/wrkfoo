@@ -46,8 +46,12 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
             public void run()
             {
                 Focuser.log("AbstractThreadedTool Showing left (results)");
-                getToolPanel().getSplitPane().showLeft();
-                Focuser.focusLater("AbstractThreadedTool task complete", getResultsPanel().getFocusComponent(), 9);
+                try {
+                    getToolPanel().getSplitPane().showLeft();
+                    Focuser.focusLater("AbstractThreadedTool task complete", getResultsPanel().getFocusComponent(), 9);
+                } catch (Exception e) {
+                    // Ignore
+                }
             }
         });
     }
@@ -60,7 +64,7 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
             try {
                 task.run();
             } catch (Exception e) {
-                MainWindow.getMainWindow(getToolPanel()).handleException(e);
+                MainWindow.getMainWindow(getToolPanel().getComponent()).handleException(e);
             } finally {
                 SwingUtilities.invokeLater(new Runnable()
                 {

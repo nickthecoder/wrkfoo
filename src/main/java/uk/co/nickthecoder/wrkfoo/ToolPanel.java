@@ -1,20 +1,22 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import uk.co.nickthecoder.jguifier.ParametersPanel;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
-public abstract class ToolPanel extends JPanel
+public interface ToolPanel
 {
-    public abstract void postCreate();
+    public JComponent getComponent();
+    
+    public void postCreate();
 
-    public abstract HidingSplitPane getSplitPane();
+    public HidingSplitPane getSplitPane();
 
-    public abstract boolean check();
+    public boolean check();
 
-    public abstract ParametersPanel getParametersPanel();
+    public ParametersPanel getParametersPanel();
 
-    public abstract void go();
+    public void go();
 
 }

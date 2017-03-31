@@ -132,7 +132,7 @@ public class ToolTab
     {
         this.tool = tool;
         panel.removeAll();
-        panel.add(tool.getToolPanel());
+        panel.add(tool.getToolPanel().getComponent());
         tool.attachTo(this);
     }
 
