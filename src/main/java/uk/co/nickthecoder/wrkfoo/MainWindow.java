@@ -24,32 +24,23 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import uk.co.nickthecoder.jguifier.guiutil.WrapLayout;
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
-import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
-import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
-import uk.co.nickthecoder.wrkfoo.tool.Projects;
-import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class MainWindow extends JFrame implements TopLevel, TabListener
 {
     private static final long serialVersionUID = 1L;
 
-    private static final List<MainWindow> windows = new ArrayList<>();
+    static final List<MainWindow> windows = new ArrayList<>();
 
     public JPanel whole;
 
@@ -63,13 +54,15 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     private JToolBar statusBar;
 
+    String stackTrace;
+
     /**
      * remembers the MainWindow that the mouse was last inside (or null if it isn't in
      * a MainWindow). Used when dragging/dropping tabs.
      */
     private static MainWindow mouseMainWindow;
 
-    private JTextField optionTextField;
+    JTextField optionTextField;
 
     private JLabel message;
 
@@ -84,7 +77,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     private JButton stopButton;
 
-    private JButton errorButton;
+    JButton errorButton;
 
     /**
      * The main window that the mouse last entered. Used by {@link TabbedPane} for drag/drop tabs.
@@ -95,19 +88,10 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     }
 
     public MainWindow()
-    {
+    {        
         whole = new JPanel();
 
         tabbedPane = new TabbedPane();
-        tabbedPane.addChangeListener(new ChangeListener()
-        {
-            @Override
-            public void stateChanged(ChangeEvent e)
-            {
-                changedTab();
-            }
-        });
-
         toolBarPanel = new JPanel();
         toolBarPanel.setLayout(new WrapLayout(FlowLayout.LEFT));
 
@@ -168,7 +152,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     private void fillToolBars()
     {
-        ActionBuilder builder = new ActionBuilder(this).component(this.rootPane);
+        MainWindowEvents mwe = new MainWindowEvents(this);
+
+        ActionBuilder builder = new ActionBuilder(mwe).component(this.rootPane);
 
         optionTextField = createOptionTextField();
         toolBar.add(optionTextField);
@@ -336,7 +322,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         if (show) {
             windows.add(this);
             TabNotifier.addTabListener(this);
-            
+
             MouseListener listener = new MouseAdapter()
             {
                 @Override
@@ -368,7 +354,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         AutoExit.setVisible(show);
     }
 
-    public void changedTab()
+    private void updateTitle()
     {
         String title = "wrkfoo";
 
@@ -423,7 +409,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         stopGoButtons(running);
     }
 
-    private ToolTab getCurrentOrNewTab()
+    ToolTab getCurrentOrNewTab()
     {
         ToolTab tab = getCurrentTab();
         if (tab == null) {
@@ -431,160 +417,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             tab = addTab(tool);
         }
         return tab;
-    }
-
-    public void onQuit()
-    {
-        // Close all of the windows, which will stop any stoppable tasks.
-        for (MainWindow window : windows) {
-            window.setVisible(false);
-        }
-        System.exit(0);
-    }
-
-    public void onHome()
-    {
-        Home tool = new Home();
-        getCurrentOrNewTab().go(tool);
-    }
-
-    public void onNewTab()
-    {
-        Home tool = new Home();
-        addTab(tool);
-        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-    }
-
-    public void onDuplicateTab()
-    {
-        ToolTab tab = getCurrentTab();
-        if (tab != null) {
-            Tool<?> copy = tab.getTool().duplicate();
-            addTab(copy);
-            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-        }
-    }
-
-    public void onCloseTab()
-    {
-        int currentTabIndex = tabbedPane.getSelectedIndex();
-        if (currentTabIndex >= 0) {
-            tabbedPane.removeTabAt(currentTabIndex);
-        }
-    }
-
-    public void onNewWindow()
-    {
-        Home tool = new Home();
-        MainWindow newWindow = new MainWindow();
-        newWindow.addTab(tool);
-        tool.go();
-        newWindow.setVisible(true);
-    }
-
-    public void onBack()
-    {
-        if (getCurrentTab() != null) {
-            getCurrentTab().onUndoTool();
-        }
-    }
-
-    public void onForward()
-    {
-        if (getCurrentTab() != null) {
-            getCurrentTab().onRedoTool();
-        }
-    }
-
-    public void onRun()
-    {
-        if (getCurrentTab() != null) {
-            getCurrentTab().getTool().getToolPanel().go();
-        }
-    }
-
-    public void onStop()
-    {
-        if (getCurrentTab() != null) {
-            getCurrentTab().getTool().stop();
-        }
-    }
-
-    public void onWorkProjects()
-    {
-        Projects tool = new Projects();
-        getCurrentOrNewTab().go(tool);
-    }
-
-    public void onSaveProject()
-    {
-        SaveProject sp = new SaveProject(this);
-        sp.promptTask();
-    }
-
-    public void onExportTable()
-    {
-        if (getCurrentTab() != null) {
-            Tool<?> tool = getCurrentTab().getTool();
-            if (tool instanceof TableTool<?, ?>) {
-                ExportTableData std = new ExportTableData((TableTool<?, ?>) tool);
-                std.promptTask();
-            }
-        }
-    }
-
-    public void onNextTab()
-    {
-        tabbedPane.nextTab();
-    }
-
-    public void onPreviousTab()
-    {
-        tabbedPane.previousTab();
-    }
-
-    public void onCloseWindow()
-    {
-        setVisible(false);
-    }
-
-    public JTextField getOptionField()
-    {
-        return optionTextField;
-    }
-
-    public void onJumpToToolBar()
-    {
-        Focuser.focusLater("MainWindow.JumptToToolBar", optionTextField, 8);
-    }
-
-    public void onJumpToResults()
-    {
-        ToolTab tab = getCurrentTab();
-        if (tab != null) {
-            tab.getTool().getToolPanel().getSplitPane().showLeft();
-            Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel().getComponent(), 8);
-        }
-    }
-
-    public void onJumpToParameters()
-    {
-        ToolTab tab = getCurrentTab();
-        if (tab != null) {
-            tab.getTool().getToolPanel().getSplitPane().showRight();
-            Focuser.focusLater("MainWindow jumpToParameters", tab.getTool().getToolPanel().getParametersPanel(), 8);
-        }
-    }
-
-    public void onShowError()
-    {
-        errorButton.setVisible(false);
-        if (stackTrace != null) {
-            JTextArea textArea = new JTextArea(stackTrace);
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            scrollPane.setPreferredSize(new Dimension(900, 300));
-            JOptionPane.showMessageDialog(null, scrollPane, "Error", JOptionPane.OK_OPTION);
-        }
     }
 
     /**
@@ -642,8 +474,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         setErrorMessage(e.getMessage());
     }
 
-    private String stackTrace;
-
     public void onRunNonRowOption()
     {
         processOptionField(false, false);
@@ -666,22 +496,25 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     @Override
     public void attachedTab(ToolTab tab)
-    {        
+    {
     }
 
     @Override
     public void detachingTab(ToolTab tab)
-    {       
+    {
     }
 
     @Override
     public void selectedTab(ToolTab tab)
-    {       
+    {
+        if (tab.getTool().getToolPanel().getTopLevel() == this) {
+            updateTitle();
+        }
     }
 
     @Override
     public void deselectingTab(ToolTab tab)
-    {      
+    {
     }
 
 }
