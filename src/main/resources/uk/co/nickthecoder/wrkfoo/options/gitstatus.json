@@ -169,6 +169,17 @@
       "refreshResults": false,
       "prompt": false,
       "aliases": []
+    },
+    {
+      "code": "-",
+      "label": "Git Remove (rm)",
+      "action": "os.exec('git', 'rm', rows.collect {it.choppedPath} )\n  .dir(task.directory.value)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": true,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }
