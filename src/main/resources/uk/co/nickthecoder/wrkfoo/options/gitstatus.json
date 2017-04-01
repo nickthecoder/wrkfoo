@@ -1,7 +1,8 @@
 {
   "include": [
     "files",
-    "directory"
+    "directory",
+    "gradle"
   ],
   "options": [
     {
@@ -94,72 +95,6 @@
       "aliases": []
     },
     {
-      "code": "gi",
-      "label": "Gradle Install",
-      "action": "os.term( 'gradle', 'install' )\n  .dir( task.directory.value )\n  .title(\"Gradle Install\")\n  .simple()",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
-      "code": "gb",
-      "label": "Gradle Build",
-      "action": "os.term( 'gradle', 'build' )\n  .dir( task.directory.value )\n  .title(\"Gradle Build\")\n  .simple()",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
-      "code": "gjd",
-      "label": "Gradle Javadoc",
-      "action": "os.term( 'gradle', 'javadoc' )\n   .dir( task.directory.value )\n   .title(\"Gradle Javadoc\")\n   .simple()",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
-      "code": "gia",
-      "label": "Gradle Install Application",
-      "action": "os.term( 'gradle', 'installApp' )\n  .dir( task.directory.value )\n  .title(\"Gradle installApp\")\n  .simple()",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
-      "code": "clean",
-      "label": "Gradle Clean",
-      "action": "os.term( 'gradle', 'clean' )\n  .dir( task.directory.value )\n  .title( \"Gradle clean\" )\n  .simple()\n",
-      "row": false,
-      "multi": false,
-      "newTab": true,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
-      "code": "eg",
-      "label": "Edit Gradle Build File",
-      "action": "new Editor( new File(tool.directory, 'build.gradle' ) )",
-      "row": false,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": false,
-      "aliases": []
-    },
-    {
       "code": "jd",
       "label": "View Javadocs",
       "action": "new HTMLViewer( new File( tool.directory, \"build/docs/javadoc/index.html\" ) )\n",
@@ -175,7 +110,7 @@
       "label": "Git Remove (rm)",
       "action": "os.exec('git', 'rm', rows.collect {it.choppedPath} )\n  .dir(task.directory.value)",
       "row": true,
-      "multi": false,
+      "multi": true,
       "newTab": false,
       "refreshResults": true,
       "prompt": false,

@@ -8,7 +8,7 @@
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true,
       "aliases": []
     },
@@ -19,14 +19,14 @@
       "row": true,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true,
       "aliases": []
     },
     {
       "code": ".",
       "label": "Work with Included Options",
-      "action": "println( task );\nprintln( task.optionsData.url );\nprintln( row );\nnew WrkOptions( task.optionsData.url, row )",
+      "action": "new WrkOptions( task.path.value, row )",
       "row": true,
       "multi": false,
       "newTab": false,
