@@ -1,7 +1,6 @@
 package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import uk.co.nickthecoder.wrkfoo.Tool;
@@ -65,61 +64,41 @@ public class OptionsGroup implements Options
     }
 
     @Override
-    public Iterator<Option> iterator()
+    public Iterable<Option> allOptions()
     {
-        return new OptionsGroupIterator();
+        List <Option> results = new ArrayList<>();
+        
+        for ( Options options : optionsList) {
+            for ( Option option : options.allOptions()) {
+                results.add(option);
+            }
+        }
+        return results;
     }
 
-    class OptionsGroupIterator implements Iterator<Option>
+    @Override
+    public Iterable<Option> applicableOptions(Tool<?> tool)
     {
-        private Option next;
-
-        private Iterator<Options> optionsIterator;
-
-        private Iterator<Option> singleIterator;
-
-        public OptionsGroupIterator()
-        {
-            optionsIterator = optionsList.iterator();
-            if (optionsIterator.hasNext()) {
-                singleIterator = optionsIterator.next().iterator();
-                lookAhead();
-            } else {
-                next = null;
+        List <Option> results = new ArrayList<>();
+        
+        for ( Options options : optionsList) {
+            for ( Option option : options.applicableOptions(tool)) {
+                results.add(option);
             }
         }
+        return results;
+    }
 
-        private void lookAhead()
-        {
-            while (!singleIterator.hasNext()) {
-                if (optionsIterator.hasNext()) {
-                    singleIterator = optionsIterator.next().iterator();
-                } else {
-                    next = null;
-                    return;
-                }
+    @Override
+    public Iterable<Option> applicableOptions(Tool<?> tool, Object row)
+    {
+        List <Option> results = new ArrayList<>();
+        
+        for ( Options options : optionsList) {
+            for ( Option option : options.applicableOptions(tool, row)) {
+                results.add(option);
             }
-            next = singleIterator.next();
         }
-
-        @Override
-        public boolean hasNext()
-        {
-            return next != null;
-        }
-
-        @Override
-        public Option next()
-        {
-            Option result = next;
-            lookAhead();
-            return result;
-        }
-
-        @Override
-        public void remove()
-        {
-            throw new RuntimeException("remove not supported");
-        }
+        return results;
     }
 }

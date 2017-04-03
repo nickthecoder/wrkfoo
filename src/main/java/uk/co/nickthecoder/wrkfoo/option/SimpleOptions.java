@@ -2,7 +2,6 @@ package uk.co.nickthecoder.wrkfoo.option;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,23 +38,34 @@ public class SimpleOptions implements Options
 
     public boolean isApplicable(Tool<?> tool)
     {
+        return isApplicable(tool, null);
+    }
+
+    public boolean isApplicable(Tool<?> tool, Object row)
+    {
         if (ifScriptlet == null) {
             return true;
         }
 
-        Object result = runScript(ifScriptlet, tool);
+        try {
+            Object result = runScript(ifScriptlet, tool, row);
+            return result == Boolean.TRUE;
 
-        return result == Boolean.TRUE;
+        } catch (Exception e) {
+            // TODO handle the exception
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    private Object runScript(GroovyScriptlet scriplet, Tool<?> tool)
+    private Object runScript(GroovyScriptlet scriplet, Tool<?> tool, Object row)
     {
         Binding bindings = new Binding();
         bindings.setProperty("tool", tool);
+        bindings.setProperty("task", tool.getTask());
+        bindings.setProperty("row", row);
+
         bindings.setProperty("os", OSHelper.instance);
-        if (tool != null) {
-            bindings.setProperty("task", tool.getTask());
-        }
 
         return scriplet.run(bindings);
     }
@@ -81,16 +91,16 @@ public class SimpleOptions implements Options
     @Override
     public Option getRowOption(Tool<?> tool, String code, Object row)
     {
-        if (!isApplicable(tool)) {
+        if (!isApplicable(tool, row)) {
             return null;
         }
-        
+
         List<Option> options = rowMap.get(code);
         if (options == null) {
             return null;
         }
         for (Option option : options) {
-            if (option.isApplicable(row)) {
+            if (option.isApplicable(tool, row)) {
                 return option;
             }
         }
@@ -104,7 +114,7 @@ public class SimpleOptions implements Options
         if (!isApplicable(tool)) {
             return null;
         }
-        
+
         return nonRowMap.get(code);
     }
 
@@ -163,9 +173,46 @@ public class SimpleOptions implements Options
     }
 
     @Override
-    public Iterator<Option> iterator()
+    public Iterable<Option> allOptions()
     {
-        return list.iterator();
+        return list;
+    }
+
+    @Override
+    public Iterable<Option> applicableOptions(Tool<?> tool)
+    {
+        List<Option> results = new ArrayList<>();
+
+        if (!isApplicable(tool)) {
+            return results;
+        }
+
+        for (Option option : allOptions()) {
+            if (!option.isRow()) {
+                if (option.isApplicable(tool, null)) {
+                    results.add(option);
+                }
+            }
+        }
+        return list;
+
+    }
+
+    @Override
+    public Iterable<Option> applicableOptions(Tool<?> tool, Object row)
+    {
+        List<Option> results = new ArrayList<>();
+
+        if (!isApplicable(tool, row)) {
+            return results;
+        }
+
+        for (Option option : allOptions()) {
+            if (option.isApplicable(tool, row)) {
+                results.add(option);
+            }
+        }
+        return list;
     }
 
 }

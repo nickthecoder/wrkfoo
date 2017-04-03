@@ -2,25 +2,40 @@
   "include": [],
   "options": [
     {
-      "code": "grep",
-      "label": "Recursive Grep",
-      "action": "new Grep( tool.directory )",
-      "if": "tool instanceof DirectoryTool",
-      "row": false,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": true
-    },
-    {
       "code": "fm",
       "label": "Open Folder",
-      "action": "os.open( tool.directory )",
-      "row": false,
+      "action": "os.open(row.file)",
+      "if": "",
+      "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "rm",
+      "label": "Delete Directory",
+      "action": "os.exec( 'rmdir', row.file )",
+      "if": "",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": true,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "grep",
+      "label": "Recursive Grep",
+      "action": "new Grep( row.file )",
+      "if": "",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

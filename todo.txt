@@ -1,27 +1,23 @@
 Current Task
 ============
 
-Bug : HTMLViewer is blank when switching between two HTMLViewer tabs
-Bug : When clicking the LAST tab, it selects it, then selects the penultimate tab
-    Need two windows open to see this happening
-        Only when TabbedPane enableReording.
-Bug : It appears that when TabbedPane enableReording the HTMLViewer (and other tools) are refreshing when a tab is CLICKED.
-Bug : With two windows, hyperlinks only work in one window at a time.
-
-Reordering is doing a DRAG when two windows are open!    
-
-Check the WrkOptions tool.
-
-    Can we double click an include to wrkoptions on it?
-    Can we add and remove includes
+Decide on the state of the new "if" on Options.
+    Needs a bodge when testing for rows. Hmmm.
+    Could split it into rowIf and nonRowIf
 
 Options to have an "if", and only consider that whole Options if the "if-clause" passes.
     Catch and ignore the exception?
         Maybe add a value into the Bindings, which can change this behaviour.
         e.g. THROW=true; row.file.isDirectory()
 
+
+
 Next Tasks
 ==========
+
+Bug : HTMLViewer is blank when switching between two HTMLViewer tabs
+
+Reordering is doing a DRAG when two windows are open!    
 
 F5 on Project throws an exception
 

@@ -2,7 +2,7 @@ package uk.co.nickthecoder.wrkfoo.option;
 
 import uk.co.nickthecoder.wrkfoo.Tool;
 
-public interface Options extends Iterable<Option>
+public interface Options
 {
     public Option getOption(Tool<?> tool, String code, Object row);
 
@@ -10,4 +10,9 @@ public interface Options extends Iterable<Option>
 
     public Option getNonRowOption(Tool<?> tool, String code);
 
+    public Iterable<Option> allOptions();
+
+    public Iterable<Option> applicableOptions( Tool<?> tool);
+
+    public Iterable<Option> applicableOptions( Tool<?> tool, Object row);
 }

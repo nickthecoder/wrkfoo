@@ -128,7 +128,7 @@ public class OptionsData
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
         String json = gson.toJson(this);
-
+        
         PrintWriter out = null;
         try {
             File file = new File(url.toURI());

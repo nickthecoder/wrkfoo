@@ -19,7 +19,7 @@ public interface Option
 
     public void runOption(TableTool<?,?> tool, Object row, boolean newTab, boolean prompt);
 
-    public boolean isApplicable(Object row);
+    public boolean isApplicable(Tool<?> tool, Object row);
 
     public boolean isRow();
 

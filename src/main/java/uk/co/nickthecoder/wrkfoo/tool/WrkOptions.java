@@ -65,7 +65,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             @Override
             protected ToolPanel createToolPanel()
             {
-                return new MergedToolPanel( WrkOptions.this.getToolPanel());
+                return new MergedToolPanel(WrkOptions.this.getToolPanel());
             }
         };
     }
@@ -221,6 +221,13 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
         }
     }
 
+    @Override
+    public void updateResults()
+    {
+        super.updateResults();
+        getResultsPanel().taskResults.getTask().initialise();
+    }
+
     public Task editOption(OptionsData optionsData, OptionData optionData)
     {
         return new EditOption(optionsData, optionData);
@@ -274,7 +281,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
 
     public class WrkOptionsResults extends PanelResults
     {
-        TaskResults taskResults;
+        TaskResults<ResultsTask> taskResults;
 
         TableResults<OptionRow> tableResults;
 
@@ -285,7 +292,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             super(WrkOptions.this);
             SimpleTable<OptionRow> table = getColumns().createTable(getTableModel());
 
-            taskResults = new TaskResults(WrkOptions.this, resultsTask);
+            taskResults = new TaskResults<ResultsTask>(WrkOptions.this, resultsTask);
             tableResults = new TableResults<OptionRow>(WrkOptions.this, table);
 
             includesTableResults = getIncludesTool().getResultsPanel();
@@ -317,9 +324,15 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             addParameters(ifScript);
         }
 
+        void initialise()
+        {
+            ifScript.setValueIgnoreErrors(task.optionsData.ifScript);
+        }
+
         @Override
         public void body() throws Exception
         {
+            task.optionsData.ifScript = ifScript.getValue();
             getTask().optionsData.save();
             getTask().optionsData.reload();
         }

@@ -1,8 +1,9 @@
 {
   "include": [
-    "files",
     "directory",
-    "gradle"
+    "gradle",
+    "tooldirectory",
+    "file"
   ],
   "options": [
     {

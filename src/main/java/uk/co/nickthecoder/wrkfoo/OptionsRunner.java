@@ -117,7 +117,7 @@ public class OptionsRunner
 
         JPopupMenu menu = createPopupMenu();
         Options options = tool.getOptions();
-        for (Option option : options) {
+        for (Option option : options.applicableOptions(tool)) {
             if (!option.isRow()) {
                 menu.add(createMenuItem(option, useNewTab));
             }
@@ -140,15 +140,15 @@ public class OptionsRunner
             return;
         }
 
-        if (getTable().getSelectedRowCount() > 1) {
-            popupMultiOptionsMenu(me);
-            return;
-        }
-
         int rowIndex = getTable().convertRowIndexToModel(r);
         getTable().getSelectionModel().clearSelection();
         getTable().getSelectionModel().addSelectionInterval(r, r);
         Object row = getTable().getModel().getRow(rowIndex);
+
+        if (getTable().getSelectedRowCount() > 1) {
+            popupMultiOptionsMenu(me);
+            return;
+        }
 
         boolean useNewTab = me.isControlDown();
 
@@ -156,9 +156,9 @@ public class OptionsRunner
 
         // Add row options first
         Options options = tableTool.getOptions();
-        for (Option option : options) {
+        for (Option option : options.applicableOptions(tableTool, row)) {
             if (option.isRow()) {
-                if (option.isApplicable(row)) {
+                if (option.isApplicable(tableTool,row)) {
                     menu.add(createMenuItem(option, rowIndex, useNewTab));
                 }
             }
@@ -166,7 +166,7 @@ public class OptionsRunner
 
         // Add non-row options next
         boolean first = true;
-        for (Option option : options) {
+        for (Option option : options.applicableOptions(tableTool)) {
             if (!option.isRow()) {
                 if (first) {
                     menu.addSeparator();
@@ -187,7 +187,7 @@ public class OptionsRunner
         JPopupMenu menu = createPopupMenu();
 
         Options options = tableTool.getOptions();
-        for (Option option : options) {
+        for (Option option : options.applicableOptions(tableTool)) {
             if (option.isMultiRow()) {
                 menu.add(createMultiMenuItem(option, false));
             }
@@ -279,7 +279,7 @@ public class OptionsRunner
                 for (int r : getTable().getSelectedRows()) {
                     Object row = model.getRow(r);
 
-                    if (option.isApplicable(row)) {
+                    if (option.isApplicable(tableTool, row)) {
                         rows.add(row);
                         getTable().removeRowSelectionInterval(r, r);
                     }
@@ -357,7 +357,7 @@ public class OptionsRunner
             Object row = model.getRow(i);
             Option otherOption = tableTool.getOptions().getRowOption(tool, model.getCode(i), row);
             if (otherOption == option) {
-                if (option.isApplicable(row)) {
+                if (option.isApplicable(tableTool, row)) {
                     model.setCode(i, "");
                     rows.add(model.getRow(i));
                 }

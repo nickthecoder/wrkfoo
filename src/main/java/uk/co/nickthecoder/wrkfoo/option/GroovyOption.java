@@ -54,15 +54,19 @@ public class GroovyOption extends AbstractOption
     }
 
     @Override
-    public boolean isApplicable(Object row)
+    public boolean isApplicable(Tool<?> tool, Object row)
     {
         if (ifScriptlet == null) {
             return true;
         }
 
-        Object result = runScript(ifScriptlet, null, false, row);
+        try {
+            Object result = runScript(ifScriptlet, tool, false, row);
+            return result == Boolean.TRUE;
+        } catch (Exception e) {
+            return false;
+        }
 
-        return result == Boolean.TRUE;
     }
 
     private void privateRunOption(Tool<?> currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)

@@ -1,17 +1,9 @@
 {
-  "include": [],
+  "include": [
+    "image"
+  ],
+  "if": "",
   "options": [
-    {
-      "code": "fm",
-      "label": "Open Folder",
-      "action": "os.open(row.file)",
-      "if": "row.file.isDirectory()",
-      "row": true,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": false
-    },
     {
       "code": "te",
       "label": "Text Editor",
@@ -20,7 +12,8 @@
       "multi": true,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "rm",
@@ -31,7 +24,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": true,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "rm-r",
@@ -42,29 +36,8 @@
       "multi": true,
       "newTab": true,
       "refreshResults": true,
-      "prompt": true
-    },
-    {
-      "code": "rm",
-      "label": "Delete Directory",
-      "action": "os.exec( 'rmdir', row.file )",
-      "if": "row.file.isDirectory()",
-      "row": true,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": true,
-      "prompt": true
-    },
-    {
-      "code": "grep",
-      "label": "Recursive Grep",
-      "action": "new Grep( row.file )",
-      "if": "row.file.isDirectory()",
-      "row": true,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "cp",
@@ -74,7 +47,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
     },
     {
       "code": "e",
@@ -85,7 +59,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

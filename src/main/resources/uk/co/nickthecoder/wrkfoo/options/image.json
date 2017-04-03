@@ -1,0 +1,39 @@
+{
+  "include": [],
+  "if": "(row != null) && [\"jpg\", \"jpeg\", \"exif\", \"tiff\", \"gif\", \"bmp\", \"png\", \"ppm\", \"pgm\", \"pbm\",\"pnm\", \"webp\", \"bpg\"].contains( Util.getExtension( row.file ).toLowerCase() )\n",
+  "options": [
+    {
+      "code": "v",
+      "label": "View Image",
+      "action": "os.exec( \"eog\", row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "gimp",
+      "label": "Edit Image in GIMP",
+      "action": "os.exec( \"gimp\", row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "ink",
+      "label": "Edit Image in Inkscape",
+      "action": "os.exec( \"inkscape\", row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    }
+  ]
+}

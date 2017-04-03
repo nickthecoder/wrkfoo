@@ -1,7 +1,7 @@
 {
   "include": [
-    "files",
-    "directory"
+    "directory",
+    "file"
   ],
   "options": [
     {
@@ -13,7 +13,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": ".",
@@ -24,7 +25,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "ls",
@@ -34,7 +36,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     }
   ]
 }
