@@ -69,6 +69,39 @@
       "refreshResults": true,
       "prompt": true,
       "aliases": []
+    },
+    {
+      "code": ">v",
+      "label": "Next Video",
+      "action": "def lister = new uk.co.nickthecoder.jguifier.util.FileLister()\n  .extensions(\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\")\n\ndef files = lister.listFiles( row.file.parent )\n\ndef found = false\n\nfor ( file in files ) {\n  if (found) {\n    def edit = tool.edit( row )\n    edit.file.value = file\n    edit.run()\n    break\n  } else {\n    found = file.equals( row.file );\n  }\n}\ntool.go()\n",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "<v",
+      "label": "Previous Video",
+      "action": "def lister = new uk.co.nickthecoder.jguifier.util.FileLister()\n  .extensions(\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\")\n\ndef files = lister.listFiles( row.file.parent )\n\ndef prevFile = row.file\n\nfor ( file in files ) {\n  if (file.equals(row.file)) {\n    def edit = tool.edit( row )\n    edit.file.value = prevFile\n    edit.run()\n    break\n  }\n  prevFile = file\n}\ntool.go()\n",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "pv",
+      "label": "Play and Move to Next Video",
+      "action": "os.open( row.file)\n\ndef lister = new uk.co.nickthecoder.jguifier.util.FileLister()\n  .extensions(\"webm\", \"mkv\", \"flv\", \"vob\", \"ogv\", \"ogg\", \"drc\", \"avi\", \"mov\", \"qt\", \"wmv\", \"rm\", \"mp4\" ,\"m4v\", \"mpg\", \"mpg2\", \"mpeg\", \"mpv\", \"mpe\", \"m2v\")\n\ndef files = lister.listFiles( row.file.parent )\n\ndef found = false\n\nfor ( file in files ) {\n  if (found) {\n    def edit = tool.edit( row )\n    edit.file.value = file\n    edit.run()\n    break\n  } else {\n    found = file.equals( row.file );\n  }\n}\ntool.go()\n",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }
