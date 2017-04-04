@@ -33,6 +33,17 @@
       "refreshResults": false,
       "prompt": false,
       "aliases": []
+    },
+    {
+      "code": "tv",
+      "label": "Video Places",
+      "action": "new PlacesTool()\n    .overrideOptionsName( \"tv\" )\n    .parameter( \"store\", row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

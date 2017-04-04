@@ -1,7 +1,5 @@
 {
-  "include": [
-    "image"
-  ],
+  "include": [],
   "if": "",
   "options": [
     {

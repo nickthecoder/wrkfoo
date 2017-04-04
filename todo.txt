@@ -1,17 +1,13 @@
 Current Task
 ============
 
-EditOption should have an "Apply" button, which doesn't close the TaskPrompter
-
 Insert additional options into a Tool
+    OR, just allow a SINGLE options file, which can include the original
     Special "video" options for PlacesTool (remove pv, >v and <v)
     Special "image" options for WrkF
         WrkF to have another option which does WrkF on current dir, adding the options, and filtering the results.
     Save the extra options in History and in Project files.        
 
-
-AddPlacesTask when it throws, there is no error reported.
-    GroovyOption needs to handle the e.
 
 Next Tasks
 ==========

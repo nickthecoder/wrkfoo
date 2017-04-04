@@ -121,6 +121,9 @@ public class Project
         public String titleTemplate = "%t";
         public String shortcut;
 
+        @SerializedName("optionsName")
+        public String overrideOptionsName;
+
         public TabData(Tool<?> tool)
         {
             titleTemplate = tool.getToolTab().getTitleTemplate();
@@ -132,6 +135,7 @@ public class Project
                 parameters.put(parameter.getName(), parameter.getStringValue());
             }
             showParameters = tool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
+            overrideOptionsName = tool.getOverrideOptionsName();
         }
 
         @SuppressWarnings("unchecked")
@@ -162,6 +166,8 @@ public class Project
 
                 tool.getToolPanel().getSplitPane()
                     .setState(showParameters ? HidingSplitPane.State.BOTH : HidingSplitPane.State.LEFT);
+
+                tool.setOverrideOptionsName(overrideOptionsName);
                 
                 return tool;
 

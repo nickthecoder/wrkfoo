@@ -1,5 +1,7 @@
 {
-  "include": [],
+  "include": [
+    "f"
+  ],
   "if": "(row != null) && [\"jpg\", \"jpeg\", \"exif\", \"tiff\", \"gif\", \"bmp\", \"png\", \"ppm\", \"pgm\", \"pbm\",\"pnm\", \"webp\", \"bpg\"].contains( Util.getExtension( row.file ).toLowerCase() )\n",
   "options": [
     {

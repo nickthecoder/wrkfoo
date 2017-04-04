@@ -38,6 +38,17 @@
       "refreshResults": false,
       "prompt": false,
       "aliases": []
+    },
+    {
+      "code": "wi",
+      "label": "Work with Images",
+      "action": "new WrkF()\n    .overrideOptionsName( \"image\" )\n    .parameter(\"directory\",task.directory.value )\n    .parameter(\"fileExtensions\", \"jpg,jpeg,exif,tiff,gif,bmp,png,ppm,pgm,pbm,pnm,webp,bpg\" )\n",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

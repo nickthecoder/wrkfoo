@@ -21,6 +21,11 @@ public abstract class AbstractTool<S extends Results, T extends Task>
 
     private OptionsGroup options;
 
+    /**
+     * See {@link #getOptionsName()}.
+     */
+    private String overrideOptionsName;
+
     public AbstractTool(T task)
     {
         this.task = task;
@@ -76,7 +81,41 @@ public abstract class AbstractTool<S extends Results, T extends Task>
         return getTitle();
     }
 
+    @Override
+    public void setOverrideOptionsName(String name)
+    {
+        this.options = null; // Clear lazily evaluated options
+        overrideOptionsName = name;
+    }
+
+    public String getOverrideOptionsName()
+    {
+        return overrideOptionsName;
+    }
+
+    /**
+     * A fluent version of {@link #setOverrideOptionsName(String)}
+     * 
+     * @param name
+     * @return this
+     */
+    public Tool<?> overrideOptionsName(String name)
+    {
+        setOverrideOptionsName(name);
+        return this;
+    }
+
+    /**
+     * If the options name has been overridden, then that will be used, otherwise {@link #getDefaultOptionsName()} is
+     * used.
+     */
+    @Override
     public String getOptionsName()
+    {
+        return overrideOptionsName == null ? getDefaultOptionsName() : overrideOptionsName;
+    }
+
+    public String getDefaultOptionsName()
     {
         String name = getClass().getSimpleName().toLowerCase();
         // If this is an anonymous inner class, then use the parent class.
@@ -136,13 +175,15 @@ public abstract class AbstractTool<S extends Results, T extends Task>
             AbstractTool<S, T> copy = this.getClass().newInstance();
 
             for (ValueParameter src : getTask().valueParameters()) {
-                ValueParameter dest = ((ValueParameter) copy.getTask().findParameter(src.getName()));
+                ValueParameter dest = (copy.getTask().findParameter(src.getName()));
                 try {
                     dest.setValue(src.getValue());
                 } catch (ParameterException e) {
                     dest.setDefaultValue(src.getValue());
                 }
             }
+
+            copy.setOverrideOptionsName(copy.getOverrideOptionsName());
             return copy;
 
         } catch (InstantiationException | IllegalAccessException e) {

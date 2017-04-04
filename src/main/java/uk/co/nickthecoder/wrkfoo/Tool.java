@@ -27,7 +27,7 @@ public interface Tool<S extends Results>
     public String getLongTitle();
 
     public Icon getIcon();
-    
+
     public void updateResults();
 
     public S getResultsPanel();
@@ -44,13 +44,19 @@ public interface Tool<S extends Results>
 
     public void stop();
 
+    public String getOptionsName();
+
+    public void setOverrideOptionsName(String value);
+
+    public String getOverrideOptionsName();
+
     public Options getOptions();
 
     public Tool<S> duplicate();
 
     /**
      * A String which is used to create a new instance of this Tool. For java classes, this is simply
-     *  the fully qualified class name. For a groovy script, it is the path to the groovy file.
+     * the fully qualified class name. For a groovy script, it is the path to the groovy file.
      */
     public String getCreationString();
 }
