@@ -1,6 +1,11 @@
 Current Task
 ============
 
+A Confirm dialog/task, which can be used as an option, and the "Refresh List" will automatically
+    happen when it completes.
+    Takes a Runnable, which can be an Exec.
+
+
 ScriptParameter
     A multi-line string parameter, using a fixed width font.
     Option to pop-up a window for editing in the Editor.
@@ -16,16 +21,8 @@ Insert additional options into a Tool
         WrkF to have another option which does WrkF on current dir, adding the options, and filtering the results.
     Save the extra options in History and in Project files.        
 
-PlacesChoices. Re-code it.
-    Show the list of Places files in a separate list (dual results)
-    Don't subclass PlacesTool, just use it as the inner tool
-    Don't have a "name" or "storeChoices" parameters.
-    Have a "places" parameter, which us the inner tools store parameter.
-
 AddPlacesTask when it throws, there is no error reported.
     GroovyOption needs to handle the e.
-
-FileParameter to launch File Manager from the context menu.
 
 Next Tasks
 ==========

@@ -17,6 +17,7 @@ public class GroovyScriptlet
             "uk.co.nickthecoder.wrkfoo.tool",
             "uk.co.nickthecoder.wrkfoo.util",
             "uk.co.nickthecoder.wrkfoo.editor",
+            "uk.co.nickthecoder.jguifier",
             "uk.co.nickthecoder.jguifier.util");
 
         CompilerConfiguration configuration = new CompilerConfiguration();

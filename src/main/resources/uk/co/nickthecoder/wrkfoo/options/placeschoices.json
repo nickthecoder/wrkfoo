@@ -15,12 +15,12 @@
     {
       "code": "-",
       "label": "Remove Places File",
-      "action": "os.exec( 'rm', row.file )",
+      "action": "new ConfirmTask(\n  os.exec( 'rm', row.file )\n).title(\"Delete Places : \" + row.file.name )\n",
       "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": true,
-      "prompt": false,
+      "prompt": true,
       "aliases": []
     },
     {
