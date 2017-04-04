@@ -45,7 +45,7 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
         results.add(places);
 
         PlacesChoices placesChoice = new PlacesChoices();
-        placesChoice.directory
+        placesChoice.getTask().directory
             .setValueIgnoreErrors(new File(Resources.getInstance().getSettingsDirectory(), "placesChoices"));
         results.add(placesChoice);
 

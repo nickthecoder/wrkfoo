@@ -1,61 +1,35 @@
 package uk.co.nickthecoder.wrkfoo.tool;
 
 import java.io.File;
-import java.util.List;
+import java.io.PrintWriter;
 
-import uk.co.nickthecoder.jguifier.ParameterListener;
-import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
-import uk.co.nickthecoder.jguifier.parameter.FileParameter;
-import uk.co.nickthecoder.jguifier.parameter.Parameter;
-import uk.co.nickthecoder.jguifier.util.FileLister;
+import javax.swing.Icon;
+
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import uk.co.nickthecoder.wrkfoo.Resources;
 
 /**
  * Like the {@link PlacesTool} tool, but instead of asking for a places store using a FileParameter,
  * this has a directory, where many places stores live, and you pick one from a pull down list.
- * 
  */
 public class PlacesChoices extends PlacesTool
 {
-    public FileParameter directory = new FileParameter.Builder("directory").directory().mustExist()
-        .parameter();
-
-    public ChoiceParameter<File> store = new ChoiceParameter.Builder<File>("store")
-        .parameter();
-
     public PlacesChoices()
     {
-        super();
-        updateChoices();
-
-        directory.addListener(new ParameterListener()
-        {
-
-            @Override
-            public void changed(Parameter source)
-            {
-                updateChoices();
-            }
-        });
-
-        store.addListener(new ParameterListener()
-        {
-            @Override
-            public void changed(Parameter source)
-            {
-                if ( store.getValue() != null) {
-                    task.store.setValue(store.getValue());
-                }
-            }
-        });
-        
-        task.store.visible = false;
-        task.addParameters(directory,store);
+        super(new PlacesChoicesTask());
     }
 
     @Override
-    public String getOptionsName()
+    public PlacesChoicesTask getTask()
     {
-        return "places";
+        return (PlacesChoicesTask) super.getTask();
+    }
+
+    @Override
+    public Icon getIcon()
+    {
+        return Resources.icon("places.png");
     }
 
     @Override
@@ -64,19 +38,59 @@ public class PlacesChoices extends PlacesTool
         return "Places Choices";
     }
 
-    public void updateChoices()
+    /**
+     * Used by the '+p' option
+     * 
+     * @return A task which will add a new the places file when run.
+     */
+    public AddPlacesTask addPlacesTask()
     {
-        store.clearChoices();
+        return new AddPlacesTask();
+    }
 
-        if (directory.getValue() == null) {
-            return;
+    /**
+     * Used by the '-p' option
+     * 
+     * @return A task which will remove the place files when run.
+     */
+    public RemovePlaceTask removePlacesTask()
+    {
+        return new RemovePlaceTask();
+    }
+
+    public class AddPlacesTask extends Task
+    {
+        public StringParameter name = new StringParameter.Builder("name")
+            .parameter();
+
+        public AddPlacesTask()
+        {
+            addParameters(name);
         }
-        
-        FileLister lister = new FileLister();
-        List<File> files = lister.listFiles(directory.getValue());
 
-        for (File file : files) {
-            store.addChoice(file.getName(), file);
+        @Override
+        public void body() throws Exception
+        {
+            File file = new File(getTask().directory.getValue(), name.getValue());
+            // Create an empty file
+            PrintWriter writer = new PrintWriter(file);
+            writer.close();
+            getTask().updateChoices();
+        }
+    }
+
+    public class RemovePlaceTask extends Task
+    {
+        public RemovePlaceTask()
+        {
+        }
+
+        @Override
+        public void body() throws Exception
+        {
+            File file = getTask().store.getValue();
+            file.delete();
+            getTask().updateChoices();
         }
     }
 }

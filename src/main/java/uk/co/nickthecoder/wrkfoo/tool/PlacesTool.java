@@ -25,10 +25,15 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class PlacesTool extends SimpleListTool<PlacesTask, Place>
 {
+    public PlacesTool( PlacesTask task )
+    {
+        super(task);
+        this.dragListConverter = new DragFileConverter<Place>();
+    }
+    
     public PlacesTool()
     {
-        super(new PlacesTask());
-        this.dragListConverter = new DragFileConverter<Place>();
+        this(new PlacesTask());
     }
 
     @Override
