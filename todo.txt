@@ -1,25 +1,14 @@
 Current Task
 ============
 
-A Confirm dialog/task, which can be used as an option, and the "Refresh List" will automatically
-    happen when it completes.
-    Takes a Runnable, which can be an Exec.
-
-
-ScriptParameter
-    A multi-line string parameter, using a fixed width font.
-    Option to pop-up a window for editing in the Editor.
-    However, I'd also like saving the document to update the Option it refers to,
-        so that we don't have to keep editing, and then closing it with "OK" before testing.
-    Could create a whole window to edit a single option.
-        1st tab is the option. 2nd tab is the script in an editor, 3rd is the "ifscript"
-        Use tabs at the top
+EditOption should have an "Apply" button, which doesn't close the TaskPrompter
 
 Insert additional options into a Tool
     Special "video" options for PlacesTool (remove pv, >v and <v)
     Special "image" options for WrkF
         WrkF to have another option which does WrkF on current dir, adding the options, and filtering the results.
     Save the extra options in History and in Project files.        
+
 
 AddPlacesTask when it throws, there is no error reported.
     GroovyOption needs to handle the e.

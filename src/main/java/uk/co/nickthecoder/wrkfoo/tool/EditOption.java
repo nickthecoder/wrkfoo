@@ -32,7 +32,7 @@ public class EditOption extends Task
         .parameter();
 
     public StringParameter action = new StringParameter.Builder("action")
-        .multiLine().size(300, 160)
+        .multiLine().fixedWidth().size(300, 160)
         .parameter();
 
     public StringChoiceParameter type = new StringChoiceParameter.Builder("type")
@@ -50,7 +50,7 @@ public class EditOption extends Task
         .parameter();
 
     public StringParameter ifScript = new StringParameter.Builder("if")
-        .multiLine().size(300, 80)
+        .multiLine().fixedWidth().size(300, 80)
         .description("Groovy script. Is the row applicable to this option?")
         .optional().parameter();
 
@@ -76,6 +76,7 @@ public class EditOption extends Task
         prompt.setDefaultValue(optionData.prompt);
 
         addParameters(code, aliases, label, action, type, newTab, refreshResults, prompt, ifScript);
+        setCanApply(true);
     }
 
     @Override

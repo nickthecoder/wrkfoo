@@ -317,7 +317,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
     public class ResultsTask extends Task
     {
         public StringParameter ifScript = new StringParameter.Builder("if")
-            .optional().multiLine().size(300, 50).parameter();
+            .optional().multiLine().fixedWidth().size(300, 50).parameter();
 
         public ResultsTask()
         {
