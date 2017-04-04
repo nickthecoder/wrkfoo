@@ -25,12 +25,12 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class PlacesTool extends SimpleListTool<PlacesTask, Place>
 {
-    public PlacesTool( PlacesTask task )
+    public PlacesTool(PlacesTask task)
     {
         super(task);
         this.dragListConverter = new DragFileConverter<Place>();
     }
-    
+
     public PlacesTool()
     {
         this(new PlacesTask());
@@ -152,6 +152,15 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
         }
     };
 
+    public static String buildLine(File file, String label)
+    {
+        String result = Util.toURL(file).toString();
+        if (!Util.empty(label)) {
+            result += " " + label;
+        }
+        return result;
+    }
+
     public class RemoveTask extends Task
     {
         public final FileParameter file = new FileParameter.Builder("file").fileOrDirectory()
@@ -177,14 +186,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
                     if (Util.equals(place.file, file.getValue())) {
                         continue;
                     }
-                    out.print("file://");
-                    out.print(place.file.getPath());
-                    if (!Util.empty(place.label)) {
-                        out.print(" ");
-                        out.println(place.label);
-                    } else {
-                        out.println();
-                    }
+                    out.println(buildLine(place.file, place.label));
                 }
 
                 out.close();
@@ -221,25 +223,11 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
                 for (Place place : places) {
 
                     if (Util.equals(place.file, oldFile.getValue())) {
-
-                        out.print("file://");
-                        out.print(file.getValue().getPath());
-                        if (!Util.empty(label.getValue())) {
-                            out.print(" ");
-                            out.println(label.getValue());
-                        } else {
-                            out.println();
-                        }
-
+                        System.out.println( "Relacing line with " + file.getValue());
+                        out.println(buildLine(file.getValue(), label.getValue()));
                     } else {
-                        out.print("file://");
-                        out.print(place.file.getPath());
-                        if (!Util.empty(place.label)) {
-                            out.print(" ");
-                            out.println(place.label);
-                        } else {
-                            out.println();
-                        }
+                        System.out.println( "Keeping file " + place.file);
+                        out.println(buildLine(place.file, place.label));
                     }
                 }
 
