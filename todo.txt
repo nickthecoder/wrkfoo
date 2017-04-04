@@ -1,33 +1,34 @@
 Current Task
 ============
 
-Decide on the state of the new "if" on Options.
-    Needs a bodge when testing for rows. Hmmm.
-    Could split it into rowIf and nonRowIf
+ScriptParameter
+    A multi-line string parameter, using a fixed width font.
+    Option to pop-up a window for editing in the Editor.
+    However, I'd also like saving the document to update the Option it refers to,
+        so that we don't have to keep editing, and then closing it with "OK" before testing.
+    Could create a whole window to edit a single option.
+        1st tab is the option. 2nd tab is the script in an editor, 3rd is the "ifscript"
+        Use tabs at the top
 
-Options to have an "if", and only consider that whole Options if the "if-clause" passes.
-    Catch and ignore the exception?
-        Maybe add a value into the Bindings, which can change this behaviour.
-        e.g. THROW=true; row.file.isDirectory()
+Insert additional options into a Tool
+    Special "video" options for PlacesTool (remove pv, >v and <v)
+    Special "image" options for WrkF
+        WrkF to have another option which does WrkF on current dir, adding the options, and filtering the results.
+    Save the extra options in History and in Project files.        
 
+PlacesChoices. Re-code it.
+    Show the list of Places files in a separate list (dual results)
+    Don't subclass PlacesTool, just use it as the inner tool
+    Don't have a "name" or "storeChoices" parameters.
+    Have a "places" parameter, which us the inner tools store parameter.
 
+AddPlacesTask when it throws, there is no error reported.
+    GroovyOption needs to handle the e.
+
+FileParameter to launch File Manager from the context menu.
 
 Next Tasks
 ==========
-
-Bug : HTMLViewer is blank when switching between two HTMLViewer tabs
-
-Reordering is doing a DRAG when two windows are open!    
-
-F5 on Project throws an exception
-
-HTMLViewer still hangs - did it when clicking link. Maybe its a recursive problem.
-    Maybe just because I was running an old version.
-
-PriorityDoc to allow diagrams with classes from other prjects
-    Then add ParametersPanel, linking with just ToolPanel
-
-
 
 Copy and Move and Link files using drag and drop
     Tabs can be a drop target for files if they are a directory
@@ -64,6 +65,8 @@ Pinkwino to have a "Plain" view, where the only the content is show.
 
 BUGS
 ====
+
+Bug : HTMLViewer is blank when switching between two HTMLViewer tabs
 
 Add an option does not make it available until a restart
 
@@ -141,11 +144,6 @@ Music player
     Browse options for "play now", "queue". Includes file.json
     Playlist "." for play now "-" for remove
         Drag and drop to re-order
-
-Video Series Player
-    List of "Series"
-        "." will launch the video, and move onto the next item in the directory
-    Drag a directory / video file onto the list to add to the "Up-Next" list
 
 TextEditorParameter, for editing chunks of code (such as groovy scripts, xml, json etc)
     Right click on the "plain" JTextPane for a "Edit..." option, which pops up an EditorWindow

@@ -1,24 +1,33 @@
 {
-  "include": [
-    "places"
-  ],
+  "include": [],
   "options": [
     {
-      "code": "+p",
+      "code": "+",
       "label": "Create Places File",
-      "action": "tool.addPlacesTask()",
+      "action": "tool.createPlacesTask()",
       "row": false,
       "multi": false,
       "newTab": false,
-      "refreshResults": false,
+      "refreshResults": true,
       "prompt": true,
       "aliases": []
     },
     {
-      "code": "-p",
+      "code": "-",
       "label": "Remove Places File",
-      "action": "tool.removePlacesTask()",
-      "row": false,
+      "action": "os.exec( 'rm', row.file )",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": true,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": ".",
+      "label": "Show Places",
+      "action": "tool.showPlaces(row.file)",
+      "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": false,
