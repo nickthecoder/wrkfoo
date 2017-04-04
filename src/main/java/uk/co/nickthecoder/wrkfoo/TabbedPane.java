@@ -26,12 +26,11 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public TabbedPane()
     {
         toolTabs = new ArrayList<>();
-        //enableReordering();
+        enableReordering();
 
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         setTabPlacement(JTabbedPane.LEFT);
     }
-
 
     public ToolTab getSelectedTab()
     {
@@ -187,7 +186,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         WrkFoo.assertIsEDT();
 
         int index = toolTabs.indexOf(tab);
-        if ( index >= 0 ) {
+        if (index >= 0) {
             String title = tab.getTitle();
             Icon icon = tab.getTool().getIcon();
 
@@ -312,8 +311,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
             TopLevel destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {
-
                 // Tear off the tab into a new MainWindow
+
                 if (toolTabs.size() > 1) {
                     removeTabAt(draggedTabIndex);
 
@@ -330,6 +329,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
             } else if (destinationWindow != tool.getToolPanel().getTopLevel()) {
                 // Move the tab to a different MainWindow
+
                 TopLevel currentMainWindow = tool.getToolPanel().getTopLevel();
                 removeTabAt(draggedTabIndex);
                 ToolTab newTab = destinationWindow.addTab(tool);
@@ -342,6 +342,9 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                     currentMainWindow.setVisible(false);
                 }
             }
+            // else Drags to the same window need no extra code here, the tabs are moved dynamically
+            // as the mouse moves. So nothing to do on release.
+
             draggedTabIndex = -1;
 
         }
@@ -358,12 +361,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
 
                 boolean isForwardDrag = targetTabIndex > draggedTabIndex;
-
+                int newIndex = draggedTabIndex + (isForwardDrag ? 1 : -1);
+                
                 ToolTab tab = getToolTab(draggedTabIndex);
                 removeTabAt(draggedTabIndex);
-                add(tab, draggedTabIndex + (isForwardDrag ? 1 : -1));
+                add(tab, newIndex);
 
-                draggedTabIndex = targetTabIndex;
+                draggedTabIndex = newIndex;
                 setSelectedIndex(draggedTabIndex);
             }
         }
