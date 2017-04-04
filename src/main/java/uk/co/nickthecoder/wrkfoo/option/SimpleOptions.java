@@ -47,15 +47,8 @@ public class SimpleOptions implements Options
             return true;
         }
 
-        try {
-            Object result = runScript(ifScriptlet, tool, row);
-            return result == Boolean.TRUE;
-
-        } catch (Exception e) {
-            // TODO handle the exception
-            e.printStackTrace();
-            return false;
-        }
+        Object result = runScript(ifScriptlet, tool, row);
+        return result == Boolean.TRUE;
     }
 
     private Object runScript(GroovyScriptlet scriplet, Tool<?> tool, Object row)
@@ -66,8 +59,16 @@ public class SimpleOptions implements Options
         bindings.setProperty("row", row);
 
         bindings.setProperty("os", OSHelper.instance);
-
-        return scriplet.run(bindings);
+        bindings.setProperty("QUIET", false);
+        
+        try {
+            return scriplet.run(bindings);
+        } catch (Exception e) {
+            if (Boolean.FALSE == bindings.getProperty("QUIET") ) {
+                throw new ScriptletException(scriplet, e);
+            }
+            return false;
+        }
     }
 
     public void clear()
