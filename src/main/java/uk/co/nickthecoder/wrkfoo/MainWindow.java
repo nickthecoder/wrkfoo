@@ -166,7 +166,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
         toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
         toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());
-        toolBar.add(builder.name("workProjects").icon("projects.png").tooltip("Work with Projects").buildButton());
+        toolBar.add(builder.name("openProject").icon("projects.png").tooltip("Open a Project").buildButton());
 
         goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
         stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();

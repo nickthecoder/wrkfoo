@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import uk.co.nickthecoder.wrkfoo.tool.Home;
-import uk.co.nickthecoder.wrkfoo.tool.Projects;
+import uk.co.nickthecoder.wrkfoo.tool.OpenProject;
 import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
 
 /**
@@ -87,10 +87,10 @@ public class MainWindowEvents
         sp.promptTask();
     }
 
-    public void onWorkProjects()
+    public void onOpenProject()
     {
-        Projects tool = new Projects();
-        mainWindow.getCurrentOrNewTab().go(tool);
+        OpenProject openProject = new OpenProject();
+        openProject.promptTask();
     }
 
     public void onNextTab()

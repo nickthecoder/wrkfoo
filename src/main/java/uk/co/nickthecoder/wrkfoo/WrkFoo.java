@@ -10,7 +10,7 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.MultipleParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.tool.Projects;
+import uk.co.nickthecoder.wrkfoo.tool.Home;
 
 public class WrkFoo extends Task
 {
@@ -64,7 +64,7 @@ public class WrkFoo extends Task
         if ((project.getValue().size() == 0) && (projectFile.getValue().size() == 0)) {
             MainWindow mainWindow = new MainWindow();
 
-            Projects tool = new Projects();
+            Home tool = new Home();
             mainWindow.getCurrentOrNewTab().go(tool);
 
             mainWindow.setVisible(true);

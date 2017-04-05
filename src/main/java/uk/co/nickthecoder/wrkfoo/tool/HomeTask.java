@@ -36,9 +36,6 @@ public class HomeTask extends Task implements ListResults<Tool<?>>
         GitStatus gitStatus = new GitStatus();
         results.add(gitStatus);
 
-        Projects projects = new Projects();
-        results.add(projects);
-
         PlacesTool places = new PlacesTool();
         places.task.store.setValueIgnoreErrors(
             Util.createFile(Resources.getInstance().getHomeDirectory(), ".config", "gtk-3.0", "bookmarks"));

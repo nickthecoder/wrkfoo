@@ -39,7 +39,7 @@ public final class ActionShortcuts
         put("duplicateTab", "");
         put("closeTab", "ctrl+W");
         put("saveProject", "");
-        put("workProjects", "");
+        put("openProject", "");
 
         put("run", "F5");
         put("stop", "ctrl+ESCAPE");
