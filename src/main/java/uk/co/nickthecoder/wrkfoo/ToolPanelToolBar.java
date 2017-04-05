@@ -5,18 +5,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
+import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.guiutil.WrapLayout;
+import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class ToolPanelToolBar
+public class ToolPanelToolBar implements TaskListener
 {
     private ToolPanel toolPanel;
 
@@ -41,6 +46,10 @@ public class ToolPanelToolBar
     private JToolBar toolBar;
 
     private JTextField optionTextField;
+
+    private JButton goButton;
+
+    private JButton stopButton;
 
     public ToolPanelToolBar(ToolPanel toolPanel)
     {
@@ -72,6 +81,15 @@ public class ToolPanelToolBar
         toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
         toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
         toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
+
+        goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
+        stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
+        toolBar.add(goButton);
+        toolBar.add(stopButton);
+        updateStopGoButtons(false);
+
+        Task task = toolPanel.getTool().getTask();
+        task.addTaskListener(this);
     }
 
     public JComponent getComponent()
@@ -92,6 +110,28 @@ public class ToolPanelToolBar
     public void addStatusBar(JComponent comp)
     {
         statusBars.add(comp);
+    }
+
+    private void updateStopGoButtons(final boolean running)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                int goState = running ? -1 : 0; // -1 Disabled Go, 0 = Go, 1 = Stop
+
+                Task task = toolPanel.getTool().getTask();
+                if (running && (task instanceof Stoppable)) {
+                    goState = 1;
+                }
+
+                goButton.setVisible(goState != 1);
+                stopButton.setVisible(goState == 1);
+                goButton.setEnabled(goState >= 0);
+
+            }
+        });
     }
 
     private JTextField createOptionTextField()
@@ -135,13 +175,13 @@ public class ToolPanelToolBar
 
     private void createOptionsMenu(MouseEvent me)
     {
-        Tool<?> tool = toolPanel.getToolTab().getTool();
+        Tool<?> tool = toolPanel.getTool();
         new OptionsRunner(tool).popupNonRowMenu(me);
     }
 
     private void processOptionField(boolean newTab, boolean prompt)
     {
-        Tool<?> tool = toolPanel.getToolTab().getTool();
+        Tool<?> tool = toolPanel.getTool();
 
         if (!optionTextField.getText().equals("")) {
             if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
@@ -193,10 +233,42 @@ public class ToolPanelToolBar
 
     public void onExportTable()
     {
-        Tool<?> tool = toolPanel.getToolTab().getTool();
+        Tool<?> tool = toolPanel.getTool();
         if (tool instanceof TableTool<?, ?>) {
             ExportTableData std = new ExportTableData((TableTool<?, ?>) tool);
             std.promptTask();
         }
+    }
+
+    public void onRun()
+    {
+        toolPanel.getTool().getToolPanel().go();
+    }
+
+    public void onStop()
+    {
+        Tool<?> tool = toolPanel.getTool();
+        if (tool instanceof Stoppable) {
+            Stoppable s = (Stoppable) tool;
+            s.stop();
+        }
+    }
+
+    @Override
+    public void aborted(Task arg0)
+    {
+        updateStopGoButtons(false);
+    }
+
+    @Override
+    public void ended(Task arg0, boolean arg1)
+    {
+        updateStopGoButtons(false);
+    }
+
+    @Override
+    public void started(Task arg0)
+    {
+        updateStopGoButtons(true);
     }
 }

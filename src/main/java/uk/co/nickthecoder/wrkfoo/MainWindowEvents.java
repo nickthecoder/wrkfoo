@@ -66,21 +66,6 @@ public class MainWindowEvents
         newWindow.setVisible(true);
     }
 
-    public void onRun()
-    {
-        if (mainWindow.getCurrentTab() != null) {
-            mainWindow.getCurrentTab().getTool().getToolPanel().go();
-        }
-    }
-
-    public void onStop()
-    {
-        if (mainWindow.getCurrentTab() != null) {
-            mainWindow.getCurrentTab().getTool().stop();
-        }
-    }
-
-
     public void onSaveProject()
     {
         SaveProject sp = new SaveProject(mainWindow);

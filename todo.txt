@@ -1,13 +1,11 @@
 Current Task
 ============
 
-Move go/stop buttons from MainWindow status bar to ToolPanelToolBar
+Rename ToolTab to Tab
 
-ToolPanel to have non-row option and buttons from the mainwindow's toolbar
-    Also has Re-run from status bar
-
-
-Rename ToolTab to Tab, which has a HidingSplitPane and two ToolPanels
+Give ToolTab (aka Tab) a SplitPane and TWO ToolPanels, for split view
+    Saving a project needs to save both
+    Tool's history is no longer part of the Tab - may need a new class?
 
 Next Tasks
 ==========

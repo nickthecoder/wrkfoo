@@ -65,7 +65,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             @Override
             protected ToolPanel createToolPanel()
             {
-                return new MergedToolPanel(WrkOptions.this.getToolPanel());
+                return new MergedToolPanel(WrkOptions.this, WrkOptions.this.getToolPanel());
             }
         };
     }

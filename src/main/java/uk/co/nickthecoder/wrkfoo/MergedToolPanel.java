@@ -13,16 +13,24 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
  */
 public class MergedToolPanel implements ToolPanel
 {
+    private Tool<?> tool;
+
     private ToolPanel other;
-    
-    public MergedToolPanel( ToolPanel other )
+        
+    public MergedToolPanel( Tool<?> tool, ToolPanel other )
     {
+        this.tool = tool;
         this.other = other;
     }
 
     public JComponent getComponent()
     {
         return null;
+    }
+    
+    public Tool<?> getTool()
+    {
+        return tool;
     }
     
     @Override

@@ -39,7 +39,7 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
             @Override
             protected ToolPanel createToolPanel()
             {
-                return new MergedToolPanel(PlacesChoices.this.getToolPanel());
+                return new MergedToolPanel(PlacesChoices.this, PlacesChoices.this.getToolPanel());
             }
         };
     }

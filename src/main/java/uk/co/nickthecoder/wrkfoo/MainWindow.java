@@ -27,7 +27,6 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
-import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -62,10 +61,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     public String description;
 
     public File projectFile;
-
-    private JButton goButton;
-
-    private JButton stopButton;
 
     JButton errorButton;
 
@@ -128,11 +123,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());
         toolBar.add(builder.name("openProject").icon("projects.png").tooltip("Open a Project").buildButton());
 
-        goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
-        stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
-        statusBar.add(goButton);
-        statusBar.add(stopButton);
-
         errorButton = builder.name("showError").tooltip("Show stack trace").hide().buildButton();
         statusBar.add(errorButton);
 
@@ -177,6 +167,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             }
         });
     }
+
     public ToolTab insertTab(final Tool<?> tool, boolean prompt)
     {
         ToolTab tab = new ToolTab(tool);
@@ -252,17 +243,15 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         String title = "wrkfoo";
 
         ToolTab tab = getCurrentTab();
-        if (tab == null) {
-            stopGoButtons(false);
-        } else {
+        if (tab != null) {
+
             Tool<?> tool = tab.getTool();
             title = tool.getLongTitle();
-            stopGoButtons(tool.getTask().isRunning());
 
             if (tool.getTask().isRunning()) {
                 setMessage("Running");
             } else {
-                setMessage("");
+                setMessage(" ");
             }
         }
 
@@ -270,21 +259,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             title = description + " : " + title;
         }
         setTitle(title);
-    }
-
-    private void stopGoButtons(boolean running)
-    {
-        WrkFoo.assertIsEDT();
-        int goState = running ? -1 : 0; // -1 Disabled Go, 0 = Go, 1 = Stop
-
-        ToolTab tab = getCurrentTab();
-        if (running && (tab != null) && (tab.getTool().getTask() instanceof Stoppable)) {
-            goState = 1;
-        }
-
-        goButton.setVisible(goState != 1);
-        stopButton.setVisible(goState == 1);
-        goButton.setEnabled(goState >= 0);
     }
 
     public void changedRunningState(Tool<?> changedTool, boolean running)
@@ -296,10 +270,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             if (running) {
                 setMessage("Running");
             } else {
-                setMessage("");
+                setMessage(" ");
             }
         }
-        stopGoButtons(running);
     }
 
     ToolTab getCurrentOrNewTab()

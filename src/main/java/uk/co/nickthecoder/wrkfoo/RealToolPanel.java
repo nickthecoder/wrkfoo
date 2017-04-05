@@ -117,6 +117,11 @@ public class RealToolPanel implements ToolPanel, TaskListener
         this.tool.getTask().addTaskListener(this);
     }
 
+    public Tool<?> getTool()
+    {
+        return tool;
+    }
+
     @Override
     public JComponent getComponent()
     {

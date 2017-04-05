@@ -9,6 +9,8 @@ public interface ToolPanel
 {
     public JComponent getComponent();
 
+    public Tool<?> getTool();
+    
     public void postCreate();
 
     public HidingSplitPane getSplitPane();
