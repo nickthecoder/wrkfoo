@@ -46,7 +46,6 @@ public final class ActionShortcuts
         put("showError", "ctrl+E");
         put("previousTab", "alt+PAGE_UP");
         put("nextTab", "alt+PAGE_DOWN");
-        put("jumpToToolBar", "F11,ctrl+alt+F12");
         put("jumpToResults", "ctrl+F12");
         put("jumpToParameters", "F12");
 
@@ -60,6 +59,7 @@ public final class ActionShortcuts
         put("back", "alt+LEFT");
         put("forward", "alt+RIGHT");
         put("exportTable", "");
+        put("jumpToNonRowOption", "F11,ctrl+alt+F12");
 
         // MainTabs
         put("tabProperties", "ctrl+P");

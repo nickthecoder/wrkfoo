@@ -108,10 +108,6 @@ public class MainWindowEvents
         mainWindow.setVisible(false);
     }
 
-    public void onJumpToToolBar()
-    {
-        Focuser.focusLater("MainWindow.JumptToToolBar", mainWindow.optionTextField, 8);
-    }
 
     public void onJumpToResults()
     {

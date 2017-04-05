@@ -36,7 +36,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
     private HidingSplitPane splitPane;
 
     private ToolPanelToolBar toolPanelToolBar;
-    
+
     private JPanel sidePanel;
 
     private ParametersPanel parametersPanel;
@@ -105,7 +105,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
         panel.setLayout(new BorderLayout());
         panel.add(splitPane, BorderLayout.CENTER);
-        
+
         toolPanelToolBar = new ToolPanelToolBar(this);
         panel.add(toolPanelToolBar.getComponent(), BorderLayout.SOUTH);
 
@@ -121,6 +121,12 @@ public class RealToolPanel implements ToolPanel, TaskListener
     public JComponent getComponent()
     {
         return panel;
+    }
+
+    @Override
+    public ToolPanelToolBar getToolBar()
+    {
+        return toolPanelToolBar;
     }
 
     @Override
@@ -155,7 +161,6 @@ public class RealToolPanel implements ToolPanel, TaskListener
         builder.name("toggleLeftPane").buildShortcut();
         builder.name("toggleRightPane").buildShortcut();
     }
-
 
     @Override
     public void attachTo(ToolTab tab)

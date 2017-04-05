@@ -278,7 +278,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
                 }
 
                 if (tab.getMainTabs().getSelectedTab() == tab) {
-                    Focuser.focusLater("TerminalEnded", getToolPanel().getTopLevel().getFocusComponent(), 6);
+                    Focuser.focusLater("TerminalEnded", getToolPanel().getToolBar().getOptionsTextField(), 6);
                 }
 
                 if (task.autoClose.getValue()) {

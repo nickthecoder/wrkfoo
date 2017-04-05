@@ -1,6 +1,10 @@
 Current Task
 ============
 
+Move non-row options field to ToolPanelToolBar
+
+Move go/stop buttons from MainWindow status bar to ToolPanelToolBar
+
 ToolPanel to have non-row option and buttons from the mainwindow's toolbar
     Also has Re-run from status bar
 

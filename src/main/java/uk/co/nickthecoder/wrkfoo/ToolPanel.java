@@ -8,7 +8,7 @@ import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 public interface ToolPanel
 {
     public JComponent getComponent();
-    
+
     public void postCreate();
 
     public HidingSplitPane getSplitPane();
@@ -20,11 +20,13 @@ public interface ToolPanel
     public void go();
 
     public TopLevel getTopLevel();
- 
+
     public void attachTo(ToolTab tab);
 
     public void detach();
 
     public ToolTab getToolTab();
+
+    public ToolPanelToolBar getToolBar();
 
 }

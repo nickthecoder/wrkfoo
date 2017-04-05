@@ -22,7 +22,7 @@ public interface Results
     {
         try {
             Focuser.log("Results panel default implementation returning MainWindow's option field");
-            return getTool().getToolPanel().getTopLevel().getFocusComponent();
+            return getTool().getToolPanel().getToolBar().getOptionsTextField();
         } catch (Exception e) {
             Focuser.log("Failed to focus on options field for component " + getComponent());
             return null;

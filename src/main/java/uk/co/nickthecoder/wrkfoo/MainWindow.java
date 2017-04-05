@@ -25,7 +25,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
@@ -61,8 +60,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
      * a MainWindow). Used when dragging/dropping tabs.
      */
     private static MainWindow mouseMainWindow;
-
-    JTextField optionTextField;
 
     private JLabel message;
 
@@ -139,12 +136,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         statusBarPanel.add(statusBar, 0);
     }
 
-    @Override
-    public JComponent getFocusComponent()
-    {
-        return optionTextField;
-    }
-
     public ToolTab getCurrentTab()
     {
         return mainTabs.getSelectedTab();
@@ -156,12 +147,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         ActionBuilder builder = new ActionBuilder(mwe).component(this.rootPane);
 
-        optionTextField = createOptionTextField();
-        toolBar.add(optionTextField);
-
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").buildButton());
-        toolBar.addSeparator();
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
         toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
@@ -181,7 +168,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         builder.name("previousTab").buildShortcut();
         builder.name("nextTab").buildShortcut();
-        builder.name("jumpToToolBar").buildShortcut();
         builder.name("jumpToResults").buildShortcut();
         builder.name("jumpToParameters").buildShortcut();
 
@@ -218,66 +204,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             }
         });
     }
-
-    private JTextField createOptionTextField()
-    {
-        JTextField textField = new JTextField();
-        textField.setToolTipText("Enter non-row Options (F10)");
-        textField.setColumns(6);
-
-        ActionBuilder builder = new ActionBuilder(this).component(textField);
-
-        builder.name("promptNonRowOption").buildShortcut();
-        builder.name("promptNonRowOptionInNewTab").buildShortcut();
-
-        builder.name("runNonRowOptionInNewTab").buildShortcut();
-        builder.name("runNonRowOption").buildShortcut();
-
-        textField.addMouseListener(new MouseAdapter()
-        {
-
-            @Override
-            public void mouseReleased(MouseEvent me)
-            {
-                if (me.isPopupTrigger()) {
-                    createOptionsMenu(me);
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent me)
-            {
-                if (me.isPopupTrigger()) {
-                    createOptionsMenu(me);
-                }
-            }
-        });
-
-        return textField;
-    }
-
-    private void createOptionsMenu(MouseEvent me)
-    {
-        ToolTab tab = getCurrentTab();
-        if (tab != null) {
-            new OptionsRunner(tab.getTool()).popupNonRowMenu(me);
-        }
-    }
-
-    private void processOptionField(boolean newTab, boolean prompt)
-    {
-        ToolTab tab = getCurrentTab();
-        if (tab != null) {
-            Tool<?> tool = tab.getTool();
-
-            if (!optionTextField.getText().equals("")) {
-                if (new OptionsRunner(tool).runOption(optionTextField.getText(), newTab, prompt)) {
-                    optionTextField.setText("");
-                }
-            }
-        }
-    }
-
     public ToolTab insertTab(final Tool<?> tool, boolean prompt)
     {
         ToolTab tab = new ToolTab(tool);
@@ -466,26 +392,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         errorButton.setVisible(true);
         setErrorMessage(e.getMessage());
-    }
-
-    public void onRunNonRowOption()
-    {
-        processOptionField(false, false);
-    }
-
-    public void onRunNonRowOptionInNewTab()
-    {
-        processOptionField(true, false);
-    }
-
-    public void onPromptNonRowOption()
-    {
-        processOptionField(false, true);
-    }
-
-    public void onPromptNonRowOptionInNewTab()
-    {
-        processOptionField(true, true);
     }
 
     @Override

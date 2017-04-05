@@ -27,8 +27,6 @@ public interface TopLevel extends ExceptionHandler
 
     public void addStatusBar(JComponent statusBar);
 
-    public JComponent getFocusComponent();
-
     public ToolTab insertTab(Tool<?> tool, boolean prompt);
 
     public ToolTab addTab(Tool<?> tool);

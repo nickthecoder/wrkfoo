@@ -24,6 +24,12 @@ public class MergedToolPanel implements ToolPanel
     {
         return null;
     }
+    
+    @Override
+    public ToolPanelToolBar getToolBar()
+    {
+        return other.getToolBar();
+    }
 
     @Override
     public void postCreate()
