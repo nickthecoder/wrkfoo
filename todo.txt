@@ -1,9 +1,7 @@
 Current Task
 ============
 
-
 ToolPanel to have non-row option and buttons from the mainwindow's toolbar
-    All except : Quit, New Window, Save Project, Close Tab, Split/Unsplit
     Also has Re-run from status bar
 
 

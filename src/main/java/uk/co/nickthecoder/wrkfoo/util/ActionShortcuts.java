@@ -33,18 +33,14 @@ public final class ActionShortcuts
         put("promptNonRowOption", "F2");
         put("promptNonRowOptionInNewTab", "ctrl+F2");
 
-        put("home", "ctrl+HOME");
         put("newWindow", "ctrl+N");
         put("quit", "ctrl+Q");
         put("newTab", "ctrl T");
         put("duplicateTab", "");
         put("closeTab", "ctrl+W");
-        put("workProjects", "");
         put("saveProject", "");
-        put("exportTable", "");
+        put("workProjects", "");
 
-        put("back", "alt+LEFT");
-        put("forward", "alt+RIGHT");
         put("run", "F5");
         put("stop", "ctrl+ESCAPE");
         put("showError", "ctrl+E");
@@ -58,6 +54,12 @@ public final class ActionShortcuts
         put("runNonRowOptionInNewTab", "ctrl+ENTER");
         put("promptNonRowOption", "F2");
         put("promptNonRowOptionInNewTab", "ctrl+F2");
+
+        // ToolPanelToolBar
+        put("home", "ctrl+HOME");
+        put("back", "alt+LEFT");
+        put("forward", "alt+RIGHT");
+        put("exportTable", "");
 
         // MainTabs
         put("tabProperties", "ctrl+P");

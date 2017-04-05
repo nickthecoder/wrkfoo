@@ -35,6 +35,8 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
     private HidingSplitPane splitPane;
 
+    private ToolPanelToolBar toolPanelToolBar;
+    
     private JPanel sidePanel;
 
     private ParametersPanel parametersPanel;
@@ -69,8 +71,6 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
         parametersScrollPane = new JScrollPane(scrollablePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        // parametersScrollPane = new
-        // JScrollPane(parametersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         parametersScrollPane.setMinimumSize(new Dimension(0, 0));
 
         // For some reason sharing the same color instance doesn't work. (And there is no copy, clone or copy
@@ -105,6 +105,9 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
         panel.setLayout(new BorderLayout());
         panel.add(splitPane, BorderLayout.CENTER);
+        
+        toolPanelToolBar = new ToolPanelToolBar(this);
+        panel.add(toolPanelToolBar.getComponent(), BorderLayout.SOUTH);
 
         splitPane.setState(HidingSplitPane.State.LEFT);
         if (!this.tool.getTask().getRootParameter().children().iterator().hasNext()) {

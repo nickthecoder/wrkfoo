@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.tool.Projects;
 import uk.co.nickthecoder.wrkfoo.tool.SaveProject;
@@ -31,12 +30,6 @@ public class MainWindowEvents
             window.setVisible(false);
         }
         System.exit(0);
-    }
-
-    public void onHome()
-    {
-        Home tool = new Home();
-        mainWindow.getCurrentOrNewTab().go(tool);
     }
 
     public void onNewTab()
@@ -73,20 +66,6 @@ public class MainWindowEvents
         newWindow.setVisible(true);
     }
 
-    public void onBack()
-    {
-        if (mainWindow.getCurrentTab() != null) {
-            mainWindow.getCurrentTab().onUndoTool();
-        }
-    }
-
-    public void onForward()
-    {
-        if (mainWindow.getCurrentTab() != null) {
-            mainWindow.getCurrentTab().onRedoTool();
-        }
-    }
-
     public void onRun()
     {
         if (mainWindow.getCurrentTab() != null) {
@@ -101,11 +80,6 @@ public class MainWindowEvents
         }
     }
 
-    public void onWorkProjects()
-    {
-        Projects tool = new Projects();
-        mainWindow.getCurrentOrNewTab().go(tool);
-    }
 
     public void onSaveProject()
     {
@@ -113,15 +87,10 @@ public class MainWindowEvents
         sp.promptTask();
     }
 
-    public void onExportTable()
+    public void onWorkProjects()
     {
-        if (mainWindow.getCurrentTab() != null) {
-            Tool<?> tool = mainWindow.getCurrentTab().getTool();
-            if (tool instanceof TableTool<?, ?>) {
-                ExportTableData std = new ExportTableData((TableTool<?, ?>) tool);
-                std.promptTask();
-            }
-        }
+        Projects tool = new Projects();
+        mainWindow.getCurrentOrNewTab().go(tool);
     }
 
     public void onNextTab()

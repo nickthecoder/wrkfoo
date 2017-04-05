@@ -161,18 +161,12 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").buildButton());
-        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").buildButton());
-        // MainWindow.toolBar.add(builder.name("reloadOptions").tooltip("Reload Option Files").buildButton());
         toolBar.addSeparator();
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
         toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
-        toolBar.add(builder.name("workProjects").icon("projects.png").tooltip("Work with Projects").buildButton());
         toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());
-        toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
-        toolBar.addSeparator();
-        toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
-        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
+        toolBar.add(builder.name("workProjects").icon("projects.png").tooltip("Work with Projects").buildButton());
 
         goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
         stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
