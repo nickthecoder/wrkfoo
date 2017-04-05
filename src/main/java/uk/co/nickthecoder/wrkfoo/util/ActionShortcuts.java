@@ -59,11 +59,11 @@ public final class ActionShortcuts
         put("promptNonRowOption", "F2");
         put("promptNonRowOptionInNewTab", "ctrl+F2");
 
-        // TabbedPane
+        // MainTabs
         put("tabProperties", "ctrl+P");
         put("tabClose", "");
 
-        // TabbedPane
+        // MainTabs
         put("tab.properties", "ctrl+P");
         put("tab.close", "ctrl+W");
 

@@ -277,12 +277,12 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
                     return;
                 }
 
-                if (tab.getTabbedPane().getSelectedTab() == tab) {
+                if (tab.getMainTabs().getSelectedTab() == tab) {
                     Focuser.focusLater("TerminalEnded", getToolPanel().getTopLevel().getFocusComponent(), 6);
                 }
 
                 if (task.autoClose.getValue()) {
-                    tab.getTabbedPane().removeTab(getToolTab());
+                    tab.getMainTabs().removeTab(getToolTab());
                 }
             }
         });

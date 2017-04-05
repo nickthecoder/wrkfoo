@@ -7,51 +7,74 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputAdapter;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
+public class MainTabs implements Iterable<ToolTab>, ChangeListener
 {
-    private static final long serialVersionUID = 1L;
+    private JTabbedPane tabbedPane;
 
     private List<ToolTab> toolTabs;
 
-    public TabbedPane()
+    /**
+     * The currently selected tab's index.
+     * -1 for no selected tab.
+     */
+    private int selectedIndex = -1;    
+
+    public MainTabs()
     {
+        tabbedPane = new JTabbedPane();
+        tabbedPane.addChangeListener(this);
         toolTabs = new ArrayList<>();
         enableReordering();
 
-        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        setTabPlacement(JTabbedPane.LEFT);
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabbedPane.setTabPlacement(JTabbedPane.LEFT);
+    }
+
+    public JComponent getComponent()
+    {
+        return tabbedPane;
+    }
+
+    public int getSelectedIndex()
+    {
+        return tabbedPane.getSelectedIndex();
+    }
+
+    public int getTabCount()
+    {
+        return tabbedPane.getTabCount();
     }
 
     public ToolTab getSelectedTab()
     {
-        WrkFoo.assertIsEDT();
-
         if (toolTabs.size() == 0) {
             return null;
         }
-        int index = getSelectedIndex();
-        if (index < 0) {
+        if (selectedIndex < 0) {
             return null;
         }
 
-        return toolTabs.get(index);
+        return toolTabs.get(selectedIndex);
     }
 
     public void insert(final ToolTab tab)
     {
         WrkFoo.assertIsEDT();
 
-        int index = getSelectedIndex() + 1;
+        int index = tabbedPane.getSelectedIndex() + 1;
         add(tab, index);
     }
 
@@ -66,19 +89,20 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     {
         WrkFoo.assertIsEDT();
 
+        toolTabs.add(position, tab);
+
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
         // tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
-        tabLabel.setHorizontalAlignment(LEFT);
+        tabLabel.setHorizontalAlignment(JTabbedPane.LEFT);
         tabLabel.setPreferredSize(new Dimension(150, tabLabel.getPreferredSize().height));
 
         JPanel panel = tab.getPanel();
 
-        insertTab(null, null, panel, null, position);
-        toolTabs.add(position, tab);
-        setTabComponentAt(position, tabLabel);
+        tabbedPane.insertTab(null, null, panel, null, position);
+        tabbedPane.setTabComponentAt(position, tabLabel);
 
-        tab.setTabbedPane(this);
+        tab.setMainTabs(this);
 
         TabNotifier.fireAttached(tab);
     }
@@ -91,31 +115,36 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         }
     }
 
-    @Override
     public void removeTabAt(int index)
     {
         WrkFoo.assertIsEDT();
+
+        // If we are going to remove the selected tab, then select a different tab first, otherwise the
+        // change of selected tab will happen while we are in an inconsistent state.
+        if ( index == selectedIndex) {
+            int newSelected = index -1;
+            if ( toolTabs.size() <= 1 ) {
+                newSelected = -1;
+            } else if ( newSelected < 0) {
+                newSelected = 0;
+            }
+            setSelectedIndex(newSelected);
+        }
 
         ToolTab tab = toolTabs.get(index);
         TabNotifier.fireDetaching(tab);
 
         toolTabs.remove(index);
-        super.removeTabAt(index);
+        tabbedPane.removeTabAt(index);
 
-        if (getSelectedIndex() == index) {
-            if (index > 0) {
-                setSelectedIndex(index - 1);
-            }
-        }
-
-        tab.setTabbedPane(null);
+        tab.setMainTabs(null);
     }
 
     public void removeAllTabs()
     {
         WrkFoo.assertIsEDT();
 
-        for (int i = getTabCount() - 1; i >= 0; i--) {
+        for (int i = tabbedPane.getTabCount() - 1; i >= 0; i--) {
             removeTabAt(i);
         }
     }
@@ -137,12 +166,12 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void onProperties()
     {
-        new TabPropertiesTask(getSelectedIndex()).promptTask();
+        new TabPropertiesTask(tabbedPane.getSelectedIndex()).promptTask();
     }
 
     public void onClose()
     {
-        removeTabAt(getSelectedIndex());
+        removeTabAt(tabbedPane.getSelectedIndex());
     }
 
     private class TabPropertiesTask extends Task
@@ -190,7 +219,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
             String title = tab.getTitle();
             Icon icon = tab.getTool().getIcon();
 
-            JLabel label = (JLabel) getTabComponentAt(index);
+            JLabel label = (JLabel) tabbedPane.getTabComponentAt(index);
             label.setText(title);
             label.setIcon(icon);
         }
@@ -203,30 +232,37 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
         return this.toolTabs.get(index);
     }
 
+    /**
+     * Called when the selected tab has changed.
+     */
     @Override
-    public void setSelectedIndex(int i)
+    public void stateChanged(ChangeEvent e)
     {
-        WrkFoo.assertIsEDT();
-
-        ToolTab selectedTab = this.getSelectedTab();
-        if (selectedTab != null) {
-            TabNotifier.fireDeselecting(selectedTab);
+        if (selectedIndex >= 0) {
+            TabNotifier.fireDeselecting(getToolTab(selectedIndex));
         }
 
-        super.setSelectedIndex(i);
-        if ((i >= 0) && (i < toolTabs.size())) {
-            Focuser.focusLater("TabbedPane.selected. Results",
-                this.toolTabs.get(i).getTool().getResultsPanel().getFocusComponent(), 4);
+        selectedIndex = tabbedPane.getSelectedIndex();
+
+        if (selectedIndex >= 0) {
+            Focuser.focusLater("MainTabs.selected. Results",
+                getSelectedTab().getTool().getResultsPanel().getFocusComponent(), 4);
 
             TabNotifier.fireSelected(getSelectedTab());
         }
+    }
+
+    public void setSelectedIndex(int i)
+    {
+        WrkFoo.assertIsEDT();
+        tabbedPane.setSelectedIndex(i);
     }
 
     public void setSelectedToolTab(ToolTab tab)
     {
         WrkFoo.assertIsEDT();
 
-        for (int i = 0; i < getTabCount(); i++) {
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
             if (this.toolTabs.get(i) == tab) {
                 setSelectedIndex(i);
                 return;
@@ -237,8 +273,8 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
     public void enableReordering()
     {
         TabReorderHandler handler = new TabReorderHandler();
-        addMouseListener(handler);
-        addMouseMotionListener(handler);
+        tabbedPane.addMouseListener(handler);
+        tabbedPane.addMouseMotionListener(handler);
     }
 
     @Override
@@ -249,11 +285,11 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void nextTab()
     {
-        int newIndex = getSelectedIndex() + 1;
+        int newIndex = tabbedPane.getSelectedIndex() + 1;
         if (newIndex <= 0) {
             return;
         }
-        if (newIndex >= getTabCount()) {
+        if (newIndex >= tabbedPane.getTabCount()) {
             newIndex = 0;
         }
         setSelectedIndex(newIndex);
@@ -261,12 +297,12 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
 
     public void previousTab()
     {
-        int newIndex = getSelectedIndex() - 1;
+        int newIndex = tabbedPane.getSelectedIndex() - 1;
         if (newIndex < -1) {
             return;
         }
         if (newIndex == -1) {
-            newIndex = getTabCount() - 1;
+            newIndex = tabbedPane.getTabCount() - 1;
         }
         setSelectedIndex(newIndex);
     }
@@ -287,7 +323,7 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 createTabPopupMenu(e);
                 return;
             }
-            draggedTabIndex = getUI().tabForCoordinate(TabbedPane.this, e.getX(), e.getY());
+            draggedTabIndex = tabbedPane.getUI().tabForCoordinate(tabbedPane, e.getX(), e.getY());
         }
 
         @Override
@@ -356,13 +392,13 @@ public class TabbedPane extends JTabbedPane implements Iterable<ToolTab>
                 return;
             }
 
-            int targetTabIndex = getUI().tabForCoordinate(TabbedPane.this, e.getX(), e.getY());
+            int targetTabIndex = tabbedPane.getUI().tabForCoordinate(tabbedPane, e.getX(), e.getY());
 
             if (targetTabIndex != -1 && targetTabIndex != draggedTabIndex) {
 
                 boolean isForwardDrag = targetTabIndex > draggedTabIndex;
                 int newIndex = draggedTabIndex + (isForwardDrag ? 1 : -1);
-                
+
                 ToolTab tab = getToolTab(draggedTabIndex);
                 removeTabAt(draggedTabIndex);
                 add(tab, newIndex);

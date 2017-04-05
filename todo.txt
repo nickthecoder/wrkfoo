@@ -1,13 +1,13 @@
 Current Task
 ============
 
-Insert additional options into a Tool
-    OR, just allow a SINGLE options file, which can include the original
-    Special "video" options for PlacesTool (remove pv, >v and <v)
-    Special "image" options for WrkF
-        WrkF to have another option which does WrkF on current dir, adding the options, and filtering the results.
-    Save the extra options in History and in Project files.        
 
+ToolPanel to have non-row option and buttons from the mainwindow's toolbar
+    All except : Quit, New Window, Save Project, Close Tab, Split/Unsplit
+    Also has Re-run from status bar
+
+
+Rename ToolTab to Tab, which has a HidingSplitPane and two ToolPanels
 
 Next Tasks
 ==========
@@ -24,7 +24,6 @@ PlacesTool to allow drag and drop from other PlacesTool - copies the file AND la
 gkt places file can contain http:// etc, so PlacesTool will screw them up when editing.
     Allow for all protocols, and handle non-file ones gracefully
     
-Some kind of split screen, allowing two tools side by side for easy drag and drop
 
 Edit Settings - a Task (not a Tool), where each of the Resources attributes are represented as a Parameter
     But maybe this Task should be in its own tab, and therefore we need a TaskTool, where the results pane

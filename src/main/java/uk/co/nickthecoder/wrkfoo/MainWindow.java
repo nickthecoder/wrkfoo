@@ -44,7 +44,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public JPanel whole;
 
-    public TabbedPane tabbedPane;
+    public MainTabs mainTabs;
 
     private JPanel toolBarPanel;
 
@@ -80,7 +80,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     JButton errorButton;
 
     /**
-     * The main window that the mouse last entered. Used by {@link TabbedPane} for drag/drop tabs.
+     * The main window that the mouse last entered. Used by {@link MainTabs} for drag/drop tabs.
      */
     public static MainWindow getMouseMainWindow()
     {
@@ -91,7 +91,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         whole = new JPanel();
 
-        tabbedPane = new TabbedPane();
+        mainTabs = new MainTabs();
         toolBarPanel = new JPanel();
         toolBarPanel.setLayout(new WrapLayout(FlowLayout.LEFT));
 
@@ -111,7 +111,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         getContentPane().add(whole);
 
         whole.setLayout(new BorderLayout());
-        whole.add(tabbedPane, BorderLayout.CENTER);
+        whole.add(mainTabs.getComponent(), BorderLayout.CENTER);
         whole.add(toolBarPanel, BorderLayout.NORTH);
         whole.add(statusBarPanel, BorderLayout.SOUTH);
 
@@ -147,7 +147,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public ToolTab getCurrentTab()
     {
-        return tabbedPane.getSelectedTab();
+        return mainTabs.getSelectedTab();
     }
 
     private void fillToolBars()
@@ -218,8 +218,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (tabNumber <= tabbedPane.getTabCount()) {
-                    tabbedPane.setSelectedIndex(tabNumber - 1);
+                if (tabNumber <= mainTabs.getTabCount()) {
+                    mainTabs.setSelectedIndex(tabNumber - 1);
                 }
             }
         });
@@ -288,7 +288,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         ToolTab tab = new ToolTab(tool);
 
-        tabbedPane.insert(tab);
+        mainTabs.insert(tab);
 
         tab.postCreate();
         if (prompt) {
@@ -306,7 +306,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         ToolTab tab = new ToolTab(tool);
 
-        tabbedPane.add(tab);
+        mainTabs.add(tab);
 
         tab.postCreate();
         tab.go(tool);
@@ -340,14 +340,14 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
             // When I add the listener to this, or "whole", no events are detected, this is the best I could do.
             toolBarPanel.addMouseListener(listener);
-            tabbedPane.addMouseListener(listener);
+            mainTabs.getComponent().addMouseListener(listener);
             statusBarPanel.addMouseListener(listener);
 
         } else {
             windows.remove(this);
             TabNotifier.removeTabListener(this);
 
-            tabbedPane.removeAllTabs();
+            mainTabs.removeAllTabs();
             dispose();
         }
 
@@ -522,7 +522,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         if (tab.getTool().getToolPanel().getTopLevel() == this) {
             updateTitle();
-            tabbedPane.updateTitle(tab);
+            mainTabs.updateTitle(tab);
         }
     }
 }

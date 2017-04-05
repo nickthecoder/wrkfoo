@@ -33,7 +33,7 @@ public class Project
     public Project(MainWindow mainWindow)
     {
         tabs = new ArrayList<>();
-        for (ToolTab toolTab : mainWindow.tabbedPane) {
+        for (ToolTab toolTab : mainWindow.mainTabs) {
             Tool<?> tool = toolTab.getTool();
 
             TabData tabData = new TabData(tool);
@@ -105,7 +105,7 @@ public class Project
             tab.setTitleTemplate(tt);
             tab.setShortcut(tabData.shortcut);
             // We added the tab before giving it its titleTemplate, so now we need to update it.
-            tab.getTabbedPane().updateTitle(tab);
+            tab.getMainTabs().updateTitle(tab);
         }
 
         return mainWindow;

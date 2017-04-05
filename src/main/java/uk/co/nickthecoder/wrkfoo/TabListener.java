@@ -6,35 +6,35 @@ package uk.co.nickthecoder.wrkfoo;
 public interface TabListener
 {
     /**
-     * Called AFTER a tab has been added to the TabbedPane
+     * Called AFTER a tab has been added to the MainTabs
      * 
      * @param tab
      */
     public void attachedTab(ToolTab tab);
 
     /**
-     * Called just BEFORE a tab will be removed from the TabbedPane
+     * Called just BEFORE a tab will be removed from the MainTabs
      * 
      * @param tab
      */
     public void detachingTab(ToolTab tab);
 
     /**
-     * Called AFTER a tab has been made the currently selected tab in the TabbedPane
+     * Called AFTER a tab has been made the currently selected tab in the MainTabs
      * 
      * @param tab
      */
     public void selectedTab(ToolTab tab);
 
     /**
-     * Called just before a tab will no longer be the currently selected tab in the TabbedPane
+     * Called just before a tab will no longer be the currently selected tab in the MainTabs
      * 
      * @param tab
      */
     public void deselectingTab(ToolTab tab);
 
     /**
-     * Called when a Tool changes its title (long or short), so that the MainWindow and the TabbedPane can
+     * Called when a Tool changes its title (long or short), so that the MainWindow and the MainTabs can
      * pick up the changes.
      * 
      * @param tab

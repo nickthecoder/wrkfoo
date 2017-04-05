@@ -1,6 +1,6 @@
 /**
  * The WrkFoo {@link MainWindow} is composed of a JToolBar at the top a status bar at the bottom, and the rest
- * is a {@link TabbedPane}. The contents of each tab is a {@link ToolPanel}, which is divided into two using a
+ * is a {@link MainTabs}. The contents of each tab is a {@link ToolPanel}, which is divided into two using a
  * {@link HidingSplitPane}.
  * The split pane has a {@link Results} on the top, and a JPanel (containing a
  * {@link ParametersPanel}) on the bottom .

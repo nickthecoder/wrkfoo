@@ -43,7 +43,7 @@ public class MainWindowEvents
     {
         Home tool = new Home();
         mainWindow.addTab(tool);
-        mainWindow.tabbedPane.setSelectedIndex(mainWindow.tabbedPane.getTabCount() - 1);
+        mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
     }
 
     public void onDuplicateTab()
@@ -52,15 +52,15 @@ public class MainWindowEvents
         if (tab != null) {
             Tool<?> copy = tab.getTool().duplicate();
             mainWindow.addTab(copy);
-            mainWindow.tabbedPane.setSelectedIndex(mainWindow.tabbedPane.getTabCount() - 1);
+            mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
         }
     }
 
     public void onCloseTab()
     {
-        int currentTabIndex = mainWindow.tabbedPane.getSelectedIndex();
+        int currentTabIndex = mainWindow.mainTabs.getSelectedIndex();
         if (currentTabIndex >= 0) {
-            mainWindow.tabbedPane.removeTabAt(currentTabIndex);
+            mainWindow.mainTabs.removeTabAt(currentTabIndex);
         }
     }
 
@@ -126,12 +126,12 @@ public class MainWindowEvents
 
     public void onNextTab()
     {
-        mainWindow.tabbedPane.nextTab();
+        mainWindow.mainTabs.nextTab();
     }
 
     public void onPreviousTab()
     {
-        mainWindow.tabbedPane.previousTab();
+        mainWindow.mainTabs.previousTab();
     }
 
     public void onCloseWindow()

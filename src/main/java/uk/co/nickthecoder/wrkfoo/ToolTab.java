@@ -15,7 +15,7 @@ import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 /**
- * The isn't a GUI component, it only hold the data associated with one of the tabs in the {@link TabbedPane}.
+ * The isn't a GUI component, it only hold the data associated with one of the tabs in the {@link MainTabs}.
  * It has a {@link Tool}, but over time, the tool will change. The history of all of the tools, and the
  * Tool's Task's parameters are stored in a {@link History}, which allows the user to go backwards and
  * forwards similar to web browser's back and forward buttons.
@@ -23,7 +23,7 @@ import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
  */
 public class ToolTab
 {
-    private TabbedPane tabbedPane;
+    private MainTabs mainTabs;
 
     private Tool<?> tool;
 
@@ -59,8 +59,8 @@ public class ToolTab
             return;
         }
 
-        InputMap inputMap = getTabbedPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getTabbedPane().getActionMap();
+        InputMap inputMap = getMainTabs().getComponent().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getMainTabs().getComponent().getActionMap();
 
         if (shortcut != null) {
             String actionMapKey = "selectToolTab-" + shortcut;
@@ -83,7 +83,7 @@ public class ToolTab
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    getTabbedPane().setSelectedToolTab(ToolTab.this);
+                    getMainTabs().setSelectedToolTab(ToolTab.this);
                 }
             });
         }
@@ -104,11 +104,6 @@ public class ToolTab
         return panel;
     }
 
-    public TabbedPane getTabbedPane()
-    {
-        return tabbedPane;
-    }
-
     public void postCreate()
     {
         ActionBuilder builder = new ActionBuilder(this).component(panel);
@@ -117,12 +112,17 @@ public class ToolTab
         builder.name("redoTool").buildShortcut();
     }
 
-    void setTabbedPane(TabbedPane value)
+    public MainTabs getMainTabs()
+    {
+        return mainTabs;
+    }
+
+    void setMainTabs(MainTabs value)
     {
         if (value == null) {
             detach();
         }
-        tabbedPane = value;
+        mainTabs = value;
         if (value != null) {
             attach(tool);
         }
@@ -157,7 +157,7 @@ public class ToolTab
 
     public void select()
     {
-        getTabbedPane().setSelectedToolTab(this);
+        getMainTabs().setSelectedToolTab(this);
     }
 
     public void onUndoTool()
@@ -222,7 +222,7 @@ public class ToolTab
             }
         }
 
-        if (tabbedPane != null) {
+        if (mainTabs != null) {
             TabNotifier.fireChangedTitle(this);
         }
 
