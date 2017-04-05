@@ -41,7 +41,7 @@ public class FindToolBar extends JPanel implements SearcherListener
         this.setLayout(new BorderLayout());
 
         JPanel squashed = new JPanel();
-        squashed.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0)); // new BoxLayout(squashed, BoxLayout.X_AXIS));
+        squashed.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         squashed.add(new JLabel("Find : "));
         this.add(squashed, BorderLayout.WEST);
 

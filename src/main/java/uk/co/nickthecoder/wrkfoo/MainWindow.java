@@ -3,7 +3,6 @@ package uk.co.nickthecoder.wrkfoo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -28,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import uk.co.nickthecoder.jguifier.guiutil.WrapLayout;
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
@@ -45,11 +42,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public MainTabs mainTabs;
 
-    private JPanel toolBarPanel;
-
     private JToolBar toolBar;
-
-    private JPanel statusBarPanel;
 
     private JToolBar statusBar;
 
@@ -89,19 +82,11 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         whole = new JPanel();
 
         mainTabs = new MainTabs();
-        toolBarPanel = new JPanel();
-        toolBarPanel.setLayout(new WrapLayout(FlowLayout.LEFT));
-
-        statusBarPanel = new JPanel();
-        statusBarPanel.setLayout(new BoxLayout(statusBarPanel, BoxLayout.Y_AXIS));
 
         toolBar = new JToolBar();
         statusBar = new JToolBar();
         toolBar.setFloatable(false);
         statusBar.setFloatable(false);
-
-        toolBarPanel.add(toolBar);
-        statusBarPanel.add(statusBar);
 
         fillToolBars();
 
@@ -109,8 +94,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         whole.setLayout(new BorderLayout());
         whole.add(mainTabs.getComponent(), BorderLayout.CENTER);
-        whole.add(toolBarPanel, BorderLayout.NORTH);
-        whole.add(statusBarPanel, BorderLayout.SOUTH);
+        whole.add(toolBar, BorderLayout.NORTH);
+        whole.add(statusBar, BorderLayout.SOUTH);
 
         setTitle("WrkFoo");
 
@@ -122,18 +107,6 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     public Dimension getPreferredSize()
     {
         return new Dimension(1000, 600);
-    }
-
-    @Override
-    public void addToolBar(JComponent toolBar)
-    {
-        toolBarPanel.add(toolBar);
-    }
-
-    @Override
-    public void addStatusBar(JComponent statusBar)
-    {
-        statusBarPanel.add(statusBar, 0);
     }
 
     public ToolTab getCurrentTab()
@@ -259,9 +232,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             };
 
             // When I add the listener to this, or "whole", no events are detected, this is the best I could do.
-            toolBarPanel.addMouseListener(listener);
+            toolBar.addMouseListener(listener);
             mainTabs.getComponent().addMouseListener(listener);
-            statusBarPanel.addMouseListener(listener);
+            statusBar.addMouseListener(listener);
 
         } else {
             windows.remove(this);

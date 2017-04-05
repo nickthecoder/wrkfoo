@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo.editor;
 
-import java.awt.Container;
 import java.io.File;
 
 import javax.swing.Icon;
@@ -8,19 +7,16 @@ import javax.swing.JToolBar;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
-import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.TabListener;
 import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.ToolTab;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
-import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
-    implements EditorListener, TabListener
+    implements EditorListener
 {
     EditorPanel editorPanel;
 
@@ -29,6 +25,8 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
     private int jumpToLine = -1;
 
     private String highlightRegex = null;
+
+    private boolean wasDirty = false;
 
     public Editor()
     {
@@ -39,7 +37,11 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         ActionBuilder builder = new ActionBuilder(this).component(editorPanel.getComponent());
         builder.name("documentOpen").buildShortcut();
 
-        TabNotifier.addTabListener(this);
+        JToolBar tb = editorPanel.toolBar;
+        FindToolBar ftb = editorPanel.findToolBar;
+
+        getToolPanel().getToolBar().addToolBar(tb);
+        getToolPanel().getToolBar().addStatusBar(ftb);
     }
 
     public Editor(File file)
@@ -116,71 +118,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         return editorPanel;
     }
 
-    @Override
-    public void attachedTab(ToolTab tab)
-    {
-        // Do nothing.
-    }
-
-    @Override
-    public void detachingTab(ToolTab tab)
-    {
-        if (tab.getTool() == this) {
-            TabNotifier.removeTabListener(this);
-        }
-    }
-
-    @Override
-    public void selectedTab(ToolTab tab)
-    {
-        if (tab.getTool() == this) {
-            Util.assertIsEDT();
-
-            JToolBar tb = editorPanel.toolBar;
-            FindToolBar ftb = editorPanel.findToolBar;
-
-            TopLevel topLevel = getToolPanel().getTopLevel();
-
-            WrkFoo.assertIsEDT();
-
-            if (tb.getParent() == null) {
-                topLevel.addToolBar(tb);
-            }
-            if (ftb.getParent() == null) {
-                topLevel.addStatusBar(ftb);
-            }
-        }
-    }
-
-    @Override
-    public void deselectingTab(ToolTab tab)
-    {
-        if (tab.getTool() == this) {
-
-            JToolBar tb = editorPanel.toolBar;
-            FindToolBar ftb = editorPanel.findToolBar;
-
-            Container parent = tb.getParent();
-            if (parent != null) {
-                parent.remove(tb);
-                parent.repaint();
-            }
-            parent = ftb.getParent();
-            if (parent != null) {
-                parent.remove(ftb);
-                parent.repaint();
-            }
-
-            editorPanel.replaceDialog.setVisible(false);
-            editorPanel.replaceDialog.dispose();
-        }
-    }
-
-    @Override
-    public void changedTitle(ToolTab tab)
-    {
-    }
-
     public static class EditorTask extends Task
     {
         public FileParameter file = new FileParameter.Builder("file").file().mayExist()
@@ -196,8 +133,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         {
         }
     }
-
-    private boolean wasDirty = false;
 
     public void checkDirty()
     {

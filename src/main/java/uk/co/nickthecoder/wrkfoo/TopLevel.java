@@ -3,7 +3,6 @@ package uk.co.nickthecoder.wrkfoo;
 import java.awt.Component;
 import java.awt.Window;
 
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
@@ -23,10 +22,6 @@ public interface TopLevel extends ExceptionHandler
         return (TopLevel) window;
     }
     
-    public void addToolBar(JComponent toolBar);
-
-    public void addStatusBar(JComponent statusBar);
-
     public ToolTab insertTab(Tool<?> tool, boolean prompt);
 
     public ToolTab addTab(Tool<?> tool);
