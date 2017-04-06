@@ -1,6 +1,6 @@
 Current Task
 ============
-
+    
 Cannot show parameters of the main half when split
 
 Bug: Editor ctrl+f foo RETURN prompts for "Revert".
@@ -9,9 +9,6 @@ Unsplitting an Editor leaves a large space in the status bar area.
 
 WrkFBase to have "compact" BooleanParameter, which show/hides the less used columns.
 
-Is ToolPanel.postCreate needed?
-    Tool.postCreate?
-    
 Editor should split using the SAME document.
 
 Editor has a minimum width, which is annoying when splitting.

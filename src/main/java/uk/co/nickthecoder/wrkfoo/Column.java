@@ -15,9 +15,11 @@ import uk.co.nickthecoder.wrkfoo.tool.WrkFTask;
  */
 public abstract class Column<R>
 {
+    private Columns<R> columns;
+
     public Class<?> klass;
 
-    public String key;
+    public final String key;
 
     public int width = 150;
 
@@ -55,6 +57,21 @@ public abstract class Column<R>
         this.klass = klass;
         this.key = key;
         this.label = label;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    void setColumns(Columns<R> columns)
+    {
+        this.columns = columns;
+    }
+
+    public Columns<R> getColumns()
+    {
+        return columns;
     }
 
     public Column<R> width(int width)
@@ -98,6 +115,9 @@ public abstract class Column<R>
     {
         this.reverse = false;
         this.defaultSort = true;
+        if ( getColumns() != null) {
+            getColumns().defaultSortColumnIndex = getColumns().indexOf(key);
+        }
         return this;
     }
 
@@ -128,7 +148,21 @@ public abstract class Column<R>
 
     public Column<R> tooltip(int columnIndex)
     {
-        this.tooltipColumn = columnIndex;
+        tooltipColumn = columnIndex;
+        return this;
+    }
+
+    public Column<R> tooltip(String columnKey)
+    {
+        tooltipColumn = getColumns().indexOf(columnKey);
+        return this;
+    }
+
+    public Column<R> tooltipFor(String columnKey)
+    {
+        Column<R> other = getColumns().findColumn(columnKey);
+        other.tooltipColumn = getColumns().indexOf(key);
+
         return this;
     }
 

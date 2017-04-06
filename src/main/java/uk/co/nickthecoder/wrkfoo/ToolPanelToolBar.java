@@ -98,7 +98,7 @@ public class ToolPanelToolBar implements TaskListener
             @Override
             public void run()
             {
-                if (toolPanel.getHalfTab().getTab().getOtherHalfTab() != null) {
+                if (toolPanel.getHalfTab() != null) {
                     closeHalfTabButton.setVisible(true);
                 }
             }

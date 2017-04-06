@@ -150,7 +150,6 @@ public class Project
             overrideOptionsName = tool.getOverrideOptionsName();
 
             if (otherTool != null) {
-                System.out.println( "Setting 'other' values");
                 otherCreationString = otherTool.getCreationString();
                 otherParameters = new HashMap<>();
                 for (ValueParameter<?> parameter : otherTool.getTask().valueParameters()) {

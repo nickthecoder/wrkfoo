@@ -124,7 +124,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
             {
                 return row.getChoppedPath();
             }
-        }.tooltip(2).hide().width(300));
+        }).tooltip("path").hide().width(300);
 
         columns.add(new Column<WrkFWrappedFile>(File.class, "name")
         {
@@ -133,7 +133,8 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
             {
                 return row.file;
             }
-        }.tooltip(2).comparator(FoldersFirstComparator.instance).sort().width(300).renderer(FileNameRenderer.instance));
+        }).tooltip("path").sort().comparator(FoldersFirstComparator.instance).width(300)
+            .renderer(FileNameRenderer.instance);
 
         columns.add(new Column<WrkFWrappedFile>(Date.class, "lastModified")
         {
@@ -142,7 +143,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
             {
                 return new Date(row.file.lastModified());
             }
-        }.width(120).lock().renderer(DateRenderer.instance));
+        }).width(120).lock().renderer(DateRenderer.instance);
 
         columns.add(new Column<WrkFWrappedFile>(Long.class, "size")
         {
@@ -151,7 +152,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
             {
                 return row.file.length();
             }
-        }.width(120).lock().renderer(SizeRenderer.getInstance()));
+        }).width(120).lock().renderer(SizeRenderer.getInstance());
 
         return columns;
     }

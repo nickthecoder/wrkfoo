@@ -10,6 +10,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
+import com.sun.xml.internal.bind.v2.schemagen.Util;
+
 public class Columns<R>
 {
     private List<Column<R>> columns;
@@ -33,12 +35,37 @@ public class Columns<R>
         columns.add(optionColunm);
     }
 
-    public void add(Column<R> column)
+    public int indexOf(String columnKey)
+    {
+        int index = 0;
+        for (Column<R> c : columns) {
+            if (Util.equal(c.getKey(), columnKey)) {
+                return index;
+            }
+            index++;
+        }
+        throw new IllegalArgumentException("Column '" + columnKey + "' not found.");
+    }
+    
+    public Column<R> findColumn(String columnKey)
+    {
+        for (Column<R> c : columns) {
+            if (Util.equal(c.getKey(), columnKey)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException("Column '" + columnKey + "' not found.");
+    }
+
+    public Column<R> add(Column<R> column)
     {
         if (column.defaultSort) {
             defaultSortColumnIndex = columns.size();
         }
         columns.add(column);
+        column.setColumns(this);
+    
+        return column;
     }
 
     public int getColumnCount()

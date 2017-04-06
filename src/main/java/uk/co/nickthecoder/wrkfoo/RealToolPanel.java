@@ -116,7 +116,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
         this.tool.getTask().addTaskListener(this);
         
-        ActionBuilder builder2 = new ActionBuilder(this).component(panel).condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionBuilder builder2 = new ActionBuilder(this).component(panel);
 
         builder2.name("cyclePane").buildShortcut();
         builder2.name("toggleLeftPane").buildShortcut();
