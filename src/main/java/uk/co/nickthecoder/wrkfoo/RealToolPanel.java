@@ -115,6 +115,12 @@ public class RealToolPanel implements ToolPanel, TaskListener
         }
 
         this.tool.getTask().addTaskListener(this);
+        
+        ActionBuilder builder2 = new ActionBuilder(this).component(panel).condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        builder2.name("cyclePane").buildShortcut();
+        builder2.name("toggleLeftPane").buildShortcut();
+        builder2.name("toggleRightPane").buildShortcut();
     }
 
     public Tool<?> getTool()
@@ -153,16 +159,6 @@ public class RealToolPanel implements ToolPanel, TaskListener
     public ParametersPanel getParametersPanel()
     {
         return parametersPanel;
-    }
-
-    @Override
-    public void postCreate()
-    {
-        ActionBuilder builder = new ActionBuilder(this).component(panel).condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-        builder.name("cyclePane").buildShortcut();
-        builder.name("toggleLeftPane").buildShortcut();
-        builder.name("toggleRightPane").buildShortcut();
     }
 
     @Override

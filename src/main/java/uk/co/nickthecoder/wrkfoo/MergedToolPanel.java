@@ -40,11 +40,6 @@ public class MergedToolPanel implements ToolPanel
     }
 
     @Override
-    public void postCreate()
-    {
-    }
-
-    @Override
     public HidingSplitPane getSplitPane()
     {
         return null;

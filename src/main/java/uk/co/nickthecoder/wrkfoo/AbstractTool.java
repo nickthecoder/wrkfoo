@@ -228,7 +228,6 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     {
         if (toolPanel == null) {
             toolPanel = createToolPanel();
-            toolPanel.postCreate();
         }
 
         return toolPanel;

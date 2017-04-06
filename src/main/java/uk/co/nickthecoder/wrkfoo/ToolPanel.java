@@ -11,8 +11,6 @@ public interface ToolPanel
 
     public Tool<?> getTool();
     
-    public void postCreate();
-
     public HidingSplitPane getSplitPane();
 
     public boolean check();
