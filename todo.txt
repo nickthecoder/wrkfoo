@@ -1,15 +1,6 @@
 Current Task
 ============
 
-Give Tab a SplitPane and TWO HalfTabs each containing a ToolPanel
-
-    Things to check :
-        tearing a tab into a new window
-        moving tabs within the same window
-        moving tabs to another window.
-        duplicate tab
-        Save/Load a project with splits
-
 Split should be 50%
 
 Trying to split a Terminal (Git Commit) did NOTHING, but left TabListeners
@@ -22,6 +13,8 @@ Maybe F3 is toggleSplit HORIZONTAL, and ctrl+F3 is toggleSplit VERTICAL
 Unsplitting the right half to detach the left half.
 
 Editor should split using the SAME document.
+
+Bug: Editor ctrl+f foo RETURN prompts for "Revert".
 
 Unsplitting an Editor leaves a large space in the status bar area.
 

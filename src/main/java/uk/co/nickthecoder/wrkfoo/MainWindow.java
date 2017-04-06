@@ -188,7 +188,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public Tab addTab(Tool<?> tool)
     {
-        return addTab( tool, null);
+        return addTab( tool, null);        
     }
     
     public Tab addTab(Tool<?> mainTool, Tool<?> otherTool)
@@ -202,6 +202,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         if (otherTool!= null) {
             tab.getOtherHalfTab().go(otherTool);
         }
+
+        mainTabs.setSelectedIndex(mainTabs.getTabCount() - 1);
         
         return tab;
     }

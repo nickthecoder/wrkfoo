@@ -21,6 +21,29 @@ public class WrkFoo extends Task
         }
     }
 
+    /**
+     * I use this when debugging code, instead of System.out.println.
+     * When the bug is squashed, I can then find all calls to this method, and remove them.
+     * Note. This isn't a substitute for logging, it is only used for short-term debugging,
+     * that you would not want in your debug logs.
+     * 
+     * It also has the advantage of being able to print many objects without string concatenation.
+     */
+    public static void println(Object... objects)
+    {
+        boolean first = true;
+
+        for (Object o : objects) {
+            if (!first) {
+                System.out.println(", ");
+            } else {
+                first = false;
+            }
+            System.out.print(o.toString());
+        }
+        System.out.println();
+    }
+
     public FileParameter settings = new FileParameter.Builder("settings").file().mustExist()
         .description("Default is ~/.config/wrkfoo/settings.json")
         .optional().parameter();
@@ -34,11 +57,11 @@ public class WrkFoo extends Task
 
     public WrkFoo()
     {
-        addParameters(settings, project, projectFile );
+        addParameters(settings, project, projectFile);
     }
 
     @Override
-    public MultipleParameter<StringParameter,String> getTrailingParameter()
+    public MultipleParameter<StringParameter, String> getTrailingParameter()
     {
         return project;
     }

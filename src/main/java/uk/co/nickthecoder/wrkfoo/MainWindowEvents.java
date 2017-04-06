@@ -36,7 +36,6 @@ public class MainWindowEvents
     {
         Home tool = new Home();
         mainWindow.addTab(tool);
-        mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
     }
 
     public void onDuplicateTab()
@@ -44,9 +43,11 @@ public class MainWindowEvents
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
             Tool<?> copyMain = tab.getMainHalfTab().getTool().duplicate();
-            Tool<?> copyOther = tab.getMainHalfTab().getTool().duplicate();
-            mainWindow.addTab(copyMain, copyOther);
-            mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
+            Tool<?> other = null;
+            if ( tab.getOtherHalfTab() != null) {
+                other = tab.getOtherHalfTab().getTool().duplicate();
+            }
+            mainWindow.addTab(copyMain, other);
         }
     }
 

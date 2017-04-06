@@ -369,7 +369,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
 
                 TopLevel currentMainWindow = mainTool.getToolPanel().getTopLevel();
                 removeTabAt(draggedTabIndex);
-                Tab newTab = destinationWindow.addTab(mainTool);
+                Tab newTab = destinationWindow.addTab(mainTool, otherTool);
 
                 newTab.setTitleTemplate(tab.getTitleTemplate());
                 newTab.setShortcut(tab.getShortcut());

@@ -26,5 +26,7 @@ public interface TopLevel extends ExceptionHandler
 
     public Tab addTab(Tool<?> tool);
 
+    public Tab addTab(Tool<?> tool, Tool<?> otherTool);
+
     public void setVisible(boolean value);
 }
