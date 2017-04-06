@@ -243,7 +243,7 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @Override
     public Tool<?> splitTool()
     {
-        if (this.isRerunnable()) {
+        if (isRerunnable()) {
             return this.duplicate();
         } else {
             return new Home();

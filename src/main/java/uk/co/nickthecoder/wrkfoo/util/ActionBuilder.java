@@ -331,6 +331,8 @@ public class ActionBuilder
                 } catch (Throwable e) {
                     if (handler != null) {
                         handler.handleException(e);
+                    } else {
+                        e.printStackTrace();
                     }
                 }
             }

@@ -24,9 +24,10 @@ import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TabListener;
 import uk.co.nickthecoder.wrkfoo.TabNotifier;
-import uk.co.nickthecoder.wrkfoo.Tab;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
@@ -55,7 +56,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
      * parameters, then it can be re-run. However, if it was created from a Command object, then it cannot be
      * re-run.
      */
-    private final boolean reRunnable;
+    private boolean reRunnable;
 
     public Terminal()
     {
@@ -84,10 +85,21 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
             @Override
             public void changed(Parameter source)
             {
-                cmd.dir(task.directory.getValue());
+                if (cmd != null) {
+                    cmd.dir(task.directory.getValue());
+                }
             }
         });
 
+    }
+
+    @Override
+    public Terminal duplicate()
+    {
+        Terminal result = (Terminal) super.duplicate();
+        result.cmd = cmd;
+        result.reRunnable = reRunnable;
+        return result;
     }
 
     /**
@@ -235,6 +247,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     @Override
     public void detachingTab(Tab tab)
     {
+        WrkFoo.println("Detatching Terminal");
         if (tab.getMainHalfTab().getTool() == this) {
 
             TabNotifier.removeTabListener(this);
@@ -264,7 +277,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     public void changedTitle(Tab tab)
     {
     }
-    
+
     @Override
     public void finished(Process process)
     {

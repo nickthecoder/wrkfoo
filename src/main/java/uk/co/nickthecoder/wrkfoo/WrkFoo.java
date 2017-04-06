@@ -35,7 +35,7 @@ public class WrkFoo extends Task
 
         for (Object o : objects) {
             if (!first) {
-                System.out.println(", ");
+                System.out.print(", ");
             } else {
                 first = false;
             }

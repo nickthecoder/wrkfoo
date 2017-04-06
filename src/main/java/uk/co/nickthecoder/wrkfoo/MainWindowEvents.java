@@ -55,7 +55,7 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab.getOtherHalfTab() == null) {
-            Tool<?> copiedTool = tab.getMainHalfTab().getTool().duplicate();
+            Tool<?> copiedTool = tab.getMainHalfTab().getTool().splitTool();
             tab.split(copiedTool);
         } else {
             tab.unsplit(tab.getMainHalfTab());

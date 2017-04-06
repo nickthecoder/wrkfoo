@@ -1,12 +1,10 @@
 Current Task
 ============
 
-Split should be 50%
+Closing half tab termainl unlistens twice
+    Add warning if unlistening to something that is not in the list.
 
-Trying to split a Terminal (Git Commit) did NOTHING, but left TabListeners
-
-Editor has a minimum width, which is annoying when splitting.
-    It may have something to do with the Find toolbar
+Closing a normal Terminal throws
 
 Maybe F3 is toggleSplit HORIZONTAL, and ctrl+F3 is toggleSplit VERTICAL
 
@@ -24,6 +22,9 @@ Is ToolPanel.postCreate needed?
     Tool.postCreate?
     
 Terminal is auto-closing a whole tab!
+
+Editor has a minimum width, which is annoying when splitting.
+    It may have something to do with the Find toolbar
 
 Next Tasks
 ==========
