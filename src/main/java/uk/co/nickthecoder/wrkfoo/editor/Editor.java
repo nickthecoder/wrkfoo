@@ -8,15 +8,16 @@ import javax.swing.JToolBar;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
+import uk.co.nickthecoder.wrkfoo.HalfTab;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.Tab;
+import uk.co.nickthecoder.wrkfoo.TabAdater;
+import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
-    implements EditorListener
+public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask> implements EditorListener
 {
     EditorPanel editorPanel;
 
@@ -26,13 +27,31 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
 
     private String highlightRegex = null;
 
-    private boolean wasDirty = false;
+    private boolean firstTime = true;
+
+    /**
+     * Set by {@link #splitTool(boolean)} to indicate that the document should NOT be loaded,
+     * as it is sharing the document with the original Editor's document.
+     */
+    private boolean ignoreUpdate;
+
+    private Shared shared;
 
     public Editor()
     {
         super(new EditorTask());
         editorPanel = new EditorPanel(this);
-        editorPanel.addEditorListener(this);
+        shared = new Shared();
+        shared.listen(editorPanel.editorPane);
+        TabNotifier.addTabListener(new TabAdater()
+        {
+            public void detaching(HalfTab halfTab)
+            {
+                shared.removeEditorListener(Editor.this);
+                TabNotifier.removeTabListener(this);
+            }
+        });
+        shared.addEditorListener(this);
 
         ActionBuilder builder = new ActionBuilder(this).component(editorPanel.getComponent());
         builder.name("documentOpen").buildShortcut();
@@ -74,7 +93,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         if (task.file.getValue() == null) {
             return "New";
         }
-        return task.file.getValue().getName() + (editorPanel.getEditorPane().isDirty() ? " *" : "");
+        return task.file.getValue().getName() + (shared.isDirty() ? " *" : "");
     }
 
     @Override
@@ -87,28 +106,30 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
             text = task.file.getValue().getName();
         }
 
-        if (editorPanel.getEditorPane().isDirty()) {
+        if (shared.isDirty()) {
             text += " *";
         }
         return text;
     }
 
-    private boolean firstTime = true;
-
     @Override
     public void updateResults()
     {
-        if (firstTime) {
-            editorPanel.load(task.file.getValue());
-            if (jumpToLine > 0) {
-                editorPanel.goToLine(jumpToLine);
-            }
-            if (highlightRegex != null) {
-                editorPanel.find(highlightRegex, true);
-            }
-            firstTime = false;
+        if (ignoreUpdate) {
+            ignoreUpdate = false;
         } else {
-            editorPanel.onDocumentRevert();
+            if (firstTime) {
+                editorPanel.load(task.file.getValue());
+                if (jumpToLine > 0) {
+                    editorPanel.goToLine(jumpToLine);
+                }
+                if (highlightRegex != null) {
+                    editorPanel.find(highlightRegex, true);
+                }
+                firstTime = false;
+            } else {
+                editorPanel.onDocumentRevert();
+            }
         }
     }
 
@@ -134,20 +155,6 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         }
     }
 
-    public void checkDirty()
-    {
-        if (editorPanel.getEditorPane().isDirty() != wasDirty) {
-            wasDirty = editorPanel.getEditorPane().isDirty();
-            TabNotifier.fireChangedTitle(getHalfTab().getTab());
-        }
-    }
-
-    @Override
-    public void documentChanged()
-    {
-        checkDirty();
-    }
-
     public void onDocumentOpen()
     {
         Editor newEditor = new Editor();
@@ -159,4 +166,24 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
         newTab.select();
     }
 
+    @Override
+    public Editor splitTool(boolean vertical)
+    {
+        Editor result = new Editor();
+        result.ignoreUpdate = true;
+        result.task.file.setDefaultValue(this.task.file.getValue());
+        result.editorPanel.editorPane.setDocument(this.editorPanel.editorPane.getDocument());
+        result.shared.removeEditorListener(result);
+        result.shared = this.shared;
+        result.shared.listen(result.editorPanel.editorPane);
+        result.shared.addEditorListener(this);
+
+        return result;
+    }
+
+    @Override
+    public void dirtyChanged()
+    {
+        TabNotifier.fireChangedTitle(getToolPanel().getHalfTab().getTab());
+    }
 }

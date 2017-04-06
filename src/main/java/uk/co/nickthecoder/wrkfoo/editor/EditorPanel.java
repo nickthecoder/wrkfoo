@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -13,8 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
@@ -28,7 +24,7 @@ import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
-public class EditorPanel extends PanelResults implements ExceptionHandler, DocumentListener
+public class EditorPanel extends PanelResults implements ExceptionHandler
 {
     Editor editorTool;
 
@@ -46,12 +42,9 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
 
     ReplaceDialog replaceDialog;
 
-    List<EditorListener> listeners = new ArrayList<>();
-
     public EditorPanel(Editor editorTool)
     {
         super(editorTool);
-
         this.editorTool = editorTool;
 
         editorPane = new TextEditorPane();
@@ -69,7 +62,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
 
         initSearchDialogs();
         populateToolBar();
-        editorPane.getDocument().addDocumentListener(this);
     }
 
     public TextEditorPane getEditorPane()
@@ -157,7 +149,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
     public void onDocumentSave() throws IOException
     {
         editorPane.save();
-        fireChange();
     }
 
     public void onEditUndo()
@@ -229,7 +220,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
                 e.printStackTrace();
             }
         }
-        fireChange();
 
         Focuser.focusLater("EditorPaned reverted", editorPane, 9);
     }
@@ -241,39 +231,4 @@ public class EditorPanel extends PanelResults implements ExceptionHandler, Docum
         replaceDialog.setVisible(false);
         Focuser.focusLater("Editor.onEscape", editorPane, 8);
     }
-
-    public void addEditorListener(EditorListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    public void removeEditorListener(EditorListener listener)
-    {
-        listeners.remove(listener);
-    }
-
-    private void fireChange()
-    {
-        for (EditorListener listener : listeners) {
-            listener.documentChanged();
-        }
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e)
-    {
-        fireChange();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e)
-    {
-        fireChange();
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e)
-    {
-    }
-
 }
