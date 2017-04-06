@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.guiutil.Places.Place;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
-import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
@@ -142,9 +143,9 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
         public void body()
         {
             try {
-                new Exec("echo", "file://" + file.getValue().getPath(), label.getValue())
-                    .stdout(task.store.getValue(), true) // append to the Places file
-                    .run();
+                String line = buildLine(file.getValue(), label.getValue());
+                Files.write(getTask().store.getValue().toPath(), line.getBytes(), StandardOpenOption.APPEND);
+                
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -223,10 +224,8 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
                 for (Place place : places) {
 
                     if (Util.equals(place.file, oldFile.getValue())) {
-                        System.out.println( "Relacing line with " + file.getValue());
                         out.println(buildLine(file.getValue(), label.getValue()));
                     } else {
-                        System.out.println( "Keeping file " + place.file);
                         out.println(buildLine(place.file, place.label));
                     }
                 }
