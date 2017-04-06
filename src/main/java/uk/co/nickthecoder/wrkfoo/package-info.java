@@ -12,8 +12,8 @@
  * </p>
  * <p>
  * Over time, the contents of each tab may change, replaced by different ToolPanels, but the a tab maintains the
- * same {@link ToolTab} (which is not a GUI component) forever.
- * ToolTab has a {@link History}, allowing the user to move backwards and forwards, similar to the the back/forwards
+ * same {@link Tab} (which is not a GUI component) forever.
+ * Tab has a {@link History}, allowing the user to move backwards and forwards, similar to the the back/forwards
  * buttons in a web browser.
  * </p>
  * <p>

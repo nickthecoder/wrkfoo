@@ -20,11 +20,11 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
-public class MainTabs implements Iterable<ToolTab>, ChangeListener
+public class MainTabs implements Iterable<Tab>, ChangeListener
 {
     private JTabbedPane tabbedPane;
 
-    private List<ToolTab> toolTabs;
+    private List<Tab> tabs;
 
     /**
      * The currently selected tab's index.
@@ -36,7 +36,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
     {
         tabbedPane = new JTabbedPane();
         tabbedPane.addChangeListener(this);
-        toolTabs = new ArrayList<>();
+        tabs = new ArrayList<>();
         enableReordering();
 
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -58,19 +58,19 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         return tabbedPane.getTabCount();
     }
 
-    public ToolTab getSelectedTab()
+    public Tab getSelectedTab()
     {
-        if (toolTabs.size() == 0) {
+        if (tabs.size() == 0) {
             return null;
         }
         if (selectedIndex < 0) {
             return null;
         }
 
-        return toolTabs.get(selectedIndex);
+        return tabs.get(selectedIndex);
     }
 
-    public void insert(final ToolTab tab)
+    public void insert(final Tab tab)
     {
         WrkFoo.assertIsEDT();
 
@@ -78,18 +78,18 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         add(tab, index);
     }
 
-    public void add(final ToolTab tab)
+    public void add(final Tab tab)
     {
         WrkFoo.assertIsEDT();
 
-        add(tab, toolTabs.size());
+        add(tab, tabs.size());
     }
 
-    public void add(final ToolTab tab, int position)
+    public void add(final Tab tab, int position)
     {
         WrkFoo.assertIsEDT();
 
-        toolTabs.add(position, tab);
+        tabs.add(position, tab);
 
         JLabel tabLabel = new JLabel(tab.getTitle());
         tabLabel.setIcon(tab.getTool().getIcon());
@@ -107,9 +107,9 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         TabNotifier.fireAttached(tab);
     }
 
-    public void removeTab(ToolTab tab)
+    public void removeTab(Tab tab)
     {
-        int index = toolTabs.indexOf(tab);
+        int index = tabs.indexOf(tab);
         if (index >= 0) {
             removeTabAt(index);
         }
@@ -123,7 +123,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         // change of selected tab will happen while we are in an inconsistent state.
         if ( index == selectedIndex) {
             int newSelected = index -1;
-            if ( toolTabs.size() <= 1 ) {
+            if ( tabs.size() <= 1 ) {
                 newSelected = -1;
             } else if ( newSelected < 0) {
                 newSelected = 0;
@@ -131,10 +131,10 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
             setSelectedIndex(newSelected);
         }
 
-        ToolTab tab = toolTabs.get(index);
+        Tab tab = tabs.get(index);
         TabNotifier.fireDetaching(tab);
 
-        toolTabs.remove(index);
+        tabs.remove(index);
         tabbedPane.removeTabAt(index);
 
         tab.setMainTabs(null);
@@ -190,7 +190,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         {
             super();
             this.tabIndex = tabIndex;
-            ToolTab tab = getToolTab(tabIndex);
+            Tab tab = getTab(tabIndex);
 
             title.setDefaultValue(tab.getTitleTemplate());
             shortcut.setDefaultValue(tab.getShortcut());
@@ -201,7 +201,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         @Override
         public void body()
         {
-            ToolTab tab = getToolTab(tabIndex);
+            Tab tab = getTab(tabIndex);
 
             tab.setTitleTemplate(title.getValue());
             tab.setShortcut(shortcut.getValue());
@@ -210,11 +210,11 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         }
     }
 
-    void updateTitle(ToolTab tab)
+    void updateTitle(Tab tab)
     {
         WrkFoo.assertIsEDT();
 
-        int index = toolTabs.indexOf(tab);
+        int index = tabs.indexOf(tab);
         if (index >= 0) {
             String title = tab.getTitle();
             Icon icon = tab.getTool().getIcon();
@@ -225,11 +225,11 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         }
     }
 
-    public ToolTab getToolTab(int index)
+    public Tab getTab(int index)
     {
         WrkFoo.assertIsEDT();
 
-        return this.toolTabs.get(index);
+        return this.tabs.get(index);
     }
 
     /**
@@ -239,7 +239,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
     public void stateChanged(ChangeEvent e)
     {
         if (selectedIndex >= 0) {
-            TabNotifier.fireDeselecting(getToolTab(selectedIndex));
+            TabNotifier.fireDeselecting(getTab(selectedIndex));
         }
 
         selectedIndex = tabbedPane.getSelectedIndex();
@@ -258,12 +258,12 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
         tabbedPane.setSelectedIndex(i);
     }
 
-    public void setSelectedToolTab(ToolTab tab)
+    public void setSelectedTab(Tab tab)
     {
         WrkFoo.assertIsEDT();
 
         for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            if (this.toolTabs.get(i) == tab) {
+            if (this.tabs.get(i) == tab) {
                 setSelectedIndex(i);
                 return;
             }
@@ -278,9 +278,9 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
     }
 
     @Override
-    public Iterator<ToolTab> iterator()
+    public Iterator<Tab> iterator()
     {
-        return toolTabs.iterator();
+        return tabs.iterator();
     }
 
     public void nextTab()
@@ -337,7 +337,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
                 return;
             }
 
-            ToolTab tab = getToolTab(draggedTabIndex);
+            Tab tab = getTab(draggedTabIndex);
 
             if (tab == null) {
                 draggedTabIndex = -1;
@@ -349,13 +349,13 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
             if (destinationWindow == null) {
                 // Tear off the tab into a new MainWindow
 
-                if (toolTabs.size() > 1) {
+                if (tabs.size() > 1) {
                     removeTabAt(draggedTabIndex);
 
                     MainWindow newWindow = new MainWindow();
                     tool.go();
 
-                    ToolTab newTab = newWindow.addTab(tool);
+                    Tab newTab = newWindow.addTab(tool);
 
                     newTab.setTitleTemplate(tab.getTitleTemplate());
                     newTab.setShortcut(tab.getShortcut());
@@ -368,13 +368,13 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
 
                 TopLevel currentMainWindow = tool.getToolPanel().getTopLevel();
                 removeTabAt(draggedTabIndex);
-                ToolTab newTab = destinationWindow.addTab(tool);
+                Tab newTab = destinationWindow.addTab(tool);
 
                 newTab.setTitleTemplate(tab.getTitleTemplate());
                 newTab.setShortcut(tab.getShortcut());
 
                 // Current window has no more tabs, so close it.
-                if (toolTabs.size() == 0) {
+                if (tabs.size() == 0) {
                     currentMainWindow.setVisible(false);
                 }
             }
@@ -399,7 +399,7 @@ public class MainTabs implements Iterable<ToolTab>, ChangeListener
                 boolean isForwardDrag = targetTabIndex > draggedTabIndex;
                 int newIndex = draggedTabIndex + (isForwardDrag ? 1 : -1);
 
-                ToolTab tab = getToolTab(draggedTabIndex);
+                Tab tab = getTab(draggedTabIndex);
                 removeTabAt(draggedTabIndex);
                 add(tab, newIndex);
 

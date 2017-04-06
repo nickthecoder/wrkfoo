@@ -29,7 +29,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
 {
     private JPanel panel;
 
-    private ToolTab toolTab;
+    private Tab tab;
 
     private Tool<?> tool;
 
@@ -168,23 +168,23 @@ public class RealToolPanel implements ToolPanel, TaskListener
     }
 
     @Override
-    public void attachTo(ToolTab tab)
+    public void attachTo(Tab tab)
     {
-        assert (this.toolTab == null);
+        assert (this.tab == null);
 
-        this.toolTab = tab;
+        this.tab = tab;
     }
 
     @Override
     public void detach()
     {
-        this.toolTab = null;
+        this.tab = null;
     }
 
     @Override
-    public ToolTab getToolTab()
+    public Tab getTab()
     {
-        return toolTab;
+        return tab;
     }
 
     public void onCyclePane()
@@ -226,7 +226,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
     @Override
     public void go()
     {
-        tool.getToolTab().go(tool);
+        tool.getTab().go(tool);
     }
 
     public void stop()

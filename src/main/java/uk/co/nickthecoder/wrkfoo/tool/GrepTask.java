@@ -60,6 +60,8 @@ public class GrepTask extends GenericFileTask<GrepRow>
     @Override
     public Exec getExec()
     {
+        System.out.println( " Grep " + regex.getRegex() );
+        
         Exec exec = new Exec("grep", "-rHsn" + type.getValue(),
             invertResults.getValue() ? "-L" : null,
             matchCase.getValue() ? null : "-i",
@@ -71,7 +73,7 @@ public class GrepTask extends GenericFileTask<GrepRow>
             exec.add("" + maxMatches.getValue());
         }
 
-        exec.add(regex.getValue());
+        exec.add(regex.getRegex());
         exec.add(".");
 
         return exec;

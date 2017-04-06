@@ -56,7 +56,7 @@ public class TabNotifier
         }
     }
 
-    public static void fireAttached(final ToolTab tab)
+    public static void fireAttached(final Tab tab)
     {
         nowOrLater(new Runnable()
         {
@@ -69,7 +69,7 @@ public class TabNotifier
         });
     }
 
-    public static void fireDetaching(final ToolTab tab)
+    public static void fireDetaching(final Tab tab)
     {
         nowOrLater(new Runnable()
         {
@@ -82,7 +82,7 @@ public class TabNotifier
         });
     }
 
-    public static void fireSelected(final ToolTab tab)
+    public static void fireSelected(final Tab tab)
     {
         nowOrLater(new Runnable()
         {
@@ -95,7 +95,7 @@ public class TabNotifier
         });
     }
 
-    public static void fireDeselecting(final ToolTab tab)
+    public static void fireDeselecting(final Tab tab)
     {
         nowOrLater(new Runnable()
         {
@@ -108,7 +108,7 @@ public class TabNotifier
         });
     }
 
-    public static void fireChangedTitle(final ToolTab tab)
+    public static void fireChangedTitle(final Tab tab)
     {
         nowOrLater(new Runnable()
         {

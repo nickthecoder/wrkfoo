@@ -82,7 +82,7 @@ public final class ActionShortcuts
         put("toolpanel.go", "ENTER");
         put("toolpanel.stop", "ctrl+ESCAPE");
 
-        // ToolTab
+        // Tab
         put("undoTool", "alt LEFT");
         put("redoTool", "alt RIGHT");
 

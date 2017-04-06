@@ -104,7 +104,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         return new Dimension(1000, 600);
     }
 
-    public ToolTab getCurrentTab()
+    public Tab getCurrentTab()
     {
         return mainTabs.getSelectedTab();
     }
@@ -168,9 +168,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         });
     }
 
-    public ToolTab insertTab(final Tool<?> tool, boolean prompt)
+    public Tab insertTab(final Tool<?> tool, boolean prompt)
     {
-        ToolTab tab = new ToolTab(tool);
+        Tab tab = new Tab(tool);
 
         mainTabs.insert(tab);
 
@@ -186,9 +186,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         return tab;
     }
 
-    public ToolTab addTab(Tool<?> tool)
+    public Tab addTab(Tool<?> tool)
     {
-        ToolTab tab = new ToolTab(tool);
+        Tab tab = new Tab(tool);
 
         mainTabs.add(tab);
 
@@ -242,7 +242,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         String title = "wrkfoo";
 
-        ToolTab tab = getCurrentTab();
+        Tab tab = getCurrentTab();
         if (tab != null) {
 
             Tool<?> tool = tab.getTool();
@@ -265,7 +265,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
         WrkFoo.assertIsEDT();
 
-        ToolTab tab = getCurrentTab();
+        Tab tab = getCurrentTab();
         if ((tab != null) && (tab.getTool() == changedTool)) {
             if (running) {
                 setMessage("Running");
@@ -275,9 +275,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         }
     }
 
-    ToolTab getCurrentOrNewTab()
+    Tab getCurrentOrNewTab()
     {
-        ToolTab tab = getCurrentTab();
+        Tab tab = getCurrentTab();
         if (tab == null) {
             NullTool tool = new NullTool();
             tab = addTab(tool);
@@ -341,17 +341,17 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     }
 
     @Override
-    public void attachedTab(ToolTab tab)
+    public void attachedTab(Tab tab)
     {
     }
 
     @Override
-    public void detachingTab(ToolTab tab)
+    public void detachingTab(Tab tab)
     {
     }
 
     @Override
-    public void selectedTab(ToolTab tab)
+    public void selectedTab(Tab tab)
     {
         if (tab.getTool().getToolPanel().getTopLevel() == this) {
             updateTitle();
@@ -359,12 +359,12 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     }
 
     @Override
-    public void deselectingTab(ToolTab tab)
+    public void deselectingTab(Tab tab)
     {
     }
 
     @Override
-    public void changedTitle(ToolTab tab)
+    public void changedTitle(Tab tab)
     {
         if (tab.getTool().getToolPanel().getTopLevel() == this) {
             updateTitle();

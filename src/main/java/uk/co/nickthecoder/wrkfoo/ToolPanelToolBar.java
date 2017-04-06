@@ -218,17 +218,17 @@ public class ToolPanelToolBar implements TaskListener
     public void onHome()
     {
         Home tool = new Home();
-        toolPanel.getToolTab().go(tool);
+        toolPanel.getTab().go(tool);
     }
 
     public void onBack()
     {
-        toolPanel.getToolTab().onUndoTool();
+        toolPanel.getTab().onUndoTool();
     }
 
     public void onForward()
     {
-        toolPanel.getToolTab().onRedoTool();
+        toolPanel.getTab().onRedoTool();
     }
 
     public void onExportTable()

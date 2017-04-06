@@ -41,7 +41,7 @@ public class MainWindowEvents
 
     public void onDuplicateTab()
     {
-        ToolTab tab = mainWindow.getCurrentTab();
+        Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
             Tool<?> copy = tab.getTool().duplicate();
             mainWindow.addTab(copy);
@@ -96,7 +96,7 @@ public class MainWindowEvents
 
     public void onJumpToResults()
     {
-        ToolTab tab = mainWindow.getCurrentTab();
+        Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().showLeft();
             Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel().getComponent(), 8);
@@ -105,7 +105,7 @@ public class MainWindowEvents
 
     public void onJumpToParameters()
     {
-        ToolTab tab = mainWindow.getCurrentTab();
+        Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
             tab.getTool().getToolPanel().getSplitPane().showRight();
             Focuser.focusLater("MainWindow jumpToParameters", tab.getTool().getToolPanel().getParametersPanel(), 8);

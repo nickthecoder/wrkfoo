@@ -21,7 +21,7 @@ import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
  * forwards similar to web browser's back and forward buttons.
  * 
  */
-public class ToolTab
+public class Tab
 {
     private MainTabs mainTabs;
 
@@ -35,7 +35,7 @@ public class ToolTab
 
     private String shortcut;
 
-    public ToolTab(Tool<?> tool)
+    public Tab(Tool<?> tool)
     {
         this.tool = tool;
         panel = new JPanel();
@@ -63,14 +63,14 @@ public class ToolTab
         ActionMap actionMap = getMainTabs().getComponent().getActionMap();
 
         if (shortcut != null) {
-            String actionMapKey = "selectToolTab-" + shortcut;
+            String actionMapKey = "selectTab-" + shortcut;
             KeyStroke keyStroke = KeyStroke.getKeyStroke(shortcut);
             inputMap.remove(keyStroke);
             actionMap.remove(actionMapKey);
         }
 
         shortcut = value;
-        String actionMapKey = "selectToolTab-" + shortcut;
+        String actionMapKey = "selectTab-" + shortcut;
 
         if (!Util.empty(shortcut)) {
 
@@ -83,7 +83,7 @@ public class ToolTab
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    getMainTabs().setSelectedToolTab(ToolTab.this);
+                    getMainTabs().setSelectedTab(Tab.this);
                 }
             });
         }
@@ -157,7 +157,7 @@ public class ToolTab
 
     public void select()
     {
-        getMainTabs().setSelectedToolTab(this);
+        getMainTabs().setSelectedTab(this);
     }
 
     public void onUndoTool()

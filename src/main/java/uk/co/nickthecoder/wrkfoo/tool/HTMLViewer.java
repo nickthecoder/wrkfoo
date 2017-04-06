@@ -97,7 +97,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
         if (docTitle == null) {
             docTitle = "";
         }
-        TabNotifier.fireChangedTitle(getToolTab());
+        TabNotifier.fireChangedTitle(getTab());
     }
 
     private void changedAddress(String address)
@@ -110,7 +110,7 @@ public class HTMLViewer extends AbstractUnthreadedTool<HTMLResultsPanel, HTMLVie
             return;
         }
         task.address.setValue(address);
-        this.getToolTab().pushHistory();
+        this.getTab().pushHistory();
     }
 
     public class HTMLResultsPanel extends PanelResults

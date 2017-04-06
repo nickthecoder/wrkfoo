@@ -50,9 +50,9 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     }
 
     @Override
-    public ToolTab getToolTab()
+    public Tab getTab()
     {
-        return getToolPanel().getToolTab();
+        return getToolPanel().getTab();
     }
 
     /**

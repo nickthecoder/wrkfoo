@@ -1,7 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
 /**
- * Notified when a ToolTab changes state; when it is attached, detached etc.
+ * Notified when a {@link Tab} changes state; when it is attached, detached etc.
  */
 public interface TabListener
 {
@@ -10,28 +10,28 @@ public interface TabListener
      * 
      * @param tab
      */
-    public void attachedTab(ToolTab tab);
+    public void attachedTab(Tab tab);
 
     /**
      * Called just BEFORE a tab will be removed from the MainTabs
      * 
      * @param tab
      */
-    public void detachingTab(ToolTab tab);
+    public void detachingTab(Tab tab);
 
     /**
      * Called AFTER a tab has been made the currently selected tab in the MainTabs
      * 
      * @param tab
      */
-    public void selectedTab(ToolTab tab);
+    public void selectedTab(Tab tab);
 
     /**
      * Called just before a tab will no longer be the currently selected tab in the MainTabs
      * 
      * @param tab
      */
-    public void deselectingTab(ToolTab tab);
+    public void deselectingTab(Tab tab);
 
     /**
      * Called when a Tool changes its title (long or short), so that the MainWindow and the MainTabs can
@@ -39,5 +39,5 @@ public interface TabListener
      * 
      * @param tab
      */
-    public void changedTitle(ToolTab tab);
+    public void changedTitle(Tab tab);
 }

@@ -33,8 +33,8 @@ public class Project
     public Project(MainWindow mainWindow)
     {
         tabs = new ArrayList<>();
-        for (ToolTab toolTab : mainWindow.mainTabs) {
-            Tool<?> tool = toolTab.getTool();
+        for (Tab tab : mainWindow.mainTabs) {
+            Tool<?> tool = tab.getTool();
 
             TabData tabData = new TabData(tool);
             tabs.add(tabData);
@@ -101,7 +101,7 @@ public class Project
             }
             mainWindow.addTab(tool);
             String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
-            ToolTab tab = tool.getToolTab();
+            Tab tab = tool.getTab();
             tab.setTitleTemplate(tt);
             tab.setShortcut(tabData.shortcut);
             // We added the tab before giving it its titleTemplate, so now we need to update it.
@@ -126,8 +126,8 @@ public class Project
 
         public TabData(Tool<?> tool)
         {
-            titleTemplate = tool.getToolTab().getTitleTemplate();
-            shortcut = tool.getToolTab().getShortcut();
+            titleTemplate = tool.getTab().getTitleTemplate();
+            shortcut = tool.getTab().getShortcut();
 
             creationString = tool.getCreationString();
             parameters = new HashMap<>();

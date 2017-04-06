@@ -26,7 +26,7 @@ import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabListener;
 import uk.co.nickthecoder.wrkfoo.TabNotifier;
-import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
@@ -228,12 +228,12 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
-    public void attachedTab(ToolTab tab)
+    public void attachedTab(Tab tab)
     {
     }
 
     @Override
-    public void detachingTab(ToolTab tab)
+    public void detachingTab(Tab tab)
     {
         if (tab.getTool() == this) {
 
@@ -251,17 +251,17 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
-    public void selectedTab(ToolTab tab)
+    public void selectedTab(Tab tab)
     {
     }
 
     @Override
-    public void deselectingTab(ToolTab tab)
+    public void deselectingTab(Tab tab)
     {
     }
 
     @Override
-    public void changedTitle(ToolTab tab)
+    public void changedTitle(Tab tab)
     {
     }
     
@@ -272,7 +272,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         {
             public void run()
             {
-                ToolTab tab = getToolTab();
+                Tab tab = getTab();
                 if (tab == null) {
                     return;
                 }
@@ -282,7 +282,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
                 }
 
                 if (task.autoClose.getValue()) {
-                    tab.getMainTabs().removeTab(getToolTab());
+                    tab.getMainTabs().removeTab(getTab());
                 }
             }
         });

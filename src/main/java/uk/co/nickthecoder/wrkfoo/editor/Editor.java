@@ -10,7 +10,7 @@ import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.TabNotifier;
-import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.editor.Editor.EditorTask;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -138,7 +138,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
     {
         if (editorPanel.getEditorPane().isDirty() != wasDirty) {
             wasDirty = editorPanel.getEditorPane().isDirty();
-            TabNotifier.fireChangedTitle(getToolTab());
+            TabNotifier.fireChangedTitle(getTab());
         }
     }
 
@@ -155,7 +155,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
 
         TopLevel topLevel = this.getToolPanel().getTopLevel();
 
-        ToolTab newTab = topLevel.insertTab(newEditor, true);
+        Tab newTab = topLevel.insertTab(newEditor, true);
         newTab.select();
     }
 

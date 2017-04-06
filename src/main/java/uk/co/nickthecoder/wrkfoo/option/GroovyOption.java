@@ -11,7 +11,7 @@ import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
-import uk.co.nickthecoder.wrkfoo.ToolTab;
+import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
@@ -71,7 +71,7 @@ public class GroovyOption extends AbstractOption
 
     private void privateRunOption(Tool<?> currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)
     {
-        ToolTab tab = currentTool.getToolTab();
+        Tab tab = currentTool.getTab();
 
         openNewTab |= this.getNewTab();
         prompt |= this.getPrompt();
@@ -92,7 +92,7 @@ public class GroovyOption extends AbstractOption
                 }
 
                 TopLevel topLevel = currentTool.getToolPanel().getTopLevel();
-                ToolTab newTab = topLevel.insertTab(newTool, prompt);
+                Tab newTab = topLevel.insertTab(newTool, prompt);
                 newTab.select();
 
             } else {

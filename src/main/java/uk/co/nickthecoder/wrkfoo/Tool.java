@@ -36,7 +36,7 @@ public interface Tool<S extends Results>
 
     public ToolPanel getToolPanel();
 
-    public ToolTab getToolTab();
+    public Tab getTab();
 
     public boolean isRerunnable();
 

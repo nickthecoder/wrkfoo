@@ -7,27 +7,27 @@ public class TabAdater implements TabListener
 {
 
     @Override
-    public void attachedTab(ToolTab tab)
+    public void attachedTab(Tab tab)
     {
     }
 
     @Override
-    public void detachingTab(ToolTab tab)
+    public void detachingTab(Tab tab)
     {
     }
 
     @Override
-    public void selectedTab(ToolTab tab)
+    public void selectedTab(Tab tab)
     {
     }
 
     @Override
-    public void deselectingTab(ToolTab tab)
+    public void deselectingTab(Tab tab)
     {
     }
 
     @Override
-    public void changedTitle(ToolTab tab)
+    public void changedTitle(Tab tab)
     {
     }
 

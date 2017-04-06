@@ -1,7 +1,6 @@
 Current Task
 ============
 
-
 Rename ToolTab to Tab
 
 Give ToolTab (aka Tab) a SplitPane and TWO ToolPanels, for split view

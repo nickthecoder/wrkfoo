@@ -22,9 +22,9 @@ public interface TopLevel extends ExceptionHandler
         return (TopLevel) window;
     }
     
-    public ToolTab insertTab(Tool<?> tool, boolean prompt);
+    public Tab insertTab(Tool<?> tool, boolean prompt);
 
-    public ToolTab addTab(Tool<?> tool);
+    public Tab addTab(Tool<?> tool);
 
     public void setVisible(boolean value);
 }
