@@ -119,7 +119,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").buildButton());
         toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
-        toolBar.add(builder.name("toggleSplitView").tooltip("Split / Unsplit").buildButton());
+        toolBar.add(builder.name("splitHorizontal").tooltip("Split Horizontal").buildButton());
+        toolBar.add(builder.name("splitVertical").tooltip("Split Vertical").buildButton());
+        toolBar.add(builder.name("unsplit").tooltip("Un-Split").buildButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
         toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
         toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());

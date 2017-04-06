@@ -51,15 +51,20 @@ public class MainWindowEvents
         }
     }
 
-    public void onToggleSplitView()
+    public void onSplitHorizontal()
+    {
+        mainWindow.getCurrentTab().split(false);
+    }
+
+    public void onSplitVertical()
+    {
+        mainWindow.getCurrentTab().split(true);
+    }
+
+    public void onUnsplit()
     {
         Tab tab = mainWindow.getCurrentTab();
-        if (tab.getOtherHalfTab() == null) {
-            Tool<?> copiedTool = tab.getMainHalfTab().getTool().splitTool();
-            tab.split(copiedTool);
-        } else {
-            tab.unsplit(tab.getMainHalfTab());
-        }
+        tab.unsplit(tab.getMainHalfTab());
     }
 
     public void onCloseTab()

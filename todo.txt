@@ -1,12 +1,12 @@
 Current Task
 ============
 
+ctrl+F3 to toggleSplit VERTICAL
+
 Closing half tab termainl unlistens twice
     Add warning if unlistening to something that is not in the list.
 
 Closing a normal Terminal throws
-
-Maybe F3 is toggleSplit HORIZONTAL, and ctrl+F3 is toggleSplit VERTICAL
 
 Unsplitting the right half to detach the left half.
 

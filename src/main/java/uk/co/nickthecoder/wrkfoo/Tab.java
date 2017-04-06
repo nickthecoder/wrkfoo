@@ -8,6 +8,7 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 import uk.co.nickthecoder.jguifier.util.Util;
@@ -71,12 +72,16 @@ public class Tab
         return otherHalfTab;
     }
 
-    public void split(Tool<?> tool)
+    public void split(boolean vertical)
     {
-        if (otherHalfTab != null) {
-            otherHalfTab.detach();
-        }
+        splitPane.setOrientation(vertical ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
 
+        if ( otherHalfTab != null) {
+            return;
+        }
+        
+        Tool<?> tool = getMainHalfTab().getTool().splitTool(vertical);
+        
         otherHalfTab = new HalfTab(this, tool);
         otherHalfTab.attach(otherHalfTab.getTool());
         otherHalfTab.go(tool);

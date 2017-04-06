@@ -37,7 +37,9 @@ public final class ActionShortcuts
         put("quit", "ctrl+Q");
         put("newTab", "ctrl T");
         put("duplicateTab", "");
-        put("toggleSplitView", "F3");
+        put("splitHorizontal", "F3");
+        put("splitVertical", "ctrl+F3");
+        put("unsplit", "shift+F3");
         put("closeTab", "ctrl+W");
         put("saveProject", "");
         put("openProject", "");

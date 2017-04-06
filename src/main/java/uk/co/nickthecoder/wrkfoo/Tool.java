@@ -60,7 +60,7 @@ public interface Tool<S extends Results>
      * 
      * @return The new Tool which will appear on the right split pane.
      */
-    public Tool<?> splitTool();
+    public Tool<?> splitTool(boolean vertical);
 
     /**
      * A String which is used to create a new instance of this Tool. For java classes, this is simply
