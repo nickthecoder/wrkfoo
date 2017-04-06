@@ -92,7 +92,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
         tabs.add(position, tab);
 
         JLabel tabLabel = new JLabel(tab.getTitle());
-        tabLabel.setIcon(tab.getTool().getIcon());
+        tabLabel.setIcon(tab.getHalfTab().getTool().getIcon());
         // tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
         tabLabel.setHorizontalAlignment(JTabbedPane.LEFT);
         tabLabel.setPreferredSize(new Dimension(150, tabLabel.getPreferredSize().height));
@@ -217,7 +217,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
         int index = tabs.indexOf(tab);
         if (index >= 0) {
             String title = tab.getTitle();
-            Icon icon = tab.getTool().getIcon();
+            Icon icon = tab.getHalfTab().getTool().getIcon();
 
             JLabel label = (JLabel) tabbedPane.getTabComponentAt(index);
             label.setText(title);
@@ -246,7 +246,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
 
         if (selectedIndex >= 0) {
             Focuser.focusLater("MainTabs.selected. Results",
-                getSelectedTab().getTool().getResultsPanel().getFocusComponent(), 4);
+                getSelectedTab().getHalfTab().getTool().getResultsPanel().getFocusComponent(), 4);
 
             TabNotifier.fireSelected(getSelectedTab());
         }
@@ -343,7 +343,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
                 draggedTabIndex = -1;
                 return;
             }
-            Tool<?> tool = tab.getTool();
+            Tool<?> tool = tab.getHalfTab().getTool();
 
             TopLevel destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {

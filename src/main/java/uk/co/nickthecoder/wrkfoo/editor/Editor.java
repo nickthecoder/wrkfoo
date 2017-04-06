@@ -138,7 +138,7 @@ public class Editor extends AbstractUnthreadedTool<EditorPanel, EditorTask>
     {
         if (editorPanel.getEditorPane().isDirty() != wasDirty) {
             wasDirty = editorPanel.getEditorPane().isDirty();
-            TabNotifier.fireChangedTitle(getTab());
+            TabNotifier.fireChangedTitle(getHalfTab().getTab());
         }
     }
 

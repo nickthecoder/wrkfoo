@@ -50,9 +50,9 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     }
 
     @Override
-    public Tab getTab()
+    public HalfTab getHalfTab()
     {
-        return getToolPanel().getTab();
+        return getToolPanel().getHalfTab();
     }
 
     /**

@@ -74,7 +74,7 @@ public class MergedToolPanel implements ToolPanel
     }
 
     @Override
-    public void attachTo(Tab tab)
+    public void attachTo(HalfTab halfTab)
     {
     }
 
@@ -84,9 +84,9 @@ public class MergedToolPanel implements ToolPanel
     }
 
     @Override
-    public Tab getTab()
+    public HalfTab getHalfTab()
     {
-        return other.getTab();
+        return other.getHalfTab();
     }
 
 }

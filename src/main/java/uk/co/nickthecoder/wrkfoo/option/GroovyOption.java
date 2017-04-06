@@ -9,9 +9,10 @@ import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.TaskAdaptor;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Command;
+import uk.co.nickthecoder.wrkfoo.HalfTab;
+import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TableTool;
 import uk.co.nickthecoder.wrkfoo.Tool;
-import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal;
 import uk.co.nickthecoder.wrkfoo.util.OSHelper;
@@ -71,7 +72,7 @@ public class GroovyOption extends AbstractOption
 
     private void privateRunOption(Tool<?> currentTool, Object rowOrRows, boolean openNewTab, boolean prompt)
     {
-        Tab tab = currentTool.getTab();
+        HalfTab halfTab = currentTool.getHalfTab();
 
         openNewTab |= this.getNewTab();
         prompt |= this.getPrompt();
@@ -96,7 +97,7 @@ public class GroovyOption extends AbstractOption
                 newTab.select();
 
             } else {
-                tab.goPrompt(newTool, prompt);
+                halfTab.goPrompt(newTool, prompt);
             }
 
         } else if (result instanceof Task) {

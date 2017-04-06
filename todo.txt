@@ -1,11 +1,11 @@
 Current Task
 ============
 
-Rename ToolTab to Tab
-
-Give ToolTab (aka Tab) a SplitPane and TWO ToolPanels, for split view
+Give Tab a SplitPane and TWO HalfTabs each containing a ToolPanel
     Saving a project needs to save both
     Tool's history is no longer part of the Tab - may need a new class?
+
+Terminal is auto-closing a whole tab!
 
 Next Tasks
 ==========

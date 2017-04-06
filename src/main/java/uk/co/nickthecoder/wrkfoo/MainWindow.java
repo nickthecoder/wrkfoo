@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
@@ -174,13 +175,13 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         mainTabs.insert(tab);
 
-        tab.postCreate();
+        tab.getHalfTab().postCreate();
         if (prompt) {
             tool.getToolPanel().getSplitPane().showRight();
             tool.getToolPanel().getSplitPane().getRightComponent();
 
         } else {
-            tab.go(tool);
+            tab.getHalfTab().go(tool);
         }
 
         return tab;
@@ -192,8 +193,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         mainTabs.add(tab);
 
-        tab.postCreate();
-        tab.go(tool);
+        tab.getHalfTab().postCreate();
+        tab.getHalfTab().go(tool);
 
         return tab;
     }
@@ -245,7 +246,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         Tab tab = getCurrentTab();
         if (tab != null) {
 
-            Tool<?> tool = tab.getTool();
+            Tool<?> tool = tab.getHalfTab().getTool();
             title = tool.getLongTitle();
 
             if (tool.getTask().isRunning()) {
@@ -266,7 +267,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         WrkFoo.assertIsEDT();
 
         Tab tab = getCurrentTab();
-        if ((tab != null) && (tab.getTool() == changedTool)) {
+        if ((tab != null) && (tab.getHalfTab().getTool() == changedTool)) {
             if (running) {
                 setMessage("Running");
             } else {
@@ -350,10 +351,14 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
     }
 
+    private boolean partOfMe( Tab tab )
+    {
+        return SwingUtilities.windowForComponent(tab.getPanel()) == this;
+    }
     @Override
     public void selectedTab(Tab tab)
     {
-        if (tab.getTool().getToolPanel().getTopLevel() == this) {
+        if (partOfMe(tab)) {
             updateTitle();
         }
     }
@@ -366,7 +371,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     @Override
     public void changedTitle(Tab tab)
     {
-        if (tab.getTool().getToolPanel().getTopLevel() == this) {
+        if (partOfMe(tab)) {
             updateTitle();
             mainTabs.updateTitle(tab);
         }

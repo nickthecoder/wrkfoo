@@ -23,11 +23,11 @@ public interface ToolPanel
 
     public TopLevel getTopLevel();
 
-    public void attachTo(Tab tab);
+    public void attachTo(HalfTab halfTab);
 
     public void detach();
 
-    public Tab getTab();
+    public HalfTab getHalfTab();
 
     public ToolPanelToolBar getToolBar();
 

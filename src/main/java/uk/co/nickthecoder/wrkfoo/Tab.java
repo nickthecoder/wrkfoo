@@ -1,6 +1,5 @@
 package uk.co.nickthecoder.wrkfoo;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -10,9 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 /**
  * The isn't a GUI component, it only hold the data associated with one of the tabs in the {@link MainTabs}.
@@ -25,22 +22,20 @@ public class Tab
 {
     private MainTabs mainTabs;
 
-    private Tool<?> tool;
-
-    private History history;
-
-    private JPanel panel;
-
     private String titleTemplate = "%t";
 
     private String shortcut;
 
+    private HalfTab halfTab;
+
     public Tab(Tool<?> tool)
     {
-        this.tool = tool;
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        history = new History();
+        halfTab = new HalfTab(this, tool);
+    }
+
+    public HalfTab getHalfTab()
+    {
+        return halfTab;
     }
 
     public void setTitleTemplate(String value)
@@ -96,20 +91,12 @@ public class Tab
 
     public String getTitle()
     {
-        return titleTemplate.replaceAll("%t", tool.getShortTitle());
+        return titleTemplate.replaceAll("%t", halfTab.getTool().getShortTitle());
     }
 
     public JPanel getPanel()
     {
-        return panel;
-    }
-
-    public void postCreate()
-    {
-        ActionBuilder builder = new ActionBuilder(this).component(panel);
-
-        builder.name("undoTool").buildShortcut();
-        builder.name("redoTool").buildShortcut();
+        return halfTab.getPanel();
     }
 
     public MainTabs getMainTabs()
@@ -120,39 +107,12 @@ public class Tab
     void setMainTabs(MainTabs value)
     {
         if (value == null) {
-            detach();
+            halfTab.detach();
         }
         mainTabs = value;
         if (value != null) {
-            attach(tool);
+            halfTab.attach(halfTab.getTool());
         }
-    }
-
-    private final void attach(final Tool<?> tool)
-    {
-        this.tool = tool;
-        panel.removeAll();
-        panel.add(tool.getToolPanel().getComponent());
-        tool.getToolPanel().attachTo(this);
-    }
-
-    private void detach()
-    {
-        this.tool.getToolPanel().detach();
-        Tool<?> tool = getTool();
-        if (tool.getTask().isRunning()) {
-            tool.stop();
-        }
-    }
-
-    public Tool<?> getTool()
-    {
-        return tool;
-    }
-
-    public Task getTask()
-    {
-        return tool.getTask();
     }
 
     public void select()
@@ -160,72 +120,4 @@ public class Tab
         getMainTabs().setSelectedTab(this);
     }
 
-    public void onUndoTool()
-    {
-        if (history.canUndo()) {
-            goPrivate(history.undo(), false, false);
-        }
-    }
-
-    public void onRedoTool()
-    {
-        if (history.canRedo()) {
-            goPrivate(history.redo(), false, false);
-        }
-    }
-
-    /**
-     * Used when the Tool's task's parameters have changed without the task being re-run by the normal
-     * mechanism. Used by HTMLViewer for example when the address is changed.
-     * This allows the normal history to work.
-     */
-    public void pushHistory()
-    {
-        history.add(tool);
-    }
-
-    public void go(Tool<?> newTool)
-    {
-        goPrivate(newTool, false, true);
-    }
-
-    public void goPrompt(Tool<?> newTool, boolean prompt)
-    {
-        goPrivate(newTool, prompt, true);
-    }
-
-    private void goPrivate(Tool<?> newTool, boolean prompt, boolean updateHistory)
-    {
-        if (newTool != this.tool) {
-            detach();
-            attach(newTool);
-        }
-
-        if (updateHistory) {
-            history.add(newTool);
-        }
-
-        if (prompt) {
-
-            newTool.getToolPanel().getSplitPane().showRight();
-
-        } else {
-            if (getTool().getToolPanel().check()) {
-                // All parameters are ok, run the tool.
-
-                newTool.go();
-
-            } else {
-                // Missing/incorrect parameters. Show the parameters panel.
-                newTool.getToolPanel().getSplitPane().showRight();
-
-            }
-        }
-
-        if (mainTabs != null) {
-            TabNotifier.fireChangedTitle(this);
-        }
-
-        this.panel.repaint();
-    }
 }

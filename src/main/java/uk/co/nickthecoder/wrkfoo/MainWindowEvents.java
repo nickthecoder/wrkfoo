@@ -18,11 +18,11 @@ public class MainWindowEvents
 {
     private MainWindow mainWindow;
 
-    MainWindowEvents( MainWindow mw )
+    MainWindowEvents(MainWindow mw)
     {
         mainWindow = mw;
     }
-    
+
     public void onQuit()
     {
         // Close all of the windows, which will stop any stoppable tasks.
@@ -43,7 +43,7 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            Tool<?> copy = tab.getTool().duplicate();
+            Tool<?> copy = tab.getHalfTab().getTool().duplicate();
             mainWindow.addTab(copy);
             mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
         }
@@ -93,13 +93,13 @@ public class MainWindowEvents
         mainWindow.setVisible(false);
     }
 
-
     public void onJumpToResults()
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            tab.getTool().getToolPanel().getSplitPane().showLeft();
-            Focuser.focusLater("MainWindow jumpToResults", tab.getTool().getResultsPanel().getComponent(), 8);
+            tab.getHalfTab().getTool().getToolPanel().getSplitPane().showLeft();
+            Focuser.focusLater("MainWindow jumpToResults",
+                tab.getHalfTab().getTool().getResultsPanel().getComponent(), 8);
         }
     }
 
@@ -107,8 +107,9 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            tab.getTool().getToolPanel().getSplitPane().showRight();
-            Focuser.focusLater("MainWindow jumpToParameters", tab.getTool().getToolPanel().getParametersPanel(), 8);
+            tab.getHalfTab().getTool().getToolPanel().getSplitPane().showRight();
+            Focuser.focusLater("MainWindow jumpToParameters",
+                tab.getHalfTab().getTool().getToolPanel().getParametersPanel(), 8);
         }
     }
 
