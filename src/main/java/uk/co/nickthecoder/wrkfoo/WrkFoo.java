@@ -65,7 +65,7 @@ public class WrkFoo extends Task
             MainWindow mainWindow = new MainWindow();
 
             Home tool = new Home();
-            mainWindow.getCurrentOrNewTab().getHalfTab().go(tool);
+            mainWindow.getCurrentOrNewTab().getMainHalfTab().go(tool);
 
             mainWindow.setVisible(true);
         }

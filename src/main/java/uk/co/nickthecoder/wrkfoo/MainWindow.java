@@ -175,13 +175,12 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         mainTabs.insert(tab);
 
-        tab.getHalfTab().postCreate();
         if (prompt) {
             tool.getToolPanel().getSplitPane().showRight();
             tool.getToolPanel().getSplitPane().getRightComponent();
 
         } else {
-            tab.getHalfTab().go(tool);
+            tab.getMainHalfTab().go(tool);
         }
 
         return tab;
@@ -189,13 +188,21 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public Tab addTab(Tool<?> tool)
     {
-        Tab tab = new Tab(tool);
+        return addTab( tool, null);
+    }
+    
+    public Tab addTab(Tool<?> mainTool, Tool<?> otherTool)
+    {
+        Tab tab = new Tab(mainTool, otherTool);
 
         mainTabs.add(tab);
 
-        tab.getHalfTab().postCreate();
-        tab.getHalfTab().go(tool);
-
+        tab.getMainHalfTab().go(mainTool);
+        
+        if (otherTool!= null) {
+            tab.getOtherHalfTab().go(otherTool);
+        }
+        
         return tab;
     }
 
@@ -246,7 +253,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         Tab tab = getCurrentTab();
         if (tab != null) {
 
-            Tool<?> tool = tab.getHalfTab().getTool();
+            Tool<?> tool = tab.getMainHalfTab().getTool();
             title = tool.getLongTitle();
 
             if (tool.getTask().isRunning()) {
@@ -267,7 +274,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         WrkFoo.assertIsEDT();
 
         Tab tab = getCurrentTab();
-        if ((tab != null) && (tab.getHalfTab().getTool() == changedTool)) {
+        if ((tab != null) && (tab == changedTool.getHalfTab().getTab())) {
             if (running) {
                 setMessage("Running");
             } else {
@@ -353,7 +360,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     private boolean partOfMe( Tab tab )
     {
-        return SwingUtilities.windowForComponent(tab.getPanel()) == this;
+        return SwingUtilities.windowForComponent(tab.getComponent()) == this;
     }
     @Override
     public void selectedTab(Tab tab)

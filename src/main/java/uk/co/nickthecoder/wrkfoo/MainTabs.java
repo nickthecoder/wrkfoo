@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -92,14 +91,14 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
         tabs.add(position, tab);
 
         JLabel tabLabel = new JLabel(tab.getTitle());
-        tabLabel.setIcon(tab.getHalfTab().getTool().getIcon());
+        tabLabel.setIcon(tab.getMainHalfTab().getTool().getIcon());
         // tabLabel.setHorizontalTextPosition(SwingConstants.TRAILING); // Icon on the left
         tabLabel.setHorizontalAlignment(JTabbedPane.LEFT);
         tabLabel.setPreferredSize(new Dimension(150, tabLabel.getPreferredSize().height));
 
-        JPanel panel = tab.getPanel();
+        JComponent tabComponent = tab.getComponent();
 
-        tabbedPane.insertTab(null, null, panel, null, position);
+        tabbedPane.insertTab(null, null, tabComponent, null, position);
         tabbedPane.setTabComponentAt(position, tabLabel);
 
         tab.setMainTabs(this);
@@ -217,7 +216,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
         int index = tabs.indexOf(tab);
         if (index >= 0) {
             String title = tab.getTitle();
-            Icon icon = tab.getHalfTab().getTool().getIcon();
+            Icon icon = tab.getMainHalfTab().getTool().getIcon();
 
             JLabel label = (JLabel) tabbedPane.getTabComponentAt(index);
             label.setText(title);
@@ -246,7 +245,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
 
         if (selectedIndex >= 0) {
             Focuser.focusLater("MainTabs.selected. Results",
-                getSelectedTab().getHalfTab().getTool().getResultsPanel().getFocusComponent(), 4);
+                getSelectedTab().getMainHalfTab().getTool().getResultsPanel().getFocusComponent(), 4);
 
             TabNotifier.fireSelected(getSelectedTab());
         }
@@ -343,8 +342,10 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
                 draggedTabIndex = -1;
                 return;
             }
-            Tool<?> tool = tab.getHalfTab().getTool();
-
+            Tool<?> mainTool = tab.getMainHalfTab().getTool();
+            HalfTab otherHalf = tab.getOtherHalfTab();
+            Tool<?> otherTool = otherHalf == null ? null : otherHalf.getTool();
+            
             TopLevel destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {
                 // Tear off the tab into a new MainWindow
@@ -353,9 +354,9 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
                     removeTabAt(draggedTabIndex);
 
                     MainWindow newWindow = new MainWindow();
-                    tool.go();
+                    mainTool.go();
 
-                    Tab newTab = newWindow.addTab(tool);
+                    Tab newTab = newWindow.addTab(mainTool, otherTool);
 
                     newTab.setTitleTemplate(tab.getTitleTemplate());
                     newTab.setShortcut(tab.getShortcut());
@@ -363,12 +364,12 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
                     newWindow.setVisible(true);
                 }
 
-            } else if (destinationWindow != tool.getToolPanel().getTopLevel()) {
+            } else if (destinationWindow != mainTool.getToolPanel().getTopLevel()) {
                 // Move the tab to a different MainWindow
 
-                TopLevel currentMainWindow = tool.getToolPanel().getTopLevel();
+                TopLevel currentMainWindow = mainTool.getToolPanel().getTopLevel();
                 removeTabAt(draggedTabIndex);
-                Tab newTab = destinationWindow.addTab(tool);
+                Tab newTab = destinationWindow.addTab(mainTool);
 
                 newTab.setTitleTemplate(tab.getTitleTemplate());
                 newTab.setShortcut(tab.getShortcut());

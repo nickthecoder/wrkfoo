@@ -2,13 +2,40 @@ Current Task
 ============
 
 Give Tab a SplitPane and TWO HalfTabs each containing a ToolPanel
-    Saving a project needs to save both
-    Tool's history is no longer part of the Tab - may need a new class?
 
+    Things to check :
+        tearing a tab into a new window
+        moving tabs within the same window
+        moving tabs to another window.
+        duplicate tab
+        Save/Load a project with splits
+
+Split should be 50%
+
+Trying to split a Terminal (Git Commit) did NOTHING, but left TabListeners
+
+Editor has a minimum width, which is annoying when splitting.
+    It may have something to do with the Find toolbar
+
+Maybe F3 is toggleSplit HORIZONTAL, and ctrl+F3 is toggleSplit VERTICAL
+
+Unsplitting the right half to detach the left half.
+
+Editor should split using the SAME document.
+
+Unsplitting an Editor leaves a large space in the status bar area.
+
+WrkFBase to have "compact" BooleanParameter, which show/hides the less used columns.
+
+Is ToolPanel.postCreate needed?
+    Tool.postCreate?
+    
 Terminal is auto-closing a whole tab!
 
 Next Tasks
 ==========
+
+Right click a table heading to show/hide columns.
 
 Copy and Move and Link files using drag and drop
     Tabs can be a drop target for files if they are a directory

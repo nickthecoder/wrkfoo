@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -28,10 +29,7 @@ public class HalfTab
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
         history = new History();
-    }
 
-    public void postCreate()
-    {
         ActionBuilder builder = new ActionBuilder(this).component(panel);
 
         builder.name("undoTool").buildShortcut();
@@ -48,7 +46,7 @@ public class HalfTab
         return currentTool;
     }
 
-    public JPanel getPanel()
+    public JComponent getComponent()
     {
         return panel;
     }

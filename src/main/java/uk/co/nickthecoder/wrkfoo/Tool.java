@@ -55,6 +55,14 @@ public interface Tool<S extends Results>
     public Tool<S> duplicate();
 
     /**
+     * The tool that should appear when a split is performed.
+     * The normal behaviour is to return {@link #duplicate()}.
+     * 
+     * @return The new Tool which will appear on the right split pane.
+     */
+    public Tool<?> splitTool();
+
+    /**
      * A String which is used to create a new instance of this Tool. For java classes, this is simply
      * the fully qualified class name. For a groovy script, it is the path to the groovy file.
      */

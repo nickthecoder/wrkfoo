@@ -16,6 +16,7 @@ import com.google.gson.stream.JsonReader;
 
 import uk.co.nickthecoder.jguifier.ParameterException;
 import uk.co.nickthecoder.jguifier.ValueParameter;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
 public class Project
@@ -34,9 +35,11 @@ public class Project
     {
         tabs = new ArrayList<>();
         for (Tab tab : mainWindow.mainTabs) {
-            Tool<?> tool = tab.getHalfTab().getTool();
+            Tool<?> tool = tab.getMainHalfTab().getTool();
+            HalfTab otherHalf = tab.getOtherHalfTab();
+            Tool<?> otherTool = otherHalf == null ? null : otherHalf.getTool();
 
-            TabData tabData = new TabData(tool);
+            TabData tabData = new TabData(tool, otherTool);
             tabs.add(tabData);
         }
         width = mainWindow.getWidth();
@@ -95,11 +98,14 @@ public class Project
         mainWindow.projectFile = projectFile;
 
         for (TabData tabData : tabs) {
-            Tool<?> tool = tabData.createTool();
+            Tool<?> tool = tabData.createMainTool();
             if (tool == null) {
                 continue;
             }
-            mainWindow.addTab(tool);
+
+            Tool<?> otherTool = tabData.createOtherTool();
+            
+            mainWindow.addTab(tool, otherTool);
             String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
             Tab tab = tool.getHalfTab().getTab();
             tab.setTitleTemplate(tt);
@@ -113,18 +119,24 @@ public class Project
 
     public static class TabData
     {
-        @SerializedName(value = "creationString", alternate = { "toolClass" })
-        public String creationString;
-
-        public Map<String, String> parameters;
-        boolean showParameters = false;
         public String titleTemplate = "%t";
         public String shortcut;
 
+        @SerializedName(value = "creationString", alternate = { "toolClass" })
+        public String creationString;
+        public Map<String, String> parameters;
+        boolean showParameters = false;
         @SerializedName("optionsName")
         public String overrideOptionsName;
 
-        public TabData(Tool<?> tool)
+        @SerializedName(value = "otherCreationString")
+        public String otherCreationString;
+        public Map<String, String> otherParameters;
+        boolean otherShowParameters = false;
+        @SerializedName("otherOoptionsName")
+        public String otherOverrideOptionsName;
+
+        public TabData(Tool<?> tool, Tool<?> otherTool)
         {
             titleTemplate = tool.getHalfTab().getTab().getTitleTemplate();
             shortcut = tool.getHalfTab().getTab().getShortcut();
@@ -136,10 +148,36 @@ public class Project
             }
             showParameters = tool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
             overrideOptionsName = tool.getOverrideOptionsName();
+
+            if (otherTool != null) {
+                System.out.println( "Setting 'other' values");
+                otherCreationString = otherTool.getCreationString();
+                otherParameters = new HashMap<>();
+                for (ValueParameter<?> parameter : otherTool.getTask().valueParameters()) {
+                    otherParameters.put(parameter.getName(), parameter.getStringValue());
+                }
+                otherShowParameters = otherTool.getToolPanel().getSplitPane().getState() != HidingSplitPane.State.LEFT;
+                otherOverrideOptionsName = otherTool.getOverrideOptionsName();
+            }
+        }
+
+        public Tool<?> createMainTool()
+        {
+            return createTool(creationString, parameters, showParameters, overrideOptionsName);
+        }
+
+        public Tool<?> createOtherTool()
+        {
+            if (Util.empty(otherCreationString)) {
+                return null;
+            }
+            return createTool(otherCreationString, otherParameters, otherShowParameters, otherOverrideOptionsName);
         }
 
         @SuppressWarnings("unchecked")
-        public Tool<?> createTool()
+        private static Tool<?> createTool(
+            String creationString, Map<String, String> parameters,
+            boolean showParameters, String overrideOptionsName)
         {
             try {
                 Class<Tool<?>> klass;
@@ -168,7 +206,7 @@ public class Project
                     .setState(showParameters ? HidingSplitPane.State.BOTH : HidingSplitPane.State.LEFT);
 
                 tool.setOverrideOptionsName(overrideOptionsName);
-                
+
                 return tool;
 
             } catch (Exception e) {

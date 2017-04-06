@@ -11,6 +11,7 @@ import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.GroovyOption;
 import uk.co.nickthecoder.wrkfoo.option.Options;
 import uk.co.nickthecoder.wrkfoo.option.OptionsGroup;
+import uk.co.nickthecoder.wrkfoo.tool.Home;
 
 public abstract class AbstractTool<S extends Results, T extends Task>
     implements Tool<S>
@@ -237,5 +238,15 @@ public abstract class AbstractTool<S extends Results, T extends Task>
         }
 
         return toolPanel;
+    }
+
+    @Override
+    public Tool<?> splitTool()
+    {
+        if (this.isRerunnable()) {
+            return this.duplicate();
+        } else {
+            return new Home();
+        }
     }
 }

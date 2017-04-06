@@ -60,6 +60,8 @@ public final class ActionShortcuts
         put("forward", "alt+RIGHT");
         put("exportTable", "");
         put("jumpToNonRowOption", "F11,ctrl+alt+F12");
+        put("splitView", "F3");
+        put("unsplitView", "ctrl+F3");
 
         // MainTabs
         put("tabProperties", "ctrl+P");

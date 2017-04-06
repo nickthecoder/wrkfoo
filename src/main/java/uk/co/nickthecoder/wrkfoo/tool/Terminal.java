@@ -235,7 +235,7 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     @Override
     public void detachingTab(Tab tab)
     {
-        if (tab.getHalfTab().getTool() == this) {
+        if (tab.getMainHalfTab().getTool() == this) {
 
             TabNotifier.removeTabListener(this);
 

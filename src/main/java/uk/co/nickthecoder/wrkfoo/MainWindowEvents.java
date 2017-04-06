@@ -43,8 +43,9 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            Tool<?> copy = tab.getHalfTab().getTool().duplicate();
-            mainWindow.addTab(copy);
+            Tool<?> copyMain = tab.getMainHalfTab().getTool().duplicate();
+            Tool<?> copyOther = tab.getMainHalfTab().getTool().duplicate();
+            mainWindow.addTab(copyMain, copyOther);
             mainWindow.mainTabs.setSelectedIndex(mainWindow.mainTabs.getTabCount() - 1);
         }
     }
@@ -97,9 +98,9 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            tab.getHalfTab().getTool().getToolPanel().getSplitPane().showLeft();
+            tab.getMainHalfTab().getTool().getToolPanel().getSplitPane().showLeft();
             Focuser.focusLater("MainWindow jumpToResults",
-                tab.getHalfTab().getTool().getResultsPanel().getComponent(), 8);
+                tab.getMainHalfTab().getTool().getResultsPanel().getComponent(), 8);
         }
     }
 
@@ -107,9 +108,9 @@ public class MainWindowEvents
     {
         Tab tab = mainWindow.getCurrentTab();
         if (tab != null) {
-            tab.getHalfTab().getTool().getToolPanel().getSplitPane().showRight();
+            tab.getMainHalfTab().getTool().getToolPanel().getSplitPane().showRight();
             Focuser.focusLater("MainWindow jumpToParameters",
-                tab.getHalfTab().getTool().getToolPanel().getParametersPanel(), 8);
+                tab.getMainHalfTab().getTool().getToolPanel().getParametersPanel(), 8);
         }
     }
 

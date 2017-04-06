@@ -82,6 +82,9 @@ public class ToolPanelToolBar implements TaskListener
         toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
         toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
 
+        toolBar.add(builder.name("splitView").tooltip("Split View").buildButton());
+        toolBar.add(builder.name("unsplitView").tooltip("Unsplit").buildButton());
+
         goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
         stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
         toolBar.add(goButton);
@@ -252,6 +255,19 @@ public class ToolPanelToolBar implements TaskListener
             Stoppable s = (Stoppable) tool;
             s.stop();
         }
+    }
+
+    public void onSplitView()
+    {
+        Tab tab = toolPanel.getHalfTab().getTab();
+        Tool<?> copiedTool = toolPanel.getTool().duplicate();
+        
+        tab.split(copiedTool);
+    }
+
+    public void onUnsplitView()
+    {
+        toolPanel.getHalfTab().getTab().unsplit();
     }
 
     @Override
