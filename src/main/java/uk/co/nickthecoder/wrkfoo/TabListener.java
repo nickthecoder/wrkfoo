@@ -10,14 +10,28 @@ public interface TabListener
      * 
      * @param tab
      */
-    public void attachedTab(Tab tab);
+    public void attached(Tab tab);
 
     /**
      * Called just BEFORE a tab will be removed from the MainTabs
      * 
      * @param tab
      */
-    public void detachingTab(Tab tab);
+    public void detaching(Tab tab);
+    
+    /**
+     * Called AFTER a HalfTab has been added to the MainTabs
+     * 
+     * @param tab
+     */
+    public void attached(HalfTab halfTab);
+
+    /**
+     * Called just BEFORE a HalfTab will be removed from the MainTabs
+     * 
+     * @param tab
+     */
+    public void detaching(HalfTab halfTab);
 
     /**
      * Called AFTER a tab has been made the currently selected tab in the MainTabs

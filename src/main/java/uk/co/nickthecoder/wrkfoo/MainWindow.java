@@ -354,12 +354,22 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     }
 
     @Override
-    public void attachedTab(Tab tab)
+    public void attached(Tab tab)
     {
     }
 
     @Override
-    public void detachingTab(Tab tab)
+    public void detaching(Tab tab)
+    {
+    }
+
+    @Override
+    public void attached(HalfTab halfTab)
+    {
+    }
+
+    @Override
+    public void detaching(HalfTab halfTab)
     {
     }
 

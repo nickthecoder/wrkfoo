@@ -103,6 +103,10 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
 
         tab.setMainTabs(this);
 
+        TabNotifier.fireAttached(tab.getMainHalfTab());
+        if (tab.getOtherHalfTab() != null) {
+            TabNotifier.fireAttached(tab.getOtherHalfTab());
+        }
         TabNotifier.fireAttached(tab);
     }
 
@@ -131,6 +135,11 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
         }
 
         Tab tab = tabs.get(index);
+        
+        TabNotifier.fireDetaching(tab.getMainHalfTab());
+        if ( tab.getOtherHalfTab() != null) {
+            TabNotifier.fireDetaching(tab.getOtherHalfTab());            
+        }
         TabNotifier.fireDetaching(tab);
 
         tabs.remove(index);

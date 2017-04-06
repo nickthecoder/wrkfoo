@@ -1,12 +1,9 @@
 Current Task
 ============
 
-ctrl+F3 to toggleSplit VERTICAL
+Cannot show parameters of the main half when split
 
-Closing half tab termainl unlistens twice
-    Add warning if unlistening to something that is not in the list.
-
-Closing a normal Terminal throws
+TabListener only does Tabs, not HalfTabs
 
 Unsplitting the right half to detach the left half.
 

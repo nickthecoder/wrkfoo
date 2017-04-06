@@ -34,6 +34,9 @@ public class TabNotifier
 
     public static void removeTabListener(TabListener tl)
     {
+        if ( !tabListeners.contains(tl)) {
+            System.err.println( "Warning: Removing TabListener that does not exist.");
+        }
         tabListeners.remove(tl);
     }
 
@@ -63,7 +66,7 @@ public class TabNotifier
             public void run()
             {
                 for (TabListener tl : listeners()) {
-                    tl.attachedTab(tab);
+                    tl.attached(tab);
                 }
             }
         });
@@ -76,7 +79,33 @@ public class TabNotifier
             public void run()
             {
                 for (TabListener tl : listeners()) {
-                    tl.detachingTab(tab);
+                    tl.detaching(tab);
+                }
+            }
+        });
+    }
+
+    public static void fireAttached(final HalfTab halfTab)
+    {
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.attached(halfTab);
+                }
+            }
+        });
+    }
+
+    public static void fireDetaching(final HalfTab halfTab)
+    {
+        nowOrLater(new Runnable()
+        {
+            public void run()
+            {
+                for (TabListener tl : listeners()) {
+                    tl.detaching(halfTab);
                 }
             }
         });

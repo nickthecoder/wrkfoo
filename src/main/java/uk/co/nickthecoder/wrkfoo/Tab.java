@@ -72,16 +72,26 @@ public class Tab
         return otherHalfTab;
     }
 
+    public void removeHalfTab(HalfTab half)
+    {
+        assert (half.getTab() == this);
+        if (otherHalfTab == null) {
+            getMainTabs().removeTab(this);
+        } else {
+            unsplit(half);
+        }
+    }
+
     public void split(boolean vertical)
     {
         splitPane.setOrientation(vertical ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
 
-        if ( otherHalfTab != null) {
+        if (otherHalfTab != null) {
             return;
         }
-        
+
         Tool<?> tool = getMainHalfTab().getTool().splitTool(vertical);
-        
+
         otherHalfTab = new HalfTab(this, tool);
         otherHalfTab.attach(otherHalfTab.getTool());
         otherHalfTab.go(tool);
@@ -91,6 +101,8 @@ public class Tab
 
         mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
         otherHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
+
+        TabNotifier.fireAttached(otherHalfTab);
     }
 
     public void unsplit(HalfTab whichHalf)
@@ -102,6 +114,8 @@ public class Tab
             if (mainHalfTab == null) {
                 return;
             }
+
+            TabNotifier.fireDetaching(mainHalfTab);
             Component oldRight = splitPane.getRightComponent();
 
             mainHalfTab.detach();
@@ -117,6 +131,7 @@ public class Tab
                 return;
             }
 
+            TabNotifier.fireDetaching(otherHalfTab);
             otherHalfTab.detach();
             splitPane.setRightComponent(new JLabel("unsplit"));
             otherHalfTab = null;

@@ -22,12 +22,12 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
+import uk.co.nickthecoder.wrkfoo.HalfTab;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Tab;
 import uk.co.nickthecoder.wrkfoo.TabListener;
 import uk.co.nickthecoder.wrkfoo.TabNotifier;
-import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
@@ -240,15 +240,24 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
-    public void attachedTab(Tab tab)
+    public void attached(Tab tab)
     {
     }
 
     @Override
-    public void detachingTab(Tab tab)
+    public void attached(HalfTab halfTab)
     {
-        WrkFoo.println("Detatching Terminal");
-        if (tab.getMainHalfTab().getTool() == this) {
+    }
+
+    @Override
+    public void detaching(Tab tab)
+    {
+    }
+
+    @Override
+    public void detaching(HalfTab halfTab)
+    {
+        if (halfTab == getToolPanel().getHalfTab()) {
 
             TabNotifier.removeTabListener(this);
 
@@ -285,17 +294,18 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         {
             public void run()
             {
-                Tab tab = getHalfTab().getTab();
-                if (tab == null) {
+                if (getHalfTab() == null) {
                     return;
                 }
+
+                Tab tab = getHalfTab().getTab();
 
                 if (tab.getMainTabs().getSelectedTab() == tab) {
                     Focuser.focusLater("TerminalEnded", getToolPanel().getToolBar().getOptionsTextField(), 6);
                 }
 
                 if (task.autoClose.getValue()) {
-                    tab.getMainTabs().removeTab(getHalfTab().getTab());
+                    tab.removeHalfTab(getToolPanel().getHalfTab());
                 }
             }
         });
