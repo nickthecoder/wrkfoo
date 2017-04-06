@@ -115,7 +115,7 @@ public abstract class Column<R>
     {
         this.reverse = false;
         this.defaultSort = true;
-        if ( getColumns() != null) {
+        if (getColumns() != null) {
             getColumns().defaultSortColumnIndex = getColumns().indexOf(key);
         }
         return this;
@@ -146,10 +146,9 @@ public abstract class Column<R>
         return this;
     }
 
-    public Column<R> tooltip(int columnIndex)
+    public Column<R> tooltip()
     {
-        tooltipColumn = columnIndex;
-        return this;
+        return tooltip(key);
     }
 
     public Column<R> tooltip(String columnKey)

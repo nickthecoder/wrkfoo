@@ -28,7 +28,7 @@ public class GenericFileTool<R extends WrappedFile> extends SimpleListTool<Gener
                 return row.getChoppedPath();
             }
 
-        }.tooltip(1).width(200));
+        }).tooltip().width(200);
 
         addExtraColumns(columns);
         

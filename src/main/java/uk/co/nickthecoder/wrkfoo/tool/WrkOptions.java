@@ -107,7 +107,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             {
                 return row.option.label;
             }
-        }.width(200));
+        }).tooltip().width(200);
 
         columns.add(new Column<OptionRow>(URL.class, "URL")
         {
@@ -116,7 +116,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             {
                 return row.url;
             }
-        }.width(200).tooltip(4).hide());
+        }).width(200).tooltip().hide();
 
         columns.add(new Column<OptionRow>(String.class, "action")
         {
@@ -125,7 +125,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             {
                 return row.option.action;
             }
-        }.width(300).tooltip(3));
+        }).width(300).tooltip();
 
         columns.add(new Column<OptionRow>(Boolean.class, "row")
         {
@@ -170,7 +170,7 @@ public class WrkOptions extends AbstractListTool<WrkOptionsResults, WrkOptionsTa
             {
                 return row.option.ifScript;
             }
-        }.width(90));
+        }).tooltip().width(90);
 
         return columns;
     }

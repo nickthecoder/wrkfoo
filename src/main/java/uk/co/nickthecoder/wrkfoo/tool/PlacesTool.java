@@ -78,7 +78,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             {
                 return row.file.getPath();
             }
-        }.tooltip(4).width(500));
+        }).tooltip().width(500);
 
         columns.add(new Column<Place>(Date.class, "lastModified")
         {
@@ -96,7 +96,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             {
                 return row.file.length();
             }
-        }.width(120).minWidth(80).renderer(SizeRenderer.getInstance()));
+        }).tooltip().width(120).minWidth(80).renderer(SizeRenderer.getInstance());
 
         return columns;
     }

@@ -35,7 +35,8 @@ public class WrkOptionsFiles extends SimpleListTool<WrkOptionsFilesTask, WrkOpti
     @Override
     public String getLongTitle()
     {
-        return super.getLongTitle() + " " + task.directory.getValue();
+        String extra = task.directory.getValue() == null ? "" : " " + task.directory.getValue(); 
+        return super.getLongTitle() + extra;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class WrkOptionsFiles extends SimpleListTool<WrkOptionsFilesTask, WrkOpti
             {
                 return row.file;
             }
-        }.tooltip(1).hide().width(300));
+        }).tooltip().hide().width(300);
 
         columns.add(new Column<WrkOptionsFile>(File.class, "name")
         {
@@ -58,7 +59,7 @@ public class WrkOptionsFiles extends SimpleListTool<WrkOptionsFilesTask, WrkOpti
             {
                 return row.file.getName();
             }
-        }.tooltip(1).sort().width(300));
+        }).tooltip("file").sort().width(300);
 
         columns.add(new Column<WrkOptionsFile>(Date.class, "lastModified")
         {

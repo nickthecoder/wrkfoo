@@ -101,7 +101,7 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
                 return row.getFile().getName();
             }
 
-        }.tooltip(4).width(300));
+        }.width(300));
 
         columns.add(new Column<GitStatusLine>(String.class, "path")
         {
@@ -111,7 +111,7 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
                 return row.getChoppedPath();
             }
 
-        }.tooltip(4).sort().width(500));
+        }).tooltip().tooltipFor("name").sort().width(500);
 
         columns.add(new Column<GitStatusLine>(File.class, "renamedFrom")
         {
@@ -121,7 +121,7 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
                 return row.getRenamedFile();
             }
 
-        }.tooltip(5).width(50));
+        }).tooltip().width(50);
 
         return columns;
     }

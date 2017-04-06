@@ -31,7 +31,7 @@ public class DiskUsage extends SimpleListTool<DiskUsageTask, ScannedDirectory> i
                 return row.file.getPath();
             }
 
-        }.tooltip(1).width(200));
+        }).tooltip().width(200);
 
         columns.add(new Column<ScannedDirectory>(Long.class, "size")
         {
@@ -40,7 +40,7 @@ public class DiskUsage extends SimpleListTool<DiskUsageTask, ScannedDirectory> i
             {
                 return row.size;
             }
-        }.reverseSort().width(120).lock().renderer(SizeRenderer.getInstance()));
+        }).tooltip().reverseSort().width(120).lock().renderer(SizeRenderer.getInstance());
 
         return columns;
     }

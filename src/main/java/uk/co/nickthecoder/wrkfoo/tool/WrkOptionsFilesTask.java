@@ -9,7 +9,6 @@ import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.util.FileLister;
 import uk.co.nickthecoder.wrkfoo.ListResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
-import uk.co.nickthecoder.wrkfoo.option.OptionsData;
 import uk.co.nickthecoder.wrkfoo.tool.WrkOptionsFilesTask.WrkOptionsFile;
 
 public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsFile>
@@ -39,13 +38,6 @@ public class WrkOptionsFilesTask extends Task implements ListResults<WrkOptionsF
         for (File file : files) {
             results.add(new WrkOptionsFile(file));
         }
-    }
-
-    public WrkOptions wrkOptions(OptionsData optionsData)
-    {
-        // TODO This is broken!
-        WrkOptions wrkOptions = new WrkOptions();
-        return wrkOptions;
     }
 
     public class WrkOptionsFile extends WrappedFile

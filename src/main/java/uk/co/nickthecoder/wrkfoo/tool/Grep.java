@@ -31,7 +31,7 @@ public class Grep extends GenericFileTool<GrepRow>
             {
                 return row.text;
             }
-        }.tooltip(2).width(300));
+        }).tooltip().width(300);
 
         columns.add(new Column<GrepRow>(Integer.class, "line")
         {
@@ -40,7 +40,7 @@ public class Grep extends GenericFileTool<GrepRow>
             {
                 return row.line;
             }
-        }.width(60).lock());
+        }).width(60).lock();
 
     }
 

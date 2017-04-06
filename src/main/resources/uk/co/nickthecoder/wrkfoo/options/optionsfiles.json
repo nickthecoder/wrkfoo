@@ -12,7 +12,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "+",
@@ -22,17 +23,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": true
-    },
-    {
-      "code": "wi",
-      "label": "Work with Includes",
-      "action": "tool.wrkOptionsIncludes(row.file)",
-      "row": true,
-      "multi": false,
-      "newTab": false,
-      "refreshResults": false,
-      "prompt": false
+      "prompt": true,
+      "aliases": []
     }
   ]
 }
