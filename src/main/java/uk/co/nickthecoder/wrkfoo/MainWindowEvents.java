@@ -44,10 +44,21 @@ public class MainWindowEvents
         if (tab != null) {
             Tool<?> copyMain = tab.getMainHalfTab().getTool().duplicate();
             Tool<?> other = null;
-            if ( tab.getOtherHalfTab() != null) {
+            if (tab.getOtherHalfTab() != null) {
                 other = tab.getOtherHalfTab().getTool().duplicate();
             }
             mainWindow.addTab(copyMain, other);
+        }
+    }
+
+    public void onToggleSplitView()
+    {
+        Tab tab = mainWindow.getCurrentTab();
+        if (tab.getOtherHalfTab() == null) {
+            Tool<?> copiedTool = tab.getMainHalfTab().getTool().duplicate();
+            tab.split(copiedTool);
+        } else {
+            tab.unsplit(tab.getMainHalfTab());
         }
     }
 

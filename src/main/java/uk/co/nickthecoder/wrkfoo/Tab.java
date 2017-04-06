@@ -1,5 +1,6 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -43,6 +44,8 @@ public class Tab
         mainHalfTab = new HalfTab(this, mainTool);
         if (otherTool != null) {
             otherHalfTab = new HalfTab(this, otherTool);
+            mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
+            otherHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
         }
 
         JComponent otherComponent = otherTool == null ? new JLabel("Nothing") : otherHalfTab.getComponent();
@@ -80,24 +83,47 @@ public class Tab
         splitPane.setRightComponent(otherHalfTab.getComponent());
         splitPane.setState(HidingSplitPane.State.BOTH);
         splitPane.setDividerLocation(0.5);
+
+        mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
+        otherHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
     }
 
-    public void unsplit()
+    public void unsplit(HalfTab whichHalf)
     {
-        if (otherHalfTab == null) {
-            return;
-        }
+        assert (whichHalf.getTab() == this);
 
-        otherHalfTab.detach();
-        otherHalfTab = null;
-        splitPane.setRightComponent(new JLabel("unsplit"));
+        if (whichHalf == getMainHalfTab()) {
+            // Close MAIN half (left)
+            if (mainHalfTab == null) {
+                return;
+            }
+            Component oldRight = splitPane.getRightComponent();
+
+            mainHalfTab.detach();
+            splitPane.setRightComponent(new JLabel("unsplit"));
+            splitPane.setLeftComponent(oldRight);
+
+            mainHalfTab = otherHalfTab;
+            otherHalfTab = null;
+
+        } else {
+            // Close OTHER half (right)
+            if (otherHalfTab == null) {
+                return;
+            }
+
+            otherHalfTab.detach();
+            splitPane.setRightComponent(new JLabel("unsplit"));
+            otherHalfTab = null;
+
+        }
         splitPane.setState(HidingSplitPane.State.LEFT);
+        mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(false);
+        mainHalfTab.getTool().getResultsPanel().getFocusComponent();
 
         // Focus on the main component's results.
         Focuser.focusLater("Tab.unsplit. Result's component",
             mainHalfTab.getTool().getResultsPanel().getFocusComponent(), 7);
-
-        mainHalfTab.getTool().getResultsPanel().getFocusComponent();
     }
 
     public void setTitleTemplate(String value)

@@ -37,6 +37,7 @@ public final class ActionShortcuts
         put("quit", "ctrl+Q");
         put("newTab", "ctrl T");
         put("duplicateTab", "");
+        put("toggleSplitView", "F3");
         put("closeTab", "ctrl+W");
         put("saveProject", "");
         put("openProject", "");
@@ -60,8 +61,7 @@ public final class ActionShortcuts
         put("forward", "alt+RIGHT");
         put("exportTable", "");
         put("jumpToNonRowOption", "F11,ctrl+alt+F12");
-        put("splitView", "F3");
-        put("unsplitView", "ctrl+F3");
+        put("closeHalfTab","");
 
         // MainTabs
         put("tabProperties", "ctrl+P");

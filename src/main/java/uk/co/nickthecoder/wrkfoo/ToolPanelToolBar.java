@@ -51,6 +51,8 @@ public class ToolPanelToolBar implements TaskListener
 
     private JButton stopButton;
 
+    JButton closeHalfTabButton;
+
     public ToolPanelToolBar(ToolPanel toolPanel)
     {
         Util.assertIsEDT();
@@ -77,19 +79,30 @@ public class ToolPanelToolBar implements TaskListener
 
         ActionBuilder builder = new ActionBuilder(this).component(toolPanel.getComponent());
 
-        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").buildButton());
-        toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
-        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
-        toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
-
-        toolBar.add(builder.name("splitView").tooltip("Split View").buildButton());
-        toolBar.add(builder.name("unsplitView").tooltip("Unsplit").buildButton());
-
         goButton = builder.name("run").tooltip("Re-Run the current tool").disable().buildButton();
         stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
         toolBar.add(goButton);
         toolBar.add(stopButton);
         updateStopGoButtons(false);
+
+        toolBar.add(builder.name("home").tooltip("Home : Show all Tools").buildButton());
+        toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
+        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
+        toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
+
+        toolBar.add(
+            closeHalfTabButton = builder.name("closeHalfTab").tooltip("Close this half of the split").buildButton());
+        closeHalfTabButton.setVisible(false);
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (toolPanel.getHalfTab().getTab().getOtherHalfTab() != null) {
+                    closeHalfTabButton.setVisible(true);
+                }
+            }
+        });
 
         Task task = toolPanel.getTool().getTask();
         task.addTaskListener(this);
@@ -257,17 +270,9 @@ public class ToolPanelToolBar implements TaskListener
         }
     }
 
-    public void onSplitView()
+    public void onCloseHalfTab()
     {
-        Tab tab = toolPanel.getHalfTab().getTab();
-        Tool<?> copiedTool = toolPanel.getTool().duplicate();
-        
-        tab.split(copiedTool);
-    }
-
-    public void onUnsplitView()
-    {
-        toolPanel.getHalfTab().getTab().unsplit();
+        toolPanel.getHalfTab().getTab().unsplit(toolPanel.getHalfTab());
     }
 
     @Override

@@ -63,7 +63,6 @@ public class HidingSplitPane extends JSplitPane
     public void showLeft()
     {
         if (this.state == State.RIGHT) {
-            System.out.println( "State was RIGHT, changing to BOTH");
             setState(State.BOTH);
         }
     }
@@ -71,7 +70,6 @@ public class HidingSplitPane extends JSplitPane
     public void showRight()
     {
         if (this.state == State.LEFT) {
-            System.out.println( "State was LEFT, changing to BOTH");
             setState(State.BOTH);
         }
     }
