@@ -34,6 +34,9 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     {
         super(new WrkFTask());
         dragListConverter = new DragFileConverter<WrkFWrappedFile>();
+
+        ActionBuilder builder = new ActionBuilder(this).component(getToolPanel().getComponent());
+        builder.name("wrkf.upDirectory").buildShortcut();
     }
 
     public static Icon getIconForFile(File file)
@@ -151,15 +154,6 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
         }.width(120).lock().renderer(SizeRenderer.getInstance()));
 
         return columns;
-    }
-
-    @Override
-    public void postCreate()
-    {
-        super.postCreate();
-
-        ActionBuilder builder = new ActionBuilder(this).component(getToolPanel().getComponent());
-        builder.name("wrkf.upDirectory").buildShortcut();
     }
 
     public void onUpDirectory()

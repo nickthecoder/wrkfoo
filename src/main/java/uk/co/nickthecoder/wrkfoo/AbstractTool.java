@@ -33,12 +33,6 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     }
 
     @Override
-    public void postCreate()
-    {
-        // Do nothing
-    }
-
-    @Override
     public String getCreationString()
     {
         return getClass().getName();

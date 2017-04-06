@@ -3,12 +3,6 @@ Current Task
 
 Cannot show parameters of the main half when split
 
-TabListener only does Tabs, not HalfTabs
-
-Unsplitting the right half to detach the left half.
-
-Editor should split using the SAME document.
-
 Bug: Editor ctrl+f foo RETURN prompts for "Revert".
 
 Unsplitting an Editor leaves a large space in the status bar area.
@@ -18,7 +12,7 @@ WrkFBase to have "compact" BooleanParameter, which show/hides the less used colu
 Is ToolPanel.postCreate needed?
     Tool.postCreate?
     
-Terminal is auto-closing a whole tab!
+Editor should split using the SAME document.
 
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar

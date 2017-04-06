@@ -18,8 +18,6 @@ import uk.co.nickthecoder.wrkfoo.option.Options;
  */
 public interface Tool<S extends Results>
 {
-    public void postCreate();
-
     public Task getTask();
 
     public String getShortTitle();

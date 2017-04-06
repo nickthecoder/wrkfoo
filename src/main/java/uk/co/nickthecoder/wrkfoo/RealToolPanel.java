@@ -158,8 +158,6 @@ public class RealToolPanel implements ToolPanel, TaskListener
     @Override
     public void postCreate()
     {
-        tool.postCreate();
-
         ActionBuilder builder = new ActionBuilder(this).component(panel).condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         builder.name("cyclePane").buildShortcut();
