@@ -45,8 +45,6 @@ public class Tab
         mainHalfTab = new HalfTab(this, mainTool);
         if (otherTool != null) {
             otherHalfTab = new HalfTab(this, otherTool);
-            mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
-            otherHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
         }
 
         JComponent otherComponent = otherTool == null ? new JLabel("Nothing") : otherHalfTab.getComponent();
@@ -82,6 +80,21 @@ public class Tab
         }
     }
 
+    public boolean isSplit()
+    {
+        return ((otherHalfTab != null) && (mainHalfTab != null));
+    }
+
+    public boolean isSplitV()
+    {
+        return isSplit() && (splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT);
+    }
+
+    public boolean isSplitH()
+    {
+        return isSplit() && (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT);
+    }
+
     public void split(boolean vertical)
     {
         splitPane.setOrientation(vertical ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
@@ -99,9 +112,6 @@ public class Tab
         splitPane.setState(HidingSplitPane.State.BOTH);
         splitPane.setDividerLocation(0.5);
 
-        mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
-        otherHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(true);
-
         TabNotifier.fireAttached(otherHalfTab);
     }
 
@@ -111,7 +121,7 @@ public class Tab
 
         if (whichHalf == getMainHalfTab()) {
             // Close MAIN half (left)
-            if (mainHalfTab == null) {
+            if ((mainHalfTab == null) || (otherHalfTab == null)) {
                 return;
             }
 
@@ -138,7 +148,6 @@ public class Tab
 
         }
         splitPane.setState(HidingSplitPane.State.LEFT);
-        mainHalfTab.getTool().getToolPanel().getToolBar().closeHalfTabButton.setVisible(false);
         mainHalfTab.getTool().getResultsPanel().getFocusComponent();
 
         // Focus on the main component's results.

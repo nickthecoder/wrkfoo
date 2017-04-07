@@ -83,14 +83,13 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         task.directory.addListener(new ParameterListener()
         {
             @Override
-            public void changed(Parameter source)
+            public void changed(Object initiator, Parameter source)
             {
                 if (cmd != null) {
                     cmd.dir(task.directory.getValue());
                 }
             }
         });
-
     }
 
     @Override

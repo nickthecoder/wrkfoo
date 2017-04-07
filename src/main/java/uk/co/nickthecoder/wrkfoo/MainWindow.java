@@ -23,6 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -31,6 +32,7 @@ import uk.co.nickthecoder.jguifier.util.AutoExit;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
+import uk.co.nickthecoder.wrkfoo.util.AutoComponentUpdater;
 
 public class MainWindow extends JFrame implements TopLevel, TabListener
 {
@@ -98,7 +100,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         pack();
         setLocationRelativeTo(null);
     }
-    
+
     public MainTabs getMainTabs()
     {
         return mainTabs;
@@ -121,16 +123,21 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
         ActionBuilder builder = new ActionBuilder(mwe).component(this.rootPane);
 
+        JButton dupTab;
+        JToggleButton splitV;
+        JToggleButton splitH;
+        JToggleButton unsplit;
+
         toolBar.add(builder.name("quit").tooltip("Quit : close all WrkFoo windows").buildButton());
         toolBar.add(builder.name("newWindow").tooltip("Open a new Window").buildButton());
-        toolBar.add(builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
-        toolBar.add(builder.name("splitHorizontal").tooltip("Split Horizontal").buildButton());
-        toolBar.add(builder.name("splitVertical").tooltip("Split Vertical").buildButton());
-        toolBar.add(builder.name("unsplit").tooltip("Un-Split").buildButton());
+        toolBar.add(dupTab = builder.name("duplicateTab").tooltip("Duplicate Tab").buildButton());
+        toolBar.add(splitH = builder.name("splitHorizontal").tooltip("Split Horizontal").buildToggleButton());
+        toolBar.add(splitV = builder.name("splitVertical").tooltip("Split Vertical").buildToggleButton());
+        toolBar.add(unsplit = builder.name("unsplit").tooltip("Un-Split").buildToggleButton());
         toolBar.add(builder.name("newTab").tooltip("Open a new tab").buildButton());
-        toolBar.add(builder.name("closeTab").tooltip("Close tab").buildButton());
         toolBar.add(builder.name("saveProject").tooltip("Save Project").buildButton());
         toolBar.add(builder.name("openProject").icon("projects.png").tooltip("Open a Project").buildButton());
+        builder.name("closeTab").buildShortcut();
 
         errorButton = builder.name("showError").tooltip("Show stack trace").hide().buildButton();
         statusBar.add(errorButton);
@@ -147,6 +154,26 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         for (int i = 1; i <= 9; i++) {
             switchTabMapping(i);
         }
+
+        new AutoComponentUpdater()
+        {
+            @Override
+            protected void autoUpdate()
+            {
+                Tab tab = getMainTabs().getSelectedTab();
+                boolean haveTab = tab != null;
+                dupTab.setEnabled(haveTab);
+                unsplit.setEnabled(haveTab);
+                splitV.setEnabled(haveTab);
+                splitH.setEnabled(haveTab);
+
+                if (haveTab) {
+                    unsplit.setSelected(!tab.isSplit());
+                    splitV.setSelected(tab.isSplitV());
+                    splitH.setSelected(tab.isSplitH());
+                }
+            }
+        };
     }
 
     /**
@@ -196,9 +223,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public Tab addTab(Tool<?> tool)
     {
-        return addTab( tool, null);        
+        return addTab(tool, null);
     }
-    
+
     public Tab addTab(Tool<?> mainTool, Tool<?> otherTool)
     {
         Tab tab = new Tab(mainTool, otherTool);
@@ -206,54 +233,56 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         mainTabs.add(tab);
 
         tab.getMainHalfTab().go(mainTool);
-        
-        if (otherTool!= null) {
+
+        if (otherTool != null) {
             tab.getOtherHalfTab().go(otherTool);
         }
 
         mainTabs.setSelectedIndex(mainTabs.getTabCount() - 1);
-        
+
         return tab;
     }
 
     @Override
     public void setVisible(boolean show)
     {
-        super.setVisible(show);
+        try {
+            super.setVisible(show);
 
-        if (show) {
-            windows.add(this);
-            TabNotifier.addTabListener(this);
+            if (show) {
+                windows.add(this);
+                TabNotifier.addTabListener(this);
 
-            MouseListener listener = new MouseAdapter()
-            {
-                @Override
-                public void mouseExited(MouseEvent e)
+                MouseListener listener = new MouseAdapter()
                 {
-                    mouseMainWindow = null;
-                }
+                    @Override
+                    public void mouseExited(MouseEvent e)
+                    {
+                        mouseMainWindow = null;
+                    }
 
-                @Override
-                public void mouseEntered(MouseEvent e)
-                {
-                    mouseMainWindow = MainWindow.this;
-                }
-            };
+                    @Override
+                    public void mouseEntered(MouseEvent e)
+                    {
+                        mouseMainWindow = MainWindow.this;
+                    }
+                };
 
-            // When I add the listener to this, or "whole", no events are detected, this is the best I could do.
-            toolBar.addMouseListener(listener);
-            mainTabs.getComponent().addMouseListener(listener);
-            statusBar.addMouseListener(listener);
+                // When I add the listener to this, or "whole", no events are detected, this is the best I could do.
+                toolBar.addMouseListener(listener);
+                mainTabs.getComponent().addMouseListener(listener);
+                statusBar.addMouseListener(listener);
 
-        } else {
-            windows.remove(this);
-            TabNotifier.removeTabListener(this);
+            } else {
+                windows.remove(this);
+                TabNotifier.removeTabListener(this);
 
-            mainTabs.removeAllTabs();
-            dispose();
+                mainTabs.removeAllTabs();
+                dispose();
+            }
+        } finally {
+            AutoExit.setVisible(show);
         }
-
-        AutoExit.setVisible(show);
     }
 
     private void updateTitle()
@@ -378,10 +407,11 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
     {
     }
 
-    private boolean partOfMe( Tab tab )
+    private boolean partOfMe(Tab tab)
     {
         return SwingUtilities.windowForComponent(tab.getComponent()) == this;
     }
+
     @Override
     public void selectedTab(Tab tab)
     {

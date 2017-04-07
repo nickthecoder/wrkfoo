@@ -10,18 +10,17 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.guiutil.WrapLayout;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.tool.ExportTableData;
 import uk.co.nickthecoder.wrkfoo.tool.Home;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
+import uk.co.nickthecoder.wrkfoo.util.AutoComponentUpdater;
 
-public class ToolPanelToolBar implements TaskListener
+public class ToolPanelToolBar
 {
     private ToolPanel toolPanel;
 
@@ -50,8 +49,6 @@ public class ToolPanelToolBar implements TaskListener
     private JButton goButton;
 
     private JButton stopButton;
-
-    JButton closeHalfTabButton;
 
     public ToolPanelToolBar(ToolPanel toolPanel)
     {
@@ -83,29 +80,31 @@ public class ToolPanelToolBar implements TaskListener
         stopButton = builder.name("stop").tooltip("Stop current tool").hide().buildButton();
         toolBar.add(goButton);
         toolBar.add(stopButton);
-        updateStopGoButtons(false);
+        updateStopGoButtons();
+
+        final JButton back;
+        final JButton forwards;
 
         toolBar.add(builder.name("home").tooltip("Home : Show all Tools").buildButton());
-        toolBar.add(builder.name("back").tooltip("Go back through the tool history").buildButton());
-        toolBar.add(builder.name("forward").tooltip("Go forward through the tool history").buildButton());
-        toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
+        toolBar.add(back = builder.name("back").tooltip("Go back through the tool history").buildButton());
+        toolBar.add(forwards = builder.name("forward").tooltip("Go forward through the tool history").buildButton());
+        if (toolPanel.getTool() instanceof TableTool) {
+            toolBar.add(builder.name("exportTable").tooltip("Export Table Data").buildButton());
+        }
 
-        toolBar.add(
-            closeHalfTabButton = builder.name("closeHalfTab").tooltip("Close this half of the split").buildButton());
-        closeHalfTabButton.setVisible(false);
-        SwingUtilities.invokeLater(new Runnable()
+        toolBar.add(builder.name("closeHalfTab").tooltip("Close").buildButton());
+
+        new AutoComponentUpdater()
         {
             @Override
-            public void run()
+            public void autoUpdate()
             {
-                if (toolPanel.getHalfTab() != null) {
-                    closeHalfTabButton.setVisible(true);
-                }
-            }
-        });
+                back.setEnabled(toolPanel.getHalfTab().getHistory().canUndo());
+                forwards.setEnabled(toolPanel.getHalfTab().getHistory().canRedo());
 
-        Task task = toolPanel.getTool().getTask();
-        task.addTaskListener(this);
+                updateStopGoButtons();
+            }
+        };
     }
 
     public JComponent getComponent()
@@ -128,26 +127,21 @@ public class ToolPanelToolBar implements TaskListener
         statusBars.add(comp);
     }
 
-    private void updateStopGoButtons(final boolean running)
+    private void updateStopGoButtons()
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                int goState = running ? -1 : 0; // -1 Disabled Go, 0 = Go, 1 = Stop
+        Util.assertIsEDT();
 
-                Task task = toolPanel.getTool().getTask();
-                if (running && (task instanceof Stoppable)) {
-                    goState = 1;
-                }
+        boolean running = toolPanel.getTool().getTask().isRunning();
+        int goState = running ? -1 : 0; // -1 Disabled Go, 0 = Go, 1 = Stop
 
-                goButton.setVisible(goState != 1);
-                stopButton.setVisible(goState == 1);
-                goButton.setEnabled(goState >= 0);
+        Task task = toolPanel.getTool().getTask();
+        if (running && (task instanceof Stoppable)) {
+            goState = 1;
+        }
 
-            }
-        });
+        goButton.setVisible(goState != 1);
+        stopButton.setVisible(goState == 1);
+        goButton.setEnabled(goState >= 0);
     }
 
     private JTextField createOptionTextField()
@@ -272,24 +266,11 @@ public class ToolPanelToolBar implements TaskListener
 
     public void onCloseHalfTab()
     {
-        toolPanel.getHalfTab().getTab().unsplit(toolPanel.getHalfTab());
-    }
-
-    @Override
-    public void aborted(Task arg0)
-    {
-        updateStopGoButtons(false);
-    }
-
-    @Override
-    public void ended(Task arg0, boolean arg1)
-    {
-        updateStopGoButtons(false);
-    }
-
-    @Override
-    public void started(Task arg0)
-    {
-        updateStopGoButtons(true);
+        Tab tab = toolPanel.getHalfTab().getTab();
+        if (tab.isSplit()) {
+            tab.unsplit(toolPanel.getHalfTab());
+        } else {
+            tab.getMainTabs().removeTab(tab);
+        }
     }
 }

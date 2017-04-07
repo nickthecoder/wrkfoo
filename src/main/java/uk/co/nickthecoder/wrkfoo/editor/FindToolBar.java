@@ -14,16 +14,13 @@ import javax.swing.event.DocumentListener;
 
 import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
+import uk.co.nickthecoder.wrkfoo.util.AutoComponentUpdater;
 
 public class FindToolBar extends JPanel implements SearcherListener
 {
     private Searcher searcher;
 
     private JTextField textField;
-
-    private JButton prevButton;
-
-    private JButton nextButton;
 
     private JLabel label;
 
@@ -70,9 +67,10 @@ public class FindToolBar extends JPanel implements SearcherListener
         });
 
         ActionBuilder builder = new ActionBuilder(searcher).component(this);
-        prevButton = builder.name("find.findPrev").buildButton();
-        nextButton = builder.name("find.findNext").buildButton();
-        
+
+        JButton nextButton = builder.name("find.findNext").buildButton();
+        JButton prevButton = builder.name("find.findPrev").buildButton();
+
         builder.component(textField).condition(WHEN_FOCUSED);
         builder.name("find.go").buildShortcut();
 
@@ -98,13 +96,23 @@ public class FindToolBar extends JPanel implements SearcherListener
         rightPanel.add(matchRegex);
 
         searcher.addSearcherListener(this);
+
+        new AutoComponentUpdater()
+        {
+            @Override
+            protected void autoUpdate()
+            {
+                prevButton.setEnabled(searcher.getMatchCount() > 0);
+                nextButton.setEnabled(searcher.getMatchCount() > 0);
+            }
+        };
     }
 
     public JTextField getTextField()
     {
         return textField;
     }
-    
+
     public void onMatchCase()
     {
         searcher.context.setMatchCase(matchCase.isSelected());

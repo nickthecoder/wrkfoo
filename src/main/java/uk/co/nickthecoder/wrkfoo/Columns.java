@@ -10,7 +10,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-import com.sun.xml.internal.bind.v2.schemagen.Util;
+import uk.co.nickthecoder.jguifier.util.Util;
 
 public class Columns<R>
 {
@@ -39,7 +39,7 @@ public class Columns<R>
     {
         int index = 0;
         for (Column<R> c : columns) {
-            if (Util.equal(c.getKey(), columnKey)) {
+            if (Util.equals(c.getKey(), columnKey)) {
                 return index;
             }
             index++;
@@ -50,7 +50,7 @@ public class Columns<R>
     public Column<R> findColumn(String columnKey)
     {
         for (Column<R> c : columns) {
-            if (Util.equal(c.getKey(), columnKey)) {
+            if (Util.equals(c.getKey(), columnKey)) {
                 return c;
             }
         }

@@ -41,7 +41,7 @@ public class GroovyTools extends WrkFBase implements DirectoryTool
         directoryChoice = Resources.getInstance().createGroovyDirectoryChoice();
         directoryChoice.addListener(new ParameterListener() {
             @Override
-            public void changed(Parameter source)
+            public void changed(Object initiator, Parameter source)
             {
                 task.directory.setValue(directoryChoice.getValue());
             }

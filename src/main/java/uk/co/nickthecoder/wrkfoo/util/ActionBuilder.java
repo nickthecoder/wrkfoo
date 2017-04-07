@@ -328,6 +328,7 @@ public class ActionBuilder
             {
                 try {
                     theMethod.invoke(receiver, EMPTY_VALUES);
+                    ComponentUpdateManager.getInstance().updateAll();
                 } catch (Throwable e) {
                     if (handler != null) {
                         handler.handleException(e);

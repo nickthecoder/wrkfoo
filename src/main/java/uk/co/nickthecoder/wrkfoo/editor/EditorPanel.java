@@ -95,6 +95,11 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
         findToolBar.rightPanel.add(builder.name("editReplace").label("Replace...").buildButton());
 
         builder.name("escape").buildShortcut();
+
+        builder = new ActionBuilder(searcher).component(getComponent()); 
+        builder.name("find.findNext").buildShortcut();
+        builder.name("find.findPrev").buildShortcut();
+
     }
 
     private void initSearchDialogs()

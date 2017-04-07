@@ -51,6 +51,11 @@ public class HalfTab
         return panel;
     }
 
+    public History getHistory()
+    {
+        return history;
+    }
+
     final void attach(final Tool<?> tool)
     {
         currentTool = tool;

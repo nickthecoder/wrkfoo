@@ -1,8 +1,6 @@
 Current Task
 ============
 
-Bug: Editor ctrl+f foo RETURN prompts for "Revert".
-
 Splitting an Editor removes the toolbar for the 1st Editor.
 
 WrkFBase to haveWrkFBase to have "compact" BooleanParameter, which show/hides the less used columns. "compact" BooleanParameter, which show/hides the less used columns.

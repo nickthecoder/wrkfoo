@@ -32,7 +32,7 @@ public class Searcher
     {
         return textEditorPane;
     }
-    
+
     public void addSearcherListener(SearcherListener sl)
     {
         listeners.add(sl);
@@ -57,9 +57,13 @@ public class Searcher
     {
         onFindNext();
     }
-    
+
     public void onFindPrev()
     {
+        if (searchResult == null) {
+            return;
+        }
+
         context.setSearchForward(false);
         if (searchResult.getMarkedCount() > 0) {
 
@@ -80,6 +84,10 @@ public class Searcher
 
     public void onFindNext()
     {
+        if (searchResult == null) {
+            return;
+        }
+
         context.setSearchForward(true);
         if (searchResult.getMarkedCount() > 0) {
 

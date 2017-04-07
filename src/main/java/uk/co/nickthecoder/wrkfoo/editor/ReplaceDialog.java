@@ -145,7 +145,7 @@ public class ReplaceDialog extends JDialog implements ParameterListener, Searche
     }
 
     @Override
-    public void changed(Parameter param)
+    public void changed(Object initiator, Parameter param)
     {
         if (param == search) {
             searcher.setSearchText(search.getValue());
