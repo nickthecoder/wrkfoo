@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.ValueParameter;
 import uk.co.nickthecoder.jguifier.parameter.GroupParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
+import uk.co.nickthecoder.jguifier.parameter.ValueParameter;
 import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 

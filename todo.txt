@@ -1,8 +1,8 @@
 Current Task
 ============
 
-Editor should split using the SAME document.
-    
+SourceCode has a "/" for its file&directory patterns when loaded.
+    PatternParameter.setStringValue and getStringValue probably aren't symetic
 
 Bug: Editor ctrl+f foo RETURN prompts for "Revert".
 

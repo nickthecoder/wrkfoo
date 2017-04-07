@@ -16,7 +16,7 @@
     {
       "code": "rm",
       "label": "Delete File",
-      "action": "os.exec( 'rm', row.file )",
+      "action": "println(\"Deleting\")\nos.exec( 'rm', row.file )",
       "if": "row.file.isFile()",
       "row": true,
       "multi": false,
