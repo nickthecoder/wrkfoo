@@ -79,7 +79,7 @@ public final class ActionShortcuts
         put("promptOptions", "F2");
         put("promptOptionsInNewTab", "ctrl F2");
 
-        // ToolPanel
+        // RealToolPanel
         put("cyclePane", "F10");
         put("toggleLeftPane", "F9");
         put("toggleRightPane", "ctrl+F9");
@@ -109,6 +109,7 @@ public final class ActionShortcuts
         put("escape", "ESCAPE");
 
         // FindToolBar
+        put("find.go", "ENTER"); // ENTER in the "find" tJTxtField
         put("find.findPrev", "ctrl+shift+G");
         put("find.findNext", "ctrl+G");
         put("find.matchCase", "");

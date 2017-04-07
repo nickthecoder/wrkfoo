@@ -51,8 +51,8 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
     public RealToolPanel(Tool<?> foo)
     {
-        this.panel = new JPanel();
         this.tool = foo;
+        panel = new JPanel();
 
         sidePanel = new JPanel();
         sidePanel.addFocusListener(new FocusNextListener());
@@ -73,7 +73,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         parametersScrollPane.setMinimumSize(new Dimension(0, 0));
 
-        // For some reason sharing the same color instance doesn't work. (And there is no copy, clone or copy
+        // For some reason sharing the same colour instance doesn't work. (And there is no copy, clone or copy
         // constructor), so lets copy the long way...
         Color srcColor = parametersPanel.getBackground();
         Color background = new Color(srcColor.getRed(), srcColor.getGreen(), srcColor.getBlue());
@@ -87,10 +87,11 @@ public class RealToolPanel implements ToolPanel, TaskListener
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
 
-        ActionBuilder builder = new ActionBuilder(this).component(getComponent());
-
+        ActionBuilder builder = new ActionBuilder(this).component(sidePanel);
         goButton = builder.name("toolpanel.go").method("go").label("Go").icon("run.png").buildButton();
         goStop.add(goButton, gbc);
+        
+        builder.component(panel);
 
         stopButton = builder.name("toolpanel.stop").method("stop").label("Stop").buildButton();
         stopButton.setVisible(false);

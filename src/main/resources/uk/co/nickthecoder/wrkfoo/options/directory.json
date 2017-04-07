@@ -1,6 +1,6 @@
 {
   "include": [],
-  "if": "row.file.isDirectory()",
+  "if": "(row != null) && row.file.isDirectory()",
   "options": [
     {
       "code": "fm",

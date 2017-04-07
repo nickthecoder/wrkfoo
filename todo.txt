@@ -1,8 +1,6 @@
 Current Task
 ============
 
-Select the first tab when loading a project.
-
 Bug: Editor ctrl+f foo RETURN prompts for "Revert".
 
 Splitting an Editor removes the toolbar for the 1st Editor.

@@ -72,6 +72,9 @@ public class FindToolBar extends JPanel implements SearcherListener
         ActionBuilder builder = new ActionBuilder(searcher).component(this);
         prevButton = builder.name("find.findPrev").buildButton();
         nextButton = builder.name("find.findNext").buildButton();
+        
+        builder.component(textField).condition(WHEN_FOCUSED);
+        builder.name("find.go").buildShortcut();
 
         builder = new ActionBuilder(this);
 

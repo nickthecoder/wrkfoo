@@ -53,6 +53,11 @@ public class Searcher
         return this.context;
     }
 
+    public void onGo()
+    {
+        onFindNext();
+    }
+    
     public void onFindPrev()
     {
         context.setSearchForward(false);
