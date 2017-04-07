@@ -1,17 +1,19 @@
 Current Task
 ============
 
-SourceCode has a "/" for its file&directory patterns when loaded.
-    PatternParameter.setStringValue and getStringValue probably aren't symetic
+Select the first tab when loading a project.
 
 Bug: Editor ctrl+f foo RETURN prompts for "Revert".
 
-Unsplitting an Editor leaves a large space in the status bar area.
+Splitting an Editor removes the toolbar for the 1st Editor.
 
-WrkFBase to have "compact" BooleanParameter, which show/hides the less used columns.
+WrkFBase to haveWrkFBase to have "compact" BooleanParameter, which show/hides the less used columns. "compact" BooleanParameter, which show/hides the less used columns.
 
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar
+
+Look at file.json and directory.json
+    Are the "ifs" correct? Should it be tooldirectory? and have another directory.json for directory rows?
 
 Next Tasks
 ==========

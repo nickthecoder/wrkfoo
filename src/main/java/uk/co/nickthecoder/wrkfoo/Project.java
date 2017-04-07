@@ -31,6 +31,11 @@ public class Project
 
     private transient File projectFile;
 
+    /**
+     * Creates a Project data structure for a given {@link MainWindow}, ready to be save as JSON.
+     * 
+     * @param mainWindow
+     */
     public Project(MainWindow mainWindow)
     {
         tabs = new ArrayList<>();
@@ -42,6 +47,7 @@ public class Project
             TabData tabData = new TabData(tool, otherTool);
             tabs.add(tabData);
         }
+
         width = mainWindow.getWidth();
         height = mainWindow.getHeight();
         description = mainWindow.description;
@@ -88,6 +94,11 @@ public class Project
         MainWindow mainWindow = createMainWindow();
         mainWindow.setBounds(0, 0, width, height);
         mainWindow.setLocationRelativeTo(null);
+        
+        MainTabs tabs = mainWindow.getMainTabs();
+        if (tabs.getTabCount() > 0) {
+            tabs.setSelectedIndex(0);
+        }
         mainWindow.setVisible(true);
     }
 
@@ -104,7 +115,7 @@ public class Project
             }
 
             Tool<?> otherTool = tabData.createOtherTool();
-            
+
             mainWindow.addTab(tool, otherTool);
             String tt = tabData.titleTemplate == null ? "%t" : tabData.titleTemplate;
             Tab tab = tool.getHalfTab().getTab();

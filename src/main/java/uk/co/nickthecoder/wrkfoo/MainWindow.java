@@ -98,6 +98,11 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
         pack();
         setLocationRelativeTo(null);
     }
+    
+    public MainTabs getMainTabs()
+    {
+        return mainTabs;
+    }
 
     @Override
     public Dimension getPreferredSize()
