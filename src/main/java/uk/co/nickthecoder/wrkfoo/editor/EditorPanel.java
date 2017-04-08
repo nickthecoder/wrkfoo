@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
@@ -22,6 +23,7 @@ import uk.co.nickthecoder.wrkfoo.Focuser;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.WrkFoo;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
+import uk.co.nickthecoder.wrkfoo.util.AutoComponentUpdater;
 import uk.co.nickthecoder.wrkfoo.util.ExceptionHandler;
 
 public class EditorPanel extends PanelResults implements ExceptionHandler
@@ -35,8 +37,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
     JToolBar toolBar;
 
     FindToolBar findToolBar;
-
-    JToggleButton findButton;
 
     Searcher searcher;
 
@@ -78,16 +78,21 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
         ActionBuilder builder = new ActionBuilder(this).component(getComponent())
             .condition(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
+        JButton undo;
+        JButton redo;
+        JButton copy;
+        JToggleButton find;
+
         toolBar.add(builder.name("documentSave").tooltip("Save Document").buildButton());
         // toolBar.add(builder.name("documentSaveAs").tooltip("Save As…").buildButton());
         toolBar.add(builder.name("documentRevert").tooltip("Revert (F5)").buildButton());
         toolBar.addSeparator();
-        toolBar.add(builder.name("editUndo").tooltip("Undo").buildButton());
-        toolBar.add(builder.name("editRedo").tooltip("Redo").buildButton());
-        toolBar.add(builder.name("editCopy").tooltip("Copy").buildButton());
+        toolBar.add(undo = builder.name("editUndo").tooltip("Undo").buildButton());
+        toolBar.add(redo = builder.name("editRedo").tooltip("Redo").buildButton());
+        toolBar.add(copy = builder.name("editCopy").tooltip("Copy").buildButton());
         toolBar.add(builder.name("editPaste").tooltip("Paste").buildButton());
 
-        toolBar.add(findButton = builder.name("editFind").tooltip("Search").buildToggleButton());
+        toolBar.add(find = builder.name("editFind").tooltip("Search").buildToggleButton());
 
         toolBar.add(builder.name("editReplace").tooltip("Find and Replace").buildButton());
         toolBar.add(builder.name("editGoToLine").tooltip("Go to Line").buildButton());
@@ -96,10 +101,21 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
 
         builder.name("escape").buildShortcut();
 
-        builder = new ActionBuilder(searcher).component(getComponent()); 
+        builder = new ActionBuilder(searcher).component(getComponent());
         builder.name("find.findNext").buildShortcut();
         builder.name("find.findPrev").buildShortcut();
 
+        new AutoComponentUpdater()
+        {
+            @Override
+            protected void autoUpdate()
+            {
+                undo.setEnabled(editorPane.canUndo());
+                redo.setEnabled(editorPane.canRedo());
+                copy.setEnabled(editorPane.getSelectedText() != null);
+                find.setSelected(findToolBar.isVisible());
+            }
+        };
     }
 
     private void initSearchDialogs()
@@ -178,7 +194,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
 
     public void onCloseFind()
     {
-        findButton.setSelected(false);
         findToolBar.setVisible(false);
         searcher.clearMarks();
     }
@@ -232,7 +247,6 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
     public void onEscape()
     {
         findToolBar.setVisible(false);
-        findButton.setSelected(false);
         replaceDialog.setVisible(false);
         Focuser.focusLater("Editor.onEscape", editorPane, 8);
     }

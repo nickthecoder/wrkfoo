@@ -147,15 +147,6 @@ public class RealToolPanel implements ToolPanel, TaskListener
         return splitPane;
     }
 
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public Results getResultsPanel()
-    {
-        return tool.getResultsPanel();
-    }
-
     @Override
     public ParametersPanel getParametersPanel()
     {
