@@ -32,6 +32,9 @@ public class FindToolBar extends JPanel implements SearcherListener
 
     public JPanel rightPanel;
 
+    @SuppressWarnings("unused") // Keep a reference to stop it being garbage collected.
+    private AutoComponentUpdater componentUpdater;
+
     public FindToolBar(Searcher s)
     {
         this.searcher = s;
@@ -97,7 +100,7 @@ public class FindToolBar extends JPanel implements SearcherListener
 
         searcher.addSearcherListener(this);
 
-        new AutoComponentUpdater()
+        componentUpdater = new AutoComponentUpdater(getClass().getSimpleName())
         {
             @Override
             protected void autoUpdate()

@@ -42,6 +42,9 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
 
     ReplaceDialog replaceDialog;
 
+    @SuppressWarnings("unused") // Keep a reference to stop it being garbage collected.
+    private AutoComponentUpdater componentUpdater;
+
     public EditorPanel(Editor editorTool)
     {
         super(editorTool);
@@ -105,7 +108,7 @@ public class EditorPanel extends PanelResults implements ExceptionHandler
         builder.name("find.findNext").buildShortcut();
         builder.name("find.findPrev").buildShortcut();
 
-        new AutoComponentUpdater()
+        componentUpdater = new AutoComponentUpdater(getClass().getSimpleName())
         {
             @Override
             protected void autoUpdate()

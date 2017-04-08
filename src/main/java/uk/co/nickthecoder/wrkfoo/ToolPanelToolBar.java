@@ -50,6 +50,9 @@ public class ToolPanelToolBar
 
     private JButton stopButton;
 
+    @SuppressWarnings("unused") // Keep a reference to stop it being garbage collected.
+    private AutoComponentUpdater componentUpdater;
+
     public ToolPanelToolBar(ToolPanel toolPanel)
     {
         Util.assertIsEDT();
@@ -94,7 +97,8 @@ public class ToolPanelToolBar
 
         toolBar.add(builder.name("closeHalfTab").tooltip("Close").buildButton());
 
-        new AutoComponentUpdater()
+        componentUpdater = new AutoComponentUpdater(
+            getClass().getSimpleName() + " for " + toolPanel.getTool().getClass().getSimpleName())
         {
             @Override
             public void autoUpdate()

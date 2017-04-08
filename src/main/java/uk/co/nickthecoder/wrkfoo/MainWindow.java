@@ -67,6 +67,9 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     JButton errorButton;
 
+    @SuppressWarnings("unused") // Keep a reference to stop it being garbage collected.
+    private AutoComponentUpdater componentUpdater;
+    
     /**
      * The main window that the mouse last entered. Used by {@link MainTabs} for drag/drop tabs.
      */
@@ -155,7 +158,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             switchTabMapping(i);
         }
 
-        new AutoComponentUpdater()
+        componentUpdater = new AutoComponentUpdater(getClass().getSimpleName())
         {
             @Override
             protected void autoUpdate()
@@ -175,7 +178,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             }
         };
     }
-
+    
     /**
      * Create a keyboard shortcut to switch to a numbered tab.
      * 

@@ -9,7 +9,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "eo",
@@ -19,7 +20,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "oof",
@@ -29,7 +31,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "df",
@@ -39,7 +42,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "=",
@@ -49,7 +53,8 @@
       "multi": false,
       "newTab": false,
       "refreshResults": false,
-      "prompt": false
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "+tab",
@@ -59,7 +64,30 @@
       "multi": false,
       "newTab": true,
       "refreshResults": false,
-      "prompt": true
+      "prompt": true,
+      "aliases": []
+    },
+    {
+      "code": "jgc",
+      "label": "Java Garbage Collection",
+      "action": "System.gc()",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
+    },
+    {
+      "code": "cum",
+      "label": "Dump Component Update Manager",
+      "action": "uk.co.nickthecoder.wrkfoo.util.ComponentUpdateManager.getInstance().dump()",
+      "row": false,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

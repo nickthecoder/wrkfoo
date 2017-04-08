@@ -9,11 +9,12 @@ import java.util.Set;
 import javax.swing.Timer;
 
 import uk.co.nickthecoder.jguifier.util.Util;
+import uk.co.nickthecoder.wrkfoo.WrkFoo;
 
 public class ComponentUpdateManager
 {
     public static int DEFAULT_PERIOD = 500; // Half a second
-    
+
     private Set<WeakReference<ComponentUpdater>> updaters;
 
     private Set<ComponentUpdater> pendingRemoval;
@@ -25,17 +26,17 @@ public class ComponentUpdateManager
     private Timer timer;
 
     public static ComponentUpdateManager instance;
-    
+
     public static ComponentUpdateManager getInstance()
     {
-        if ( instance == null ) {
+        if (instance == null) {
             instance = new ComponentUpdateManager();
-            instance.startTImedUpdates(DEFAULT_PERIOD);
+            instance.startTimedUpdates(DEFAULT_PERIOD);
         }
-        
+
         return instance;
     }
-    
+
     public ComponentUpdateManager()
     {
         updaters = new HashSet<>();
@@ -51,13 +52,16 @@ public class ComponentUpdateManager
         for (ComponentUpdater updater : pendingAdditions) {
             updaters.add(new WeakReference<ComponentUpdater>(updater));
         }
-        
+        pendingAdditions.clear();
+
         for (WeakReference<ComponentUpdater> weakUpdater : updaters) {
             ComponentUpdater updater = weakUpdater.get();
             if (updater == null) {
+                WrkFoo.println("Found a garbage collected updater");
                 weakPendingRemoval.add(weakUpdater);
             } else {
                 if (pendingRemoval.contains(updater)) {
+                    pendingRemoval.remove(updater);
                     weakPendingRemoval.add(weakUpdater);
                 } else {
                     update(updater);
@@ -65,6 +69,7 @@ public class ComponentUpdateManager
             }
         }
         updaters.removeAll(weakPendingRemoval);
+        weakPendingRemoval.clear();
     }
 
     private void update(ComponentUpdater update)
@@ -82,12 +87,12 @@ public class ComponentUpdateManager
         pendingRemoval.add(update);
     }
 
-    public void startTImedUpdates(int periodMillis)
+    public void startTimedUpdates(int periodMillis)
     {
         if (timer != null) {
             throw new RuntimeException("Timer already started");
         }
-        
+
         ActionListener al = new ActionListener()
         {
             public void actionPerformed(ActionEvent evt)
@@ -99,8 +104,20 @@ public class ComponentUpdateManager
         timer.start();
     }
 
-    public void stopTImedUpdates()
+    public void stopTimedUpdates()
     {
         timer.stop();
+    }
+
+    public void dump()
+    {
+        System.err.println("ComponentUpdateManager Dump");
+        for (WeakReference<ComponentUpdater> weakUpdater : updaters) {
+            ComponentUpdater updater = weakUpdater.get();
+            if (updater != null) {
+                System.err.println(updater);
+            }
+        }
+
     }
 }
