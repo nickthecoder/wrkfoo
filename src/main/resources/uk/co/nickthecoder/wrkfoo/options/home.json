@@ -4,7 +4,7 @@
     {
       "code": ".",
       "label": "Run",
-      "action": "row",
+      "action": "row.duplicate()",
       "row": true,
       "multi": false,
       "newTab": false,
@@ -25,7 +25,7 @@
     {
       "code": "nt",
       "label": "Run in New Tab",
-      "action": "row",
+      "action": "row.duplicate()",
       "row": true,
       "multi": false,
       "newTab": false,

@@ -1,9 +1,10 @@
 Current Task
 ============
 
-GroovyTools
-    Complains that /home/nick/bin is "Not a valid choice"
+Tool.duplicate is duplicating the "Columns" parameter, which will cause problems.
 
+    Home options should be duplicating the row (Tool).
+    Also, GroovyOption should be duplicating the Tool if it is in a new tab. (Maybe it is!)
 
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar

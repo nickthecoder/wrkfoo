@@ -51,10 +51,12 @@ public abstract class AbstractTableTool<S extends Results, T extends Task, R>
             @Override
             public void changed(Object initiator, Parameter source)
             {
+                Columns<R> columns = getColumns();
+
                 List<Column<?>> columnList = new ArrayList<>();
                 columnList.add(getColumns().getColumn(0)); // Add the options column.
-                for ( ColumnListItem item : result.getValue()) {
-                    columnList.add(item.column);
+                for (ColumnListItem item : result.getValue()) {
+                    columnList.add(columns.find(item.key));
                 }
                 getColumns().initialiseColumns(getTable(), columnList);
             }
@@ -65,36 +67,40 @@ public abstract class AbstractTableTool<S extends Results, T extends Task, R>
 
     protected abstract Columns<R> createColumns();
 
-    static class ColumnListItem implements ListItem<Column<?>>
+    class ColumnListItem implements ListItem<String>
     {
-        private Column<?> column;
+        private String key;
 
         public ColumnListItem(Column<?> column)
         {
-            this.column = column;
+            key = column.key;
         }
 
         @Override
-        public Column<?> getValue()
+        public String getValue()
         {
-            return column;
+            return key;
         }
 
         @Override
         public String getStringValue()
         {
-            return column.key;
+            return key;
         }
 
         @Override
-        public Column<?> parse(String stringValue)
+        public String parse(String stringValue)
         {
-            return null;
+            return stringValue;
         }
 
         @Override
         public String toString()
         {
+            Column<?> column = getColumns().find(key);
+            if (column == null) {
+                return "<<UNKNOWN COLUMN>>";
+            }
             return Util.empty(column.label) ? column.key : column.label;
         }
     }
