@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.swing.Timer;
 
 import uk.co.nickthecoder.jguifier.util.Util;
-import uk.co.nickthecoder.wrkfoo.WrkFoo;
 
 public class ComponentUpdateManager
 {
@@ -57,7 +56,6 @@ public class ComponentUpdateManager
         for (WeakReference<ComponentUpdater> weakUpdater : updaters) {
             ComponentUpdater updater = weakUpdater.get();
             if (updater == null) {
-                WrkFoo.println("Found a garbage collected updater");
                 weakPendingRemoval.add(weakUpdater);
             } else {
                 if (pendingRemoval.contains(updater)) {
