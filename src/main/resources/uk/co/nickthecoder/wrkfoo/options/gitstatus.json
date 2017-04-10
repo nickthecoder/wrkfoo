@@ -116,6 +116,17 @@
       "refreshResults": true,
       "prompt": false,
       "aliases": []
+    },
+    {
+      "code": "dc",
+      "label": "Git Diff --cached",
+      "action": "os.exec('git', 'diff', '--cached', row.choppedPath)\n  .dir(task.directory.value)",
+      "row": true,
+      "multi": false,
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }
