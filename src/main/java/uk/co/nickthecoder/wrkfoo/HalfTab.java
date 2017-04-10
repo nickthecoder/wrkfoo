@@ -62,6 +62,7 @@ public class HalfTab
         panel.removeAll();
         panel.add(tool.getToolPanel().getComponent());
         tool.getToolPanel().attachTo(this);
+        tool.attached();
     }
 
     void detach()
@@ -71,6 +72,7 @@ public class HalfTab
         if (tool.getTask().isRunning()) {
             tool.stop();
         }
+        tool.detached();
     }
 
     public void onUndoTool()

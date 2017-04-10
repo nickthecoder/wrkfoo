@@ -36,6 +36,16 @@ public interface Tool<S extends Results>
 
     public HalfTab getHalfTab();
 
+    /**
+     * Called after a Tool has been fully created, and attached to a HalfTab
+     */
+    public void attached();
+
+    /**
+     * Called after a Tool has been removed from its HalfTab.
+     */
+    public void detached();
+
     public boolean isRerunnable();
 
     public void go();

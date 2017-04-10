@@ -22,12 +22,9 @@ import uk.co.nickthecoder.jguifier.util.Exec;
 import uk.co.nickthecoder.wrkfoo.AbstractUnthreadedTool;
 import uk.co.nickthecoder.wrkfoo.Command;
 import uk.co.nickthecoder.wrkfoo.Focuser;
-import uk.co.nickthecoder.wrkfoo.HalfTab;
 import uk.co.nickthecoder.wrkfoo.PanelResults;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.Tab;
-import uk.co.nickthecoder.wrkfoo.TabListener;
-import uk.co.nickthecoder.wrkfoo.TabNotifier;
 import uk.co.nickthecoder.wrkfoo.option.GroovyScriptlet;
 import uk.co.nickthecoder.wrkfoo.tool.Terminal.TerminalResults;
 import uk.co.nickthecoder.wrkfoo.util.ProcessListener;
@@ -35,7 +32,7 @@ import uk.co.nickthecoder.wrkfoo.util.ProcessPoller;
 import uk.co.nickthecoder.wrkfoo.util.SimpleTerminalWidget;
 
 public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTask>
-    implements ProcessListener, TabListener
+    implements ProcessListener
 {
     public static Icon icon = Resources.icon("terminal.png");
 
@@ -75,8 +72,6 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
 
     private final void init()
     {
-        TabNotifier.addTabListener(this);
-
         results = new TerminalResults();
         results.getComponent().setLayout(new BorderLayout());
 
@@ -243,51 +238,16 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
     }
 
     @Override
-    public void attached(Tab tab)
+    public void detached()
     {
-    }
-
-    @Override
-    public void attached(HalfTab halfTab)
-    {
-    }
-
-    @Override
-    public void detaching(Tab tab)
-    {
-    }
-
-    @Override
-    public void detaching(HalfTab halfTab)
-    {
-        if (halfTab == getToolPanel().getHalfTab()) {
-
-            TabNotifier.removeTabListener(this);
-
-            if (terminal != null) {
-                closeTerminal();
-                terminal = null;
-            }
-            results.getComponent().removeAll();
-            if (task.killOnClose.getValue()) {
-                killProcess();
-            }
+        if (terminal != null) {
+            closeTerminal();
+            terminal = null;
         }
-    }
-
-    @Override
-    public void selectedTab(Tab tab)
-    {
-    }
-
-    @Override
-    public void deselectingTab(Tab tab)
-    {
-    }
-
-    @Override
-    public void changedTitle(Tab tab)
-    {
+        results.getComponent().removeAll();
+        if (task.killOnClose.getValue()) {
+            killProcess();
+        }
     }
 
     @Override

@@ -1,6 +1,9 @@
 Current Task
 ============
 
+Need to have an attach/detach method on Tool, so that it can add/remove its TabListener
+    Remove "bodges" from HomeTask.
+
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar
 

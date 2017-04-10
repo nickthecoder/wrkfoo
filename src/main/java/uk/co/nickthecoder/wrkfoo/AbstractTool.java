@@ -218,6 +218,18 @@ public abstract class AbstractTool<S extends Results, T extends Task>
         return options;
     }
 
+    @Override
+    public void attached()
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void detached()
+    {
+        // Do nothing
+    }
+
     protected ToolPanel createToolPanel()
     {
         return new RealToolPanel(this);
