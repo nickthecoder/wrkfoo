@@ -17,13 +17,11 @@ import uk.co.nickthecoder.wrkfoo.Tool;
 public class GroovyTools extends WrkFBase implements DirectoryTool
 {
     private ChoiceParameter<File> directoryChoice;
-    
+
     public GroovyTools()
     {
         super();
-
         task.fileExtensions.setDefaultValue("groovy");
-        task.directory.setDefaultValue(new File(Resources.getInstance().getHomeDirectory(), "bin"));
 
         task.includeDirectories.visible = false;
         task.includeFiles.visible = false;
@@ -36,10 +34,9 @@ public class GroovyTools extends WrkFBase implements DirectoryTool
         task.canonical.visible = false;
         task.sort.visible = false;
 
-        getColumns().find("size").visible = false;
-        
         directoryChoice = Resources.getInstance().createGroovyDirectoryChoice();
-        directoryChoice.addListener(new ParameterListener() {
+        directoryChoice.addListener(new ParameterListener()
+        {
             @Override
             public void changed(Object initiator, Parameter source)
             {
@@ -49,21 +46,21 @@ public class GroovyTools extends WrkFBase implements DirectoryTool
 
         task.insertParameter(0, directoryChoice);
         task.directory.visible = false;
-
+        getColumns().find("size").visible = false;
     }
-    
+
     @Override
     public String getTitle()
     {
         return "Groovy Tools";
     }
-    
+
     @Override
     public Icon getIcon()
     {
         return Resources.icon("groovyTools.png");
     }
-    
+
     public Tool<?> openGroovyTool(File file)
         throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException
     {

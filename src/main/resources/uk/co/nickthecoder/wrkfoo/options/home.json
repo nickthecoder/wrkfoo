@@ -1,18 +1,26 @@
 {
+  "include": [],
   "options": [
     {
       "code": ".",
       "label": "Run",
       "action": "row",
+      "row": true,
       "multi": false,
-      "newTab": false
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "te",
       "label": "Edit the Tools's Options",
       "action": "os.edit( rows.collect {it.optionsFile} )",
       "multi": true,
-      "newTab": false
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     },
     {
       "code": "nt",
@@ -20,7 +28,10 @@
       "action": "row",
       "row": true,
       "multi": false,
-      "newTab": false
+      "newTab": false,
+      "refreshResults": false,
+      "prompt": false,
+      "aliases": []
     }
   ]
 }

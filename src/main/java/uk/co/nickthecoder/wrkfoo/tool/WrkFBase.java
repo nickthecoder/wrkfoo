@@ -14,6 +14,7 @@ import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.SimpleListTool;
+import uk.co.nickthecoder.wrkfoo.ToolPanel;
 import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.DateRenderer;
@@ -33,12 +34,20 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     public WrkFBase()
     {
         super(new WrkFTask());
-        dragListConverter = new DragFileConverter<WrkFWrappedFile>();
+        dragListConverter = new DragFileConverter<>();
 
         getTask().addParameter(createColumnsParameter());
+    }
 
-        ActionBuilder builder = new ActionBuilder(this).component(getToolPanel().getComponent());
+    @Override
+    protected ToolPanel createToolPanel()
+    {
+        ToolPanel result = super.createToolPanel();
+
+        ActionBuilder builder = new ActionBuilder(this).component(result.getComponent());
         builder.name("wrkf.upDirectory").buildShortcut();
+
+        return result;
     }
 
     public static Icon getIconForFile(File file)
