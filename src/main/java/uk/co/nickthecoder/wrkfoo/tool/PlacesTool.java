@@ -143,7 +143,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
         public void body()
         {
             try {
-                String line = buildLine(file.getValue(), label.getValue());
+                String line = buildLine(file.getValue(), label.getValue()) + "\n";
                 Files.write(getTask().store.getValue().toPath(), line.getBytes(), StandardOpenOption.APPEND);
                 
             } catch (IOException e) {
