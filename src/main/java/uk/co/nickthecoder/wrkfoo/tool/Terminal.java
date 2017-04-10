@@ -98,6 +98,10 @@ public class Terminal extends AbstractUnthreadedTool<TerminalResults, TerminalTa
         Terminal result = (Terminal) super.duplicate();
         result.cmd = cmd;
         result.reRunnable = reRunnable;
+        if (task.findParameter("command") == null) {
+            System.out.println("Removing command parameter");
+            result.task.removeParameter(result.task.command);
+        }
         return result;
     }
 
