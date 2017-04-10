@@ -1,6 +1,14 @@
 package uk.co.nickthecoder.wrkfoo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.parameter.ListItem;
+import uk.co.nickthecoder.jguifier.parameter.ListParameter;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
+import uk.co.nickthecoder.jguifier.util.Util;
 
 public abstract class AbstractTableTool<S extends Results, T extends Task, R>
     extends AbstractThreadedTool<S, T>
@@ -24,6 +32,70 @@ public abstract class AbstractTableTool<S extends Results, T extends Task, R>
         return columns;
     }
 
+    public ListParameter<ColumnListItem> createColumnsParameter()
+    {
+        ListParameter<ColumnListItem> result = new ListParameter.Builder<ColumnListItem>("columns").parameter();
+
+        for (Column<?> column : getColumns()) {
+            if (!Util.empty(column.key)) {
+                ColumnListItem cli = new ColumnListItem(column);
+                result.addPossibleValue(cli);
+                if (column.visible) {
+                    result.add(cli);
+                }
+            }
+        }
+
+        result.addListener(new ParameterListener()
+        {
+            @Override
+            public void changed(Object initiator, Parameter source)
+            {
+                List<Column<?>> columnList = new ArrayList<>();
+                columnList.add(getColumns().getColumn(0)); // Add the options column.
+                for ( ColumnListItem item : result.getValue()) {
+                    columnList.add(item.column);
+                }
+                getColumns().initialiseColumns(getTable(), columnList);
+            }
+        });
+
+        return result;
+    }
+
     protected abstract Columns<R> createColumns();
 
+    static class ColumnListItem implements ListItem<Column<?>>
+    {
+        private Column<?> column;
+
+        public ColumnListItem(Column<?> column)
+        {
+            this.column = column;
+        }
+
+        @Override
+        public Column<?> getValue()
+        {
+            return column;
+        }
+
+        @Override
+        public String getStringValue()
+        {
+            return column.key;
+        }
+
+        @Override
+        public Column<?> parse(String stringValue)
+        {
+            return null;
+        }
+
+        @Override
+        public String toString()
+        {
+            return Util.empty(column.label) ? column.key : column.label;
+        }
+    }
 }

@@ -30,6 +30,8 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
     {
         super(task);
         this.dragListConverter = new DragFileConverter<Place>();
+        
+        getTask().addParameter(createColumnsParameter());
     }
 
     public PlacesTool()
@@ -80,6 +82,15 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             }
         }).tooltip().width(500);
 
+        columns.add(new Column<Place>(String.class, "name")
+        {
+            @Override
+            public String getValue(Place row)
+            {
+                return row.file.getName();
+            }
+        }).hide().tooltip("path").width(300);
+
         columns.add(new Column<Place>(Date.class, "lastModified")
         {
             @Override
@@ -87,7 +98,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             {
                 return new Date(row.file.lastModified());
             }
-        }.width(120).lock().renderer(DateRenderer.instance));
+        }.hide().width(120).lock().renderer(DateRenderer.instance));
 
         columns.add(new Column<Place>(Long.class, "size")
         {
@@ -96,7 +107,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             {
                 return row.file.length();
             }
-        }).tooltip().width(120).minWidth(80).renderer(SizeRenderer.getInstance());
+        }).hide().tooltip().width(120).minWidth(80).renderer(SizeRenderer.getInstance());
 
         return columns;
     }

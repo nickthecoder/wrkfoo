@@ -42,6 +42,8 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
                 return new MergedToolPanel(PlacesChoices.this, PlacesChoices.this.getToolPanel());
             }
         };
+        
+        getTask().addParameter(placesTool.createColumnsParameter());
     }
 
     @Override

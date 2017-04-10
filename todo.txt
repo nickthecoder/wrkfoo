@@ -1,9 +1,9 @@
 Current Task
 ============
 
-Splitting an Editor removes the toolbar for the 1st Editor.
+GroovyTools
+    Complains that /home/nick/bin is "Not a valid choice"
 
-WrkFBase to haveWrkFBase to have "compact" BooleanParameter, which show/hides the less used columns. "compact" BooleanParameter, which show/hides the less used columns.
 
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar

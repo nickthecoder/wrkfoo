@@ -1,6 +1,7 @@
 package uk.co.nickthecoder.wrkfoo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -12,7 +13,7 @@ import javax.swing.table.TableRowSorter;
 
 import uk.co.nickthecoder.jguifier.util.Util;
 
-public class Columns<R>
+public class Columns<R> implements Iterable<Column<R>>
 {
     private List<Column<R>> columns;
 
@@ -35,6 +36,11 @@ public class Columns<R>
         columns.add(optionColunm);
     }
 
+    public int indexOf(Column<?> column)
+    {
+        return columns.indexOf(column);
+    }
+
     public int indexOf(String columnKey)
     {
         int index = 0;
@@ -46,7 +52,7 @@ public class Columns<R>
         }
         throw new IllegalArgumentException("Column '" + columnKey + "' not found.");
     }
-    
+
     public Column<R> findColumn(String columnKey)
     {
         for (Column<R> c : columns) {
@@ -64,7 +70,7 @@ public class Columns<R>
         }
         columns.add(column);
         column.setColumns(this);
-    
+
         return column;
     }
 
@@ -91,27 +97,55 @@ public class Columns<R>
     public SimpleTable<R> createTable(ToolTableModel<R> tableModel)
     {
         SimpleTable<R> table = new SimpleTable<>(tableModel);
+
+        initialiseColumns(table);
+        return table;
+    }
+
+    public void initialiseColumns(SimpleTable<R> table)
+    {
         TableColumnModel tcm = table.getColumnModel();
 
-        for (int i = 0; i < getColumnCount(); i++) {
+        // Remove all the columns
+        for (int i = table.getColumnCount() - 1; i >= 0; i--) {
             TableColumn tableColumn = tcm.getColumn(i);
-            Column<?> column = getColumn(i);
+            tcm.removeColumn(tableColumn);
+        }
 
+        // Add the visible columns
+        for (int i = 0; i < getColumnCount(); i++) {
+            Column<?> column = getColumn(i);
+            if (column.visible) {
+                TableColumn tableColumn = new TableColumn(i);
+                tableColumn.setHeaderValue(column.label);
+                tableColumn.setPreferredWidth(column.width);
+                tableColumn.setMinWidth(column.minWidth);
+                tableColumn.setMaxWidth(column.maxWidth);
+                tcm.addColumn(tableColumn);
+            }
+        }
+    }
+
+    public void initialiseColumns(SimpleTable<R> table, List<Column<?>> columns)
+    {
+        TableColumnModel tcm = table.getColumnModel();
+
+        // Remove all the columns
+        for (int i = table.getColumnCount() - 1; i >= 0; i--) {
+            TableColumn tableColumn = tcm.getColumn(i);
+            tcm.removeColumn(tableColumn);
+        }
+
+        // Add the visible columns
+        for (Column<?> column : columns) {
+            int i = indexOf(column);
+            TableColumn tableColumn = new TableColumn(i);
+            tableColumn.setHeaderValue(column.label);
             tableColumn.setPreferredWidth(column.width);
             tableColumn.setMinWidth(column.minWidth);
             tableColumn.setMaxWidth(column.maxWidth);
+            tcm.addColumn(tableColumn);
         }
-
-        for (int i = getColumnCount() - 1; i >= 0; i--) {
-            TableColumn tableColumn = tcm.getColumn(i);
-            Column<?> column = getColumn(i);
-            if (!column.visible) {
-                tcm.removeColumn(tableColumn);
-            }
-        }
-
-        // table.setAutoCreateRowSorter(true);
-        return table;
     }
 
     public void defaultSort(JTable table)
@@ -134,5 +168,11 @@ public class Columns<R>
             rowSorter.setSortKeys(keys);
 
         }
+    }
+
+    @Override
+    public Iterator<Column<R>> iterator()
+    {
+        return columns.iterator();
     }
 }
