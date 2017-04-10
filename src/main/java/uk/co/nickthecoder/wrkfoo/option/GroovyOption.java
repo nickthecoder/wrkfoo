@@ -88,6 +88,9 @@ public class GroovyOption extends AbstractOption
 
             if (openNewTab) {
 
+                // It is likely that the return is the CURRENTLY running tool, so we need a COPY.
+                newTool = newTool.duplicate();
+                
                 if (getRefreshResults()) {
                     listen(currentTool, newTool.getTask());
                 }
