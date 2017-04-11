@@ -16,25 +16,25 @@
     {
       "code": "rm",
       "label": "Delete File",
-      "action": "println(\"Deleting\")\nos.exec( 'rm', row.file )",
+      "action": "println(\"Deleting\")\nos.exec( 'rm', '--', row.file )",
       "if": "row.file.isFile()",
       "row": true,
       "multi": false,
       "newTab": false,
       "refreshResults": true,
-      "prompt": true,
+      "prompt": false,
       "aliases": []
     },
     {
       "code": "rm-r",
       "label": "Delete All",
-      "action": "os.term( 'rm', '-rv', rows )\n  .title(\"rm -r\" )\n  .simple()",
+      "action": "os.term( 'rm', '-rv', '--', rows )\n  .title(\"rm -r\" )\n  .simple()",
       "if": "",
       "row": true,
       "multi": true,
       "newTab": true,
       "refreshResults": true,
-      "prompt": true,
+      "prompt": false,
       "aliases": []
     },
     {

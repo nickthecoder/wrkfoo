@@ -7,6 +7,9 @@ import java.util.Date;
 
 import javax.swing.Icon;
 
+import uk.co.nickthecoder.jguifier.ParameterListener;
+import uk.co.nickthecoder.jguifier.guiutil.DropFileHandler;
+import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
@@ -14,6 +17,7 @@ import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.SimpleListTool;
+import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.ToolPanel;
 import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -35,7 +39,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     {
         super(new WrkFTask());
         dragListConverter = new DragFileConverter<>();
-
+        
         getTask().addParameter(createColumnsParameter());
     }
 
@@ -182,4 +186,26 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     {
         return task.directory.getValue();
     }
+
+    @Override
+    public TableResults<WrkFWrappedFile> createResultsPanel()
+    {
+        TableResults<WrkFWrappedFile> result = super.createResultsPanel();
+
+        FileCopier fileCopier = new FileCopier( this );
+        fileCopier.setDestination( task.directory.getValue());
+        
+        new DropFileHandler(fileCopier, result.getTable());
+        task.directory.addListener(new ParameterListener()
+        {
+            @Override
+            public void changed(Object initiator, Parameter source)
+            {
+                fileCopier.setDestination(task.directory.getValue());
+            }
+        });
+
+        return result;
+    }
+
 }

@@ -78,7 +78,7 @@ public class OSHelper
         return command;
     }
 
-    public Terminal term(String cmd, String... args)
+    public Terminal term(String cmd, Object... args)
     {
         Command command = new Command(cmd);
 

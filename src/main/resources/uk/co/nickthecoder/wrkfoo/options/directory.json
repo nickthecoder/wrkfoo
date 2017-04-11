@@ -17,7 +17,7 @@
     {
       "code": "rm",
       "label": "Delete Directory",
-      "action": "os.exec( 'rmdir', row.file )",
+      "action": "os.exec( 'rmdir', '--', row.file )",
       "if": "",
       "row": true,
       "multi": false,

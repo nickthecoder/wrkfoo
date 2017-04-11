@@ -1,8 +1,15 @@
 Current Task
 ============
 
-Need to have an attach/detach method on Tool, so that it can add/remove its TabListener
-    Remove "bodges" from HomeTask.
+Copy and Move and Link files using drag and drop
+    Tabs can be a drop target for files if they are a directory
+        Rename the DirectoryTool interface to HasDirectory and put in jGuifier?
+
+    A FileSetTool, where files can be dragged for further processing
+    A TrashTool ? where files can be dragged to?
+
+Next Tasks
+==========
 
 Editor has a minimum width, which is annoying when splitting.
     It may have something to do with the Find toolbar
@@ -10,20 +17,12 @@ Editor has a minimum width, which is annoying when splitting.
 Look at file.json and directory.json
     Are the "ifs" correct? Should it be tooldirectory? and have another directory.json for directory rows?
 
-Next Tasks
-==========
 
 Shortcut to move focus to cycle around the major components?
 Shortcut to move focus from one HalfTab to the other.
 
 Right click a table heading to show/hide columns.
 
-Copy and Move and Link files using drag and drop
-    Tabs can be a drop target for files if they are a directory
-        Rename the DirectoryTool interface to HasDirectory and put in jGuifier?
-
-    A FileSetTool, where files can be dragged for further processing
-    A TrashTool ? where files can be dragged to?
 
 PlacesTool to allow drag and drop from other PlacesTool - copies the file AND label
 
