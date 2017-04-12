@@ -10,6 +10,7 @@ import javax.swing.JSplitPane;
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.guiutil.Places.Place;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.AbstractListTool;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
@@ -30,6 +31,8 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
 {
     private PlacesTool placesTool;
 
+    private RerunWhenDirectoryChanged rerunner;
+
     public PlacesChoices()
     {
         super(new PlacesChoicesTask());
@@ -42,8 +45,31 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
                 return new MergedToolPanel(PlacesChoices.this, PlacesChoices.this.getToolPanel());
             }
         };
-        
+
         getTask().addParameter(placesTool.createColumnsParameter());
+    }
+
+    public void attached()
+    {
+        super.attached();
+        rerunner = new RerunWhenDirectoryChanged(this, task.directory);
+    }
+
+    @Override
+    public void detached()
+    {
+        super.detached();
+        rerunner.remove();
+        rerunner = null;
+    }
+
+    @Override
+    public void updateResults()
+    {
+        Util.assertIsEDT();
+        super.updateResults();
+        getTable().getParent().getParent().invalidate();
+
     }
 
     @Override
@@ -137,6 +163,7 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
 
             JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             splitPane.setResizeWeight(0.3);
+            splitPane.setContinuousLayout(true);
 
             getComponent().add(splitPane, BorderLayout.CENTER);
 

@@ -90,7 +90,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
         ActionBuilder builder = new ActionBuilder(this).component(sidePanel);
         goButton = builder.name("toolpanel.go").method("go").label("Go").icon("run.png").buildButton();
         goStop.add(goButton, gbc);
-        
+
         builder.component(panel);
 
         stopButton = builder.name("toolpanel.stop").method("stop").label("Stop").buildButton();
@@ -116,7 +116,7 @@ public class RealToolPanel implements ToolPanel, TaskListener
         }
 
         this.tool.getTask().addTaskListener(this);
-        
+
         ActionBuilder builder2 = new ActionBuilder(this).component(panel);
 
         builder2.name("cyclePane").buildShortcut();

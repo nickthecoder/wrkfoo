@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.util.AutoExit;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.option.ScriptletException;
 import uk.co.nickthecoder.wrkfoo.tool.NullTool;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
@@ -69,7 +70,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     @SuppressWarnings("unused") // Keep a reference to stop it being garbage collected.
     private AutoComponentUpdater componentUpdater;
-    
+
     /**
      * The main window that the mouse last entered. Used by {@link MainTabs} for drag/drop tabs.
      */
@@ -178,7 +179,7 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
             }
         };
     }
-    
+
     /**
      * Create a keyboard shortcut to switch to a numbered tab.
      * 
@@ -348,6 +349,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public void setMessage(String text)
     {
+        Util.assertIsEDT();
+
         if (new Date().getTime() - lastError > ERROR_TIMEOUT_MILLIS) {
             message.setForeground(Color.black);
             message.setText(text);
@@ -356,6 +359,8 @@ public class MainWindow extends JFrame implements TopLevel, TabListener
 
     public void setErrorMessage(String text)
     {
+        Util.assertIsEDT();
+
         message.setForeground(Color.red);
         message.setText(text);
         lastError = new Date().getTime();

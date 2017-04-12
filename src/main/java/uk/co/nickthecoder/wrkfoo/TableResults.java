@@ -67,12 +67,15 @@ public class TableResults<R> extends PanelResults
                 if (me.getClickCount() == 2) {
                     boolean newTab = me.isControlDown();
                     me.consume();
-                    int rowIndex = table.convertRowIndexToModel(table.rowAtPoint(me.getPoint()));
-
-                    R row = table.getModel().getRow(rowIndex);
-                    Option option = tableTool.getOptions().getRowOption(tableTool, OptionsRunner.DEFAULT_CODE, row);
-                    if (option != null) {
-                        optionsRunner.runOption(option, row, newTab, false);
+                    int rowIndex = table.rowAtPoint(me.getPoint());
+                    if (rowIndex >= 0 ) {
+                        rowIndex = table.convertRowIndexToModel(rowIndex);
+    
+                        R row = table.getModel().getRow(rowIndex);
+                        Option option = tableTool.getOptions().getRowOption(tableTool, OptionsRunner.DEFAULT_CODE, row);
+                        if (option != null) {
+                            optionsRunner.runOption(option, row, newTab, false);
+                        }
                     }
                 }
 

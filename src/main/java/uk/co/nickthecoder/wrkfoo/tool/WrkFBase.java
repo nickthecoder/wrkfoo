@@ -7,9 +7,7 @@ import java.util.Date;
 
 import javax.swing.Icon;
 
-import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.guiutil.DropFileHandler;
-import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.Column;
 import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
@@ -27,7 +25,7 @@ import uk.co.nickthecoder.wrkfoo.util.FoldersFirstComparator;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
-    implements DirectoryTool
+    implements DirectoryTool<TableResults<WrkFWrappedFile>>
 {
     public static final Color directoryColor = new Color(80, 80, 0);
 
@@ -35,12 +33,28 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     public static final Icon directoryIcon = Resources.icon("folder.png");
     public static final Icon fileIcon = Resources.icon("file.png");
 
+    private RerunWhenDirectoryChanged rerunner;
+
     public WrkFBase()
     {
         super(new WrkFTask());
         dragListConverter = new DragFileConverter<>();
-        
+
         getTask().addParameter(createColumnsParameter());
+    }
+
+    public void attached()
+    {
+        super.attached();
+        rerunner = new RerunWhenDirectoryChanged(this, task.directory);
+    }
+
+    @Override
+    public void detached()
+    {
+        super.detached();
+        rerunner.remove();
+        rerunner = null;
     }
 
     @Override
@@ -192,18 +206,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     {
         TableResults<WrkFWrappedFile> result = super.createResultsPanel();
 
-        FileCopier fileCopier = new FileCopier( this );
-        fileCopier.setDestination( task.directory.getValue());
-        
-        new DropFileHandler(fileCopier, result.getTable());
-        task.directory.addListener(new ParameterListener()
-        {
-            @Override
-            public void changed(Object initiator, Parameter source)
-            {
-                fileCopier.setDestination(task.directory.getValue());
-            }
-        });
+        new DropFileHandler(new FileCopier(this), result.getTable());
 
         return result;
     }

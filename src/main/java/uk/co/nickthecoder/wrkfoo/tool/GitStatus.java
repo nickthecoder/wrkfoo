@@ -13,9 +13,11 @@ import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.ListTableModel;
 import uk.co.nickthecoder.wrkfoo.Resources;
 import uk.co.nickthecoder.wrkfoo.SimpleListTool;
+import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.tool.GitStatusTask.GitStatusLine;
 
-public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> implements DirectoryTool
+public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine>
+    implements DirectoryTool<TableResults<GitStatusLine>>
 {
     public static Color UNTRACKED = new Color(16, 16, 160);
 
@@ -24,7 +26,6 @@ public class GitStatus extends SimpleListTool<GitStatusTask, GitStatusLine> impl
     public static Color UPDATED = new Color(16, 160, 16);
 
     public static Color RENAMED = new Color(16, 160, 16);
-
 
     public GitStatus()
     {

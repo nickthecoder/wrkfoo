@@ -4,27 +4,18 @@ import java.awt.dnd.DnDConstants;
 import java.io.File;
 import java.util.List;
 
-import uk.co.nickthecoder.jguifier.Task;
-import uk.co.nickthecoder.jguifier.TaskAdaptor;
 import uk.co.nickthecoder.jguifier.guiutil.DropFileListener;
 import uk.co.nickthecoder.wrkfoo.Command;
-import uk.co.nickthecoder.wrkfoo.Tool;
+import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.TopLevel;
 
 public class FileCopier implements DropFileListener
 {
-    private File destinationDirectory;
+    private DirectoryTool<?> directoryTool;
 
-    private Tool<?> tool;
-
-    public FileCopier(Tool<?> parentTool)
+    public FileCopier(DirectoryTool<?> parentTool)
     {
-        this.tool = parentTool;
-    }
-
-    public void setDestination(File directory)
-    {
-        this.destinationDirectory = directory;
+        this.directoryTool = parentTool;
     }
 
     @Override
@@ -42,20 +33,11 @@ public class FileCopier implements DropFileListener
         for (File file : files) {
             command.addArg(file.getPath());
         }
-        command.addArg(destinationDirectory.getPath());
+        command.addArg(directoryTool.getDirectory().getPath());
 
         Terminal terminal = new Terminal(command);
-        terminal.getTask().addTaskListener(new TaskAdaptor()
-        {
-            @Override
-            public void ended(Task task, boolean normally)
-            {
-                // Rerun the tool to update its results.
-                tool.go();
-            }
-        });
-
-        TopLevel.getTopLevel(tool.getToolPanel().getComponent()).addTab(terminal);
+        
+        TopLevel.getTopLevel(directoryTool.getToolPanel().getComponent()).addTab(terminal);
     }
 
 }

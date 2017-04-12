@@ -4,17 +4,19 @@ import java.awt.Color;
 
 import javax.swing.table.AbstractTableModel;
 
+import uk.co.nickthecoder.jguifier.util.Util;
+
 public abstract class ToolTableModel<R> extends AbstractTableModel
 {
     private static final long serialVersionUID = 1L;
 
-    private TableTool<?,?> tool;
+    private TableTool<?, ?> tool;
 
     private String[] codes = new String[] {};
 
     public Columns<R> columns;
 
-    public ToolTableModel(TableTool<?,?> tool, Columns<R> columns)
+    public ToolTableModel(TableTool<?, ?> tool, Columns<R> columns)
     {
         this.tool = tool;
         this.columns = columns;
@@ -33,7 +35,7 @@ public abstract class ToolTableModel<R> extends AbstractTableModel
         fireTableRowsUpdated(row, row);
     }
 
-    public TableTool<?,?> getTool()
+    public TableTool<?, ?> getTool()
     {
         return tool;
     }
@@ -86,9 +88,9 @@ public abstract class ToolTableModel<R> extends AbstractTableModel
         return Color.black;
     }
 
-    public void update(int rowCount)
+    protected void update(int rowCount)
     {
+        Util.assertIsEDT();
         this.codes = new String[rowCount];
-        this.fireTableDataChanged();
     }
 }

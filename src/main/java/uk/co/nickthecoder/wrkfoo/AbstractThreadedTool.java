@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.Task;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
+import uk.co.nickthecoder.jguifier.util.Util;
 
 public abstract class AbstractThreadedTool<S extends Results, T extends Task>
     extends AbstractTool<S, T>
@@ -37,23 +38,18 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
         }
     }
 
-    protected void end()
+    protected void ended()
     {
-        goThread = null;
+        Util.assertIsEDT();
 
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                Focuser.log("AbstractThreadedTool Showing left (results)");
-                try {
-                    getToolPanel().getSplitPane().showLeft();
-                    Focuser.focusLater("AbstractThreadedTool task complete", getResultsPanel().getFocusComponent(), 9);
-                } catch (Exception e) {
-                    // Ignore
-                }
-            }
-        });
+        updateResults();
+        Focuser.log("AbstractThreadedTool Showing left (results)");
+        try {
+            getToolPanel().getSplitPane().showLeft();
+            Focuser.focusLater("AbstractThreadedTool task complete", getResultsPanel().getFocusComponent(), 9);
+        } catch (Exception e) {
+            // Ignore
+        }
     }
 
     public class GoThread extends Thread
@@ -66,13 +62,14 @@ public abstract class AbstractThreadedTool<S extends Results, T extends Task>
             } catch (Exception e) {
                 getToolPanel().getTopLevel().handleException(e);
             } finally {
+                goThread = null;
+
                 SwingUtilities.invokeLater(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        updateResults();
-                        end();
+                        ended();
                     }
                 });
             }

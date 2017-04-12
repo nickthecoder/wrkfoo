@@ -16,7 +16,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputAdapter;
 
 import uk.co.nickthecoder.jguifier.Task;
+import uk.co.nickthecoder.jguifier.guiutil.DropFileHandler;
 import uk.co.nickthecoder.jguifier.parameter.StringParameter;
+import uk.co.nickthecoder.wrkfoo.tool.FileCopier;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 public class MainTabs implements Iterable<Tab>, ChangeListener
@@ -29,7 +31,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
      * The currently selected tab's index.
      * -1 for no selected tab.
      */
-    private int selectedIndex = -1;    
+    private int selectedIndex = -1;
 
     public MainTabs()
     {
@@ -124,21 +126,21 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
 
         // If we are going to remove the selected tab, then select a different tab first, otherwise the
         // change of selected tab will happen while we are in an inconsistent state.
-        if ( index == selectedIndex) {
-            int newSelected = index -1;
-            if ( tabs.size() <= 1 ) {
+        if (index == selectedIndex) {
+            int newSelected = index - 1;
+            if (tabs.size() <= 1) {
                 newSelected = -1;
-            } else if ( newSelected < 0) {
+            } else if (newSelected < 0) {
                 newSelected = 0;
             }
             setSelectedIndex(newSelected);
         }
 
         Tab tab = tabs.get(index);
-        
+
         TabNotifier.fireDetaching(tab.getMainHalfTab());
-        if ( tab.getOtherHalfTab() != null) {
-            TabNotifier.fireDetaching(tab.getOtherHalfTab());            
+        if (tab.getOtherHalfTab() != null) {
+            TabNotifier.fireDetaching(tab.getOtherHalfTab());
         }
         TabNotifier.fireDetaching(tab);
 
@@ -230,6 +232,11 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
             JLabel label = (JLabel) tabbedPane.getTabComponentAt(index);
             label.setText(title);
             label.setIcon(icon);
+
+            if (tab.getMainHalfTab().getTool() instanceof DirectoryTool) {
+                DirectoryTool<?> dt = (DirectoryTool<?>) (tab.getMainHalfTab().getTool());
+                new DropFileHandler(new FileCopier(dt), label);
+            }
         }
     }
 
@@ -354,7 +361,7 @@ public class MainTabs implements Iterable<Tab>, ChangeListener
             Tool<?> mainTool = tab.getMainHalfTab().getTool();
             HalfTab otherHalf = tab.getOtherHalfTab();
             Tool<?> otherTool = otherHalf == null ? null : otherHalf.getTool();
-            
+
             TopLevel destinationWindow = MainWindow.getMouseMainWindow();
             if (destinationWindow == null) {
                 // Tear off the tab into a new MainWindow

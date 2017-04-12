@@ -1,6 +1,8 @@
 Current Task
 ============
 
+PlaceChoices has redraw problems when the directory is changes, causing an auto re-rerun.
+
 Copy and Move and Link files using drag and drop
     Tabs can be a drop target for files if they are a directory
         Rename the DirectoryTool interface to HasDirectory and put in jGuifier?

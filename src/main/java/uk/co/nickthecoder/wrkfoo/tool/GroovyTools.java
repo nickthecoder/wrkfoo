@@ -12,9 +12,11 @@ import uk.co.nickthecoder.jguifier.parameter.ChoiceParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.Resources;
+import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.Tool;
+import uk.co.nickthecoder.wrkfoo.tool.WrkFTask.WrkFWrappedFile;
 
-public class GroovyTools extends WrkFBase implements DirectoryTool
+public class GroovyTools extends WrkFBase implements DirectoryTool<TableResults<WrkFWrappedFile>>
 {
     private ChoiceParameter<File> directoryChoice;
 

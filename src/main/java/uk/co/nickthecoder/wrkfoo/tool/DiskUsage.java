@@ -7,10 +7,12 @@ import uk.co.nickthecoder.wrkfoo.Columns;
 import uk.co.nickthecoder.wrkfoo.DirectoryTool;
 import uk.co.nickthecoder.wrkfoo.DragFileConverter;
 import uk.co.nickthecoder.wrkfoo.SimpleListTool;
+import uk.co.nickthecoder.wrkfoo.TableResults;
 import uk.co.nickthecoder.wrkfoo.tool.DiskUsageTask.ScannedDirectory;
 import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
-public class DiskUsage extends SimpleListTool<DiskUsageTask, ScannedDirectory> implements DirectoryTool
+public class DiskUsage extends SimpleListTool<DiskUsageTask, ScannedDirectory>
+    implements DirectoryTool<TableResults<ScannedDirectory>>
 {
     public DiskUsage()
     {
