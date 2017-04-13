@@ -7,21 +7,21 @@ import java.nio.file.Path;
 import uk.co.nickthecoder.jguifier.ParameterListener;
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
 import uk.co.nickthecoder.jguifier.parameter.Parameter;
-import uk.co.nickthecoder.wrkfoo.util.DirectoryListener;
-import uk.co.nickthecoder.wrkfoo.util.DirectoryWatcher;
+import uk.co.nickthecoder.wrkfoo.util.FileListener;
+import uk.co.nickthecoder.wrkfoo.util.FileWatcher;
 
-public abstract class WatchDirectoryParameter implements ParameterListener, DirectoryListener
+public abstract class WatchFileParameter implements ParameterListener, FileListener
 {
-    private FileParameter directoryParameter;
+    private FileParameter fileParameter;
 
     private Path registeredPath;
 
-    public WatchDirectoryParameter(FileParameter directoryParameter)
+    public WatchFileParameter(FileParameter fileParameter)
     {
-        this.directoryParameter = directoryParameter;
+        this.fileParameter = fileParameter;
 
-        directoryParameter.addListener(this);
-        File dir = directoryParameter.getValue();
+        fileParameter.addListener(this);
+        File dir = fileParameter.getValue();
         if (dir != null) {
             register(dir.toPath());
         }
@@ -29,7 +29,7 @@ public abstract class WatchDirectoryParameter implements ParameterListener, Dire
 
     public void remove()
     {
-        directoryParameter.remvoveListener(this);
+        fileParameter.remvoveListener(this);
         unregister();
     }
 
@@ -37,7 +37,7 @@ public abstract class WatchDirectoryParameter implements ParameterListener, Dire
     {
         registeredPath = path;
         try {
-            DirectoryWatcher.getInstance().register(registeredPath, this);
+            FileWatcher.getInstance().register(registeredPath, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,19 +46,19 @@ public abstract class WatchDirectoryParameter implements ParameterListener, Dire
     private void unregister()
     {
         if (registeredPath != null) {
-            DirectoryWatcher.getInstance().unregister(registeredPath, this);
+            FileWatcher.getInstance().unregister(registeredPath, this);
             registeredPath = null;
         }
     }
 
     @Override
     public void changed(Object initiator, Parameter source)
-    {
-        File dir = directoryParameter.getValue();
-        if (dir == null) {
+    {       
+        File file = fileParameter.getValue();
+        if (file == null) {
             unregister();
         } else {
-            Path path = dir.toPath();
+            Path path = file.toPath();
             if (path.equals(registeredPath)) {
                 return;
             } else {
@@ -71,6 +71,6 @@ public abstract class WatchDirectoryParameter implements ParameterListener, Dire
     }
 
     @Override
-    public abstract void directoryChanged(Path directory, Path file);
+    public abstract void fileChanged(Path path);
 
 }

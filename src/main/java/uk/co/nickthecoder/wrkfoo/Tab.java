@@ -213,6 +213,7 @@ public class Tab
 
     public JComponent getComponent()
     {
+        Util.assertIsEDT();
         return splitPane;
     }
 

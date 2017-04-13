@@ -27,6 +27,8 @@ public final class ActionShortcuts
         map = new HashMap<>();
         customMap = new HashMap<>();
 
+        put("test", "ctrl+shift+T");
+
         // MainWindow
         put("runNonRowOption", "ENTER");
         put("runNonRowOptionInNewTab", "ctrl+ENTER");
@@ -63,7 +65,7 @@ public final class ActionShortcuts
         put("forward", "alt+RIGHT");
         put("exportTable", "");
         put("jumpToNonRowOption", "F11,ctrl+alt+F12");
-        put("closeHalfTab","");
+        put("closeHalfTab", "");
 
         // MainTabs
         put("tabProperties", "ctrl+P");

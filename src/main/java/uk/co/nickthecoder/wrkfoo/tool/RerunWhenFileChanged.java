@@ -5,29 +5,32 @@ import java.nio.file.Path;
 import javax.swing.SwingUtilities;
 
 import uk.co.nickthecoder.jguifier.parameter.FileParameter;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.Tool;
 
-public class RerunWhenDirectoryChanged extends WatchDirectoryParameter
+public class RerunWhenFileChanged extends WatchFileParameter
 {
     private Tool<?> tool;
 
-    public RerunWhenDirectoryChanged(Tool<?> tool, FileParameter directoryParameter)
+    public RerunWhenFileChanged(Tool<?> tool, FileParameter fileParameter)
     {
-        super(directoryParameter);
+        super(fileParameter);
         this.tool = tool;
     }
 
     @Override
-    public void directoryChanged(Path directory, Path file)
+    public void fileChanged(Path path)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
             @Override
             public void run()
             {
-                tool.go();
+                Util.assertIsEDT();
+                if (!tool.getTask().isRunning()) {
+                    tool.go();
+                }
             }
         });
     }
-
 }

@@ -26,17 +26,34 @@ import uk.co.nickthecoder.wrkfoo.util.SizeRenderer;
 
 public class PlacesTool extends SimpleListTool<PlacesTask, Place>
 {
+    private RerunWhenFileChanged rerunner;
+
     public PlacesTool(PlacesTask task)
     {
         super(task);
-        this.dragListConverter = new DragFileConverter<Place>();
-        
+        this.dragListConverter = new DragFileConverter<>();
+
         getTask().addParameter(createColumnsParameter());
     }
 
     public PlacesTool()
     {
         this(new PlacesTask());
+    }
+
+    @Override
+    public void attached()
+    {
+        super.attached();
+        rerunner = new RerunWhenFileChanged(this, task.store);
+    }
+
+    @Override
+    public void detached()
+    {
+        super.detached();
+        rerunner.remove();
+        rerunner = null;
     }
 
     @Override
@@ -156,7 +173,7 @@ public class PlacesTool extends SimpleListTool<PlacesTask, Place>
             try {
                 String line = buildLine(file.getValue(), label.getValue()) + "\n";
                 Files.write(getTask().store.getValue().toPath(), line.getBytes(), StandardOpenOption.APPEND);
-                
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

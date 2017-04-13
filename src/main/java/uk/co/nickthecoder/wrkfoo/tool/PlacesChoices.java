@@ -31,7 +31,7 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
 {
     private PlacesTool placesTool;
 
-    private RerunWhenDirectoryChanged rerunner;
+    private RerunWhenFileChanged rerunner;
 
     public PlacesChoices()
     {
@@ -52,7 +52,7 @@ public class PlacesChoices extends AbstractListTool<PlacesChoicesResults, Places
     public void attached()
     {
         super.attached();
-        rerunner = new RerunWhenDirectoryChanged(this, task.directory);
+        rerunner = new RerunWhenFileChanged(this, task.directory);
     }
 
     @Override

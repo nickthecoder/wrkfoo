@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 
 /**
@@ -23,6 +24,7 @@ public class HalfTab
 
     public HalfTab(Tab tab, Tool<?> tool)
     {
+        Util.assertIsEDT();
         this.tab = tab;
         currentTool = tool;
 
@@ -48,6 +50,7 @@ public class HalfTab
 
     public JComponent getComponent()
     {
+        Util.assertIsEDT();
         return panel;
     }
 

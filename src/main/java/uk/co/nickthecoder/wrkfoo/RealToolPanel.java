@@ -2,6 +2,7 @@ package uk.co.nickthecoder.wrkfoo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,6 +23,7 @@ import uk.co.nickthecoder.jguifier.TaskListener;
 import uk.co.nickthecoder.jguifier.guiutil.FocusNextListener;
 import uk.co.nickthecoder.jguifier.guiutil.ScrollablePanel;
 import uk.co.nickthecoder.jguifier.util.Stoppable;
+import uk.co.nickthecoder.jguifier.util.Util;
 import uk.co.nickthecoder.wrkfoo.util.ActionBuilder;
 import uk.co.nickthecoder.wrkfoo.util.HidingSplitPane;
 
@@ -51,6 +53,8 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
     public RealToolPanel(Tool<?> foo)
     {
+        Util.assertIsEDT();
+
         this.tool = foo;
         panel = new JPanel();
 
@@ -132,18 +136,21 @@ public class RealToolPanel implements ToolPanel, TaskListener
     @Override
     public JComponent getComponent()
     {
+        Util.assertIsEDT();
         return panel;
     }
 
     @Override
     public ToolPanelToolBar getToolBar()
     {
+        Util.assertIsEDT();
         return toolPanelToolBar;
     }
 
     @Override
     public HidingSplitPane getSplitPane()
     {
+        Util.assertIsEDT();
         return splitPane;
     }
 
@@ -222,7 +229,11 @@ public class RealToolPanel implements ToolPanel, TaskListener
 
     public MainWindow getMainWindow()
     {
-        return (MainWindow) SwingUtilities.getRoot(getComponent());
+        Component root = SwingUtilities.getRoot(getComponent());
+        if ( root instanceof MainWindow ) {
+            return (MainWindow) root;
+        }
+        return null;
     }
 
     private void changedRunningState(final boolean running)

@@ -33,7 +33,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     public static final Icon directoryIcon = Resources.icon("folder.png");
     public static final Icon fileIcon = Resources.icon("file.png");
 
-    private RerunWhenDirectoryChanged rerunner;
+    private RerunWhenFileChanged rerunner;
 
     public WrkFBase()
     {
@@ -46,7 +46,7 @@ public abstract class WrkFBase extends SimpleListTool<WrkFTask, WrkFWrappedFile>
     public void attached()
     {
         super.attached();
-        rerunner = new RerunWhenDirectoryChanged(this, task.directory);
+        rerunner = new RerunWhenFileChanged(this, task.directory);
     }
 
     @Override

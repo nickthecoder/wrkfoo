@@ -150,6 +150,8 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public AbstractTool<S, T> parameter(String name, Object value)
     {
+        Util.assertIsEDT();
+
         Parameter p = getTask().findParameter(name);
         ValueParameter vp = (ValueParameter) p;
 
@@ -166,6 +168,8 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public AbstractTool<S, T> duplicate()
     {
+        Util.assertIsEDT();
+
         try {
             AbstractTool<S, T> copy = this.getClass().newInstance();
 
@@ -193,6 +197,8 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @Override
     public S getResultsPanel()
     {
+        Util.assertIsEDT();
+
         if (resultsPanel == null) {
             resultsPanel = createResultsPanel();
         }
@@ -202,6 +208,8 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @Override
     public ParametersPanel createParametersPanel()
     {
+        Util.assertIsEDT();
+
         ParametersPanel pp = new ParametersPanel();
         pp.addParameters(getTask().getRootParameter());
         return pp;
@@ -221,23 +229,27 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @Override
     public void attached()
     {
+        Util.assertIsEDT();
         // Do nothing
     }
 
     @Override
     public void detached()
     {
+        Util.assertIsEDT();
         // Do nothing
     }
 
     protected ToolPanel createToolPanel()
     {
+        Util.assertIsEDT();
         return new RealToolPanel(this);
     }
 
     @Override
     public ToolPanel getToolPanel()
     {
+        Util.assertIsEDT();
         if (toolPanel == null) {
             toolPanel = createToolPanel();
         }
@@ -248,6 +260,7 @@ public abstract class AbstractTool<S extends Results, T extends Task>
     @Override
     public Tool<?> splitTool(boolean vertical)
     {
+        Util.assertIsEDT();
         if (isRerunnable()) {
             return this.duplicate();
         } else {

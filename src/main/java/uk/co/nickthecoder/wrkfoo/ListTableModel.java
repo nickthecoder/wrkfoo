@@ -11,6 +11,7 @@ public class ListTableModel<R> extends ToolTableModel<R>
     public ListTableModel(TableTool<?, ?> tool, List<R> list, Columns<R> columns)
     {
         super(tool, columns);
+        update(list.size());
         this.list = list;
     }
 
